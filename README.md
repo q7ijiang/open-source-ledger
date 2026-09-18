@@ -34,3 +34,12 @@
 ## 免责声明
 
 本工具输出为基于证据的辅助审计，不构成法律意见。
+
+## 迁移说明
+
+本目录中的 `tools/node/node_modules` 是 Windows junction，指向 `tools/cdxgen/node_modules`。这是为了避免重复复制约 409 MiB 依赖。
+
+如果需要把本目录迁移到其他机器或其他操作系统：
+1. 不要直接复制 `tools/` 目录。
+2. 在新机器上重新执行 `npm install -g @cyclonedx/cdxgen`，或按 `tools/cdxgen/README` 说明重装。
+3. 本目录仅作为本地工作目录，不提交到 GitHub 仓库。
