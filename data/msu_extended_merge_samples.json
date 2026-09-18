@@ -1,0 +1,300 @@
+[
+  {
+    "文件": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_syft_node_jod-bookworm_cdx.json",
+    "name": "@npmcli/agent",
+    "kept_version": "2.2.2",
+    "merged_version": "2.2.2",
+    "kept_purl": [
+      "pkg:npm/%40npmcli/agent@2.2.2",
+      "pkg:npm/%40npmcli/agent@2.2.2?package-id=e5aaa014cd0a6a68"
+    ],
+    "merged_purl": [
+      "pkg:npm/%40npmcli/agent@2.2.2",
+      "pkg:npm/%40npmcli/agent@2.2.2?package-id=e4a422721254b40e"
+    ],
+    "basis": "homepage或repository URL相同",
+    "confidence": 0.95,
+    "common_hashes": {},
+    "common_urls": [
+      "https://github.com/npm/agent"
+    ],
+    "common_authors": [
+      "github inc."
+    ],
+    "common_valid_locations": [],
+    "kept_location_level": "A",
+    "merged_location_level": "A",
+    "人工判断": {
+      "结论": "真同一实体",
+      "理由": "同名同版本；purl 仅 package-id 限定不同，repository URL 一致，属于同一包的重复安装记录。"
+    }
+  },
+  {
+    "文件": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_syft_node_22.11.0-bookworm_cdx.json",
+    "name": "unique-slug",
+    "kept_version": "4.0.0",
+    "merged_version": "4.0.0",
+    "kept_purl": [
+      "pkg:npm/unique-slug@4.0.0",
+      "pkg:npm/unique-slug@4.0.0?package-id=583ace7227f54fd3"
+    ],
+    "merged_purl": [
+      "pkg:npm/unique-slug@4.0.0",
+      "pkg:npm/unique-slug@4.0.0?package-id=8b1c47717a6a0bd9"
+    ],
+    "basis": "homepage或repository URL相同",
+    "confidence": 0.95,
+    "common_hashes": {},
+    "common_urls": [
+      "https://github.com/npm/unique-slug"
+    ],
+    "common_authors": [
+      "github inc."
+    ],
+    "common_valid_locations": [],
+    "kept_location_level": "A",
+    "merged_location_level": "A",
+    "人工判断": {
+      "结论": "真同一实体",
+      "理由": "同名同版本；purl 仅 package-id 限定不同，repository URL 一致，属于同一包的重复安装记录。"
+    }
+  },
+  {
+    "文件": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_syft_node_iron-bookworm_cdx.json",
+    "name": "minipass",
+    "kept_version": "3.3.6",
+    "merged_version": "3.3.6",
+    "kept_purl": [
+      "pkg:npm/minipass@3.3.6",
+      "pkg:npm/minipass@3.3.6?package-id=b1793c299d41ea2e"
+    ],
+    "merged_purl": [
+      "pkg:npm/minipass@3.3.6",
+      "pkg:npm/minipass@3.3.6?package-id=e0e6f38d6f2c0d5e"
+    ],
+    "basis": "homepage或repository URL相同",
+    "confidence": 0.95,
+    "common_hashes": {},
+    "common_urls": [
+      "https://github.com/isaacs/minipass"
+    ],
+    "common_authors": [
+      "isaac z. schlueter <i@izs.me> (http://blog.izs.me/)"
+    ],
+    "common_valid_locations": [],
+    "kept_location_level": "A",
+    "merged_location_level": "A",
+    "人工判断": {
+      "结论": "真同一实体",
+      "理由": "同名同版本且作者与 repository URL 均一致，属于同一包的重复安装记录。"
+    }
+  },
+  {
+    "文件": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_syft_node_22.10.0-bookworm_cdx.json",
+    "name": "minipass",
+    "kept_version": "3.3.6",
+    "merged_version": "3.3.6",
+    "kept_purl": [
+      "pkg:npm/minipass@3.3.6",
+      "pkg:npm/minipass@3.3.6?package-id=b1793c299d41ea2e"
+    ],
+    "merged_purl": [
+      "pkg:npm/minipass@3.3.6",
+      "pkg:npm/minipass@3.3.6?package-id=e0e6f38d6f2c0d5e"
+    ],
+    "basis": "homepage或repository URL相同",
+    "confidence": 0.95,
+    "common_hashes": {},
+    "common_urls": [
+      "https://github.com/isaacs/minipass"
+    ],
+    "common_authors": [
+      "isaac z. schlueter <i@izs.me> (http://blog.izs.me/)"
+    ],
+    "common_valid_locations": [],
+    "kept_location_level": "A",
+    "merged_location_level": "A",
+    "人工判断": {
+      "结论": "真同一实体",
+      "理由": "同名同版本且作者与 repository URL 均一致，属于同一包的重复安装记录。"
+    }
+  },
+  {
+    "文件": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_syft_node_23.1-bullseye-slim_cdx.json",
+    "name": "minipass-fetch",
+    "kept_version": "3.0.5",
+    "merged_version": "3.0.5",
+    "kept_purl": [
+      "pkg:npm/minipass-fetch@3.0.5",
+      "pkg:npm/minipass-fetch@3.0.5?package-id=b507dad53434e3ba"
+    ],
+    "merged_purl": [
+      "pkg:npm/minipass-fetch@3.0.5",
+      "pkg:npm/minipass-fetch@3.0.5?package-id=601e929d9e757519"
+    ],
+    "basis": "homepage或repository URL相同",
+    "confidence": 0.95,
+    "common_hashes": {},
+    "common_urls": [
+      "https://github.com/npm/minipass-fetch"
+    ],
+    "common_authors": [
+      "github inc."
+    ],
+    "common_valid_locations": [],
+    "kept_location_level": "A",
+    "merged_location_level": "A",
+    "人工判断": {
+      "结论": "真同一实体",
+      "理由": "同名同版本；purl 仅 package-id 限定不同，repository URL 一致，属于同一包的重复安装记录。"
+    }
+  },
+  {
+    "文件": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_syft_node_20.16.0-alpine3.19_cdx.json",
+    "name": "minipass",
+    "kept_version": "3.3.6",
+    "merged_version": "3.3.6",
+    "kept_purl": [
+      "pkg:npm/minipass@3.3.6",
+      "pkg:npm/minipass@3.3.6?package-id=a40aeaca74a18cab"
+    ],
+    "merged_purl": [
+      "pkg:npm/minipass@3.3.6",
+      "pkg:npm/minipass@3.3.6?package-id=e0e6f38d6f2c0d5e"
+    ],
+    "basis": "homepage或repository URL相同",
+    "confidence": 0.95,
+    "common_hashes": {},
+    "common_urls": [
+      "https://github.com/isaacs/minipass"
+    ],
+    "common_authors": [
+      "isaac z. schlueter <i@izs.me> (http://blog.izs.me/)"
+    ],
+    "common_valid_locations": [],
+    "kept_location_level": "A",
+    "merged_location_level": "A",
+    "人工判断": {
+      "结论": "真同一实体",
+      "理由": "同名同版本且作者与 repository URL 均一致，属于同一包的重复安装记录。"
+    }
+  },
+  {
+    "文件": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_syft_node_23.1-bookworm_cdx.json",
+    "name": "mkdirp",
+    "kept_version": "3.0.1",
+    "merged_version": "3.0.1",
+    "kept_purl": [
+      "pkg:npm/mkdirp@3.0.1",
+      "pkg:npm/mkdirp@3.0.1?package-id=3cb751ffc0192fe9"
+    ],
+    "merged_purl": [
+      "pkg:npm/mkdirp@3.0.1",
+      "pkg:npm/mkdirp@3.0.1?package-id=8164dfc68c384e39"
+    ],
+    "basis": "homepage或repository URL相同",
+    "confidence": 0.95,
+    "common_hashes": {},
+    "common_urls": [
+      "https://github.com/isaacs/node-mkdirp"
+    ],
+    "common_authors": [],
+    "common_valid_locations": [],
+    "kept_location_level": "A",
+    "merged_location_level": "A",
+    "人工判断": {
+      "结论": "真同一实体",
+      "理由": "同名同版本；purl 仅 package-id 限定不同，repository URL 一致，属于同一包的重复安装记录。"
+    }
+  },
+  {
+    "文件": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_syft_node_jod_cdx.json",
+    "name": "unique-slug",
+    "kept_version": "4.0.0",
+    "merged_version": "4.0.0",
+    "kept_purl": [
+      "pkg:npm/unique-slug@4.0.0",
+      "pkg:npm/unique-slug@4.0.0?package-id=583ace7227f54fd3"
+    ],
+    "merged_purl": [
+      "pkg:npm/unique-slug@4.0.0",
+      "pkg:npm/unique-slug@4.0.0?package-id=8b1c47717a6a0bd9"
+    ],
+    "basis": "homepage或repository URL相同",
+    "confidence": 0.95,
+    "common_hashes": {},
+    "common_urls": [
+      "https://github.com/npm/unique-slug"
+    ],
+    "common_authors": [
+      "github inc."
+    ],
+    "common_valid_locations": [],
+    "kept_location_level": "A",
+    "merged_location_level": "A",
+    "人工判断": {
+      "结论": "真同一实体",
+      "理由": "同名同版本；purl 仅 package-id 限定不同，repository URL 一致，属于同一包的重复安装记录。"
+    }
+  },
+  {
+    "文件": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_syft_node_23-bookworm-slim_cdx.json",
+    "name": "make-fetch-happen",
+    "kept_version": "13.0.1",
+    "merged_version": "13.0.1",
+    "kept_purl": [
+      "pkg:npm/make-fetch-happen@13.0.1",
+      "pkg:npm/make-fetch-happen@13.0.1?package-id=86cfee54d14120b5"
+    ],
+    "merged_purl": [
+      "pkg:npm/make-fetch-happen@13.0.1",
+      "pkg:npm/make-fetch-happen@13.0.1?package-id=1b5b8486c1293566"
+    ],
+    "basis": "homepage或repository URL相同",
+    "confidence": 0.95,
+    "common_hashes": {},
+    "common_urls": [
+      "https://github.com/npm/make-fetch-happen"
+    ],
+    "common_authors": [
+      "github inc."
+    ],
+    "common_valid_locations": [],
+    "kept_location_level": "A",
+    "merged_location_level": "A",
+    "人工判断": {
+      "结论": "真同一实体",
+      "理由": "同名同版本；purl 仅 package-id 限定不同，repository URL 一致，属于同一包的重复安装记录。"
+    }
+  },
+  {
+    "文件": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_syft_node_22.5-slim_cdx.json",
+    "name": "minipass",
+    "kept_version": "3.3.6",
+    "merged_version": "3.3.6",
+    "kept_purl": [
+      "pkg:npm/minipass@3.3.6",
+      "pkg:npm/minipass@3.3.6?package-id=e0e6f38d6f2c0d5e"
+    ],
+    "merged_purl": [
+      "pkg:npm/minipass@3.3.6",
+      "pkg:npm/minipass@3.3.6?package-id=e1062d9881f71e7d"
+    ],
+    "basis": "homepage或repository URL相同",
+    "confidence": 0.95,
+    "common_hashes": {},
+    "common_urls": [
+      "https://github.com/isaacs/minipass"
+    ],
+    "common_authors": [
+      "isaac z. schlueter <i@izs.me> (http://blog.izs.me/)"
+    ],
+    "common_valid_locations": [],
+    "kept_location_level": "A",
+    "merged_location_level": "A",
+    "人工判断": {
+      "结论": "真同一实体",
+      "理由": "同名同版本且作者与 repository URL 均一致，属于同一包的重复安装记录。"
+    }
+  }
+]
