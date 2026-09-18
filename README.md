@@ -25,6 +25,11 @@
 
 ## 快速开始
 
+运行 cdxgen
+在 Windows 上请使用 `tools/cdxgen/cdxgen.cmd`，不要用 `cdxgen.ps1`，否则会因 PowerShell 执行策略被拒绝。
+命令示例：
+tools\cdxgen\cdxgen.cmd -t python -t npm -t ai --evidence --no-install-deps --json-pretty -o sample_bom.json .
+
 > 基础模式（生成中文合规清单）：
 > `python main.py --mode basic --input sample_bom.json --output reports/basic_report.md`
 
