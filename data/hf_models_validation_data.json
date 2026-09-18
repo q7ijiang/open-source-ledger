@@ -1,0 +1,668 @@
+[
+  {
+    "file": "all-MiniLM-L6-v2_bom.json",
+    "huggingface_repo": "sentence-transformers/all-MiniLM-L6-v2",
+    "module1": {
+      "parsed_component_count": 22,
+      "model_asset_count": 1,
+      "models_with_pedigree_ancestors": 1,
+      "models_with_modelcard_datasets": 1,
+      "elapsed_seconds": 0.097938,
+      "stdout": [
+        "读取 BOM：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\outputs\\hf_models_bom\\all-MiniLM-L6-v2_bom.json",
+        "组件数：22",
+        "许可证种类数：1",
+        "evidence 条数：1",
+        "资产输出：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\all-MiniLM-L6-v2_assets.json"
+      ]
+    },
+    "raw_bom": {
+      "component_count": 22,
+      "model_component_count": 1,
+      "models_with_ancestors": 1,
+      "models_with_datasets": 1,
+      "models": [
+        {
+          "name": "all-MiniLM-L6-v2",
+          "version": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+          "purl": "pkg:huggingface/sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+          "pedigree_notes": "Detected variants: quantized",
+          "ancestor_chains": [
+            [
+              {
+                "name": "MiniLM-L6-H384-uncased",
+                "version": null,
+                "purl": "pkg:huggingface/nreimers/MiniLM-L6-H384-uncased"
+              }
+            ]
+          ],
+          "datasets": [
+            {
+              "ref": "pkg:huggingface/embedding-data/WikiAnswers?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets",
+              "name": null
+            }
+          ]
+        }
+      ]
+    },
+    "module2": {
+      "same_name_pair_count": 0,
+      "same_name_diff_purl_model_groups": [],
+      "same_name_diff_purl_type_groups": [],
+      "narrow_exception_triggered": 0,
+      "narrow_exception_entries": [],
+      "merged_pair_count": 0,
+      "needs_review_pair_count": 0,
+      "skipped_pair_count": 0,
+      "confidence_distribution": {},
+      "skip_reason_distribution": {},
+      "elapsed_seconds": 0.106113,
+      "narrow_exception_reason": "不存在同名模型组件，实体解析器未形成任何候选对。",
+      "stdout": [
+        "读取资产：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\all-MiniLM-L6-v2_assets.json",
+        "资产数量：22 -> 22",
+        "同名配对总数：0",
+        "合并对数：0",
+        "需人工复核对数：0",
+        "跳过对数：0",
+        "置信度分布：无",
+        "跳过原因分布：无",
+        "去重结果：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\all-MiniLM-L6-v2_deduplicated.json",
+        "配对日志：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\all-MiniLM-L6-v2_merge_log.json"
+      ]
+    },
+    "paths": {
+      "assets": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\all-MiniLM-L6-v2_assets.json",
+      "deduplicated": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\all-MiniLM-L6-v2_deduplicated.json",
+      "merge_log": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\all-MiniLM-L6-v2_merge_log.json"
+    }
+  },
+  {
+    "file": "bert-base-uncased_bom.json",
+    "huggingface_repo": "google-bert/bert-base-uncased",
+    "module1": {
+      "parsed_component_count": 3,
+      "model_asset_count": 1,
+      "models_with_pedigree_ancestors": 0,
+      "models_with_modelcard_datasets": 1,
+      "elapsed_seconds": 0.094476,
+      "stdout": [
+        "读取 BOM：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\outputs\\hf_models_bom\\bert-base-uncased_bom.json",
+        "组件数：3",
+        "许可证种类数：1",
+        "evidence 条数：1",
+        "资产输出：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\bert-base-uncased_assets.json"
+      ]
+    },
+    "raw_bom": {
+      "component_count": 3,
+      "model_component_count": 1,
+      "models_with_ancestors": 0,
+      "models_with_datasets": 1,
+      "models": [
+        {
+          "name": "bert-base-uncased",
+          "version": "86b5e0934494bd15c9632b12f734a8a67f723594",
+          "purl": "pkg:huggingface/google-bert/bert-base-uncased@86b5e0934494bd15c9632b12f734a8a67f723594",
+          "pedigree_notes": null,
+          "ancestor_chains": [],
+          "datasets": [
+            {
+              "ref": "pkg:huggingface/datasets/wikipedia?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets",
+              "name": null
+            }
+          ]
+        }
+      ]
+    },
+    "module2": {
+      "same_name_pair_count": 0,
+      "same_name_diff_purl_model_groups": [],
+      "same_name_diff_purl_type_groups": [],
+      "narrow_exception_triggered": 0,
+      "narrow_exception_entries": [],
+      "merged_pair_count": 0,
+      "needs_review_pair_count": 0,
+      "skipped_pair_count": 0,
+      "confidence_distribution": {},
+      "skip_reason_distribution": {},
+      "elapsed_seconds": 0.104051,
+      "narrow_exception_reason": "不存在同名模型组件，实体解析器未形成任何候选对。",
+      "stdout": [
+        "读取资产：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\bert-base-uncased_assets.json",
+        "资产数量：3 -> 3",
+        "同名配对总数：0",
+        "合并对数：0",
+        "需人工复核对数：0",
+        "跳过对数：0",
+        "置信度分布：无",
+        "跳过原因分布：无",
+        "去重结果：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\bert-base-uncased_deduplicated.json",
+        "配对日志：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\bert-base-uncased_merge_log.json"
+      ]
+    },
+    "paths": {
+      "assets": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\bert-base-uncased_assets.json",
+      "deduplicated": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\bert-base-uncased_deduplicated.json",
+      "merge_log": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\bert-base-uncased_merge_log.json"
+    }
+  },
+  {
+    "file": "Llama-2-7B-Chat-GGUF_bom.json",
+    "huggingface_repo": "TheBloke/Llama-2-7B-Chat-GGUF",
+    "module1": {
+      "parsed_component_count": 1,
+      "model_asset_count": 1,
+      "models_with_pedigree_ancestors": 1,
+      "models_with_modelcard_datasets": 0,
+      "elapsed_seconds": 0.092231,
+      "stdout": [
+        "读取 BOM：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\outputs\\hf_models_bom\\Llama-2-7B-Chat-GGUF_bom.json",
+        "组件数：1",
+        "许可证种类数：1",
+        "evidence 条数：1",
+        "资产输出：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7B-Chat-GGUF_assets.json"
+      ]
+    },
+    "raw_bom": {
+      "component_count": 1,
+      "model_component_count": 1,
+      "models_with_ancestors": 1,
+      "models_with_datasets": 0,
+      "models": [
+        {
+          "name": "Llama-2-7B-Chat-GGUF",
+          "version": "191239b3e26b2882fb562ffccdd1cf0f65402adb",
+          "purl": "pkg:huggingface/TheBloke/Llama-2-7B-Chat-GGUF@191239b3e26b2882fb562ffccdd1cf0f65402adb",
+          "pedigree_notes": "Detected variants: quantized",
+          "ancestor_chains": [
+            [
+              {
+                "name": "Llama-2-7b-chat-hf",
+                "version": null,
+                "purl": "pkg:huggingface/meta-llama/Llama-2-7b-chat-hf"
+              }
+            ]
+          ],
+          "datasets": []
+        }
+      ]
+    },
+    "module2": {
+      "same_name_pair_count": 0,
+      "same_name_diff_purl_model_groups": [],
+      "same_name_diff_purl_type_groups": [],
+      "narrow_exception_triggered": 0,
+      "narrow_exception_entries": [],
+      "merged_pair_count": 0,
+      "needs_review_pair_count": 0,
+      "skipped_pair_count": 0,
+      "confidence_distribution": {},
+      "skip_reason_distribution": {},
+      "elapsed_seconds": 0.102458,
+      "narrow_exception_reason": "不存在同名模型组件，实体解析器未形成任何候选对。",
+      "stdout": [
+        "读取资产：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7B-Chat-GGUF_assets.json",
+        "资产数量：1 -> 1",
+        "同名配对总数：0",
+        "合并对数：0",
+        "需人工复核对数：0",
+        "跳过对数：0",
+        "置信度分布：无",
+        "跳过原因分布：无",
+        "去重结果：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7B-Chat-GGUF_deduplicated.json",
+        "配对日志：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7B-Chat-GGUF_merge_log.json"
+      ]
+    },
+    "paths": {
+      "assets": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7B-Chat-GGUF_assets.json",
+      "deduplicated": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7B-Chat-GGUF_deduplicated.json",
+      "merge_log": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7B-Chat-GGUF_merge_log.json"
+    }
+  },
+  {
+    "file": "Llama-2-7b-chat-hf_bom.json",
+    "huggingface_repo": "meta-llama/Llama-2-7b-chat-hf",
+    "module1": {
+      "parsed_component_count": 1,
+      "model_asset_count": 1,
+      "models_with_pedigree_ancestors": 0,
+      "models_with_modelcard_datasets": 0,
+      "elapsed_seconds": 0.093415,
+      "stdout": [
+        "读取 BOM：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\outputs\\hf_models_bom\\Llama-2-7b-chat-hf_bom.json",
+        "组件数：1",
+        "许可证种类数：1",
+        "evidence 条数：1",
+        "资产输出：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7b-chat-hf_assets.json"
+      ]
+    },
+    "raw_bom": {
+      "component_count": 1,
+      "model_component_count": 1,
+      "models_with_ancestors": 0,
+      "models_with_datasets": 0,
+      "models": [
+        {
+          "name": "Llama-2-7b-chat-hf",
+          "version": "f5db02db724555f92da89c216ac04704f23d4590",
+          "purl": "pkg:huggingface/meta-llama/Llama-2-7b-chat-hf@f5db02db724555f92da89c216ac04704f23d4590",
+          "pedigree_notes": null,
+          "ancestor_chains": [],
+          "datasets": []
+        }
+      ]
+    },
+    "module2": {
+      "same_name_pair_count": 0,
+      "same_name_diff_purl_model_groups": [],
+      "same_name_diff_purl_type_groups": [],
+      "narrow_exception_triggered": 0,
+      "narrow_exception_entries": [],
+      "merged_pair_count": 0,
+      "needs_review_pair_count": 0,
+      "skipped_pair_count": 0,
+      "confidence_distribution": {},
+      "skip_reason_distribution": {},
+      "elapsed_seconds": 0.104025,
+      "narrow_exception_reason": "不存在同名模型组件，实体解析器未形成任何候选对。",
+      "stdout": [
+        "读取资产：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7b-chat-hf_assets.json",
+        "资产数量：1 -> 1",
+        "同名配对总数：0",
+        "合并对数：0",
+        "需人工复核对数：0",
+        "跳过对数：0",
+        "置信度分布：无",
+        "跳过原因分布：无",
+        "去重结果：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7b-chat-hf_deduplicated.json",
+        "配对日志：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7b-chat-hf_merge_log.json"
+      ]
+    },
+    "paths": {
+      "assets": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7b-chat-hf_assets.json",
+      "deduplicated": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7b-chat-hf_deduplicated.json",
+      "merge_log": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Llama-2-7b-chat-hf_merge_log.json"
+    }
+  },
+  {
+    "file": "nli-deberta-v3-base_bom.json",
+    "huggingface_repo": "cross-encoder/nli-deberta-v3-base",
+    "module1": {
+      "parsed_component_count": 3,
+      "model_asset_count": 1,
+      "models_with_pedigree_ancestors": 1,
+      "models_with_modelcard_datasets": 1,
+      "elapsed_seconds": 0.094026,
+      "stdout": [
+        "读取 BOM：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\outputs\\hf_models_bom\\nli-deberta-v3-base_bom.json",
+        "组件数：3",
+        "许可证种类数：1",
+        "evidence 条数：1",
+        "资产输出：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\nli-deberta-v3-base_assets.json"
+      ]
+    },
+    "raw_bom": {
+      "component_count": 3,
+      "model_component_count": 1,
+      "models_with_ancestors": 1,
+      "models_with_datasets": 1,
+      "models": [
+        {
+          "name": "nli-deberta-v3-base",
+          "version": "6c749ce3425cd33b46d187e45b92bbf96ee12ec7",
+          "purl": "pkg:huggingface/cross-encoder/nli-deberta-v3-base@6c749ce3425cd33b46d187e45b92bbf96ee12ec7",
+          "pedigree_notes": "Detected variants: quantized",
+          "ancestor_chains": [
+            [
+              {
+                "name": "deberta-v3-base",
+                "version": null,
+                "purl": "pkg:huggingface/microsoft/deberta-v3-base"
+              }
+            ]
+          ],
+          "datasets": [
+            {
+              "ref": "pkg:huggingface/stanfordnlp/snli?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets",
+              "name": null
+            }
+          ]
+        }
+      ]
+    },
+    "module2": {
+      "same_name_pair_count": 0,
+      "same_name_diff_purl_model_groups": [],
+      "same_name_diff_purl_type_groups": [],
+      "narrow_exception_triggered": 0,
+      "narrow_exception_entries": [],
+      "merged_pair_count": 0,
+      "needs_review_pair_count": 0,
+      "skipped_pair_count": 0,
+      "confidence_distribution": {},
+      "skip_reason_distribution": {},
+      "elapsed_seconds": 0.106945,
+      "narrow_exception_reason": "不存在同名模型组件，实体解析器未形成任何候选对。",
+      "stdout": [
+        "读取资产：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\nli-deberta-v3-base_assets.json",
+        "资产数量：3 -> 3",
+        "同名配对总数：0",
+        "合并对数：0",
+        "需人工复核对数：0",
+        "跳过对数：0",
+        "置信度分布：无",
+        "跳过原因分布：无",
+        "去重结果：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\nli-deberta-v3-base_deduplicated.json",
+        "配对日志：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\nli-deberta-v3-base_merge_log.json"
+      ]
+    },
+    "paths": {
+      "assets": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\nli-deberta-v3-base_assets.json",
+      "deduplicated": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\nli-deberta-v3-base_deduplicated.json",
+      "merge_log": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\nli-deberta-v3-base_merge_log.json"
+    }
+  },
+  {
+    "file": "Qwen2.5-0.5B-Instruct-GGUF_bom.json",
+    "huggingface_repo": "bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+    "module1": {
+      "parsed_component_count": 1,
+      "model_asset_count": 1,
+      "models_with_pedigree_ancestors": 1,
+      "models_with_modelcard_datasets": 0,
+      "elapsed_seconds": 0.095609,
+      "stdout": [
+        "读取 BOM：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\outputs\\hf_models_bom\\Qwen2.5-0.5B-Instruct-GGUF_bom.json",
+        "组件数：1",
+        "许可证种类数：1",
+        "evidence 条数：1",
+        "资产输出：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct-GGUF_assets.json"
+      ]
+    },
+    "raw_bom": {
+      "component_count": 1,
+      "model_component_count": 1,
+      "models_with_ancestors": 1,
+      "models_with_datasets": 0,
+      "models": [
+        {
+          "name": "Qwen2.5-0.5B-Instruct-GGUF",
+          "version": "41ba88dbac95fed2528c92514c131d73eb5a174b",
+          "purl": "pkg:huggingface/bartowski/Qwen2.5-0.5B-Instruct-GGUF@41ba88dbac95fed2528c92514c131d73eb5a174b",
+          "pedigree_notes": "Detected variants: quantized",
+          "ancestor_chains": [
+            [
+              {
+                "name": "Qwen2.5-0.5B-Instruct",
+                "version": null,
+                "purl": "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct"
+              },
+              {
+                "name": "Qwen2.5-0.5B",
+                "version": null,
+                "purl": "pkg:huggingface/Qwen/Qwen2.5-0.5B"
+              }
+            ]
+          ],
+          "datasets": []
+        }
+      ]
+    },
+    "module2": {
+      "same_name_pair_count": 0,
+      "same_name_diff_purl_model_groups": [],
+      "same_name_diff_purl_type_groups": [],
+      "narrow_exception_triggered": 0,
+      "narrow_exception_entries": [],
+      "merged_pair_count": 0,
+      "needs_review_pair_count": 0,
+      "skipped_pair_count": 0,
+      "confidence_distribution": {},
+      "skip_reason_distribution": {},
+      "elapsed_seconds": 0.10565,
+      "narrow_exception_reason": "不存在同名模型组件，实体解析器未形成任何候选对。",
+      "stdout": [
+        "读取资产：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct-GGUF_assets.json",
+        "资产数量：1 -> 1",
+        "同名配对总数：0",
+        "合并对数：0",
+        "需人工复核对数：0",
+        "跳过对数：0",
+        "置信度分布：无",
+        "跳过原因分布：无",
+        "去重结果：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct-GGUF_deduplicated.json",
+        "配对日志：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct-GGUF_merge_log.json"
+      ]
+    },
+    "paths": {
+      "assets": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct-GGUF_assets.json",
+      "deduplicated": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct-GGUF_deduplicated.json",
+      "merge_log": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct-GGUF_merge_log.json"
+    }
+  },
+  {
+    "file": "Qwen2.5-0.5B-Instruct_bom.json",
+    "huggingface_repo": "Qwen/Qwen2.5-0.5B-Instruct",
+    "module1": {
+      "parsed_component_count": 1,
+      "model_asset_count": 1,
+      "models_with_pedigree_ancestors": 1,
+      "models_with_modelcard_datasets": 0,
+      "elapsed_seconds": 0.094799,
+      "stdout": [
+        "读取 BOM：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\outputs\\hf_models_bom\\Qwen2.5-0.5B-Instruct_bom.json",
+        "组件数：1",
+        "许可证种类数：1",
+        "evidence 条数：1",
+        "资产输出：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct_assets.json"
+      ]
+    },
+    "raw_bom": {
+      "component_count": 1,
+      "model_component_count": 1,
+      "models_with_ancestors": 1,
+      "models_with_datasets": 0,
+      "models": [
+        {
+          "name": "Qwen2.5-0.5B-Instruct",
+          "version": "7ae557604adf67be50417f59c2c2f167def9a775",
+          "purl": "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct@7ae557604adf67be50417f59c2c2f167def9a775",
+          "pedigree_notes": "Detected variants: fine-tuned",
+          "ancestor_chains": [
+            [
+              {
+                "name": "Qwen2.5-0.5B",
+                "version": null,
+                "purl": "pkg:huggingface/Qwen/Qwen2.5-0.5B"
+              }
+            ]
+          ],
+          "datasets": []
+        }
+      ]
+    },
+    "module2": {
+      "same_name_pair_count": 0,
+      "same_name_diff_purl_model_groups": [],
+      "same_name_diff_purl_type_groups": [],
+      "narrow_exception_triggered": 0,
+      "narrow_exception_entries": [],
+      "merged_pair_count": 0,
+      "needs_review_pair_count": 0,
+      "skipped_pair_count": 0,
+      "confidence_distribution": {},
+      "skip_reason_distribution": {},
+      "elapsed_seconds": 0.103645,
+      "narrow_exception_reason": "不存在同名模型组件，实体解析器未形成任何候选对。",
+      "stdout": [
+        "读取资产：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct_assets.json",
+        "资产数量：1 -> 1",
+        "同名配对总数：0",
+        "合并对数：0",
+        "需人工复核对数：0",
+        "跳过对数：0",
+        "置信度分布：无",
+        "跳过原因分布：无",
+        "去重结果：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct_deduplicated.json",
+        "配对日志：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct_merge_log.json"
+      ]
+    },
+    "paths": {
+      "assets": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct_assets.json",
+      "deduplicated": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct_deduplicated.json",
+      "merge_log": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\Qwen2.5-0.5B-Instruct_merge_log.json"
+    }
+  },
+  {
+    "file": "SmolLM2-135M-Instruct_bom.json",
+    "huggingface_repo": "HuggingFaceTB/SmolLM2-135M-Instruct",
+    "module1": {
+      "parsed_component_count": 1,
+      "model_asset_count": 1,
+      "models_with_pedigree_ancestors": 1,
+      "models_with_modelcard_datasets": 0,
+      "elapsed_seconds": 0.09539,
+      "stdout": [
+        "读取 BOM：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\outputs\\hf_models_bom\\SmolLM2-135M-Instruct_bom.json",
+        "组件数：1",
+        "许可证种类数：1",
+        "evidence 条数：1",
+        "资产输出：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\SmolLM2-135M-Instruct_assets.json"
+      ]
+    },
+    "raw_bom": {
+      "component_count": 1,
+      "model_component_count": 1,
+      "models_with_ancestors": 1,
+      "models_with_datasets": 0,
+      "models": [
+        {
+          "name": "SmolLM2-135M-Instruct",
+          "version": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+          "purl": "pkg:huggingface/HuggingFaceTB/SmolLM2-135M-Instruct@12fd25f77366fa6b3b4b768ec3050bf629380bac",
+          "pedigree_notes": "Detected variants: quantized",
+          "ancestor_chains": [
+            [
+              {
+                "name": "SmolLM2-135M",
+                "version": null,
+                "purl": "pkg:huggingface/HuggingFaceTB/SmolLM2-135M"
+              }
+            ]
+          ],
+          "datasets": []
+        }
+      ]
+    },
+    "module2": {
+      "same_name_pair_count": 0,
+      "same_name_diff_purl_model_groups": [],
+      "same_name_diff_purl_type_groups": [],
+      "narrow_exception_triggered": 0,
+      "narrow_exception_entries": [],
+      "merged_pair_count": 0,
+      "needs_review_pair_count": 0,
+      "skipped_pair_count": 0,
+      "confidence_distribution": {},
+      "skip_reason_distribution": {},
+      "elapsed_seconds": 0.105033,
+      "narrow_exception_reason": "不存在同名模型组件，实体解析器未形成任何候选对。",
+      "stdout": [
+        "读取资产：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\SmolLM2-135M-Instruct_assets.json",
+        "资产数量：1 -> 1",
+        "同名配对总数：0",
+        "合并对数：0",
+        "需人工复核对数：0",
+        "跳过对数：0",
+        "置信度分布：无",
+        "跳过原因分布：无",
+        "去重结果：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\SmolLM2-135M-Instruct_deduplicated.json",
+        "配对日志：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\SmolLM2-135M-Instruct_merge_log.json"
+      ]
+    },
+    "paths": {
+      "assets": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\SmolLM2-135M-Instruct_assets.json",
+      "deduplicated": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\SmolLM2-135M-Instruct_deduplicated.json",
+      "merge_log": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\SmolLM2-135M-Instruct_merge_log.json"
+    }
+  },
+  {
+    "file": "stsb-roberta-base_bom.json",
+    "huggingface_repo": "cross-encoder/stsb-roberta-base",
+    "module1": {
+      "parsed_component_count": 2,
+      "model_asset_count": 1,
+      "models_with_pedigree_ancestors": 1,
+      "models_with_modelcard_datasets": 1,
+      "elapsed_seconds": 0.093918,
+      "stdout": [
+        "读取 BOM：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\outputs\\hf_models_bom\\stsb-roberta-base_bom.json",
+        "组件数：2",
+        "许可证种类数：1",
+        "evidence 条数：1",
+        "资产输出：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\stsb-roberta-base_assets.json"
+      ]
+    },
+    "raw_bom": {
+      "component_count": 2,
+      "model_component_count": 1,
+      "models_with_ancestors": 1,
+      "models_with_datasets": 1,
+      "models": [
+        {
+          "name": "stsb-roberta-base",
+          "version": "d576534b67143e2c70ee9966d7fdbf5835728d13",
+          "purl": "pkg:huggingface/cross-encoder/stsb-roberta-base@d576534b67143e2c70ee9966d7fdbf5835728d13",
+          "pedigree_notes": "Detected variants: quantized",
+          "ancestor_chains": [
+            [
+              {
+                "name": "roberta-base",
+                "version": null,
+                "purl": "pkg:huggingface/FacebookAI/roberta-base"
+              }
+            ]
+          ],
+          "datasets": [
+            {
+              "ref": "pkg:huggingface/sentence-transformers/stsb?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets",
+              "name": null
+            }
+          ]
+        }
+      ]
+    },
+    "module2": {
+      "same_name_pair_count": 0,
+      "same_name_diff_purl_model_groups": [],
+      "same_name_diff_purl_type_groups": [],
+      "narrow_exception_triggered": 0,
+      "narrow_exception_entries": [],
+      "merged_pair_count": 0,
+      "needs_review_pair_count": 0,
+      "skipped_pair_count": 0,
+      "confidence_distribution": {},
+      "skip_reason_distribution": {},
+      "elapsed_seconds": 0.102288,
+      "narrow_exception_reason": "不存在同名模型组件，实体解析器未形成任何候选对。",
+      "stdout": [
+        "读取资产：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\stsb-roberta-base_assets.json",
+        "资产数量：2 -> 2",
+        "同名配对总数：0",
+        "合并对数：0",
+        "需人工复核对数：0",
+        "跳过对数：0",
+        "置信度分布：无",
+        "跳过原因分布：无",
+        "去重结果：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\stsb-roberta-base_deduplicated.json",
+        "配对日志：C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\stsb-roberta-base_merge_log.json"
+      ]
+    },
+    "paths": {
+      "assets": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\stsb-roberta-base_assets.json",
+      "deduplicated": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\stsb-roberta-base_deduplicated.json",
+      "merge_log": "C:\\Users\\Qijiang\\Documents\\Codex\\2026-09-18\\codex-a-cdxgen-bom-components-text\\open-source-ledger\\work\\hf_models_module_validation\\stsb-roberta-base_merge_log.json"
+    }
+  }
+]
