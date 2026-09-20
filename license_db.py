@@ -5,10 +5,11 @@
 对应任务：基础部分 · 模块 4（截止 2026-09-23）
 
 功能：
-1. 内置 15 种常见开源 / AI 专用许可证的 P/D/P 三元组
+1. 内置 24 种常见开源 / AI 专用许可证的 P/D/P 三元组
    （Permission 许可 / Duty 义务 / Prohibition 禁止）；
 2. 支持 Llama-2-Community、OpenRAIL-M、Gemma 等非 SPDX 的 AI 专用许可证；
-3. 对任意许可证名称做归一化（别名 / 大小写 / 常见变体）；
+3. 对任意许可证名称做归一化（别名 / 大小写 / 常见变体），
+   并兼容 Debian copyright 的 ';' 分隔复合表达式（取最严格项）；
 4. 判断许可证变更方向（宽松 -> 严格 / 严格 -> 宽松 / 同级不变）；
 5. 通过命令行可列出、查询、比较、导出规则库。
 
@@ -55,7 +56,7 @@ class LicenseRule:
     note: str = ""               # 补充说明（如 Hugging Face 卡片上的别名）
 
 
-# ---------------------------------------------------------------- 规则库（15 种）
+# ---------------------------------------------------------------- 规则库（24 种）
 
 # 每种规则按官方许可文本提炼 P/D/P 三元组；AI 许可证条款以官方公开文本为准。
 LICENSE_DB: dict[str, LicenseRule] = {
@@ -87,6 +88,25 @@ LICENSE_DB: dict[str, LicenseRule] = {
         prohibitions=("未经书面许可不得用作者名义背书衍生品",),
         risk_level=1,
     ),
+    "BSD-2-Clause": LicenseRule(
+        canonical_id="BSD-2-Clause",
+        name_zh="BSD 2-Clause 许可证",
+        category="permissive",
+        permissions=("商用", "修改", "分发", "私人使用"),
+        duties=("保留版权声明", "保留免责声明"),
+        prohibitions=(),
+        risk_level=1,
+    ),
+    "BSD-4-Clause": LicenseRule(
+        canonical_id="BSD-4-Clause",
+        name_zh="BSD 4-Clause 许可证（含广告条款）",
+        category="permissive",
+        permissions=("商用", "修改", "分发", "私人使用"),
+        duties=("保留版权声明", "保留免责声明", "广告材料须致谢"),
+        prohibitions=("未经书面许可不得用作者名义背书衍生品",),
+        risk_level=2,
+        note="含原版 BSD 广告条款，Debian 常写作 BSD-4-Clause",
+    ),
     "ISC": LicenseRule(
         canonical_id="ISC",
         name_zh="ISC 许可证",
@@ -95,6 +115,25 @@ LICENSE_DB: dict[str, LicenseRule] = {
         duties=("保留版权声明", "附带许可证全文"),
         prohibitions=(),
         risk_level=1,
+    ),
+    "Artistic-2.0": LicenseRule(
+        canonical_id="Artistic-2.0",
+        name_zh="Artistic 2.0 许可证",
+        category="permissive",
+        permissions=("商用", "修改", "分发", "私人使用", "再许可"),
+        duties=("保留版权声明", "分发修改版需提供标准版或补丁", "附带许可证全文"),
+        prohibitions=(),
+        risk_level=2,
+        note="Perl 社区常用；Debian 的 artistic/artistic-dist 标注近似归入此类",
+    ),
+    "Unicode-3.0": LicenseRule(
+        canonical_id="Unicode-3.0",
+        name_zh="Unicode 3.0 许可证",
+        category="permissive",
+        permissions=("商用", "修改", "分发", "私人使用"),
+        duties=("保留版权声明", "保留许可条款"),
+        prohibitions=("不得宣称作品为 Unicode 标准组织出品",),
+        risk_level=2,
     ),
     "Zlib": LicenseRule(
         canonical_id="Zlib",
@@ -115,6 +154,28 @@ LICENSE_DB: dict[str, LicenseRule] = {
         prohibitions=(),
         risk_level=1,
     ),
+    "Public-Domain": LicenseRule(
+        canonical_id="Public-Domain",
+        name_zh="公有领域标注（Debian）",
+        category="public_domain",
+        permissions=("商用", "修改", "分发", "私人使用", "无需署名"),
+        duties=(),
+        prohibitions=(),
+        risk_level=1,
+        spdx_like=False,
+        note="Debian copyright 中的公有领域标注（public-domain / PD / probably-PD 等），非正式许可证文本",
+    ),
+    "Permissive": LicenseRule(
+        canonical_id="Permissive",
+        name_zh="宽松许可标注（Debian）",
+        category="permissive",
+        permissions=("商用", "修改", "分发", "私人使用"),
+        duties=("具体条款以源文件为准",),
+        prohibitions=(),
+        risk_level=2,
+        spdx_like=False,
+        note="Debian 中的宽松类标注（permissive / __AUTO_PERMISSIVE__ / FSFUL 等），无统一许可证文本",
+    ),
     # ---- 弱 copyleft ----
     "MPL-2.0": LicenseRule(
         canonical_id="MPL-2.0",
@@ -124,6 +185,16 @@ LICENSE_DB: dict[str, LicenseRule] = {
         duties=("MPL 文件源码需可获取", "保留许可证文本", "修改文件需记录变更"),
         prohibitions=("不得使用贡献者商标",),
         risk_level=3,
+    ),
+    "LGPL-2.0-only": LicenseRule(
+        canonical_id="LGPL-2.0-only",
+        name_zh="GNU LGPL 2.0 仅本版本",
+        category="weak_copyleft",
+        permissions=("商用", "修改", "分发", "私人使用", "动态链接"),
+        duties=("保留许可证文本", "修改库需提供源码", "提供可重链接的目标文件"),
+        prohibitions=(),
+        risk_level=3,
+        note="已被 LGPL-2.1 取代，条款基本相同",
     ),
     "LGPL-2.1-only": LicenseRule(
         canonical_id="LGPL-2.1-only",
@@ -144,6 +215,16 @@ LICENSE_DB: dict[str, LicenseRule] = {
         risk_level=3,
     ),
     # ---- 强 copyleft ----
+    "GPL-1.0-only": LicenseRule(
+        canonical_id="GPL-1.0-only",
+        name_zh="GNU GPL 1.0 仅本版本",
+        category="strong_copyleft",
+        permissions=("商用", "修改", "分发", "私人使用"),
+        duties=("衍生作品必须以 GPL 开源", "提供完整源码", "保留许可证文本"),
+        prohibitions=(),
+        risk_level=4,
+        note="Debian 版权文件中的 GPL-1.0 标注",
+    ),
     "GPL-2.0-only": LicenseRule(
         canonical_id="GPL-2.0-only",
         name_zh="GNU GPL 2.0 仅本版本",
@@ -170,6 +251,17 @@ LICENSE_DB: dict[str, LicenseRule] = {
         duties=("衍生作品必须以 AGPL 开源", "提供完整源码", "网络提供服务需披露源码"),
         prohibitions=("不得附加额外限制",),
         risk_level=5,
+    ),
+    # ---- 文档 copyleft（GFDL）----
+    "GFDL-1.3-only": LicenseRule(
+        canonical_id="GFDL-1.3-only",
+        name_zh="GNU 自由文档许可证 1.3",
+        category="weak_copyleft",
+        permissions=("商用", "修改", "分发", "私人使用"),
+        duties=("衍生文档必须以 GFDL 分发", "保留不可变章节与封面文本", "附带许可证全文"),
+        prohibitions=("不得使用 DRM 限制副本",),
+        risk_level=3,
+        note="文档类 copyleft；Debian 的 GFDL-1.2/1.3 与 no-invariant 变体近似归入此类",
     ),
     # ---- AI 专用许可证（非 SPDX）----
     "Llama-2-Community-License": LicenseRule(
@@ -235,19 +327,65 @@ LICENSE_ALIASES: dict[str, str] = {
     "bsd 3-clause": "BSD-3-Clause",
     "bsd3": "BSD-3-Clause",
     "new bsd": "BSD-3-Clause",
+    "bsd-3-clause-generic": "BSD-3-Clause",
+    "bsd-3-clause-with-weird-numbering": "BSD-3-Clause",
+    "bsd-2-clause": "BSD-2-Clause",
+    "bsd 2-clause": "BSD-2-Clause",
+    "bsd2": "BSD-2-Clause",
+    "bsd-4-clause": "BSD-4-Clause",
+    "bsd 4-clause": "BSD-4-Clause",
+    "bsd4": "BSD-4-Clause",
+    "bsd-4-clause-powerdog": "BSD-4-Clause",
+    "bsd-variant": "Permissive",
     # 其他宽松
     "isc": "ISC",
+    "isc+ibm": "ISC",
     "zlib": "Zlib",
     "libpng": "Zlib",
+    "artistic": "Artistic-2.0",
+    "artistic-1.0": "Artistic-2.0",
+    "artistic-2": "Artistic-2.0",
+    "artistic-2.0": "Artistic-2.0",
+    "artistic-dist": "Artistic-2.0",
+    "unicode": "Unicode-3.0",
+    "unicode-3.0": "Unicode-3.0",
     # 公有领域标记（非许可证文本，按低风险处理）
     "cc0": "CC0-1.0",
     "cc0-1.0": "CC0-1.0",
-    "public-domain": "CC0-1.0",
-    "public domain": "CC0-1.0",
-    "pd": "CC0-1.0",
+    "public-domain": "Public-Domain",
+    "public domain": "Public-Domain",
+    "pd": "Public-Domain",
+    "probably-pd": "Public-Domain",
+    "public-domain-s-s-d": "Public-Domain",
+    "public-domain-md5": "Public-Domain",
+    "pd-debian": "Public-Domain",
+    "sdbm-public-domain": "Public-Domain",
+    # Debian 宽松类标注（无统一许可证文本，按宽松低风险处理）
+    "permissive": "Permissive",
+    "permissive-fsf": "Permissive",
+    "permissive-nowarranty": "Permissive",
+    "permissive-makefile-in": "Permissive",
+    "permissive-autoconf-m4-no-warranty": "Permissive",
+    "permissive-autoconf-m4": "Permissive",
+    "permissive-configure": "Permissive",
+    "permissive-like-automake-output": "Permissive",
+    "__auto_permissive__": "Permissive",
+    "all-permissive": "Permissive",
+    "free software": "Permissive",
+    "freesoftware": "Permissive",
+    "fsfullr": "Permissive",
+    "fsful": "Permissive",
+    "fsf-manpages": "Permissive",
+    "regcomp": "Permissive",
+    "g10-permissive": "Permissive",
+    "tinyscheme": "Permissive",
+    "bzip": "Permissive",
     # 弱 copyleft
     "mpl-2.0": "MPL-2.0",
     "mpl 2.0": "MPL-2.0",
+    "lgpl-2.0": "LGPL-2.0-only",
+    "lgpl-2.0-only": "LGPL-2.0-only",
+    "lgpl2.0": "LGPL-2.0-only",
     "lgpl-2.1": "LGPL-2.1-only",
     "lgpl-2.1-only": "LGPL-2.1-only",
     "lgpl-2.1+": "LGPL-2.1-only",
@@ -256,7 +394,20 @@ LICENSE_ALIASES: dict[str, str] = {
     "lgpl-3.0-only": "LGPL-3.0-only",
     "lgplv3": "LGPL-3.0-only",
     "lgplv3+": "LGPL-3.0-only",
+    # 文档 copyleft（GFDL）
+    "gfdl": "GFDL-1.3-only",
+    "gfdl-1.2": "GFDL-1.3-only",
+    "gfdl-1.2+": "GFDL-1.3-only",
+    "gfdl-1.3": "GFDL-1.3-only",
+    "gfdl-1.3+": "GFDL-1.3-only",
+    "gfdl-1.3+-no-invariant": "GFDL-1.3-only",
+    "gfdl-3": "GFDL-1.3-only",
     # 强 copyleft
+    "gpl-1.0": "GPL-1.0-only",
+    "gpl-1.0-only": "GPL-1.0-only",
+    "gplv1": "GPL-1.0-only",
+    "gpl 1.0": "GPL-1.0-only",
+    "gpl-1": "GPL-1.0-only",
     "gpl-2.0": "GPL-2.0-only",
     "gpl-2.0-only": "GPL-2.0-only",
     "gpl v2": "GPL-2.0-only",
@@ -264,13 +415,24 @@ LICENSE_ALIASES: dict[str, str] = {
     "gpl-2.0+": "GPL-2.0-only",
     "gpl v2 or later": "GPL-2.0-only",
     "gpl-2.0-or-later": "GPL-2.0-only",
+    "gpl-2": "GPL-2.0-only",
+    "gpl-2.0-with-autoconf-exception": "GPL-2.0-only",
+    "gpl-2+-autoconf-exception": "GPL-2.0-only",
+    "gpl-2+ with distribution exception": "GPL-2.0-only",
+    "gpl-2.0-with-bison-exception": "GPL-2.0-only",
+    "gpl-2+-libtool-exception": "GPL-2.0-only",
+    "gpl-2-with-linux-syscall-note-exception": "GPL-2.0-only",
+    "gpl-2-with-linux-syscall-note": "GPL-2.0-only",
     "gpl-3.0": "GPL-3.0-only",
     "gpl-3.0-only": "GPL-3.0-only",
     "gpl v3": "GPL-3.0-only",
     "gplv3": "GPL-3.0-only",
+    "gpl-3": "GPL-3.0-only",
     "gpl-3.0+": "GPL-3.0-only",
     "gpl v3 or later": "GPL-3.0-only",
     "gpl-3.0-or-later": "GPL-3.0-only",
+    "gpl-3.0-with-autoconf-exception": "GPL-3.0-only",
+    "gpl-3+-autoconf-exception": "GPL-3.0-only",
     "agpl-3.0": "AGPL-3.0-only",
     "agpl-3.0-only": "AGPL-3.0-only",
     "agplv3": "AGPL-3.0-only",
@@ -328,6 +490,8 @@ def normalize_license(name) -> str | None:
         "",
         stripped,
     )
+    # GPL 例外条款结构：gpl-2 with xxx exception -> gpl-2
+    stripped = re.sub(r"\s+with\s+.+?\s+exception$", "", stripped)
     stripped = stripped.strip()
     if stripped and stripped in LICENSE_ALIASES:
         return LICENSE_ALIASES[stripped]
@@ -335,10 +499,16 @@ def normalize_license(name) -> str | None:
 
 
 def split_license_text(license_text: str | None) -> list[str]:
-    """把可能由 ';' / ' AND ' / ' OR ' / ',' 连接的许可证表达式拆成单项。"""
+    """把可能由 ';' / ' AND ' / ' OR ' / ',' 连接的许可证表达式拆成单项。
+
+    注意 "GPL v2 or later" 中的 "or later" 不会被拆开。
+    """
     if not license_text:
         return []
-    parts = re.split(r"[;,]\s*|\s+(?:AND|OR)\s+|\s+and\s+|\s+or\s+", license_text.strip())
+    parts = re.split(
+        r"[;,]\s*|\s+(?:AND|OR)\s+(?!later\b|earlier\b)|\s+and\s+|\s+or\s+(?!later\b|earlier\b)",
+        license_text.strip(),
+    )
     return [p.strip() for p in parts if p.strip()]
 
 
@@ -346,11 +516,26 @@ def split_license_text(license_text: str | None) -> list[str]:
 
 
 def get_rule(name) -> LicenseRule | None:
-    """获取某许可证的规则；未知许可证返回 None。"""
+    """获取某许可证的规则；未知许可证返回 None。
+
+    对 ';' / ' AND ' / ' OR ' 连接的复合表达式（Debian copyright 常见），
+    返回其中最严格（risk_level 最高）的已识别项规则。
+    """
     canonical = normalize_license(name)
-    if canonical is None:
+    if canonical is not None:
+        return LICENSE_DB.get(canonical)
+    # 复合表达式：取最严的已识别项（每项不含分隔符，递归终止）
+    parts = split_license_text(name)
+    if len(parts) <= 1:
         return None
-    return LICENSE_DB.get(canonical)
+    best = None
+    for part in parts:
+        rule = get_rule(part)
+        if rule is None:
+            continue
+        if best is None or rule.risk_level > best.risk_level:
+            best = rule
+    return best
 
 
 def get_triplets(name) -> dict | None:
@@ -385,9 +570,15 @@ def risk_level(name) -> int | None:
 
 
 def is_ai_license(name) -> bool:
-    """判断是否为 AI 专用许可证。"""
+    """判断是否为 AI 专用许可证（复合表达式中任一项命中即 True）。"""
     rule = get_rule(name)
-    return bool(rule and rule.is_ai_license)
+    if rule is not None and rule.is_ai_license:
+        return True
+    for part in split_license_text(name):
+        item = get_rule(part)
+        if item is not None and item.is_ai_license:
+            return True
+    return False
 
 
 def evaluate_expression(license_text: str | None) -> dict:
@@ -512,7 +703,7 @@ def export_db() -> dict:
     """导出规则库为纯 JSON 结构（供中文清单 / 增强层报告引用）。"""
     return {
         "module": "license_db",
-        "version": "0.1",
+        "version": "0.2",
         "count": len(LICENSE_DB),
         "categories": CATEGORY_ZH,
         "rules": {
