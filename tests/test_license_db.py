@@ -5,8 +5,8 @@ import license_db as db
 
 
 def test_rule_count_within_spec():
-    """验收标准：覆盖 10–15 种许可证。"""
-    assert 10 <= len(db.LICENSE_DB) <= 15
+    """验收标准：覆盖 10–15 种许可证（扩展真实数据覆盖后不少于 15）。"""
+    assert len(db.LICENSE_DB) >= 15
 
 
 def test_every_rule_has_pdp_triplets():
@@ -85,8 +85,58 @@ def test_multi_license_expression():
 def test_export_db_structure():
     """导出 JSON 结构完整。"""
     exported = db.export_db()
-    assert exported["count"] == 15
-    assert len(exported["rules"]) == 15
+    assert exported["count"] == len(db.LICENSE_DB)
+    assert len(exported["rules"]) == len(db.LICENSE_DB)
     rule = exported["rules"]["Llama-2-Community-License"]
     assert rule["is_ai_license"] is True
     assert set(rule.keys()) >= {"permissions", "duties", "prohibitions", "risk_level"}
+
+
+def test_composite_expression_single_value_interfaces():
+    """';' 分隔的复合表达式（Debian 格式）在单值接口上取最严格项。"""
+    expr = "GPL-2.0; LGPL-2.0; public-domain"
+    assert db.risk_level(expr) == 4
+    assert db.classify(expr) == "strong_copyleft"
+    rule = db.get_rule(expr)
+    assert rule is not None and rule.canonical_id == "GPL-2.0-only"
+    assert db.get_rule("MIT; Apache-2.0").canonical_id == "Apache-2.0"
+
+
+def test_composite_expression_ai_detection():
+    """复合表达式中任一项为 AI 许可证时 is_ai_license 返回 True。"""
+    assert db.is_ai_license("MIT; OpenRAIL-M") is True
+    assert db.is_ai_license("Apache-2.0; MIT") is False
+
+
+def test_compare_direction_composite():
+    """复合表达式参与变更方向判断。"""
+    result = db.compare_direction("MIT; BSD-3-Clause", "GPL-2.0; GPL-3.0")
+    assert result["direction"] == "宽松→严格"
+    assert result["risk_increased"] is True
+
+
+def test_debian_labels_and_gpl_exceptions():
+    """Debian 公有领域 / 宽松标注与 GPL 例外条款可识别。"""
+    assert db.get_rule("public-domain").canonical_id == "Public-Domain"
+    assert db.risk_level("probably-PD") == 1
+    assert db.risk_level("permissive") == 2
+    assert db.risk_level("__AUTO_PERMISSIVE__") == 2
+    assert db.get_rule("GPL-2.0-with-bison-exception").canonical_id == "GPL-2.0-only"
+    assert db.get_rule("GPL-2 with Linux-syscall-note exception").canonical_id == "GPL-2.0-only"
+    assert db.get_rule("GFDL-1.2").canonical_id == "GFDL-1.3-only"
+    assert db.get_rule("BSD-2-Clause").canonical_id == "BSD-2-Clause"
+
+
+def test_real_data_license_coverage():
+    """A 提供的真实资产数据（data/assets_real_final.json）覆盖率 >= 90%。
+
+    空 license 字段视为"无许可证"，不参与识别率统计。
+    """
+    import json
+    from pathlib import Path
+
+    assets = json.loads(Path("data/assets_real_final.json").read_text(encoding="utf-8"))
+    evaluated = [a for a in assets if (a.get("license") or "").strip()]
+    assert len(evaluated) > 50
+    covered = [a for a in evaluated if db.get_rule(a["license"]) is not None]
+    assert len(covered) / len(evaluated) >= 0.9

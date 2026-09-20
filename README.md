@@ -51,7 +51,7 @@ python propagation_engine.py --events out/events.json --graph-before out/graph_t
 许可证规则库可独立查询：
 
 ```
-python license_db.py --list                  # 列出 15 种许可证规则
+python license_db.py --list                  # 列出 24 种许可证规则
 python license_db.py --compare MIT GPL-3.0   # 判断宽松→严格方向
 ```
 
