@@ -36,6 +36,25 @@ tools\cdxgen\cdxgen.cmd -t python -t npm -t ai --evidence --no-install-deps --js
 > 深度模式（时间化血缘风险传播）：
 > `python main.py --mode deep --before t0_bom.json --after t1_bom.json --output reports/deep_report.md`
 
+### 模块化命令（深度部分，B 交付）
+
+深度链路为「图构建 → Delta 检测 → 风险传播」，可直接逐模块运行：
+
+```
+python build_graph.py        --assets t1_assets.json --edges t1_edges.json --output out/graph_t1.json
+python delta_engine.py       --before-assets t0_assets.json --before-edges t0_edges.json \
+                             --after-assets t1_assets.json  --after-edges t1_edges.json  --output out/events.json
+python propagation_engine.py --events out/events.json --graph-before out/graph_t0.json \
+                             --graph-after out/graph_t1.json --output out/propagated.json
+```
+
+许可证规则库可独立查询：
+
+```
+python license_db.py --list                  # 列出 15 种许可证规则
+python license_db.py --compare MIT GPL-3.0   # 判断宽松→严格方向
+```
+
 ## 免责声明
 
 本工具输出为基于证据的辅助审计，不构成法律意见。

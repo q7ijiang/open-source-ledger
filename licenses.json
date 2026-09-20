@@ -1,0 +1,365 @@
+{
+  "module": "license_db",
+  "version": "0.1",
+  "count": 15,
+  "categories": {
+    "permissive": "宽松许可",
+    "public_domain": "公有领域",
+    "weak_copyleft": "弱 copyleft",
+    "strong_copyleft": "强 copyleft",
+    "network_copyleft": "网络 copyleft",
+    "ai_restricted": "AI 专用（受限）",
+    "unknown": "未知 / 待人工确认"
+  },
+  "rules": {
+    "AGPL-3.0-only": {
+      "canonical_id": "AGPL-3.0-only",
+      "name_zh": "GNU AGPL 3.0 仅本版本",
+      "category": "network_copyleft",
+      "category_zh": "网络 copyleft",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用",
+        "专利授权"
+      ],
+      "duties": [
+        "衍生作品必须以 AGPL 开源",
+        "提供完整源码",
+        "网络提供服务需披露源码"
+      ],
+      "prohibitions": [
+        "不",
+        "得",
+        "附",
+        "加",
+        "额",
+        "外",
+        "限",
+        "制"
+      ],
+      "risk_level": 5,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "Apache-2.0": {
+      "canonical_id": "Apache-2.0",
+      "name_zh": "Apache 2.0 许可证",
+      "category": "permissive",
+      "category_zh": "宽松许可",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用",
+        "再许可",
+        "专利授权"
+      ],
+      "duties": [
+        "附带许可证全文",
+        "保留 NOTICE 文件",
+        "修改文件需显著声明变更"
+      ],
+      "prohibitions": [
+        "不得使用贡献者商标",
+        "专利诉讼反制条款"
+      ],
+      "risk_level": 2,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "BSD-3-Clause": {
+      "canonical_id": "BSD-3-Clause",
+      "name_zh": "BSD 3-Clause 许可证",
+      "category": "permissive",
+      "category_zh": "宽松许可",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用"
+      ],
+      "duties": [
+        "保留版权声明",
+        "保留免责声明"
+      ],
+      "prohibitions": [
+        "未",
+        "经",
+        "书",
+        "面",
+        "许",
+        "可",
+        "不",
+        "得",
+        "用",
+        "作",
+        "者",
+        "名",
+        "义",
+        "背",
+        "书",
+        "衍",
+        "生",
+        "品"
+      ],
+      "risk_level": 1,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "CC0-1.0": {
+      "canonical_id": "CC0-1.0",
+      "name_zh": "CC0 1.0 公有领域贡献",
+      "category": "public_domain",
+      "category_zh": "公有领域",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用",
+        "无需署名"
+      ],
+      "duties": [],
+      "prohibitions": [],
+      "risk_level": 1,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "GPL-2.0-only": {
+      "canonical_id": "GPL-2.0-only",
+      "name_zh": "GNU GPL 2.0 仅本版本",
+      "category": "strong_copyleft",
+      "category_zh": "强 copyleft",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用"
+      ],
+      "duties": [
+        "衍生作品必须以 GPL 开源",
+        "提供完整源码",
+        "保留许可证文本",
+        "记录变更"
+      ],
+      "prohibitions": [
+        "不",
+        "得",
+        "附",
+        "加",
+        "额",
+        "外",
+        "限",
+        "制"
+      ],
+      "risk_level": 4,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "GPL-3.0-only": {
+      "canonical_id": "GPL-3.0-only",
+      "name_zh": "GNU GPL 3.0 仅本版本",
+      "category": "strong_copyleft",
+      "category_zh": "强 copyleft",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用",
+        "专利授权"
+      ],
+      "duties": [
+        "衍生作品必须以 GPL 开源",
+        "提供完整源码",
+        "保留许可证文本",
+        "记录变更"
+      ],
+      "prohibitions": [
+        "不得附加额外限制",
+        "禁止 tivoization（硬件锁定）"
+      ],
+      "risk_level": 4,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "Gemma-Terms-of-Use": null,
+    "ISC": {
+      "canonical_id": "ISC",
+      "name_zh": "ISC 许可证",
+      "category": "permissive",
+      "category_zh": "宽松许可",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用"
+      ],
+      "duties": [
+        "保留版权声明",
+        "附带许可证全文"
+      ],
+      "prohibitions": [],
+      "risk_level": 1,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "LGPL-2.1-only": {
+      "canonical_id": "LGPL-2.1-only",
+      "name_zh": "GNU LGPL 2.1 仅本版本",
+      "category": "weak_copyleft",
+      "category_zh": "弱 copyleft",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用",
+        "动态链接"
+      ],
+      "duties": [
+        "保留许可证文本",
+        "修改库需提供源码",
+        "提供可重链接的目标文件"
+      ],
+      "prohibitions": [],
+      "risk_level": 3,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "LGPL-3.0-only": {
+      "canonical_id": "LGPL-3.0-only",
+      "name_zh": "GNU LGPL 3.0 仅本版本",
+      "category": "weak_copyleft",
+      "category_zh": "弱 copyleft",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用",
+        "动态链接",
+        "专利授权"
+      ],
+      "duties": [
+        "保留许可证文本",
+        "修改库需提供源码",
+        "提供可重链接的目标文件"
+      ],
+      "prohibitions": [],
+      "risk_level": 3,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "Llama-2-Community-License": null,
+    "MIT": {
+      "canonical_id": "MIT",
+      "name_zh": "MIT 许可证",
+      "category": "permissive",
+      "category_zh": "宽松许可",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用",
+        "再许可"
+      ],
+      "duties": [
+        "保留版权声明",
+        "附带许可证全文"
+      ],
+      "prohibitions": [],
+      "risk_level": 1,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "MPL-2.0": {
+      "canonical_id": "MPL-2.0",
+      "name_zh": "Mozilla Public License 2.0",
+      "category": "weak_copyleft",
+      "category_zh": "弱 copyleft",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用",
+        "再许可",
+        "专利授权"
+      ],
+      "duties": [
+        "MPL 文件源码需可获取",
+        "保留许可证文本",
+        "修改文件需记录变更"
+      ],
+      "prohibitions": [
+        "不",
+        "得",
+        "使",
+        "用",
+        "贡",
+        "献",
+        "者",
+        "商",
+        "标"
+      ],
+      "risk_level": 3,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "OpenRAIL-M": {
+      "canonical_id": "OpenRAIL-M",
+      "name_zh": "OpenRAIL-M 许可证（BigScience）",
+      "category": "ai_restricted",
+      "category_zh": "AI 专用（受限）",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用"
+      ],
+      "duties": [
+        "保留许可证文本",
+        "保留归属声明",
+        "衍生分发需附带相同使用限制"
+      ],
+      "prohibitions": [
+        "禁止用于违法或有害用途",
+        "不得错误陈述模型能力或来源"
+      ],
+      "risk_level": 3,
+      "is_ai_license": true,
+      "note": "Open Responsible AI License，面向模型/权重"
+    },
+    "Zlib": {
+      "canonical_id": "Zlib",
+      "name_zh": "zlib 许可证",
+      "category": "permissive",
+      "category_zh": "宽松许可",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用"
+      ],
+      "duties": [
+        "保留版权声明",
+        "保留原始通知"
+      ],
+      "prohibitions": [
+        "不",
+        "得",
+        "谎",
+        "称",
+        "修",
+        "改",
+        "版",
+        "为",
+        "原",
+        "始",
+        "版",
+        "本"
+      ],
+      "risk_level": 1,
+      "is_ai_license": false,
+      "note": ""
+    }
+  }
+}
