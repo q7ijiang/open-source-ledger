@@ -1,0 +1,482 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:1b8c9a4e-3f6d-4a2b-9c7e-5d1f8a3b2c0d",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-09-20T12:00:00+08:00",
+    "tools": [
+      {
+        "vendor": "CycloneDX",
+        "name": "cdxgen",
+        "version": "12.8.4"
+      }
+    ],
+    "component": {
+      "bom-ref": "pkg:github/student-team/demo-project",
+      "type": "application",
+      "name": "demo-project",
+      "version": "0.1.0",
+      "purl": "pkg:github/student-team/demo-project@0.1.0",
+      "description": "开源账本测试样例项目：同时使用 Python、npm 依赖并加载 Hugging Face 模型"
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "pkg:pypi/requests@2.32.3",
+      "type": "library",
+      "group": "pypi",
+      "name": "requests",
+      "version": "2.32.3",
+      "purl": "pkg:pypi/requests@2.32.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://pypi.org/project/requests/2.32.3/"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/psf/requests"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "requirements.txt#L1"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:pypi/urllib3@2.2.1",
+      "type": "library",
+      "group": "pypi",
+      "name": "urllib3",
+      "version": "2.2.1",
+      "purl": "pkg:pypi/urllib3@2.2.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://pypi.org/project/urllib3/2.2.1/"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "requirements.txt#L2"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:pypi/torch@2.3.0",
+      "type": "library",
+      "group": "pypi",
+      "name": "torch",
+      "version": "2.3.0",
+      "purl": "pkg:pypi/torch@2.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://pypi.org/project/torch/2.3.0/"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "requirements.txt#L5"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:npm/lodash@4.17.21",
+      "type": "library",
+      "group": "npm",
+      "name": "lodash",
+      "version": "4.17.21",
+      "purl": "pkg:npm/lodash@4.17.21",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://www.npmjs.com/package/lodash/v/4.17.21"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "package-lock.json#L120"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:npm/axios@1.7.2",
+      "type": "library",
+      "group": "npm",
+      "name": "axios",
+      "version": "1.7.2",
+      "purl": "pkg:npm/axios@1.7.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://www.npmjs.com/package/axios/v/1.7.2"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "package-lock.json#L45"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:npm/legacy-toolkit@2.1.0",
+      "type": "library",
+      "group": "npm",
+      "name": "legacy-toolkit",
+      "version": "2.1.0",
+      "purl": "pkg:npm/legacy-toolkit@2.1.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "GPL-3.0-only"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://www.npmjs.com/package/legacy-toolkit/v/2.1.0"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "package-lock.json#L210"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:pypi/agpl-gateway@1.3.0",
+      "type": "library",
+      "group": "pypi",
+      "name": "agpl-gateway",
+      "version": "1.3.0",
+      "purl": "pkg:pypi/agpl-gateway@1.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "AGPL-3.0-only"
+          }
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "requirements.txt#L8"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "cdxgen:ai:model:ai:bert-base-uncased",
+      "type": "machine-learning-model",
+      "group": "ai",
+      "name": "bert-base-uncased",
+      "version": "",
+      "purl": "pkg:npm/ai/bert-base-uncased",
+      "properties": [
+        {
+          "name": "cdx:ai:kind",
+          "value": "model"
+        },
+        {
+          "name": "cdx:ai:modelFamily",
+          "value": "bert"
+        },
+        {
+          "name": "cdx:ai:runtime",
+          "value": "transformers"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "source-code-analysis"
+        },
+        {
+          "name": "cdx:ai:confidence",
+          "value": "medium"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "model_usage.py#L3"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "cdxgen:ai:model:pypi:bert-base-uncased",
+      "type": "machine-learning-model",
+      "group": "ai",
+      "name": "bert-base-uncased",
+      "version": "",
+      "purl": "pkg:pypi/ai/bert-base-uncased",
+      "properties": [
+        {
+          "name": "cdx:ai:kind",
+          "value": "model"
+        },
+        {
+          "name": "cdx:ai:modelFamily",
+          "value": "bert"
+        },
+        {
+          "name": "cdx:ai:runtime",
+          "value": "transformers"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "source-code-analysis"
+        },
+        {
+          "name": "cdx:ai:confidence",
+          "value": "medium"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "model_usage.py#L3"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "cdxgen:ai:model:huggingface:gpt2",
+      "type": "machine-learning-model",
+      "group": "openai-community",
+      "name": "gpt2",
+      "version": "b6c9159e3e8b",
+      "purl": "pkg:huggingface/openai-community/gpt2@b6c9159e3e8b",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://huggingface.co/openai-community/gpt2"
+        }
+      ],
+      "modelCard": {
+        "modelParameters": {
+          "datasets": [
+            {
+              "ref": "pkg:huggingface/openai-community/webtext@1.0"
+            }
+          ]
+        }
+      },
+      "pedigree": {
+        "ancestors": [],
+        "notes": "基座模型，无祖先"
+      },
+      "properties": [
+        {
+          "name": "cdx:ai:provider",
+          "value": "huggingface"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "huggingface-api"
+        },
+        {
+          "name": "cdx:ai:confidence",
+          "value": "high"
+        }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.7,
+            "concludedValue": "pkg:huggingface/openai-community/gpt2@b6c9159e3e8b",
+            "methods": [
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "https://huggingface.co/api/models/openai-community/gpt2/revision/HEAD"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:npm/private-utils@0.1.0",
+      "type": "library",
+      "group": "npm",
+      "name": "private-utils",
+      "version": "0.1.0",
+      "purl": "pkg:npm/private-utils@0.1.0",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "package-lock.json#L300"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:huggingface/openai-community/webtext@1.0",
+      "type": "dataset",
+      "group": "openai-community",
+      "name": "webtext",
+      "version": "1.0",
+      "purl": "pkg:huggingface/openai-community/webtext@1.0",
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://huggingface.co/datasets/openai-community/webtext"
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:ai:kind",
+          "value": "dataset"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "huggingface-api"
+        }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.7,
+            "concludedValue": "pkg:huggingface/openai-community/webtext@1.0",
+            "methods": [
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "https://huggingface.co/api/datasets/openai-community/webtext"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:github/student-team/demo-project@0.1.0",
+      "dependsOn": [
+        "pkg:pypi/requests@2.32.3",
+        "pkg:pypi/torch@2.3.0",
+        "pkg:npm/lodash@4.17.21",
+        "pkg:npm/axios@1.7.2",
+        "pkg:npm/legacy-toolkit@2.1.0",
+        "pkg:pypi/agpl-gateway@1.3.0",
+        "cdxgen:ai:model:ai:bert-base-uncased",
+        "cdxgen:ai:model:pypi:bert-base-uncased",
+        "cdxgen:ai:model:huggingface:gpt2",
+        "pkg:npm/private-utils@0.1.0"
+      ]
+    },
+    {
+      "ref": "pkg:pypi/requests@2.32.3",
+      "dependsOn": [
+        "pkg:pypi/urllib3@2.2.1"
+      ]
+    },
+    {
+      "ref": "pkg:pypi/urllib3@2.2.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/torch@2.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lodash@4.17.21",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/axios@1.7.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/legacy-toolkit@2.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/agpl-gateway@1.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "cdxgen:ai:model:ai:bert-base-uncased",
+      "dependsOn": []
+    },
+    {
+      "ref": "cdxgen:ai:model:pypi:bert-base-uncased",
+      "dependsOn": []
+    },
+    {
+      "ref": "cdxgen:ai:model:huggingface:gpt2",
+      "dependsOn": [
+        "pkg:huggingface/openai-community/webtext@1.0"
+      ]
+    },
+    {
+      "ref": "pkg:huggingface/openai-community/webtext@1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/private-utils@0.1.0",
+      "dependsOn": []
+    }
+  ]
+}
