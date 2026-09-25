@@ -58,24 +58,41 @@
 - 识别出 1 个 SCC 环：`example-parser ↔ lib-x`；
 - 压缩图边证据按 weakest link 正确聚合。
 
+## 真实数据验证（2026-09-25 补充）
+
+配合 A 的真实 HF 模型 BOM（`data/hf_models_bom/`，9 份 CycloneDX），新增血缘提取工具 `work/extract_hf_lineage.py`，把 `pedigree.ancestors`（→ `derived_from`）与 `modelCard.modelParameters.datasets`（→ `trained_on`）转为接口约定格式并建图：
+
+```
+python work/extract_hf_lineage.py --bom-dir data/hf_models_bom --output-dir out/hf_lineage
+```
+
+结果：
+- 18 个资产节点（含缺失祖先自动补建）、12 条血缘边（8 derived_from + 4 trained_on）；
+- 边证据等级 A（官方模型卡片元数据），`source_field` 标注 `pedigree.ancestors` / `modelCard.modelParameters.datasets`；
+- 18 个 SCC 分量（真实 HF 血缘为 DAG，无环，符合预期）；
+- 链路示例：`model:TheBloke/Llama-2-7B-Chat-GGUF -[derived_from|A]-> model:meta-llama/Llama-2-7b-chat-hf`；许可证 `LLAMA2` 由模块 4 正确识别为 Llama-2-Community-License。
+
 ## 暴露了什么问题
 
 | 问题 | 影响 | 交给哪个模块解决 |
 |---|---|---|
 | 边引用资产可能不在 BOM 资产列表中 | 祖先元数据缺失 | 模块 10 对缺失祖先强制 UNDETERMINED |
 | 同一对资产可能有多条不同类型边 | 路径选择需要明确规则 | 模块 10 选边：先取证据最弱，同等级按 derived_from > trained_on > depends_on |
+| 真实 BOM 的模型卡片数据集 ref 常带 URL 参数 | canonical_id 需剥离参数 | 已由 `purl_to_canonical` 处理（`?repository_url=...` 不进入 id） |
 
 ## 如何验证
 
 1. `python build_graph.py --assets tests/fixtures/deep_t1_assets.json --edges tests/fixtures/deep_t1_edges.json --output out/graph_t1.json`。
 2. 打开输出 JSON，确认节点数、边数、SCC 数与统计一致。
-3. `python -m pytest tests/test_build_graph.py`：回归测试全部通过。
+3. `python work/extract_hf_lineage.py`：真实数据建图可复现（统计同上）。
+4. `python -m pytest tests/test_build_graph.py`：回归测试全部通过。
 
 ## 相关文件
 
 | 文件 | 路径 |
 |---|---|
 | 血缘图代码 | `build_graph.py` |
+| 血缘提取工具（真实数据） | `work/extract_hf_lineage.py` |
 | 测试夹具 | `tests/fixtures/deep_t0/t1_*.json` |
 | 回归测试 | `tests/test_build_graph.py` |
 
