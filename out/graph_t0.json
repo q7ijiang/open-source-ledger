@@ -1,0 +1,258 @@
+{
+  "node_count": 7,
+  "edge_count": 7,
+  "scc_count": 6,
+  "nodes": [
+    {
+      "canonical_id": "model:meta-llama/Llama-2-7b",
+      "asset_type": "model",
+      "name": "meta-llama/Llama-2-7b",
+      "version": "main",
+      "license": "llama2",
+      "snapshot_id": "deep-t0",
+      "scc_id": "scc-1"
+    },
+    {
+      "canonical_id": "model:my-org/finetuned-model",
+      "asset_type": "model",
+      "name": "my-org/finetuned-model",
+      "version": "1.2.0",
+      "license": "Apache-2.0",
+      "snapshot_id": "deep-t0",
+      "scc_id": "scc-3"
+    },
+    {
+      "canonical_id": "model:my-org/serving-model",
+      "asset_type": "model",
+      "name": "my-org/serving-model",
+      "version": "0.9.0",
+      "license": "Apache-2.0",
+      "snapshot_id": "deep-t0",
+      "scc_id": "scc-5"
+    },
+    {
+      "canonical_id": "package:pypi/example-parser",
+      "asset_type": "package",
+      "name": "example-parser",
+      "version": "1.2.0",
+      "license": "MIT",
+      "snapshot_id": "deep-t0",
+      "scc_id": "scc-0"
+    },
+    {
+      "canonical_id": "package:pypi/lib-x",
+      "asset_type": "package",
+      "name": "lib-x",
+      "version": "0.3.0",
+      "license": "MIT",
+      "snapshot_id": "deep-t0",
+      "scc_id": "scc-0"
+    },
+    {
+      "canonical_id": "dataset:my-org/training-data",
+      "asset_type": "dataset",
+      "name": "my-org/training-data",
+      "version": "2026-09-01",
+      "license": "CC0-1.0",
+      "snapshot_id": "deep-t0",
+      "scc_id": "scc-2"
+    },
+    {
+      "canonical_id": "model:legacy/old-model",
+      "asset_type": "model",
+      "name": "legacy/old-model",
+      "version": "v1",
+      "license": "MIT",
+      "snapshot_id": "deep-t0",
+      "scc_id": "scc-4"
+    }
+  ],
+  "edges": [
+    {
+      "source": "model:my-org/finetuned-model",
+      "target": "model:meta-llama/Llama-2-7b",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "model_card.base_model",
+      "snapshot_id": "deep-t0"
+    },
+    {
+      "source": "model:my-org/finetuned-model",
+      "target": "dataset:my-org/training-data",
+      "edge_type": "trained_on",
+      "evidence_level": "B",
+      "source_field": "model_card.training_data",
+      "snapshot_id": "deep-t0"
+    },
+    {
+      "source": "model:my-org/finetuned-model",
+      "target": "package:pypi/example-parser",
+      "edge_type": "depends_on",
+      "evidence_level": "B",
+      "source_field": "requirements.txt",
+      "snapshot_id": "deep-t0"
+    },
+    {
+      "source": "model:my-org/serving-model",
+      "target": "model:my-org/finetuned-model",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "model_card.base_model",
+      "snapshot_id": "deep-t0"
+    },
+    {
+      "source": "model:my-org/serving-model",
+      "target": "model:legacy/old-model",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "model_card.base_model",
+      "snapshot_id": "deep-t0"
+    },
+    {
+      "source": "package:pypi/example-parser",
+      "target": "package:pypi/lib-x",
+      "edge_type": "depends_on",
+      "evidence_level": "B",
+      "source_field": "requirements.txt",
+      "snapshot_id": "deep-t0"
+    },
+    {
+      "source": "package:pypi/lib-x",
+      "target": "package:pypi/example-parser",
+      "edge_type": "depends_on",
+      "evidence_level": "B",
+      "source_field": "requirements.txt",
+      "snapshot_id": "deep-t0"
+    }
+  ],
+  "canonical_to_scc": {
+    "package:pypi/example-parser": "scc-0",
+    "package:pypi/lib-x": "scc-0",
+    "model:meta-llama/Llama-2-7b": "scc-1",
+    "dataset:my-org/training-data": "scc-2",
+    "model:my-org/finetuned-model": "scc-3",
+    "model:legacy/old-model": "scc-4",
+    "model:my-org/serving-model": "scc-5"
+  },
+  "scc": {
+    "scc-0": [
+      "package:pypi/example-parser",
+      "package:pypi/lib-x"
+    ],
+    "scc-1": [
+      "model:meta-llama/Llama-2-7b"
+    ],
+    "scc-2": [
+      "dataset:my-org/training-data"
+    ],
+    "scc-3": [
+      "model:my-org/finetuned-model"
+    ],
+    "scc-4": [
+      "model:legacy/old-model"
+    ],
+    "scc-5": [
+      "model:my-org/serving-model"
+    ]
+  },
+  "compressed": {
+    "nodes": [
+      {
+        "scc_id": "scc-0",
+        "size": 2,
+        "members": [
+          "package:pypi/example-parser",
+          "package:pypi/lib-x"
+        ],
+        "is_cycle": true
+      },
+      {
+        "scc_id": "scc-1",
+        "size": 1,
+        "members": [
+          "model:meta-llama/Llama-2-7b"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-2",
+        "size": 1,
+        "members": [
+          "dataset:my-org/training-data"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-3",
+        "size": 1,
+        "members": [
+          "model:my-org/finetuned-model"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-4",
+        "size": 1,
+        "members": [
+          "model:legacy/old-model"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-5",
+        "size": 1,
+        "members": [
+          "model:my-org/serving-model"
+        ],
+        "is_cycle": false
+      }
+    ],
+    "edges": [
+      {
+        "source_scc": "scc-3",
+        "target_scc": "scc-1",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-3",
+        "target_scc": "scc-2",
+        "edge_types": [
+          "trained_on"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-3",
+        "target_scc": "scc-0",
+        "edge_types": [
+          "depends_on"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-5",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-5",
+        "target_scc": "scc-4",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      }
+    ]
+  }
+}
