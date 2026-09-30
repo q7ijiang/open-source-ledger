@@ -23,6 +23,8 @@ from pathlib import Path
 from typing import Any, Iterable
 from urllib.parse import unquote
 
+from bom_adapter import PurlIdentity, build_asset_identifiers, parse_purl_identity
+
 
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_INPUT_PATH = BASE_DIR / "outputs" / "assets.json"
@@ -92,52 +94,28 @@ def load_assets(path: Path) -> list[dict[str, Any]]:
     return data
 
 
-def purl_without_version_and_qualifiers(purl: str) -> str:
-    """去掉 purl 的版本、qualifier 和 subpath，只保留包身份。"""
-
-    value = clean_text(purl) or ""
-    if not value.startswith("pkg:"):
-        return value
-    value = value.split("#", 1)[0].split("?", 1)[0]
-    if "@" in value:
-        value = value.rsplit("@", 1)[0]
-    return value
-
-
 def purl_identity(purl: str) -> str | None:
-    """生成用于匹配的统一 purl 身份键。"""
+    """生成不含版本的规范化 purl 身份键。"""
 
-    base = purl_without_version_and_qualifiers(purl)
-    match = PURL_PATTERN.match(base)
-    if not match:
+    identity = parse_purl_identity(purl)
+    if identity is None:
         return None
-
-    purl_type = match.group(1).lower()
-    purl_path = unquote(match.group(2)).strip("/")
-    if not purl_path:
-        return None
-    if purl_type in {"pypi", "npm"}:
-        purl_path = purl_path.lower()
-    return f"{purl_type}/{purl_path}"
+    path = "/".join(
+        part for part in (identity.namespace, identity.name) if part
+    )
+    return f"{identity.purl_type}/{path}"
 
 
 def purl_parts(purl: str) -> tuple[str, str, str, str] | None:
-    """返回 purl 的 (类型, 命名空间, 名称, 完整路径)。"""
+    """返回 purl 的 (类型, 命名空间, 名称, 无版本规范化路径)。"""
 
-    base = purl_without_version_and_qualifiers(purl)
-    match = PURL_PATTERN.match(base)
-    if not match:
+    identity = parse_purl_identity(purl)
+    if identity is None:
         return None
-
-    purl_type = match.group(1).lower()
-    decoded_path = unquote(match.group(2)).strip("/")
-    segments = [segment for segment in decoded_path.split("/") if segment]
-    if not segments:
-        return None
-
-    name = segments[-1]
-    namespace = "/".join(segments[:-1])
-    return purl_type, namespace, name, decoded_path
+    decoded_path = "/".join(
+        part for part in (identity.namespace, identity.name) if part
+    )
+    return identity.purl_type, identity.namespace, identity.name, decoded_path
 
 
 def asset_type_for_reference(reference: str, relation_kind: str) -> str:
@@ -179,15 +157,30 @@ def fallback_canonical_id(reference: str, relation_kind: str) -> str:
             return reference
 
     asset_type = asset_type_for_reference(reference, relation_kind)
-    parts = purl_parts(reference)
-    if parts:
-        purl_type, namespace, name, _ = parts
-        if purl_type == "npm" and namespace.startswith("@"):
-            name = f"{namespace}/{name}"
-        return f"{asset_type}:{name}"
+    if parse_purl_identity(reference) is not None:
+        _, canonical_id, _ = build_asset_identifiers(
+            asset_type=asset_type,
+            name="",
+            version=None,
+            purls=[reference],
+        )
+        return canonical_id
 
     leaf_name = reference.rstrip("/").split("/")[-1]
     return f"{asset_type}:{leaf_name or reference}"
+
+
+def purl_coordinate_key(
+    purl_or_identity: str | PurlIdentity,
+) -> tuple[str, str, str, str | None] | None:
+    """返回含版本的 purl 四元坐标，用于精确解析边端点。"""
+
+    identity = (
+        purl_or_identity
+        if isinstance(purl_or_identity, PurlIdentity)
+        else parse_purl_identity(purl_or_identity)
+    )
+    return identity.coordinate if identity is not None else None
 
 
 class AssetIndex:
@@ -196,7 +189,9 @@ class AssetIndex:
     def __init__(self, assets: Iterable[dict[str, Any]]) -> None:
         self.assets: list[dict[str, Any]] = list(assets)
         self.by_canonical_id: dict[str, dict[str, Any]] = {}
-        self.by_purl_identity: dict[str, str] = {}
+        self.by_purl_identity: dict[str, list[str]] = {}
+        self.by_purl_coordinate: dict[tuple[str, str, str, str | None], str] = {}
+        self.by_entity_key: dict[str, list[str]] = {}
         self.by_name: dict[str, list[str]] = {}
         self._build()
 
@@ -207,10 +202,18 @@ class AssetIndex:
                 continue
             self.by_canonical_id.setdefault(canonical_id, asset)
 
+            entity_key = clean_text(asset.get("entity_key"))
+            if entity_key:
+                self.by_entity_key.setdefault(entity_key, []).append(canonical_id)
+
             for purl in as_list(asset.get("purls")):
-                identity = purl_identity(clean_text(purl) or "")
+                purl_text = clean_text(purl) or ""
+                identity = purl_identity(purl_text)
                 if identity:
-                    self.by_purl_identity.setdefault(identity, canonical_id)
+                    self.by_purl_identity.setdefault(identity, []).append(canonical_id)
+                coordinate = purl_coordinate_key(purl_text)
+                if coordinate is not None:
+                    self.by_purl_coordinate.setdefault(coordinate, canonical_id)
 
             name = clean_text(asset.get("name"))
             if name:
@@ -226,15 +229,30 @@ class AssetIndex:
         if text in self.by_canonical_id:
             return text
 
+        coordinate = purl_coordinate_key(text)
+        if coordinate is not None and coordinate in self.by_purl_coordinate:
+            return self.by_purl_coordinate[coordinate]
+
         identity = purl_identity(text)
         if identity and identity in self.by_purl_identity:
-            return self.by_purl_identity[identity]
+            candidates = sorted(set(self.by_purl_identity[identity]))
+            if len(candidates) == 1:
+                return candidates[0]
 
         parts = purl_parts(text)
+        if parts:
+            purl_type, _, _, purl_path = parts
+            entity_suffix = f":{purl_type}/{purl_path}"
+            entity_candidates: set[str] = set()
+            for entity_key, canonical_ids in self.by_entity_key.items():
+                if entity_key.endswith(entity_suffix):
+                    entity_candidates.update(canonical_ids)
+            if len(entity_candidates) == 1:
+                return next(iter(entity_candidates))
         name = parts[2] if parts else text.rstrip("/").split("/")[-1]
-        candidates = self.by_name.get(name.lower(), [])
-        if len(candidates) == 1:
-            return candidates[0]
+        name_candidates = sorted(set(self.by_name.get(name.lower(), [])))
+        if len(name_candidates) == 1:
+            return name_candidates[0]
 
         canonical_id = fallback_canonical_id(text, relation_kind)
         if canonical_id in self.by_canonical_id:

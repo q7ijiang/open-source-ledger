@@ -6,14 +6,47 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
+from dataclasses import dataclass
+from urllib.parse import parse_qsl, unquote
 
 
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_BOM_PATH = BASE_DIR / "sample_bom.json"
 DEFAULT_ASSETS_PATH = BASE_DIR / "assets.json"
+PURL_PATTERN = re.compile(r"^pkg:([^/]+)/(.+)$", re.IGNORECASE)
+PYPI_NAME_SEPARATOR = re.compile(r"[-_.]+")
+
+
+@dataclass(frozen=True)
+class PurlIdentity:
+    """purl 的四元坐标；qualifiers 仅保留用于审计和冲突后缀。"""
+
+    purl_type: str
+    namespace: str
+    name: str
+    version: str | None
+    qualifiers: tuple[tuple[str, str], ...] = ()
+    subpath: str | None = None
+
+    @property
+    def coordinate(self) -> tuple[str, str, str, str | None]:
+        """用于实体对齐的四元坐标。"""
+
+        return self.purl_type, self.namespace, self.name, self.version
+
+    @property
+    def coordinate_suffix(self) -> str:
+        """生成极端冲突时可追加的稳定 purl 坐标后缀。"""
+
+        path = "/".join(part for part in (self.namespace, self.name) if part)
+        suffix = f"{self.purl_type}/{path}"
+        if self.version:
+            suffix = f"{suffix}@{self.version}"
+        return suffix
 
 
 def load_json(path: Path) -> Any:
@@ -47,6 +80,98 @@ def as_list(value: Any) -> list[Any]:
     return [value]
 
 
+def normalize_pypi_name(name: str) -> str:
+    """按 PEP 503 规范化 PyPI 包名。"""
+
+    return PYPI_NAME_SEPARATOR.sub("-", name).lower()
+
+
+def normalize_purl_name(purl_type: str, name: str) -> str:
+    """只使用目标生态明确允许的名称规范化。"""
+
+    if purl_type == "pypi":
+        return normalize_pypi_name(name)
+    return name
+
+
+def parse_purl_identity(purl: str) -> PurlIdentity | None:
+    """把 purl 解析为 type/namespace/name/version 四元组。"""
+
+    value = clean_text(purl)
+    if not value:
+        return None
+
+    value, _, fragment = value.partition("#")
+    path_part, _, query = value.partition("?")
+    match = PURL_PATTERN.match(path_part)
+    if not match:
+        return None
+
+    purl_type = match.group(1).lower()
+    decoded_path = unquote(match.group(2)).strip("/")
+    if not decoded_path:
+        return None
+
+    version = None
+    if "@" in decoded_path:
+        decoded_path, raw_version = decoded_path.rsplit("@", 1)
+        version = clean_text(raw_version)
+
+    segments = [segment for segment in decoded_path.split("/") if segment]
+    if not segments:
+        return None
+
+    if purl_type == "npm" and len(segments) >= 2 and segments[0].startswith("@"):
+        namespace = segments[0]
+        name = "/".join(segments[1:])
+    else:
+        namespace = "/".join(segments[:-1])
+        name = segments[-1]
+
+    name = normalize_purl_name(purl_type, name)
+    qualifiers = tuple(
+        sorted((key, value) for key, value in parse_qsl(query, keep_blank_values=True))
+    )
+    return PurlIdentity(
+        purl_type=purl_type,
+        namespace=namespace,
+        name=name,
+        version=version,
+        qualifiers=qualifiers,
+        subpath=clean_text(fragment),
+    )
+
+
+def build_asset_identifiers(
+    asset_type: str,
+    name: str,
+    version: str | None,
+    purls: list[str],
+) -> tuple[str, str, list[PurlIdentity]]:
+    """生成 entity_key、canonical_id 和已解析的 purl 坐标。"""
+
+    identities = [
+        identity
+        for purl in purls
+        if (identity := parse_purl_identity(purl)) is not None
+    ]
+    primary = identities[0] if identities else None
+    if primary is None:
+        base_name = clean_text(name) or "(未命名组件)"
+        entity_key = f"{asset_type}:{base_name}"
+    else:
+        path = "/".join(
+            part for part in (primary.namespace, primary.name) if part
+        )
+        entity_key = f"{asset_type}:{primary.purl_type}/{path}"
+
+    effective_version = (
+        primary.version or clean_text(version) if primary is not None else clean_text(version)
+    )
+    canonical_id = (
+        f"{entity_key}@{effective_version}" if effective_version else entity_key
+    )
+    return entity_key, canonical_id, identities
 def asset_type_for(component: dict[str, Any]) -> str:
     """把 CycloneDX 组件类型映射为项目内部资产类型。"""
 
@@ -114,6 +239,33 @@ def extract_purls(component: dict[str, Any]) -> list[str]:
     return purls
 
 
+def extract_component_hashes(component: dict[str, Any]) -> list[dict[str, str]]:
+    """提取 CycloneDX 标准及兼容字段中的哈希。"""
+
+    hashes: list[dict[str, str]] = []
+    evidence = component.get("evidence")
+    raw_hashes: list[Any] = []
+    raw_hashes.extend(as_list(component.get("hashes")))
+    if isinstance(evidence, dict):
+        raw_hashes.extend(as_list(evidence.get("hashes")))
+        raw_hashes.extend(as_list(evidence.get("fileHashes")))
+
+    for raw_hash in raw_hashes:
+        if not isinstance(raw_hash, dict):
+            continue
+        algorithm = clean_text(
+            raw_hash.get("alg")
+            or raw_hash.get("algorithm")
+            or raw_hash.get("hashAlgorithm")
+        )
+        digest = clean_text(
+            raw_hash.get("content")
+            or raw_hash.get("value")
+            or raw_hash.get("hash")
+        )
+        if algorithm and digest:
+            hashes.append({"algorithm": algorithm, "value": digest})
+    return hashes
 def is_location_property(property_name: str) -> bool:
     """判断组件属性名是否表示文件或层内出现位置。"""
 
@@ -160,6 +312,56 @@ def extract_evidence_chain(
         )
 
     evidence = component.get("evidence")
+
+    for raw_hash in extract_component_hashes(component):
+        evidence_chain.append(
+            evidence_entry(
+                "components[].hashes[]",
+                raw_hash,
+                retrieved_at,
+            )
+        )
+
+    for raw_reference in as_list(component.get("externalReferences")):
+        if not isinstance(raw_reference, dict):
+            continue
+        reference_type = clean_text(raw_reference.get("type"))
+        url = clean_text(raw_reference.get("url"))
+        if reference_type and url:
+            evidence_chain.append(
+                evidence_entry(
+                    "components[].externalReferences[]",
+                    {"type": reference_type, "url": url},
+                    retrieved_at,
+                    url,
+                )
+            )
+
+    for field_name in ("author", "publisher"):
+        raw_author = clean_text(component.get(field_name))
+        if raw_author:
+            evidence_chain.append(
+                evidence_entry(
+                    f"components[].{field_name}",
+                    raw_author,
+                    retrieved_at,
+                )
+            )
+
+    for raw_maintainer in as_list(component.get("maintainers")):
+        if isinstance(raw_maintainer, dict):
+            maintainer_name = clean_text(raw_maintainer.get("name"))
+        else:
+            maintainer_name = clean_text(raw_maintainer)
+        if maintainer_name:
+            evidence_chain.append(
+                evidence_entry(
+                    "components[].maintainers[].name",
+                    maintainer_name,
+                    retrieved_at,
+                )
+            )
+
     if isinstance(evidence, dict):
         for occurrence in as_list(evidence.get("occurrences")):
             if not isinstance(occurrence, dict):
@@ -252,13 +454,36 @@ def convert_component(
     if not name:
         name = "(未命名组件)"
 
+    version = clean_text(component.get("version"))
+    purls = extract_purls(component)
+    entity_key, canonical_id, identities = build_asset_identifiers(
+        asset_type=asset_type,
+        name=name,
+        version=version,
+        purls=purls,
+    )
     licenses = extract_licenses(component)
+    # 保留四元组，便于审计和极端冲突时生成稳定后缀。
+    identity_values = [
+        {
+            "type": identity.purl_type,
+            "namespace": identity.namespace,
+            "name": identity.name,
+            "version": identity.version,
+            "qualifiers": dict(identity.qualifiers),
+            "subpath": identity.subpath,
+        }
+        for identity in identities
+    ]
     return {
-        "canonical_id": f"{asset_type}:{name}",
+        "entity_key": entity_key,
+        "canonical_id": canonical_id,
         "asset_type": asset_type,
         "name": name,
-        "version": clean_text(component.get("version")) or "",
-        "purls": extract_purls(component),
+        "version": version or "",
+        "purls": purls,
+        "purl_identities": identity_values,
+        "hashes": extract_component_hashes(component),
         "license": "; ".join(licenses),
         "evidence_chain": extract_evidence_chain(component, retrieved_at),
         "snapshot_id": snapshot_id,
