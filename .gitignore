@@ -216,3 +216,16 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# 本地安装的第三方依赖快照
+work/.deps/
+
+# 本地工具目录
+/tools/
+
+# Node.js 依赖
+node_modules/
+
+# 通用临时文件
+*.tmp
+*.cache
