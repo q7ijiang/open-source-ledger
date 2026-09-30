@@ -1,0 +1,601 @@
+{
+  "node_count": 18,
+  "edge_count": 12,
+  "scc_count": 18,
+  "nodes": [
+    {
+      "canonical_id": "model:sentence-transformers/all-MiniLM-L6-v2",
+      "asset_type": "model",
+      "name": "sentence-transformers/all-MiniLM-L6-v2",
+      "version": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "license": "Apache-2.0",
+      "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2",
+      "scc_id": "scc-2"
+    },
+    {
+      "canonical_id": "model:nreimers/MiniLM-L6-H384-uncased",
+      "asset_type": "model",
+      "name": "nreimers/MiniLM-L6-H384-uncased",
+      "version": null,
+      "license": "",
+      "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2",
+      "scc_id": "scc-0"
+    },
+    {
+      "canonical_id": "dataset:embedding-data/WikiAnswers",
+      "asset_type": "dataset",
+      "name": "embedding-data/WikiAnswers",
+      "version": null,
+      "license": "",
+      "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2",
+      "scc_id": "scc-1"
+    },
+    {
+      "canonical_id": "model:google-bert/bert-base-uncased",
+      "asset_type": "model",
+      "name": "google-bert/bert-base-uncased",
+      "version": "86b5e0934494bd15c9632b12f734a8a67f723594",
+      "license": "Apache-2.0",
+      "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f",
+      "scc_id": "scc-4"
+    },
+    {
+      "canonical_id": "dataset:wikipedia",
+      "asset_type": "dataset",
+      "name": "wikipedia",
+      "version": null,
+      "license": "",
+      "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f",
+      "scc_id": "scc-3"
+    },
+    {
+      "canonical_id": "model:TheBloke/Llama-2-7B-Chat-GGUF",
+      "asset_type": "model",
+      "name": "TheBloke/Llama-2-7B-Chat-GGUF",
+      "version": "191239b3e26b2882fb562ffccdd1cf0f65402adb",
+      "license": "LLAMA2",
+      "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35",
+      "scc_id": "scc-6"
+    },
+    {
+      "canonical_id": "model:meta-llama/Llama-2-7b-chat-hf",
+      "asset_type": "model",
+      "name": "meta-llama/Llama-2-7b-chat-hf",
+      "version": null,
+      "license": "",
+      "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35",
+      "scc_id": "scc-5"
+    },
+    {
+      "canonical_id": "model:cross-encoder/nli-deberta-v3-base",
+      "asset_type": "model",
+      "name": "cross-encoder/nli-deberta-v3-base",
+      "version": "6c749ce3425cd33b46d187e45b92bbf96ee12ec7",
+      "license": "Apache-2.0",
+      "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d",
+      "scc_id": "scc-9"
+    },
+    {
+      "canonical_id": "model:microsoft/deberta-v3-base",
+      "asset_type": "model",
+      "name": "microsoft/deberta-v3-base",
+      "version": null,
+      "license": "",
+      "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d",
+      "scc_id": "scc-7"
+    },
+    {
+      "canonical_id": "dataset:stanfordnlp/snli",
+      "asset_type": "dataset",
+      "name": "stanfordnlp/snli",
+      "version": null,
+      "license": "",
+      "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d",
+      "scc_id": "scc-8"
+    },
+    {
+      "canonical_id": "model:bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+      "asset_type": "model",
+      "name": "bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+      "version": "41ba88dbac95fed2528c92514c131d73eb5a174b",
+      "license": "Apache-2.0",
+      "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25",
+      "scc_id": "scc-12"
+    },
+    {
+      "canonical_id": "model:Qwen/Qwen2.5-0.5B-Instruct",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-0.5B-Instruct",
+      "version": null,
+      "license": "",
+      "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25",
+      "scc_id": "scc-11"
+    },
+    {
+      "canonical_id": "model:Qwen/Qwen2.5-0.5B",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-0.5B",
+      "version": null,
+      "license": "",
+      "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25",
+      "scc_id": "scc-10"
+    },
+    {
+      "canonical_id": "model:HuggingFaceTB/SmolLM2-135M-Instruct",
+      "asset_type": "model",
+      "name": "HuggingFaceTB/SmolLM2-135M-Instruct",
+      "version": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+      "license": "Apache-2.0",
+      "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6",
+      "scc_id": "scc-14"
+    },
+    {
+      "canonical_id": "model:HuggingFaceTB/SmolLM2-135M",
+      "asset_type": "model",
+      "name": "HuggingFaceTB/SmolLM2-135M",
+      "version": null,
+      "license": "",
+      "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6",
+      "scc_id": "scc-13"
+    },
+    {
+      "canonical_id": "model:cross-encoder/stsb-roberta-base",
+      "asset_type": "model",
+      "name": "cross-encoder/stsb-roberta-base",
+      "version": "d576534b67143e2c70ee9966d7fdbf5835728d13",
+      "license": "Apache-2.0",
+      "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44",
+      "scc_id": "scc-17"
+    },
+    {
+      "canonical_id": "model:FacebookAI/roberta-base",
+      "asset_type": "model",
+      "name": "FacebookAI/roberta-base",
+      "version": null,
+      "license": "",
+      "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44",
+      "scc_id": "scc-15"
+    },
+    {
+      "canonical_id": "dataset:sentence-transformers/stsb",
+      "asset_type": "dataset",
+      "name": "sentence-transformers/stsb",
+      "version": null,
+      "license": "",
+      "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44",
+      "scc_id": "scc-16"
+    }
+  ],
+  "edges": [
+    {
+      "source": "model:sentence-transformers/all-MiniLM-L6-v2",
+      "target": "model:nreimers/MiniLM-L6-H384-uncased",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "pedigree.ancestors",
+      "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2"
+    },
+    {
+      "source": "model:sentence-transformers/all-MiniLM-L6-v2",
+      "target": "dataset:embedding-data/WikiAnswers",
+      "edge_type": "trained_on",
+      "evidence_level": "A",
+      "source_field": "modelCard.modelParameters.datasets",
+      "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2"
+    },
+    {
+      "source": "model:google-bert/bert-base-uncased",
+      "target": "dataset:wikipedia",
+      "edge_type": "trained_on",
+      "evidence_level": "A",
+      "source_field": "modelCard.modelParameters.datasets",
+      "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f"
+    },
+    {
+      "source": "model:TheBloke/Llama-2-7B-Chat-GGUF",
+      "target": "model:meta-llama/Llama-2-7b-chat-hf",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "pedigree.ancestors",
+      "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35"
+    },
+    {
+      "source": "model:cross-encoder/nli-deberta-v3-base",
+      "target": "model:microsoft/deberta-v3-base",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "pedigree.ancestors",
+      "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d"
+    },
+    {
+      "source": "model:cross-encoder/nli-deberta-v3-base",
+      "target": "dataset:stanfordnlp/snli",
+      "edge_type": "trained_on",
+      "evidence_level": "A",
+      "source_field": "modelCard.modelParameters.datasets",
+      "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d"
+    },
+    {
+      "source": "model:bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+      "target": "model:Qwen/Qwen2.5-0.5B-Instruct",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "pedigree.ancestors",
+      "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25"
+    },
+    {
+      "source": "model:bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+      "target": "model:Qwen/Qwen2.5-0.5B",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "pedigree.ancestors",
+      "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25"
+    },
+    {
+      "source": "model:Qwen/Qwen2.5-0.5B-Instruct",
+      "target": "model:Qwen/Qwen2.5-0.5B",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "pedigree.ancestors",
+      "snapshot_id": "1ed0237b-da65-4cab-ab0e-2c9697765ed7"
+    },
+    {
+      "source": "model:HuggingFaceTB/SmolLM2-135M-Instruct",
+      "target": "model:HuggingFaceTB/SmolLM2-135M",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "pedigree.ancestors",
+      "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6"
+    },
+    {
+      "source": "model:cross-encoder/stsb-roberta-base",
+      "target": "model:FacebookAI/roberta-base",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "pedigree.ancestors",
+      "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44"
+    },
+    {
+      "source": "model:cross-encoder/stsb-roberta-base",
+      "target": "dataset:sentence-transformers/stsb",
+      "edge_type": "trained_on",
+      "evidence_level": "A",
+      "source_field": "modelCard.modelParameters.datasets",
+      "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44"
+    }
+  ],
+  "canonical_to_scc": {
+    "model:nreimers/MiniLM-L6-H384-uncased": "scc-0",
+    "dataset:embedding-data/WikiAnswers": "scc-1",
+    "model:sentence-transformers/all-MiniLM-L6-v2": "scc-2",
+    "dataset:wikipedia": "scc-3",
+    "model:google-bert/bert-base-uncased": "scc-4",
+    "model:meta-llama/Llama-2-7b-chat-hf": "scc-5",
+    "model:TheBloke/Llama-2-7B-Chat-GGUF": "scc-6",
+    "model:microsoft/deberta-v3-base": "scc-7",
+    "dataset:stanfordnlp/snli": "scc-8",
+    "model:cross-encoder/nli-deberta-v3-base": "scc-9",
+    "model:Qwen/Qwen2.5-0.5B": "scc-10",
+    "model:Qwen/Qwen2.5-0.5B-Instruct": "scc-11",
+    "model:bartowski/Qwen2.5-0.5B-Instruct-GGUF": "scc-12",
+    "model:HuggingFaceTB/SmolLM2-135M": "scc-13",
+    "model:HuggingFaceTB/SmolLM2-135M-Instruct": "scc-14",
+    "model:FacebookAI/roberta-base": "scc-15",
+    "dataset:sentence-transformers/stsb": "scc-16",
+    "model:cross-encoder/stsb-roberta-base": "scc-17"
+  },
+  "scc": {
+    "scc-0": [
+      "model:nreimers/MiniLM-L6-H384-uncased"
+    ],
+    "scc-1": [
+      "dataset:embedding-data/WikiAnswers"
+    ],
+    "scc-2": [
+      "model:sentence-transformers/all-MiniLM-L6-v2"
+    ],
+    "scc-3": [
+      "dataset:wikipedia"
+    ],
+    "scc-4": [
+      "model:google-bert/bert-base-uncased"
+    ],
+    "scc-5": [
+      "model:meta-llama/Llama-2-7b-chat-hf"
+    ],
+    "scc-6": [
+      "model:TheBloke/Llama-2-7B-Chat-GGUF"
+    ],
+    "scc-7": [
+      "model:microsoft/deberta-v3-base"
+    ],
+    "scc-8": [
+      "dataset:stanfordnlp/snli"
+    ],
+    "scc-9": [
+      "model:cross-encoder/nli-deberta-v3-base"
+    ],
+    "scc-10": [
+      "model:Qwen/Qwen2.5-0.5B"
+    ],
+    "scc-11": [
+      "model:Qwen/Qwen2.5-0.5B-Instruct"
+    ],
+    "scc-12": [
+      "model:bartowski/Qwen2.5-0.5B-Instruct-GGUF"
+    ],
+    "scc-13": [
+      "model:HuggingFaceTB/SmolLM2-135M"
+    ],
+    "scc-14": [
+      "model:HuggingFaceTB/SmolLM2-135M-Instruct"
+    ],
+    "scc-15": [
+      "model:FacebookAI/roberta-base"
+    ],
+    "scc-16": [
+      "dataset:sentence-transformers/stsb"
+    ],
+    "scc-17": [
+      "model:cross-encoder/stsb-roberta-base"
+    ]
+  },
+  "compressed": {
+    "nodes": [
+      {
+        "scc_id": "scc-0",
+        "size": 1,
+        "members": [
+          "model:nreimers/MiniLM-L6-H384-uncased"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-1",
+        "size": 1,
+        "members": [
+          "dataset:embedding-data/WikiAnswers"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-2",
+        "size": 1,
+        "members": [
+          "model:sentence-transformers/all-MiniLM-L6-v2"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-3",
+        "size": 1,
+        "members": [
+          "dataset:wikipedia"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-4",
+        "size": 1,
+        "members": [
+          "model:google-bert/bert-base-uncased"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-5",
+        "size": 1,
+        "members": [
+          "model:meta-llama/Llama-2-7b-chat-hf"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-6",
+        "size": 1,
+        "members": [
+          "model:TheBloke/Llama-2-7B-Chat-GGUF"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-7",
+        "size": 1,
+        "members": [
+          "model:microsoft/deberta-v3-base"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-8",
+        "size": 1,
+        "members": [
+          "dataset:stanfordnlp/snli"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-9",
+        "size": 1,
+        "members": [
+          "model:cross-encoder/nli-deberta-v3-base"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-10",
+        "size": 1,
+        "members": [
+          "model:Qwen/Qwen2.5-0.5B"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-11",
+        "size": 1,
+        "members": [
+          "model:Qwen/Qwen2.5-0.5B-Instruct"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-12",
+        "size": 1,
+        "members": [
+          "model:bartowski/Qwen2.5-0.5B-Instruct-GGUF"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-13",
+        "size": 1,
+        "members": [
+          "model:HuggingFaceTB/SmolLM2-135M"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-14",
+        "size": 1,
+        "members": [
+          "model:HuggingFaceTB/SmolLM2-135M-Instruct"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-15",
+        "size": 1,
+        "members": [
+          "model:FacebookAI/roberta-base"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-16",
+        "size": 1,
+        "members": [
+          "dataset:sentence-transformers/stsb"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-17",
+        "size": 1,
+        "members": [
+          "model:cross-encoder/stsb-roberta-base"
+        ],
+        "is_cycle": false
+      }
+    ],
+    "edges": [
+      {
+        "source_scc": "scc-2",
+        "target_scc": "scc-0",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-2",
+        "target_scc": "scc-1",
+        "edge_types": [
+          "trained_on"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-4",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "trained_on"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-6",
+        "target_scc": "scc-5",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-9",
+        "target_scc": "scc-7",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-9",
+        "target_scc": "scc-8",
+        "edge_types": [
+          "trained_on"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-11",
+        "target_scc": "scc-10",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-12",
+        "target_scc": "scc-11",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-12",
+        "target_scc": "scc-10",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-14",
+        "target_scc": "scc-13",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-17",
+        "target_scc": "scc-15",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-17",
+        "target_scc": "scc-16",
+        "edge_types": [
+          "trained_on"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      }
+    ]
+  }
+}

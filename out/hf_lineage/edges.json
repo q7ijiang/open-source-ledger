@@ -1,0 +1,98 @@
+[
+  {
+    "source": "model:sentence-transformers/all-MiniLM-L6-v2",
+    "target": "model:nreimers/MiniLM-L6-H384-uncased",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "pedigree.ancestors",
+    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2"
+  },
+  {
+    "source": "model:sentence-transformers/all-MiniLM-L6-v2",
+    "target": "dataset:embedding-data/WikiAnswers",
+    "edge_type": "trained_on",
+    "evidence_level": "A",
+    "source_field": "modelCard.modelParameters.datasets",
+    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2"
+  },
+  {
+    "source": "model:google-bert/bert-base-uncased",
+    "target": "dataset:wikipedia",
+    "edge_type": "trained_on",
+    "evidence_level": "A",
+    "source_field": "modelCard.modelParameters.datasets",
+    "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f"
+  },
+  {
+    "source": "model:TheBloke/Llama-2-7B-Chat-GGUF",
+    "target": "model:meta-llama/Llama-2-7b-chat-hf",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "pedigree.ancestors",
+    "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35"
+  },
+  {
+    "source": "model:cross-encoder/nli-deberta-v3-base",
+    "target": "model:microsoft/deberta-v3-base",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "pedigree.ancestors",
+    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d"
+  },
+  {
+    "source": "model:cross-encoder/nli-deberta-v3-base",
+    "target": "dataset:stanfordnlp/snli",
+    "edge_type": "trained_on",
+    "evidence_level": "A",
+    "source_field": "modelCard.modelParameters.datasets",
+    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d"
+  },
+  {
+    "source": "model:bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+    "target": "model:Qwen/Qwen2.5-0.5B-Instruct",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "pedigree.ancestors",
+    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25"
+  },
+  {
+    "source": "model:bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+    "target": "model:Qwen/Qwen2.5-0.5B",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "pedigree.ancestors",
+    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25"
+  },
+  {
+    "source": "model:Qwen/Qwen2.5-0.5B-Instruct",
+    "target": "model:Qwen/Qwen2.5-0.5B",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "pedigree.ancestors",
+    "snapshot_id": "1ed0237b-da65-4cab-ab0e-2c9697765ed7"
+  },
+  {
+    "source": "model:HuggingFaceTB/SmolLM2-135M-Instruct",
+    "target": "model:HuggingFaceTB/SmolLM2-135M",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "pedigree.ancestors",
+    "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6"
+  },
+  {
+    "source": "model:cross-encoder/stsb-roberta-base",
+    "target": "model:FacebookAI/roberta-base",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "pedigree.ancestors",
+    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44"
+  },
+  {
+    "source": "model:cross-encoder/stsb-roberta-base",
+    "target": "dataset:sentence-transformers/stsb",
+    "edge_type": "trained_on",
+    "evidence_level": "A",
+    "source_field": "modelCard.modelParameters.datasets",
+    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44"
+  }
+]
