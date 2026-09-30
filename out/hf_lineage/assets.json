@@ -1,0 +1,218 @@
+[
+  {
+    "canonical_id": "model:sentence-transformers/all-MiniLM-L6-v2",
+    "asset_type": "model",
+    "name": "sentence-transformers/all-MiniLM-L6-v2",
+    "version": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "purls": [
+      "pkg:huggingface/sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [],
+    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2"
+  },
+  {
+    "canonical_id": "model:nreimers/MiniLM-L6-H384-uncased",
+    "asset_type": "model",
+    "name": "nreimers/MiniLM-L6-H384-uncased",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/nreimers/MiniLM-L6-H384-uncased"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2"
+  },
+  {
+    "canonical_id": "dataset:embedding-data/WikiAnswers",
+    "asset_type": "dataset",
+    "name": "embedding-data/WikiAnswers",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/embedding-data/WikiAnswers?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2"
+  },
+  {
+    "canonical_id": "model:google-bert/bert-base-uncased",
+    "asset_type": "model",
+    "name": "google-bert/bert-base-uncased",
+    "version": "86b5e0934494bd15c9632b12f734a8a67f723594",
+    "purls": [
+      "pkg:huggingface/google-bert/bert-base-uncased@86b5e0934494bd15c9632b12f734a8a67f723594"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [],
+    "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f"
+  },
+  {
+    "canonical_id": "dataset:wikipedia",
+    "asset_type": "dataset",
+    "name": "wikipedia",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/datasets/wikipedia?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f"
+  },
+  {
+    "canonical_id": "model:TheBloke/Llama-2-7B-Chat-GGUF",
+    "asset_type": "model",
+    "name": "TheBloke/Llama-2-7B-Chat-GGUF",
+    "version": "191239b3e26b2882fb562ffccdd1cf0f65402adb",
+    "purls": [
+      "pkg:huggingface/TheBloke/Llama-2-7B-Chat-GGUF@191239b3e26b2882fb562ffccdd1cf0f65402adb"
+    ],
+    "license": "LLAMA2",
+    "evidence_chain": [],
+    "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35"
+  },
+  {
+    "canonical_id": "model:meta-llama/Llama-2-7b-chat-hf",
+    "asset_type": "model",
+    "name": "meta-llama/Llama-2-7b-chat-hf",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/meta-llama/Llama-2-7b-chat-hf"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35"
+  },
+  {
+    "canonical_id": "model:cross-encoder/nli-deberta-v3-base",
+    "asset_type": "model",
+    "name": "cross-encoder/nli-deberta-v3-base",
+    "version": "6c749ce3425cd33b46d187e45b92bbf96ee12ec7",
+    "purls": [
+      "pkg:huggingface/cross-encoder/nli-deberta-v3-base@6c749ce3425cd33b46d187e45b92bbf96ee12ec7"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [],
+    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d"
+  },
+  {
+    "canonical_id": "model:microsoft/deberta-v3-base",
+    "asset_type": "model",
+    "name": "microsoft/deberta-v3-base",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/microsoft/deberta-v3-base"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d"
+  },
+  {
+    "canonical_id": "dataset:stanfordnlp/snli",
+    "asset_type": "dataset",
+    "name": "stanfordnlp/snli",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/stanfordnlp/snli?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d"
+  },
+  {
+    "canonical_id": "model:bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+    "asset_type": "model",
+    "name": "bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+    "version": "41ba88dbac95fed2528c92514c131d73eb5a174b",
+    "purls": [
+      "pkg:huggingface/bartowski/Qwen2.5-0.5B-Instruct-GGUF@41ba88dbac95fed2528c92514c131d73eb5a174b"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [],
+    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25"
+  },
+  {
+    "canonical_id": "model:Qwen/Qwen2.5-0.5B-Instruct",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-0.5B-Instruct",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25"
+  },
+  {
+    "canonical_id": "model:Qwen/Qwen2.5-0.5B",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-0.5B",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/Qwen/Qwen2.5-0.5B"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25"
+  },
+  {
+    "canonical_id": "model:HuggingFaceTB/SmolLM2-135M-Instruct",
+    "asset_type": "model",
+    "name": "HuggingFaceTB/SmolLM2-135M-Instruct",
+    "version": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+    "purls": [
+      "pkg:huggingface/HuggingFaceTB/SmolLM2-135M-Instruct@12fd25f77366fa6b3b4b768ec3050bf629380bac"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [],
+    "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6"
+  },
+  {
+    "canonical_id": "model:HuggingFaceTB/SmolLM2-135M",
+    "asset_type": "model",
+    "name": "HuggingFaceTB/SmolLM2-135M",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/HuggingFaceTB/SmolLM2-135M"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6"
+  },
+  {
+    "canonical_id": "model:cross-encoder/stsb-roberta-base",
+    "asset_type": "model",
+    "name": "cross-encoder/stsb-roberta-base",
+    "version": "d576534b67143e2c70ee9966d7fdbf5835728d13",
+    "purls": [
+      "pkg:huggingface/cross-encoder/stsb-roberta-base@d576534b67143e2c70ee9966d7fdbf5835728d13"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [],
+    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44"
+  },
+  {
+    "canonical_id": "model:FacebookAI/roberta-base",
+    "asset_type": "model",
+    "name": "FacebookAI/roberta-base",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/FacebookAI/roberta-base"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44"
+  },
+  {
+    "canonical_id": "dataset:sentence-transformers/stsb",
+    "asset_type": "dataset",
+    "name": "sentence-transformers/stsb",
+    "version": null,
+    "purls": [
+      "pkg:huggingface/sentence-transformers/stsb?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44"
+  }
+]
