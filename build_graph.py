@@ -79,14 +79,11 @@ def build_graph(assets: list[dict], edges: list[dict]) -> nx.MultiDiGraph:
         if graph.has_node(canonical_id):
             graph.nodes[canonical_id].update(asset)
         else:
-            graph.add_node(
-                canonical_id,
-                asset_type=asset.get("asset_type"),
-                name=asset.get("name"),
-                version=asset.get("version"),
-                license=asset.get("license"),
-                snapshot_id=asset.get("snapshot_id"),
-            )
+            # 节点属性 = 资产全部字段（含 entity_key / purls / evidence_chain /
+            # merge_status / reason_code / rule_version / hashes），
+            # 保证下游传播可拿到完整证据链与合并状态。
+            attrs = {key: value for key, value in asset.items() if key != "canonical_id"}
+            graph.add_node(canonical_id, **attrs)
 
     for index, edge in enumerate(edges):
         source = edge.get("source")
@@ -174,11 +171,18 @@ def graph_to_dict(
     for canonical_id, attrs in graph.nodes(data=True):
         nodes.append({
             "canonical_id": canonical_id,
+            "entity_key": attrs.get("entity_key"),
             "asset_type": attrs.get("asset_type"),
             "name": attrs.get("name"),
             "version": attrs.get("version"),
+            "purls": list(attrs.get("purls", [])) if attrs.get("purls") else [],
             "license": attrs.get("license"),
+            "evidence_chain": attrs.get("evidence_chain") or [],
             "snapshot_id": attrs.get("snapshot_id"),
+            "merge_status": attrs.get("merge_status"),
+            "reason_code": attrs.get("reason_code"),
+            "rule_version": attrs.get("rule_version"),
+            "hashes": attrs.get("hashes") or [],
             "scc_id": canonical_to_scc.get(canonical_id),
         })
 

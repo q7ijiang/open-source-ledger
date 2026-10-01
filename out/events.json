@@ -4,40 +4,83 @@
     "seed": "model:meta-llama/Llama-2-7b",
     "change_type": "license_changed",
     "before": {
+      "canonical_id": "model:meta-llama/Llama-2-7b",
+      "entity_key": "model:meta-llama/Llama-2-7b",
       "license": "llama2",
       "purls": [
         "pkg:huggingface/meta-llama/Llama-2-7b@main"
       ],
-      "snapshot_id": "deep-t0"
+      "snapshot_id": "deep-t0",
+      "merge_status": null,
+      "reason_code": null,
+      "rule_version": null
     },
     "after": {
+      "canonical_id": "model:meta-llama/Llama-2-7b",
+      "entity_key": "model:meta-llama/Llama-2-7b",
       "license": "GPL-3.0",
       "purls": [
         "pkg:huggingface/meta-llama/Llama-2-7b@main"
       ],
-      "snapshot_id": "deep-t1"
+      "snapshot_id": "deep-t1",
+      "merge_status": null,
+      "reason_code": null,
+      "rule_version": null
     },
     "path": [],
     "evidence_level": "A",
-    "decision": "RISK_CONFIRMED"
+    "decision": "RISK_CONFIRMED",
+    "direction": {
+      "old": {
+        "raw": "llama2",
+        "canonical_ids": [
+          "Llama-2-Community-License"
+        ],
+        "risk_level": 4,
+        "category": "ai_restricted",
+        "unknown_items": []
+      },
+      "new": {
+        "raw": "GPL-3.0",
+        "canonical_ids": [
+          "GPL-3.0-only"
+        ],
+        "risk_level": 4,
+        "category": "strong_copyleft",
+        "unknown_items": []
+      },
+      "direction": "同级不变",
+      "risk_increased": false,
+      "ai_involved": true
+    }
   },
   {
     "event_id": "evt-deep-t1-002",
     "seed": "model:my-org/finetuned-model",
     "change_type": "evidence_downgrade",
     "before": {
+      "canonical_id": "model:my-org/finetuned-model",
+      "entity_key": "model:my-org/finetuned-model",
       "license": "Apache-2.0",
       "purls": [
         "pkg:huggingface/my-org/finetuned-model@1.2.0"
       ],
-      "snapshot_id": "deep-t0"
+      "snapshot_id": "deep-t0",
+      "merge_status": null,
+      "reason_code": null,
+      "rule_version": null
     },
     "after": {
+      "canonical_id": "model:my-org/finetuned-model",
+      "entity_key": "model:my-org/finetuned-model",
       "license": "Apache-2.0",
       "purls": [
         "pkg:huggingface/my-org/finetuned-model@1.2.0"
       ],
-      "snapshot_id": "deep-t1"
+      "snapshot_id": "deep-t1",
+      "merge_status": null,
+      "reason_code": null,
+      "rule_version": null
     },
     "path": [],
     "evidence_level": "C",
@@ -48,40 +91,72 @@
     "seed": "package:pypi/example-parser",
     "change_type": "license_changed",
     "before": {
+      "canonical_id": "package:pypi/example-parser",
+      "entity_key": "package:pypi/example-parser",
       "license": "MIT",
       "purls": [
         "pkg:pypi/example-parser@1.2.0"
       ],
-      "snapshot_id": "deep-t0"
+      "snapshot_id": "deep-t0",
+      "merge_status": null,
+      "reason_code": null,
+      "rule_version": null
     },
     "after": {
+      "canonical_id": "package:pypi/example-parser",
+      "entity_key": "package:pypi/example-parser",
       "license": "GPL-3.0-only",
       "purls": [
         "pkg:pypi/example-parser@1.3.0"
       ],
-      "snapshot_id": "deep-t1"
+      "snapshot_id": "deep-t1",
+      "merge_status": null,
+      "reason_code": null,
+      "rule_version": null
     },
     "path": [],
     "evidence_level": "A",
-    "decision": "RISK_CONFIRMED"
+    "decision": "RISK_CONFIRMED",
+    "direction": {
+      "old": {
+        "raw": "MIT",
+        "canonical_ids": [
+          "MIT"
+        ],
+        "risk_level": 1,
+        "category": "permissive",
+        "unknown_items": []
+      },
+      "new": {
+        "raw": "GPL-3.0-only",
+        "canonical_ids": [
+          "GPL-3.0-only"
+        ],
+        "risk_level": 4,
+        "category": "strong_copyleft",
+        "unknown_items": []
+      },
+      "direction": "宽松→严格",
+      "risk_increased": true,
+      "ai_involved": false
+    }
   },
   {
     "event_id": "evt-deep-t1-004",
-    "seed": "model:my-org/finetuned-model",
+    "seed": "dataset:my-org/new-training-data",
     "change_type": "dataset_added",
-    "before": {
-      "license": "Apache-2.0",
-      "purls": [
-        "pkg:huggingface/my-org/finetuned-model@1.2.0"
-      ],
-      "snapshot_id": "deep-t0"
-    },
+    "before": null,
     "after": {
-      "license": "Apache-2.0",
+      "canonical_id": "dataset:my-org/new-training-data",
+      "entity_key": "dataset:my-org/new-training-data",
+      "license": "MIT",
       "purls": [
-        "pkg:huggingface/my-org/finetuned-model@1.2.0"
+        "pkg:huggingface/datasets/my-org/new-training-data@2026-10-01"
       ],
-      "snapshot_id": "deep-t1"
+      "snapshot_id": "deep-t1",
+      "merge_status": null,
+      "reason_code": null,
+      "rule_version": null
     },
     "path": [],
     "evidence_level": "C",
@@ -89,43 +164,41 @@
   },
   {
     "event_id": "evt-deep-t1-005",
-    "seed": "model:my-org/serving-model",
+    "seed": "model:Qwen/Qwen2.5-7B",
     "change_type": "ancestor_added",
-    "before": {
-      "license": "Apache-2.0",
-      "purls": [
-        "pkg:huggingface/my-org/serving-model@0.9.0"
-      ],
-      "snapshot_id": "deep-t0"
-    },
-    "after": {
-      "license": "Apache-2.0",
-      "purls": [
-        "pkg:huggingface/my-org/serving-model@0.9.0"
-      ],
-      "snapshot_id": "deep-t1"
-    },
+    "before": null,
+    "after": null,
     "path": [],
     "evidence_level": "C",
     "decision": "UNDETERMINED"
   },
   {
     "event_id": "evt-deep-t1-006",
-    "seed": "model:my-org/finetuned-model",
+    "seed": "dataset:my-org/training-data",
     "change_type": "dataset_removed",
     "before": {
-      "license": "Apache-2.0",
+      "canonical_id": "dataset:my-org/training-data",
+      "entity_key": "dataset:my-org/training-data",
+      "license": "CC0-1.0",
       "purls": [
-        "pkg:huggingface/my-org/finetuned-model@1.2.0"
+        "pkg:huggingface/datasets/my-org/training-data@2026-09-01"
       ],
-      "snapshot_id": "deep-t0"
+      "snapshot_id": "deep-t0",
+      "merge_status": null,
+      "reason_code": null,
+      "rule_version": null
     },
     "after": {
-      "license": "Apache-2.0",
+      "canonical_id": "dataset:my-org/training-data",
+      "entity_key": "dataset:my-org/training-data",
+      "license": "CC0-1.0",
       "purls": [
-        "pkg:huggingface/my-org/finetuned-model@1.2.0"
+        "pkg:huggingface/datasets/my-org/training-data@2026-09-01"
       ],
-      "snapshot_id": "deep-t1"
+      "snapshot_id": "deep-t1",
+      "merge_status": null,
+      "reason_code": null,
+      "rule_version": null
     },
     "path": [],
     "evidence_level": "B",
@@ -133,22 +206,21 @@
   },
   {
     "event_id": "evt-deep-t1-007",
-    "seed": "model:my-org/serving-model",
+    "seed": "model:legacy/old-model",
     "change_type": "ancestor_removed",
     "before": {
-      "license": "Apache-2.0",
+      "canonical_id": "model:legacy/old-model",
+      "entity_key": "model:legacy/old-model",
+      "license": "MIT",
       "purls": [
-        "pkg:huggingface/my-org/serving-model@0.9.0"
+        "pkg:huggingface/legacy/old-model@v1"
       ],
-      "snapshot_id": "deep-t0"
+      "snapshot_id": "deep-t0",
+      "merge_status": null,
+      "reason_code": null,
+      "rule_version": null
     },
-    "after": {
-      "license": "Apache-2.0",
-      "purls": [
-        "pkg:huggingface/my-org/serving-model@0.9.0"
-      ],
-      "snapshot_id": "deep-t1"
-    },
+    "after": null,
     "path": [],
     "evidence_level": "B",
     "decision": "RISK_POTENTIAL"
