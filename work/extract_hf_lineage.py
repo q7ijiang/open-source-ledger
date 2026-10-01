@@ -53,7 +53,7 @@ def purl_to_canonical(purl: str | None, fallback_type: str) -> str | None:
     return f"{fallback_type}:{name}"
 
 
-def component_license(component: dict) -> str:
+def component_license(component: dict) -> str | None:
     """从 CycloneDX licenses 提取许可证名（多个以 ';' 连接）。
 
     HF BOM 的 license 对象可能用 id（SPDX，如 Apache-2.0）或 name
@@ -65,7 +65,7 @@ def component_license(component: dict) -> str:
         name = license_info.get("name") or license_info.get("id") or entry.get("name")
         if name:
             parts.append(str(name))
-    return "; ".join(parts)
+    return "; ".join(parts) or None
 
 
 def extract(bom_path: Path) -> tuple[list[dict], list[dict]]:
@@ -125,7 +125,7 @@ def extract(bom_path: Path) -> tuple[list[dict], list[dict]]:
             "name": anc_canonical.split(":", 1)[1],
             "version": anc.get("version"),
             "purls": [anc.get("purl")] if anc.get("purl") else [],
-            "license": "",
+            "license": None,
             "evidence_chain": [],
             "snapshot_id": snapshot_id,
         })
@@ -161,7 +161,7 @@ def extract(bom_path: Path) -> tuple[list[dict], list[dict]]:
             "name": ds_canonical.split(":", 1)[1],
             "version": None,
             "purls": [ref] if ref else [],
-            "license": "",
+            "license": None,
             "evidence_chain": [],
             "snapshot_id": snapshot_id,
         })

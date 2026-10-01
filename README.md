@@ -23,6 +23,17 @@
 - [每周验收清单](docs/每周验收清单.md)：按周检查交付物和验收标准。
 - [分支与代码协作规范](docs/分支与代码协作规范.md)：分支策略、合并规则与代码规范。
 
+## 安装
+
+- Python 最低版本：3.10+
+- 安装项目依赖：
+
+```bash
+pip install -r requirements.txt
+```
+
+`tools/` 目录不在仓库中，需要单独安装 `cdxgen`。可执行 `npm install -g @cyclonedx/cdxgen` 安装，或按 `tools/cdxgen/README` 的说明在本机准备 cdxgen。
+
 ## 快速开始
 
 运行 cdxgen

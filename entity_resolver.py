@@ -529,7 +529,7 @@ def merge_assets(
             name = item.strip()
             if name and name not in licenses:
                 licenses.append(name)
-    result["license"] = "; ".join(licenses)
+    result["license"] = "; ".join(licenses) or None
 
     if not clean_text(result.get("version")):
         result["version"] = merged_asset.get("version", "")

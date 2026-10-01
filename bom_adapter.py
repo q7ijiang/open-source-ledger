@@ -285,7 +285,7 @@ def evidence_entry(
     """按统一结构创建一条证据。"""
 
     return {
-        "evidence_level": "A",
+        "evidence_level": "B",
         "source_api": "cyclonedx",
         "source_url": source_url,
         "source_field": source_field,
@@ -484,7 +484,7 @@ def convert_component(
         "purls": purls,
         "purl_identities": identity_values,
         "hashes": extract_component_hashes(component),
-        "license": "; ".join(licenses),
+        "license": "; ".join(licenses) or None,
         "evidence_chain": extract_evidence_chain(component, retrieved_at),
         "snapshot_id": snapshot_id,
         "source_file": source_file,
@@ -569,7 +569,7 @@ def main() -> None:
     licenses = {
         item.strip()
         for asset in assets
-        for item in str(asset.get("license", "")).split(";")
+        for item in str(asset.get("license") or "").split(";")
         if item.strip()
     }
     evidence_count = sum(len(asset.get("evidence_chain", [])) for asset in assets)
