@@ -1,6 +1,7 @@
 [
   {
-    "canonical_id": "model:sentence-transformers/all-MiniLM-L6-v2",
+    "entity_key": "model:huggingface/sentence-transformers/all-MiniLM-L6-v2",
+    "canonical_id": "model:huggingface/sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
     "asset_type": "model",
     "name": "sentence-transformers/all-MiniLM-L6-v2",
     "version": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
@@ -8,35 +9,98 @@
       "pkg:huggingface/sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
     ],
     "license": "Apache-2.0",
-    "evidence_chain": [],
-    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2"
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": [
+          "pkg:huggingface/nreimers/MiniLM-L6-H384-uncased"
+        ]
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "modelCard.modelParameters.datasets",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": [
+          {
+            "ref": "pkg:huggingface/embedding-data/WikiAnswers?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+          }
+        ]
+      }
+    ],
+    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\all-MiniLM-L6-v2_bom.json"
   },
   {
-    "canonical_id": "model:nreimers/MiniLM-L6-H384-uncased",
+    "entity_key": "model:huggingface/nreimers/MiniLM-L6-H384-uncased",
+    "canonical_id": "model:huggingface/nreimers/MiniLM-L6-H384-uncased",
     "asset_type": "model",
     "name": "nreimers/MiniLM-L6-H384-uncased",
     "version": null,
     "purls": [
       "pkg:huggingface/nreimers/MiniLM-L6-H384-uncased"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/nreimers/MiniLM-L6-H384-uncased"
+      }
+    ],
+    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\all-MiniLM-L6-v2_bom.json"
   },
   {
-    "canonical_id": "dataset:embedding-data/WikiAnswers",
+    "entity_key": "dataset:huggingface/embedding-data/WikiAnswers",
+    "canonical_id": "dataset:huggingface/embedding-data/WikiAnswers",
     "asset_type": "dataset",
     "name": "embedding-data/WikiAnswers",
     "version": null,
     "purls": [
       "pkg:huggingface/embedding-data/WikiAnswers?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "modelCard.modelParameters.datasets",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/embedding-data/WikiAnswers?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+      }
+    ],
+    "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\all-MiniLM-L6-v2_bom.json"
   },
   {
-    "canonical_id": "model:google-bert/bert-base-uncased",
+    "entity_key": "model:huggingface/google-bert/bert-base-uncased",
+    "canonical_id": "model:huggingface/google-bert/bert-base-uncased@86b5e0934494bd15c9632b12f734a8a67f723594",
     "asset_type": "model",
     "name": "google-bert/bert-base-uncased",
     "version": "86b5e0934494bd15c9632b12f734a8a67f723594",
@@ -44,23 +108,59 @@
       "pkg:huggingface/google-bert/bert-base-uncased@86b5e0934494bd15c9632b12f734a8a67f723594"
     ],
     "license": "Apache-2.0",
-    "evidence_chain": [],
-    "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f"
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "modelCard.modelParameters.datasets",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": [
+          {
+            "ref": "pkg:huggingface/datasets/wikipedia?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+          }
+        ]
+      }
+    ],
+    "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\bert-base-uncased_bom.json"
   },
   {
-    "canonical_id": "dataset:wikipedia",
+    "entity_key": "dataset:huggingface/datasets/wikipedia",
+    "canonical_id": "dataset:huggingface/datasets/wikipedia",
     "asset_type": "dataset",
-    "name": "wikipedia",
+    "name": "datasets/wikipedia",
     "version": null,
     "purls": [
       "pkg:huggingface/datasets/wikipedia?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "modelCard.modelParameters.datasets",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/datasets/wikipedia?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+      }
+    ],
+    "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\bert-base-uncased_bom.json"
   },
   {
-    "canonical_id": "model:TheBloke/Llama-2-7B-Chat-GGUF",
+    "entity_key": "model:huggingface/TheBloke/Llama-2-7B-Chat-GGUF",
+    "canonical_id": "model:huggingface/TheBloke/Llama-2-7B-Chat-GGUF@191239b3e26b2882fb562ffccdd1cf0f65402adb",
     "asset_type": "model",
     "name": "TheBloke/Llama-2-7B-Chat-GGUF",
     "version": "191239b3e26b2882fb562ffccdd1cf0f65402adb",
@@ -68,23 +168,57 @@
       "pkg:huggingface/TheBloke/Llama-2-7B-Chat-GGUF@191239b3e26b2882fb562ffccdd1cf0f65402adb"
     ],
     "license": "LLAMA2",
-    "evidence_chain": [],
-    "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35"
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": [
+          "pkg:huggingface/meta-llama/Llama-2-7b-chat-hf"
+        ]
+      }
+    ],
+    "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\Llama-2-7B-Chat-GGUF_bom.json"
   },
   {
-    "canonical_id": "model:meta-llama/Llama-2-7b-chat-hf",
+    "entity_key": "model:huggingface/meta-llama/Llama-2-7b-chat-hf",
+    "canonical_id": "model:huggingface/meta-llama/Llama-2-7b-chat-hf@f5db02db724555f92da89c216ac04704f23d4590",
     "asset_type": "model",
     "name": "meta-llama/Llama-2-7b-chat-hf",
-    "version": null,
+    "version": "f5db02db724555f92da89c216ac04704f23d4590",
     "purls": [
       "pkg:huggingface/meta-llama/Llama-2-7b-chat-hf"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/meta-llama/Llama-2-7b-chat-hf"
+      }
+    ],
+    "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\Llama-2-7B-Chat-GGUF_bom.json"
   },
   {
-    "canonical_id": "model:cross-encoder/nli-deberta-v3-base",
+    "entity_key": "model:huggingface/cross-encoder/nli-deberta-v3-base",
+    "canonical_id": "model:huggingface/cross-encoder/nli-deberta-v3-base@6c749ce3425cd33b46d187e45b92bbf96ee12ec7",
     "asset_type": "model",
     "name": "cross-encoder/nli-deberta-v3-base",
     "version": "6c749ce3425cd33b46d187e45b92bbf96ee12ec7",
@@ -92,35 +226,98 @@
       "pkg:huggingface/cross-encoder/nli-deberta-v3-base@6c749ce3425cd33b46d187e45b92bbf96ee12ec7"
     ],
     "license": "Apache-2.0",
-    "evidence_chain": [],
-    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d"
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": [
+          "pkg:huggingface/microsoft/deberta-v3-base"
+        ]
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "modelCard.modelParameters.datasets",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": [
+          {
+            "ref": "pkg:huggingface/stanfordnlp/snli?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+          }
+        ]
+      }
+    ],
+    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\nli-deberta-v3-base_bom.json"
   },
   {
-    "canonical_id": "model:microsoft/deberta-v3-base",
+    "entity_key": "model:huggingface/microsoft/deberta-v3-base",
+    "canonical_id": "model:huggingface/microsoft/deberta-v3-base",
     "asset_type": "model",
     "name": "microsoft/deberta-v3-base",
     "version": null,
     "purls": [
       "pkg:huggingface/microsoft/deberta-v3-base"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/microsoft/deberta-v3-base"
+      }
+    ],
+    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\nli-deberta-v3-base_bom.json"
   },
   {
-    "canonical_id": "dataset:stanfordnlp/snli",
+    "entity_key": "dataset:huggingface/stanfordnlp/snli",
+    "canonical_id": "dataset:huggingface/stanfordnlp/snli",
     "asset_type": "dataset",
     "name": "stanfordnlp/snli",
     "version": null,
     "purls": [
       "pkg:huggingface/stanfordnlp/snli?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "modelCard.modelParameters.datasets",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/stanfordnlp/snli?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+      }
+    ],
+    "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\nli-deberta-v3-base_bom.json"
   },
   {
-    "canonical_id": "model:bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+    "entity_key": "model:huggingface/bartowski/Qwen2.5-0.5B-Instruct-GGUF",
+    "canonical_id": "model:huggingface/bartowski/Qwen2.5-0.5B-Instruct-GGUF@41ba88dbac95fed2528c92514c131d73eb5a174b",
     "asset_type": "model",
     "name": "bartowski/Qwen2.5-0.5B-Instruct-GGUF",
     "version": "41ba88dbac95fed2528c92514c131d73eb5a174b",
@@ -128,35 +325,86 @@
       "pkg:huggingface/bartowski/Qwen2.5-0.5B-Instruct-GGUF@41ba88dbac95fed2528c92514c131d73eb5a174b"
     ],
     "license": "Apache-2.0",
-    "evidence_chain": [],
-    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25"
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": [
+          "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct",
+          "pkg:huggingface/Qwen/Qwen2.5-0.5B"
+        ]
+      }
+    ],
+    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\Qwen2.5-0.5B-Instruct-GGUF_bom.json"
   },
   {
-    "canonical_id": "model:Qwen/Qwen2.5-0.5B-Instruct",
+    "entity_key": "model:huggingface/Qwen/Qwen2.5-0.5B-Instruct",
+    "canonical_id": "model:huggingface/Qwen/Qwen2.5-0.5B-Instruct@7ae557604adf67be50417f59c2c2f167def9a775",
     "asset_type": "model",
     "name": "Qwen/Qwen2.5-0.5B-Instruct",
-    "version": null,
+    "version": "7ae557604adf67be50417f59c2c2f167def9a775",
     "purls": [
       "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct"
+      }
+    ],
+    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\Qwen2.5-0.5B-Instruct-GGUF_bom.json"
   },
   {
-    "canonical_id": "model:Qwen/Qwen2.5-0.5B",
+    "entity_key": "model:huggingface/Qwen/Qwen2.5-0.5B",
+    "canonical_id": "model:huggingface/Qwen/Qwen2.5-0.5B",
     "asset_type": "model",
     "name": "Qwen/Qwen2.5-0.5B",
     "version": null,
     "purls": [
       "pkg:huggingface/Qwen/Qwen2.5-0.5B"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/Qwen/Qwen2.5-0.5B"
+      }
+    ],
+    "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\Qwen2.5-0.5B-Instruct-GGUF_bom.json"
   },
   {
-    "canonical_id": "model:HuggingFaceTB/SmolLM2-135M-Instruct",
+    "entity_key": "model:huggingface/HuggingFaceTB/SmolLM2-135M-Instruct",
+    "canonical_id": "model:huggingface/HuggingFaceTB/SmolLM2-135M-Instruct@12fd25f77366fa6b3b4b768ec3050bf629380bac",
     "asset_type": "model",
     "name": "HuggingFaceTB/SmolLM2-135M-Instruct",
     "version": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
@@ -164,23 +412,57 @@
       "pkg:huggingface/HuggingFaceTB/SmolLM2-135M-Instruct@12fd25f77366fa6b3b4b768ec3050bf629380bac"
     ],
     "license": "Apache-2.0",
-    "evidence_chain": [],
-    "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6"
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": [
+          "pkg:huggingface/HuggingFaceTB/SmolLM2-135M"
+        ]
+      }
+    ],
+    "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\SmolLM2-135M-Instruct_bom.json"
   },
   {
-    "canonical_id": "model:HuggingFaceTB/SmolLM2-135M",
+    "entity_key": "model:huggingface/HuggingFaceTB/SmolLM2-135M",
+    "canonical_id": "model:huggingface/HuggingFaceTB/SmolLM2-135M",
     "asset_type": "model",
     "name": "HuggingFaceTB/SmolLM2-135M",
     "version": null,
     "purls": [
       "pkg:huggingface/HuggingFaceTB/SmolLM2-135M"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/HuggingFaceTB/SmolLM2-135M"
+      }
+    ],
+    "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\SmolLM2-135M-Instruct_bom.json"
   },
   {
-    "canonical_id": "model:cross-encoder/stsb-roberta-base",
+    "entity_key": "model:huggingface/cross-encoder/stsb-roberta-base",
+    "canonical_id": "model:huggingface/cross-encoder/stsb-roberta-base@d576534b67143e2c70ee9966d7fdbf5835728d13",
     "asset_type": "model",
     "name": "cross-encoder/stsb-roberta-base",
     "version": "d576534b67143e2c70ee9966d7fdbf5835728d13",
@@ -188,31 +470,93 @@
       "pkg:huggingface/cross-encoder/stsb-roberta-base@d576534b67143e2c70ee9966d7fdbf5835728d13"
     ],
     "license": "Apache-2.0",
-    "evidence_chain": [],
-    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44"
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": [
+          "pkg:huggingface/FacebookAI/roberta-base"
+        ]
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "modelCard.modelParameters.datasets",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": [
+          {
+            "ref": "pkg:huggingface/sentence-transformers/stsb?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+          }
+        ]
+      }
+    ],
+    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\stsb-roberta-base_bom.json"
   },
   {
-    "canonical_id": "model:FacebookAI/roberta-base",
+    "entity_key": "model:huggingface/FacebookAI/roberta-base",
+    "canonical_id": "model:huggingface/FacebookAI/roberta-base",
     "asset_type": "model",
     "name": "FacebookAI/roberta-base",
     "version": null,
     "purls": [
       "pkg:huggingface/FacebookAI/roberta-base"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "pedigree.ancestors",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/FacebookAI/roberta-base"
+      }
+    ],
+    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\stsb-roberta-base_bom.json"
   },
   {
-    "canonical_id": "dataset:sentence-transformers/stsb",
+    "entity_key": "dataset:huggingface/sentence-transformers/stsb",
+    "canonical_id": "dataset:huggingface/sentence-transformers/stsb",
     "asset_type": "dataset",
     "name": "sentence-transformers/stsb",
     "version": null,
     "purls": [
       "pkg:huggingface/sentence-transformers/stsb?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
     ],
-    "license": "",
-    "evidence_chain": [],
-    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44"
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "modelCard.modelParameters.datasets",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "pkg:huggingface/sentence-transformers/stsb?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
+      }
+    ],
+    "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "D:\\DouBao\\开源账本\\open-source-ledger\\data\\hf_models_bom\\stsb-roberta-base_bom.json"
   }
 ]

@@ -58,7 +58,7 @@
 - 识别出 1 个 SCC 环：`example-parser ↔ lib-x`；
 - 压缩图边证据按 weakest link 正确聚合。
 
-## 真实数据验证（2026-09-25 补充）
+## 真实数据验证（2026-09-25 首版；2026-10-01 版本化对齐 v0.3）
 
 配合 A 的真实 HF 模型 BOM（`data/hf_models_bom/`，9 份 CycloneDX），新增血缘提取工具 `work/extract_hf_lineage.py`，把 `pedigree.ancestors`（→ `derived_from`）与 `modelCard.modelParameters.datasets`（→ `trained_on`）转为接口约定格式并建图：
 
@@ -66,11 +66,17 @@
 python work/extract_hf_lineage.py --bom-dir data/hf_models_bom --output-dir out/hf_lineage
 ```
 
-结果：
-- 18 个资产节点（含缺失祖先自动补建）、12 条血缘边（8 derived_from + 4 trained_on）；
-- 边证据等级 A（官方模型卡片元数据），`source_field` 标注 `pedigree.ancestors` / `modelCard.modelParameters.datasets`；
+结果（v0.3，canonical_id 已版本化）：
+- **18 个资产节点（含缺失祖先自动补建）、12 条血缘边（8 derived_from + 4 trained_on）**；
+- canonical_id 为版本化格式（如 `model:huggingface/meta-llama/Llama-2-7b-chat-hf@f5db02...`），由 `bom_adapter.build_asset_identifiers()` 生成，不再手拼；
+- 资产节点补齐 `entity_key / merge_status / reason_code / rule_version / purls / evidence_chain / hashes`；
+- **边证据等级 B**（源数据是 HF 官方模型卡字段，但载体是 cdxgen 产出的 CycloneDX BOM，按接口约定 v0.2「工具产物或结构化依赖证据」归为 B 级——两个口径不混用）；
+- 祖先引用版本补齐：GGUF 等派生模型的 `pedigree.ancestors` 引用不带版本时，若全局存在同 entity_key 的带版本主模型，则对齐到该版本化 ID（演示 18 节点/12 边保持）；
 - 18 个 SCC 分量（真实 HF 血缘为 DAG，无环，符合预期）；
-- 链路示例：`model:TheBloke/Llama-2-7B-Chat-GGUF -[derived_from|A]-> model:meta-llama/Llama-2-7b-chat-hf`；许可证 `LLAMA2` 由模块 4 正确识别为 Llama-2-Community-License。
+- HF 特化能力全部保留：递归展开 pedigree.ancestors、数据集 purl 归一化、`?repository_url=...` query 剥离、缺失祖先自动补建。
+
+图节点字段（v0.3 起）：
+`canonical_id / entity_key / asset_type / name / version / purls / license / evidence_chain / snapshot_id / merge_status / reason_code / rule_version / hashes / scc_id`——下游传播可直接取到证据链与合并状态。
 
 ## 暴露了什么问题
 
@@ -78,7 +84,7 @@ python work/extract_hf_lineage.py --bom-dir data/hf_models_bom --output-dir out/
 |---|---|---|
 | 边引用资产可能不在 BOM 资产列表中 | 祖先元数据缺失 | 模块 10 对缺失祖先强制 UNDETERMINED |
 | 同一对资产可能有多条不同类型边 | 路径选择需要明确规则 | 模块 10 选边：先取证据最弱，同等级按 derived_from > trained_on > depends_on |
-| 真实 BOM 的模型卡片数据集 ref 常带 URL 参数 | canonical_id 需剥离参数 | 已由 `purl_to_canonical` 处理（`?repository_url=...` 不进入 id） |
+| 真实 BOM 的模型卡片数据集 ref 常带 URL 参数 | canonical_id 需剥离参数 | 已由 `bom_adapter.parse_purl_identity` 处理（`?repository_url=...` 不进入 id） |
 
 ## 如何验证
 
