@@ -95,20 +95,20 @@ def test_evidence_downgrade_propagates_as_undetermined():
 
 
 def test_dataset_added_propagates_undetermined():
-    """新增数据集边（C 级）传播到下游模型为 UNDETERMINED。"""
+    """新增数据集边（C 级）传播到下游模型为 UNDETERMINED；seed=边 target。"""
     result, _ = run_pipeline()
     affected = index_affected(result)
-    dataset_events = affected[("model:my-org/finetuned-model", "dataset_added")]
+    dataset_events = affected[("dataset:my-org/new-training-data", "dataset_added")]
     serving = dataset_events["model:my-org/serving-model"]
     assert serving["evidence_level"] == "C"
     assert serving["decision"] == "UNDETERMINED"
 
 
 def test_dataset_removed_propagates_on_before_graph():
-    """数据集移除在 t0 图上传播；B 级路径 -> RISK_POTENTIAL。"""
+    """数据集移除在 t0 图上传播；B 级路径 -> RISK_POTENTIAL；seed=边 target。"""
     result, _ = run_pipeline()
     affected = index_affected(result)
-    removed_events = affected[("model:my-org/finetuned-model", "dataset_removed")]
+    removed_events = affected[("dataset:my-org/training-data", "dataset_removed")]
     serving = removed_events["model:my-org/serving-model"]
     assert serving["path"][0]["source"] == "model:my-org/serving-model"
     assert serving["evidence_level"] == "B"
@@ -116,18 +116,22 @@ def test_dataset_removed_propagates_on_before_graph():
 
 
 def test_missing_ancestor_event_kept_undetermined():
-    """新增祖先指向缺失资产：种子事件保持 UNDETERMINED 且无传播。"""
+    """新增祖先指向缺失资产：seed=边 target（缺失祖先），向下游传播为 UNDETERMINED。"""
     result, _ = run_pipeline()
     seed_events = [e for e in result["events"]
                    if e["change_type"] == "ancestor_added"
-                   and e["seed"] == "model:my-org/serving-model"]
+                   and e["seed"] == "model:Qwen/Qwen2.5-7B"
+                   and e["path"] == []]
     assert len(seed_events) == 1
-    assert seed_events[0]["path"] == []
     assert seed_events[0]["decision"] == "UNDETERMINED"
-    # 没有传播出的受影响资产
+    # 种子为缺失祖先（上游变化资产）-> 反向传播到依赖它的 serving-model
     propagated = [e for e in result["events"]
-                  if e["seed"] == "model:my-org/serving-model" and e["path"]]
-    assert propagated == []
+                  if e["seed"] == "model:Qwen/Qwen2.5-7B" and e["path"]]
+    assert len(propagated) == 1
+    affected = propagated[0]
+    assert affected["path"][0]["source"] == "model:my-org/serving-model"
+    assert affected["evidence_level"] == "C"
+    assert affected["decision"] == "UNDETERMINED"
 
 
 def test_certificates_match_propagated_events():
