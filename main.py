@@ -8,7 +8,7 @@
     bom_adapter.convert_bom
     -> entity_resolver.deduplicate_assets
     -> evidence_enricher.enrich_assets
-    -> extract_edges.extract_edges
+    -> work.extract_hf_lineage.extract（仅 HF 模型 BOM）
 
 深度模式：
     对 t0/t1 分别执行基础数据转换，然后：
@@ -46,6 +46,8 @@ CHANGE_TYPE_ZH = {
 }
 
 EVIDENCE_ORDER = {"A": 0, "B": 1, "C": 2}
+HF_MODEL_TYPES = {"machine-learning-model", "model"}
+HF_LINEAGE_EDGE_TYPES = {"derived_from", "trained_on"}
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -150,12 +152,85 @@ def _format_links(urls: list[str]) -> str:
     return "<br>".join(f"[{index}]({url})" for index, url in enumerate(urls, start=1))
 
 
+def _is_hf_model_bom(bom: dict[str, Any]) -> bool:
+    """判断 BOM 是否为 work/extract_hf_lineage.py 支持的 HF 模型 BOM。"""
+    components = bom.get("components")
+    if not isinstance(components, list) or not components:
+        return False
+    first = components[0]
+    if not isinstance(first, dict):
+        return False
+    purl = str(first.get("purl") or "")
+    return first.get("type") in HF_MODEL_TYPES and purl.startswith("pkg:huggingface/")
+
+
+def _merge_lineage_assets(
+    assets: list[dict[str, Any]],
+    lineage_assets: list[dict[str, Any]],
+    snapshot_id: str,
+) -> list[dict[str, Any]]:
+    """补入 HF 提取器自动创建的缺失祖先或数据集节点。"""
+    merged = list(assets)
+    known_ids = {
+        asset.get("canonical_id")
+        for asset in merged
+        if asset.get("canonical_id")
+    }
+    for asset in lineage_assets:
+        canonical_id = asset.get("canonical_id")
+        if not canonical_id or canonical_id in known_ids:
+            continue
+        merged_asset = dict(asset)
+        merged_asset["snapshot_id"] = snapshot_id
+        merged.append(merged_asset)
+        known_ids.add(canonical_id)
+    return merged
+
+
+def _extract_hf_edges(
+    path: Path,
+    bom: dict[str, Any],
+    assets: list[dict[str, Any]],
+    snapshot_id: str,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """调用 HF 专用提取器，并统一边字段与当前快照 ID。"""
+    if not _is_hf_model_bom(bom):
+        return assets, []
+
+    from work.extract_hf_lineage import extract as extract_hf_lineage
+
+    lineage_assets, lineage_edges = extract_hf_lineage(path)
+    merged_assets = _merge_lineage_assets(assets, lineage_assets, snapshot_id)
+    edges: list[dict[str, Any]] = []
+    seen: set[tuple[str, str, str]] = set()
+    for edge in lineage_edges:
+        edge_type = str(edge.get("edge_type") or "")
+        source = str(edge.get("source") or "")
+        target = str(edge.get("target") or "")
+        if edge_type not in HF_LINEAGE_EDGE_TYPES or not source or not target:
+            continue
+        signature = (source, target, edge_type)
+        if signature in seen:
+            continue
+        seen.add(signature)
+        edges.append(
+            {
+                "source": source,
+                "target": target,
+                "edge_type": edge_type,
+                "evidence_level": str(edge.get("evidence_level") or "B"),
+                "source_field": str(edge.get("source_field") or ""),
+                "snapshot_id": snapshot_id,
+            }
+        )
+    return merged_assets, edges
+
+
 def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
     """按现有模块真实签名生成一个快照的资产、边和统计。"""
     import bom_adapter
     import entity_resolver
     import evidence_enricher
-    import extract_edges
 
     bom = bom_adapter.load_json(path)
     if not isinstance(bom, dict):
@@ -171,16 +246,15 @@ def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
         deduplicated,
         evidence_enricher.REQUEST_TIMEOUT_SECONDS,
     )
-    edges, edge_stats = extract_edges.extract_edges(enriched)
+    assets, edges = _extract_hf_edges(path, bom, enriched, snapshot_id)
     return {
         "path": path,
         "snapshot_id": snapshot_id,
         "raw_assets": raw_assets,
-        "assets": enriched,
+        "assets": assets,
         "merge_log": merge_log,
         "evidence_summary": evidence_summary,
         "edges": edges,
-        "edge_stats": edge_stats,
     }
 
 
@@ -189,7 +263,6 @@ def _render_basic_report(snapshot: dict[str, Any]) -> str:
     edges: list[dict[str, Any]] = snapshot["edges"]
     merge_log: list[dict[str, Any]] = snapshot["merge_log"]
     evidence_summary: dict[str, Any] = snapshot["evidence_summary"]
-    edge_stats: dict[str, Any] = snapshot["edge_stats"]
 
     assessments = {
         asset.get("canonical_id"): _license_assessment(asset.get("license"))
@@ -221,14 +294,14 @@ def _render_basic_report(snapshot: dict[str, Any]) -> str:
         f"- 生成时间：{_utc_now()}",
         f"- 输入 BOM：`{snapshot['path']}`",
         f"- 快照 ID：`{snapshot['snapshot_id']}`",
-        "- 本报告由 `main.py` 调用 BOM 解析、实体对齐、证据补全和血缘边提取模块生成。",
+        "- 本报告由 `main.py` 调用 BOM 解析、实体对齐、证据补全和 HF 血缘提取模块生成；通用 depends_on 边已移除。",
         "",
         "## 摘要",
         "",
         f"- BOM 解析资产数：{len(snapshot['raw_assets'])}",
         f"- 实体对齐后资产数：{len(assets)}",
         f"- 候选配对日志数：{len(merge_log)}",
-        f"- 血缘边数：{len(edges)}",
+        f"- HF 血缘边数：{len(edges)}",
         f"- 支持远程证据的 purl 数：{evidence_summary['supported_purls']}",
         f"- 成功补全远程证据数：{evidence_summary['remote_ok']}",
         f"- 网络失败降级数：{evidence_summary['network_error']}",
@@ -331,18 +404,17 @@ def _render_basic_report(snapshot: dict[str, Any]) -> str:
         lines.append("未发现无法识别的许可证片段。")
 
     lines.extend(["", "## 血缘边统计", ""])
+    edge_distribution = Counter(edge.get("edge_type") for edge in edges)
     edge_type_rows = [
         [edge_type, count]
-        for edge_type, count in sorted(edge_stats["by_edge_type"].items())
+        for edge_type, count in sorted(edge_distribution.items())
+        if edge_type
     ]
     lines.extend(_table(["边类型", "数量"], edge_type_rows))
     lines.extend(
         [
             "",
-            f"- 原始边引用数：{edge_stats['raw_edge_count']}",
-            f"- 三元组去重数：{edge_stats['duplicate_count']}",
-            f"- 从原始 BOM 补回关系的资产数：{edge_stats['recovered_assets']}",
-            f"- 指向不存在节点的边端点数：{edge_stats['missing_node_count']}",
+            "- 通用依赖关系边（depends_on）：已移除。",
             "",
             "## 免责声明",
             "",
