@@ -275,8 +275,8 @@
     }
   ],
   "canonical_to_scc": {
-    "package:pypi/example-parser": "scc-0",
     "package:pypi/lib-x": "scc-0",
+    "package:pypi/example-parser": "scc-0",
     "model:meta-llama/Llama-2-7b": "scc-1",
     "dataset:my-org/new-training-data": "scc-2",
     "model:my-org/finetuned-model": "scc-3",
