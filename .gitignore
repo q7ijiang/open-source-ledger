@@ -229,3 +229,22 @@ node_modules/
 # 通用临时文件
 *.tmp
 *.cache
+
+# 本地运行产物
+outputs/
+
+# 隔离安装的第三方测试依赖
+work/task4_deps/
+
+# 一次性批量验证产物
+work/stage5/
+
+# 运行输出（可能包含本地绝对路径）
+out/assets.json
+out/edges.json
+out/graph.json
+out/hf_lineage/
+out/propagated.json
+
+# 缓存（__pycache__/ 和 .pytest_cache/ 已在上方配置）
+*.pyc
