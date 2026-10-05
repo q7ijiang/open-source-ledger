@@ -105,7 +105,7 @@ def enrich_bom(bom_path: Path, model_override: str | None = None) -> tuple[str, 
         {
             "group": group,
             "name": name,
-            "type": "model",
+            "type": "machine-learning-model",
             "purl": hf_purl(model_name),
             "pedigree": {
                 "ancestors": [
