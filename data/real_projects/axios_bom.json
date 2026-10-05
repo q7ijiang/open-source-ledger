@@ -1,0 +1,150 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:37db37b9-993b-4661-bee9-b04353315bdb",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-03T07:49:09Z",
+    "tools": {
+      "components": [
+        {
+          "group": "@cyclonedx",
+          "name": "cdxgen",
+          "version": "12.8.5",
+          "purl": "pkg:npm/%40cyclonedx/cdxgen@12.8.5",
+          "type": "application",
+          "bom-ref": "pkg:npm/@cyclonedx/cdxgen@12.8.5",
+          "publisher": "OWASP Foundation",
+          "authors": [
+            {
+              "name": "OWASP Foundation"
+            }
+          ]
+        }
+      ]
+    },
+    "authors": [
+      {
+        "name": "OWASP Foundation"
+      }
+    ],
+    "lifecycles": [
+      {
+        "phase": "pre-build"
+      }
+    ],
+    "component": {
+      "group": "",
+      "name": "axios",
+      "version": "1.20.0",
+      "type": "application",
+      "bom-ref": "pkg:application/axios@1.20.0",
+      "purl": "pkg:application/axios@1.20.0"
+    },
+    "properties": [
+      {
+        "name": "cdx:bom:componentTypes",
+        "value": "npm"
+      },
+      {
+        "name": "cdx:bom:componentSrcFiles",
+        "value": "dist\\axios.min.js\\ndist\\esm\\axios.min.js"
+      }
+    ]
+  },
+  "components": [
+    {
+      "group": "",
+      "name": "axios",
+      "version": "1.20.0",
+      "scope": "optional",
+      "purl": "pkg:npm/axios@1.20.0",
+      "type": "library",
+      "bom-ref": "pkg:npm/axios@1.20.0",
+      "properties": [
+        {
+          "name": "SrcFile",
+          "value": "dist\\axios.min.js"
+        },
+        {
+          "name": "SrcFile",
+          "value": "dist\\esm\\axios.min.js"
+        }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.25,
+            "methods": [
+              {
+                "technique": "filename",
+                "confidence": 0.25,
+                "value": "dist\\esm\\axios.min.js"
+              }
+            ],
+            "concludedValue": "dist\\esm\\axios.min.js"
+          }
+        ]
+      }
+    },
+    {
+      "group": "",
+      "name": "regenerator-runtime",
+      "version": "--",
+      "scope": "optional",
+      "purl": "pkg:npm/regenerator-runtime@--",
+      "type": "library",
+      "bom-ref": "pkg:npm/regenerator-runtime@--",
+      "properties": [
+        {
+          "name": "SrcFile",
+          "value": "dist\\axios.min.js"
+        }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.25,
+            "methods": [
+              {
+                "technique": "filename",
+                "confidence": 0.25,
+                "value": "dist\\axios.min.js"
+              }
+            ],
+            "concludedValue": "dist\\axios.min.js"
+          }
+        ]
+      }
+    }
+  ],
+  "dependencies": [],
+  "annotations": [
+    {
+      "bom-ref": "metadata-annotations",
+      "subjects": [
+        "pkg:application/axios@1.20.0"
+      ],
+      "annotator": {
+        "component": {
+          "group": "@cyclonedx",
+          "name": "cdxgen",
+          "version": "12.8.5",
+          "purl": "pkg:npm/%40cyclonedx/cdxgen@12.8.5",
+          "type": "application",
+          "bom-ref": "pkg:npm/@cyclonedx/cdxgen@12.8.5",
+          "publisher": "OWASP Foundation",
+          "authors": [
+            {
+              "name": "OWASP Foundation"
+            }
+          ]
+        }
+      },
+      "timestamp": "2026-10-03T07:49:09Z",
+      "text": "This Software Bill-of-Materials (SBOM) document was created on Saturday, October 3, 2026 with cdxgen. The data was captured during the pre-build lifecycle phase without building the application. The document describes an application named 'axios' with version '1.20.0'."
+    }
+  ]
+}
