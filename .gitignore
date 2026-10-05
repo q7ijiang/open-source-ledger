@@ -229,6 +229,8 @@ node_modules/
 # 通用临时文件
 *.tmp
 *.cache
+*.txt
+!requirements.txt
 
 # 本地运行产物
 outputs/
