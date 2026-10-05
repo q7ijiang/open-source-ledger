@@ -5,6 +5,11 @@ on:
     # UTC 每周一 01:00 = 北京时间周一 09:00
     - cron: '0 1 * * 1'
   workflow_dispatch:
+    inputs:
+      model:
+        description: '要扫描的 HF 模型名'
+        required: true
+        default: 'TheBloke/Qwen2.5-0.5B-Instruct-GGUF'
 
 permissions:
   contents: read
@@ -28,7 +33,7 @@ jobs:
         run: npm install -g @cyclonedx/cdxgen
 
       - name: Run model lineage scan
-        run: python main.py --model TheBloke/Llama-2-7B-Chat-GGUF --output reports/monitor.md
+        run: python main.py --model ${{ github.event.inputs.model || 'TheBloke/Qwen2.5-0.5B-Instruct-GGUF' }} --output reports/monitor.md
 
       - name: Upload monitor artifacts
         uses: actions/upload-artifact@v4
