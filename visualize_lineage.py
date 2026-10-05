@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
-"""visualize_lineage.py — 用 networkx + matplotlib 把模块 8 的血缘图渲染成 PNG。
+"""visualize_lineage.py — 用 networkx + matplotlib 把血缘图渲染成分层 PNG。
+
+布局规则：
+- 模型节点按血缘深度分层（基座=0，一层微调=1，…），祖宗在上、后代在下；
+- derived_from 边箭头从上游（祖宗）指向下游（后代）；
+- 数据集节点放在右侧单独一列，trained_on 边从模型连到数据集；
+- 模型深蓝、数据集橙、derived_from 红色实线、trained_on 蓝色虚线，右上角图例。
 
 用法：
     python visualize_lineage.py --graph out/hf_lineage/graph.json \
                                 --output outputs/lineage_graph.png
-
-输入为模块 8 graph_to_dict 产出的 graph.json（含 nodes / edges），
-输出为无头模式（Agg）下的静态 PNG 图。
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import math
+from collections import defaultdict
 from pathlib import Path
 
 import matplotlib
@@ -20,15 +25,25 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import networkx as nx  # noqa: E402
+from matplotlib.lines import Line2D  # noqa: E402
+from matplotlib.patches import Circle, FancyArrowPatch, Patch  # noqa: E402
 
-EDGE_COLOR = {
-    "derived_from": "#d62728",
-    "trained_on": "#1f77b4",
-    "depends_on": "#2ca02c",
-}
-NODE_COLOR = {"model": "#4c72b0", "dataset": "#dd8452"}
+# 颜色
+MODEL_COLOR = "#4A7EBB"
+DATASET_COLOR = "#E8A33D"
+DERIVED_COLOR = "#d62728"
+TRAINED_COLOR = "#1f77b4"
 DEFAULT_NODE_COLOR = "#55a868"
 DEFAULT_EDGE_COLOR = "#7f7f7f"
+
+# 尺寸与布局参数
+MODEL_RADIUS = 0.35
+DATASET_RADIUS = MODEL_RADIUS * 0.6   # 数据集半径 = 模型的 60%
+DEPTH_SPACING = 1.4                    # 相邻血缘深度的垂直间距
+DATASET_SPACING = 0.8                  # 右侧数据集列的节点间距
+DATASET_X_GAP = 1.8                    # 数据集列与模型列的横向间距
+LABEL_MAX_LEN = 20
+LABEL_V_GAP = 0.08
 
 
 def load_graph(path: Path) -> nx.MultiDiGraph:
@@ -56,43 +71,186 @@ def load_graph(path: Path) -> nx.MultiDiGraph:
     return graph
 
 
+def short_label(name: str) -> str:
+    """取名称最后一段（去掉 org/ 前缀），超 20 字符时中间省略以保留结尾。"""
+    name = (name or "").strip()
+    if "/" in name:
+        name = name.rsplit("/", 1)[-1]
+    if len(name) > LABEL_MAX_LEN:
+        keep = LABEL_MAX_LEN - 3
+        tail = keep // 2
+        head = keep - tail
+        name = name[:head] + "..." + name[-tail:]
+    return name
+
+
+def compute_model_depths(graph: nx.MultiDiGraph) -> dict:
+    """基于 derived_from 边计算模型拓扑深度：基座=0，逐层 +1。
+
+    图中 derived_from 边 u->v 表示“u 衍生自 v”（u=下游/后代，v=上游/祖宗）。
+    这里构造 v->u 的 DAG（祖宗->后代），再求最长路深度。
+    """
+    dag = nx.DiGraph()
+    for nid, attrs in graph.nodes(data=True):
+        if attrs.get("asset_type") == "model":
+            dag.add_node(nid)
+    for u, v, _key, data in graph.edges(keys=True, data=True):
+        if data.get("edge_type") != "derived_from":
+            continue
+        if dag.has_node(u) and dag.has_node(v):
+            dag.add_edge(v, u)  # 祖宗 v -> 后代 u
+    depth: dict = {}
+    for node in nx.topological_sort(dag):
+        preds = list(dag.predecessors(node))
+        depth[node] = 0 if not preds else max(depth[p] for p in preds) + 1
+    return depth
+
+
+def compute_layout(graph: nx.MultiDiGraph) -> dict:
+    """计算节点坐标：模型按深度纵向分层（祖宗在上），数据集放右侧单列。"""
+    depths = compute_model_depths(graph)
+    model_nodes = [
+        n for n, a in graph.nodes(data=True) if a.get("asset_type") == "model"
+    ]
+    right_nodes = [
+        n for n, a in graph.nodes(data=True) if a.get("asset_type") != "model"
+    ]
+
+    depth_groups: dict = defaultdict(list)
+    for n in model_nodes:
+        depth_groups[depths.get(n, 0)].append(n)
+
+    pos: dict = {}
+    # 模型：y = -depth * DEPTH_SPACING（祖宗 depth=0 在上，后代在下）；同层横向居中展开
+    for d in sorted(depth_groups):
+        nodes = depth_groups[d]
+        if len(nodes) == 1:
+            xs = [0.0]
+        else:
+            xs = [i - (len(nodes) - 1) / 2.0 for i in range(len(nodes))]
+        for n, x in zip(nodes, xs):
+            pos[n] = (x, -float(d) * DEPTH_SPACING)
+
+    # 数据集（及其它非模型节点）：右侧单独一列，纵向均匀排布，保证不重叠
+    right_x = (max(x for x, _y in pos.values()) if pos else 0.0) + DATASET_X_GAP
+    for i, n in enumerate(right_nodes):
+        pos[n] = (right_x, -float(i) * DATASET_SPACING)
+
+    return pos
+
+
+def _node_radius(attrs: dict) -> float:
+    return MODEL_RADIUS if attrs.get("asset_type") == "model" else DATASET_RADIUS
+
+
+def _node_color(attrs: dict) -> str:
+    asset_type = attrs.get("asset_type")
+    if asset_type == "model":
+        return MODEL_COLOR
+    if asset_type == "dataset":
+        return DATASET_COLOR
+    return DEFAULT_NODE_COLOR
+
+
+def _draw_arrow(ax, pos, u, v, color, linestyle, r_u, r_v) -> None:
+    """从 u 指向 v 的箭头，两端缩进到各自节点圆边。"""
+    x1, y1 = pos[u]
+    x2, y2 = pos[v]
+    dx, dy = x2 - x1, y2 - y1
+    length = math.hypot(dx, dy)
+    if length < 1e-9:
+        return
+    ux, uy = dx / length, dy / length
+    start = (x1 + ux * r_u, y1 + uy * r_u)
+    end = (x2 - ux * r_v, y2 - uy * r_v)
+    ax.add_patch(
+        FancyArrowPatch(
+            start,
+            end,
+            arrowstyle="-|>",
+            mutation_scale=14,
+            color=color,
+            linestyle=linestyle,
+            linewidth=1.4,
+            zorder=2,
+            shrinkA=0,
+            shrinkB=0,
+        )
+    )
+
+
 def render(graph: nx.MultiDiGraph, out_path: Path) -> None:
-    """把图渲染为 PNG。节点按资产类型着色，边按边类型着色。"""
-    k = 2.0 / max(1.0, len(graph) ** 0.5)
-    pos = nx.spring_layout(graph, seed=42, k=k)
+    """把图渲染为分层 PNG：模型按血缘深度纵向分层，数据集在右侧单列。"""
+    pos = compute_layout(graph)
 
-    node_colors = []
-    labels = {}
-    for node_id, attrs in graph.nodes(data=True):
-        node_colors.append(NODE_COLOR.get(attrs.get("asset_type"), DEFAULT_NODE_COLOR))
-        name = attrs.get("name") or node_id
-        labels[node_id] = name if len(name) <= 32 else name[:29] + "..."
+    fig, ax = plt.subplots(figsize=(12, 12))
 
-    plt.figure(figsize=(14, 10))
-    nx.draw_networkx_nodes(graph, pos, node_color=node_colors, node_size=2400, alpha=0.92)
-    nx.draw_networkx_labels(graph, pos, labels=labels, font_size=8)
+    # 1. 边：derived_from 反向（祖宗->后代），trained_on 正向（模型->数据集）
+    for u, v, _key, data in graph.edges(keys=True, data=True):
+        etype = data.get("edge_type")
+        r_u = _node_radius(graph.nodes[u])
+        r_v = _node_radius(graph.nodes[v])
+        if etype == "derived_from":
+            # 数据中 u(下游/后代) -> v(上游/祖宗)；绘制时反向：祖宗 -> 后代（从上往下）
+            _draw_arrow(ax, pos, v, u, DERIVED_COLOR, "solid", r_v, r_u)
+        elif etype == "trained_on":
+            _draw_arrow(ax, pos, u, v, TRAINED_COLOR, "dashed", r_u, r_v)
+        else:
+            _draw_arrow(ax, pos, u, v, DEFAULT_EDGE_COLOR, "solid", r_u, r_v)
 
-    if graph.number_of_edges():
-        edge_colors = [
-            EDGE_COLOR.get(graph.edges[u, v, key].get("edge_type"), DEFAULT_EDGE_COLOR)
-            for u, v, key in graph.edges(keys=True)
-        ]
-        nx.draw_networkx_edges(
-            graph,
-            pos,
-            edgelist=list(graph.edges(keys=True)),
-            edge_color=edge_colors,
-            arrows=True,
-            arrowsize=16,
-            connectionstyle="arc3,rad=0.12",
+    # 2. 节点
+    for nid, (x, y) in pos.items():
+        attrs = graph.nodes[nid]
+        ax.add_patch(
+            Circle(
+                (x, y),
+                radius=_node_radius(attrs),
+                facecolor=_node_color(attrs),
+                edgecolor="white",
+                linewidth=1.0,
+                zorder=3,
+            )
         )
 
-    plt.axis("off")
-    plt.title(
+    # 3. 标签（节点下方，不重叠）
+    for nid, (x, y) in pos.items():
+        attrs = graph.nodes[nid]
+        label = short_label(attrs.get("name") or nid)
+        ax.text(
+            x,
+            y - _node_radius(attrs) - LABEL_V_GAP,
+            label,
+            ha="center",
+            va="top",
+            fontsize=8,
+            zorder=4,
+        )
+
+    # 4. 图例（右上角）
+    legend_handles = [
+        Patch(facecolor=MODEL_COLOR, edgecolor="white", label="model"),
+        Patch(facecolor=DATASET_COLOR, edgecolor="white", label="dataset"),
+        Line2D([0], [0], color=DERIVED_COLOR, linestyle="-", linewidth=1.4,
+               marker=">", markersize=7, label="derived_from"),
+        Line2D([0], [0], color=TRAINED_COLOR, linestyle="--", linewidth=1.4,
+               marker=">", markersize=7, label="trained_on"),
+    ]
+    ax.legend(handles=legend_handles, loc="upper right", fontsize=9, framealpha=0.9)
+
+    # 5. 坐标范围与标题
+    if pos:
+        xs = [p[0] for p in pos.values()]
+        ys = [p[1] for p in pos.values()]
+        ax.set_xlim(min(xs) - 1.2, max(xs) + 1.2)
+        ax.set_ylim(min(ys) - 1.0, max(ys) + 1.2)
+    ax.set_aspect("equal")
+    ax.axis("off")
+    ax.set_title(
         f"Lineage Graph ({graph.number_of_nodes()} nodes, "
-        f"{graph.number_of_edges()} edges)"
+        f"{graph.number_of_edges()} edges)",
+        fontsize=12,
     )
-    plt.tight_layout()
+
     out_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()

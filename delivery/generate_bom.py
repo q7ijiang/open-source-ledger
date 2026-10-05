@@ -179,6 +179,18 @@ def run_lineage(args, cdxgen_bin):
     """递归扫描入口：把根模型及整条祖先链的 BOM 写入同一目录。"""
     outdir = Path(args.outdir) if args.outdir else Path("outputs") / "lineage_scan"
     outdir.mkdir(parents=True, exist_ok=True)
+
+    # 扫描前清空输出目录中的旧 *.json，避免上次运行的残留 BOM 混入本次血缘图。
+    removed = 0
+    for stale in outdir.glob("*.json"):
+        try:
+            stale.unlink()
+            removed += 1
+        except OSError:
+            pass
+    if removed:
+        print(f"已清空输出目录中 {removed} 个旧 *.json 文件")
+
     visited = set()
     stats = {"models": [], "failed": [], "max_depth": 0}
 
