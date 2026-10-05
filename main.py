@@ -50,7 +50,6 @@ CHANGE_TYPE_ZH = {
     "evidence_downgrade": "证据等级下降",
 }
 
-EVIDENCE_ORDER = {"A": 0, "B": 1, "C": 2}
 HF_MODEL_TYPES = {"machine-learning-model", "model"}
 HF_LINEAGE_EDGE_TYPES = {"derived_from", "trained_on"}
 
