@@ -22,6 +22,9 @@ report_basic.py 和 report_enhanced.py 当前不存在，因此 Markdown 报告�
 from __future__ import annotations
 
 import argparse
+import json
+import os
+import subprocess
 import sys
 from collections import Counter
 from datetime import datetime, timezone
@@ -59,16 +62,31 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "示例：\n"
             "  python main.py --mode basic --input bom.json --output report.md\n"
             "  python main.py --mode deep --before t0_bom.json --after t1_bom.json "
+            "--output report.md\n"
+            "  python main.py --model TheBloke/Llama-2-7B-Chat-GGUF "
             "--output report.md"
         ),
     )
-    parser.add_argument("--mode", choices=("basic", "deep"), required=True)
+    parser.add_argument("--mode", choices=("basic", "deep"), required=False,
+                        help="基础/深度模式（与 --model / --diff 二选一）")
+    parser.add_argument("--model", type=str, default=None,
+                        help="HF 模型名，触发模型血缘扫描模式（与 --mode / --diff 二选一）")
+    parser.add_argument("--diff", action="store_true",
+                        help="BOM 对比模式，输出风险报告（与 --model / --mode 互斥）")
     parser.add_argument("--input", type=Path, help="基础模式的 CycloneDX BOM")
-    parser.add_argument("--before", type=Path, help="深度模式的 t0 CycloneDX BOM")
-    parser.add_argument("--after", type=Path, help="深度模式的 t1 CycloneDX BOM")
+    parser.add_argument("--before", type=Path, help="深度/diff 模式的 t0 CycloneDX BOM")
+    parser.add_argument("--after", type=Path, help="深度/diff 模式的 t1 CycloneDX BOM")
     parser.add_argument("--output", type=Path, required=True, help="输出 Markdown 报告")
     args = parser.parse_args(argv)
 
+    if args.diff and (args.model is not None or args.mode is not None):
+        parser.error("--diff 与 --model / --mode 互斥，请二选一")
+    if args.model is not None and args.mode is not None:
+        parser.error("--model 与 --mode 互斥，请二选一")
+    if not args.diff and args.model is None and args.mode is None:
+        parser.error("必须提供 --diff 或 --mode（basic/deep）或 --model")
+    if args.diff and (args.before is None or args.after is None):
+        parser.error("--diff 必须同时提供 --before 和 --after")
     if args.mode == "basic" and args.input is None:
         parser.error("--mode basic 必须提供 --input")
     if args.mode == "deep" and (args.before is None or args.after is None):
@@ -660,9 +678,271 @@ def run_deep(args: argparse.Namespace) -> None:
     print(f"变更事件：{len(events)}，传播后事件：{len(propagated['events'])}")
 
 
+def run_diff(before_bom: Path, after_bom: Path, output_path: Path) -> None:
+    """BOM 对比模式：实体对齐 → Delta 检测 → 风险传播 → 增强报告。
+
+    依次调用仓库现有模块：
+    - entity_resolver.py：对 before 和 after 各跑一次（经 _build_snapshot）
+    - delta_engine.py：检测两个快照之间的变更事件
+    - propagation_engine.py：沿血缘图传播风险并生成路径证书
+    - report_enhanced.py：渲染中文风险传播报告
+    """
+    try:
+        import build_graph
+        import delta_engine
+        import propagation_engine
+        import report_enhanced
+    except ModuleNotFoundError as exc:
+        if exc.name == "networkx":
+            raise RuntimeError("diff 模式需要安装 networkx，当前 Python 环境未找到该依赖。") from exc
+        raise
+
+    before = _build_snapshot(before_bom, "t0")
+    after = _build_snapshot(after_bom, "t1")
+
+    graph_before = build_graph.build_graph(before["assets"], before["edges"])
+    graph_after = build_graph.build_graph(after["assets"], after["edges"])
+
+    events = delta_engine.detect_delta(
+        before["assets"],
+        after["assets"],
+        before["edges"],
+        after["edges"],
+    )
+    propagated = propagation_engine.propagate(events, graph_before, graph_after)
+
+    report = report_enhanced.render_report(
+        propagated["events"],
+        propagated["path_certificates"],
+        str(before_bom),
+        str(after_bom),
+    )
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(report, encoding="utf-8")
+
+    decision_distribution = Counter(
+        event["decision"] for event in propagated["events"]
+    )
+    print(f"diff 模式报告已写入：{output_path}")
+    print(
+        f"变更事件：{len(events)}，传播后事件：{len(propagated['events'])}，"
+        f"路径证书：{len(propagated['path_certificates'])}"
+    )
+    print(f"三级判定分布：{dict(decision_distribution)}")
+
+
+def _run_py_script(script: Path, script_args: list[str], label: str) -> None:
+    """以子进程方式调用仓库脚本，转发输出，失败时抛异常。"""
+    cmd = [sys.executable, str(script), *script_args]
+    print(f"[{label}] 运行：{' '.join(cmd)}")
+    env = os.environ.copy()
+    # 强制子进程以 UTF-8 读写，避免 Windows 下中文输出被按本地代码页解码导致乱码。
+    env["PYTHONUTF8"] = "1"
+    env["PYTHONIOENCODING"] = "utf-8"
+    proc = subprocess.run(
+        cmd,
+        cwd=str(script.parent),
+        env=env,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if proc.stdout:
+        print(proc.stdout.rstrip())
+    if proc.stderr:
+        print(proc.stderr.rstrip(), file=sys.stderr)
+    if proc.returncode != 0:
+        raise RuntimeError(f"{label} 执行失败（退出码 {proc.returncode}）")
+
+
+def _component_name(component: dict[str, Any]) -> str:
+    """由组件 group/name 拼接出 HF 模型 id 风格的名称。"""
+    return f"{component.get('group', '')}/{component.get('name', '')}".strip("/")
+
+
+def _bom_ancestors(bom_path: Path) -> tuple[str, list[str]]:
+    """读取单个 BOM 的主组件名与其直接祖先模型 id 列表。"""
+    data = json.loads(bom_path.read_text(encoding="utf-8"))
+    comps = data.get("components", []) or []
+    if not comps:
+        return _component_name({}), []
+    model = comps[0]
+    ancestors = [
+        _component_name(ancestor)
+        for ancestor in ((model.get("pedigree") or {}).get("ancestors") or [])
+        if isinstance(ancestor, dict) and (ancestor.get("name") or ancestor.get("purl"))
+    ]
+    return _component_name(model), ancestors
+
+
+def _ancestor_chain_depth(
+    model: str,
+    ancestry: dict[str, list[str]],
+    seen: set[str],
+) -> int:
+    """沿 pedigree.ancestors 递归求单个模型的祖先层数（带环保护）。"""
+    if model in seen:
+        return 0
+    seen = seen | {model}
+    depth = 0
+    for ancestor in ancestry.get(model, []):
+        depth = max(depth, 1 + _ancestor_chain_depth(ancestor, ancestry, seen))
+    return depth
+
+
+def _lineage_depth(bom_dir: Path) -> int:
+    """扫描 BOM 目录，返回所有模型血缘链的最大祖先层数。"""
+    ancestry: dict[str, list[str]] = {}
+    for bom_path in sorted(bom_dir.glob("*.json")):
+        try:
+            model, ancestors = _bom_ancestors(bom_path)
+        except (json.JSONDecodeError, OSError):
+            continue
+        if model:
+            ancestry[model] = ancestors
+    return max((_ancestor_chain_depth(m, ancestry, set()) for m in ancestry), default=0)
+
+
+def _render_model_report(
+    model: str,
+    bom_dir: Path,
+    extract_dir: Path,
+    png_path: Path,
+    duration_s: float,
+) -> str:
+    """渲染模型血缘扫描的中文 Markdown 报告。"""
+    graph = json.loads((extract_dir / "graph.json").read_text(encoding="utf-8"))
+    nodes = graph.get("nodes", [])
+    edges = graph.get("edges", [])
+    depth = _lineage_depth(bom_dir)
+    bom_files = sorted(bom_dir.glob("*.json"))
+
+    node_type_counter = Counter((n.get("asset_type") or "unknown") for n in nodes)
+    edge_type_counter = Counter((e.get("edge_type") or "unknown") for e in edges)
+
+    bom_rows = []
+    for bom_file in bom_files:
+        try:
+            name, _ = _bom_ancestors(bom_file)
+        except (json.JSONDecodeError, OSError):
+            name = bom_file.stem
+        bom_rows.append([name or bom_file.stem, bom_file.name, bom_file.stat().st_size])
+
+    node_rows = [
+        [
+            n.get("canonical_id"),
+            n.get("asset_type"),
+            n.get("name") or n.get("canonical_id"),
+            n.get("version"),
+            n.get("license"),
+        ]
+        for n in nodes
+    ]
+    edge_rows = [
+        [e.get("source"), e.get("edge_type"), e.get("target"), e.get("evidence_level")]
+        for e in edges
+    ]
+
+    lines: list[str] = [
+        "# AI 模型血缘扫描报告",
+        "",
+        f"- 扫描模型：`{model}`",
+        f"- 生成时间：{_utc_now()}",
+        f"- 血缘层级（祖先层数）：**{depth}**",
+        f"- 生成 BOM 数量：**{len(bom_files)}**",
+        f"- 血缘图节点数：**{len(nodes)}**，边数：**{len(edges)}**",
+        f"- SCC 强连通分量：**{graph.get('scc_count', 0)}**",
+        f"- 血缘图 PNG：**{'已生成' if png_path.exists() else '未生成'}**（`{png_path}`）",
+        f"- 本报告生成：**成功**（流水线耗时 {duration_s:.1f}s）",
+        "",
+        "## 一、BOM 清单",
+        "",
+    ]
+    lines.extend(_table(["模型", "文件", "大小（字节）"], bom_rows))
+    lines.extend(["", "## 二、血缘图节点", ""])
+    lines.extend(_table(["canonical_id", "类型", "名称", "版本", "许可证"], node_rows))
+    lines.extend(["", "## 三、血缘边", ""])
+    lines.extend(_table(["来源", "边类型", "目标", "证据等级"], edge_rows))
+    lines.extend([
+        "",
+        "## 四、统计",
+        "",
+        f"- 节点类型分布：`{dict(node_type_counter)}`",
+        f"- 边类型分布：`{dict(edge_type_counter)}`",
+        "",
+        "## 免责声明",
+        "",
+        "本报告基于结构化证据与血缘图的辅助分析结果，不构成法律意见。",
+        "",
+    ])
+    return "\n".join(lines)
+
+
+def run_model(args: argparse.Namespace) -> None:
+    """模型模式：递归扫祖先 → 补数据 → 提取血缘 → 建图 → 可视化 → 中文报告。"""
+    model = args.model
+    root = Path(__file__).resolve().parent
+    bom_dir = root / "outputs" / "lineage_scan"
+    extract_dir = root / "outputs" / "lineage_extract"
+    png_path = root / "outputs" / "lineage_graph.png"
+
+    started = datetime.now(timezone.utc)
+
+    # 1. 递归扫描祖先链 → BOM 目录
+    _run_py_script(
+        root / "generate_bom.py",
+        [model, "--recursive", "--outdir", str(bom_dir)],
+        "generate_bom",
+    )
+
+    # 2. 补数据：对 cdxgen 空 BOM 从模型名推断祖先（证据等级 C）
+    _run_py_script(
+        root / "enrich_lineage.py",
+        ["--bom-dir", str(bom_dir), "--model", model],
+        "enrich_lineage",
+    )
+
+    # 3. 提取血缘边 → assets/edges/graph.json
+    _run_py_script(
+        root / "work" / "extract_hf_lineage.py",
+        ["--bom-dir", str(bom_dir), "--output-dir", str(extract_dir)],
+        "extract_hf_lineage",
+    )
+
+    # 4. 显式构建血缘图
+    _run_py_script(
+        root / "build_graph.py",
+        [
+            "--assets", str(extract_dir / "assets.json"),
+            "--edges", str(extract_dir / "edges.json"),
+            "--output", str(extract_dir / "graph.json"),
+        ],
+        "build_graph",
+    )
+
+    # 5. 可视化 → PNG
+    _run_py_script(
+        root / "visualize_lineage.py",
+        ["--graph", str(extract_dir / "graph.json"), "--output", str(png_path)],
+        "visualize_lineage",
+    )
+
+    duration_s = (datetime.now(timezone.utc) - started).total_seconds()
+    report = _render_model_report(model, bom_dir, extract_dir, png_path, duration_s)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(report, encoding="utf-8")
+    print(f"模型模式报告已写入：{args.output}")
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
-    if args.mode == "basic":
+    if args.diff:
+        run_diff(args.before, args.after, args.output)
+    elif args.model is not None:
+        run_model(args)
+    elif args.mode == "basic":
         run_basic(args)
     else:
         run_deep(args)

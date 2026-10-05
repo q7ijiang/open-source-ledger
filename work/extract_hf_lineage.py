@@ -42,6 +42,16 @@ RULE_VERSION = "merge-policy-v2"
 EDGE_EVIDENCE_LEVEL = "B"  # 见 docstring：CycloneDX 工具产物按接口约定为 B 级
 
 
+def ancestor_evidence_level(ancestor: dict) -> str:
+    """读取祖先对象自带的 evidence_level，缺省回退到 B（CycloneDX 工具产物）。
+
+    enrich_lineage.py 补数据时会把推断祖先标注为 C；cdxgen 原生 BOM 的祖先
+    不含该字段，仍按接口约定归为 B 级。
+    """
+    level = (ancestor.get("evidence_level") or "").strip().upper()
+    return level or EDGE_EVIDENCE_LEVEL
+
+
 def component_license(component: dict) -> str | None:
     """从 CycloneDX licenses 提取许可证名（多个以 ';' 连接）。
 
@@ -159,13 +169,6 @@ def extract(
             "raw_value": raw_value,
         }
 
-    # 主模型 = 第一个组件（cdxgen 生成的 HF BOM 惯例）
-    model = components[0]
-    model_name = f"{model.get('group', '')}/{model.get('name', '')}".strip("/")
-    model_purl = model.get("purl")
-    model_purls = [model_purl] if model_purl else []
-    model_chain: list[dict] = []
-
     # derived_from：pedigree.ancestors（递归展开，保留全部祖先）
     def ancestors_of(component: dict) -> list[dict]:
         out = []
@@ -176,101 +179,141 @@ def extract(
             out.extend(ancestors_of(anc))
         return out
 
-    ancestors = ancestors_of(model)
-    if ancestors:
-        model_chain.append(
-            evidence(
-                "pedigree.ancestors",
-                [anc.get("purl") or anc.get("bom-ref") for anc in ancestors],
+    # 项目级 BOM 可含多个 machine-learning-model 组件，逐一提取；
+    # 资产按 canonical_id、边按 (source, target, edge_type) 去重。
+    seen_assets: set[str] = set()
+    seen_edges: set[tuple[str, str, str]] = set()
+
+    def add_asset(asset: dict) -> str:
+        canonical_id = asset["canonical_id"]
+        if canonical_id and canonical_id not in seen_assets:
+            seen_assets.add(canonical_id)
+            assets.append(asset)
+        return canonical_id
+
+    def add_edge(
+        source: str,
+        target: str,
+        edge_type: str,
+        evidence_level: str,
+        source_field: str,
+    ) -> None:
+        signature = (source, target, edge_type)
+        if signature in seen_edges:
+            return
+        seen_edges.add(signature)
+        edges.append({
+            "source": source,
+            "target": target,
+            "edge_type": edge_type,
+            "evidence_level": evidence_level,
+            "source_field": source_field,
+            "snapshot_id": snapshot_id,
+        })
+
+    for model in components:
+        if not isinstance(model, dict):
+            continue
+        if model.get("type") != "machine-learning-model":
+            continue
+
+        model_name = f"{model.get('group', '')}/{model.get('name', '')}".strip("/")
+        model_purl = model.get("purl")
+        model_purls = [model_purl] if model_purl else []
+        model_chain: list[dict] = []
+
+        ancestors = ancestors_of(model)
+        if ancestors:
+            model_chain.append(
+                evidence(
+                    "pedigree.ancestors",
+                    [anc.get("purl") or anc.get("bom-ref") for anc in ancestors],
+                )
             )
-        )
 
-    # trained_on：modelCard.modelParameters.datasets
-    datasets = (
-        model.get("modelCard", {})
-        .get("modelParameters", {})
-        .get("datasets", []) or []
-    )
-    if datasets:
-        model_chain.append(
-            evidence("modelCard.modelParameters.datasets", datasets)
+        # trained_on：modelCard.modelParameters.datasets
+        datasets = (
+            model.get("modelCard", {})
+            .get("modelParameters", {})
+            .get("datasets", []) or []
         )
+        if datasets:
+            model_chain.append(
+                evidence("modelCard.modelParameters.datasets", datasets)
+            )
 
-    assets.append(
-        node(
-            asset_type="model",
-            name=model_name,
-            version=model.get("version"),
-            purls=model_purls,
-            license_value=component_license(model),
-            snapshot_id=snapshot_id,
-            evidence_chain=model_chain,
-            source_file=source_file,
-            backfill_map=backfill_map,
-        )
-    )
-    model_canonical = assets[-1]["canonical_id"]
-
-    for anc in ancestors:
-        anc_purl = anc.get("purl") or anc.get("bom-ref")
-        anc_purls = [anc_purl] if anc_purl else []
-        anc_name = (
-            f"{anc.get('group', '')}/{anc.get('name', '')}".strip("/")
-            or (anc.get("name") or "")
-        )
-        assets.append(
+        model_canonical = add_asset(
             node(
                 asset_type="model",
-                name=anc_name or "(未命名祖先)",
-                version=anc.get("version"),
-                purls=anc_purls,
-                license_value=component_license(anc) or None,
+                name=model_name,
+                version=model.get("version"),
+                purls=model_purls,
+                license_value=component_license(model),
                 snapshot_id=snapshot_id,
-                evidence_chain=[evidence("pedigree.ancestors", anc_purl)],
+                evidence_chain=model_chain,
                 source_file=source_file,
                 backfill_map=backfill_map,
             )
         )
-        edges.append({
-            "source": model_canonical,
-            "target": assets[-1]["canonical_id"],
-            "edge_type": "derived_from",
-            "evidence_level": EDGE_EVIDENCE_LEVEL,
-            "source_field": "pedigree.ancestors",
-            "snapshot_id": snapshot_id,
-        })
 
-    for entry in datasets:
-        if not isinstance(entry, dict):
-            entry = {"ref": None, "name": str(entry)}
-        ref = str(entry.get("ref") or "").strip()
-        ds_purls = [ref] if ref.startswith("pkg:") else []
-        if ds_purls:
-            # 名称由 node() 从 purl 坐标解析
-            ds_name = None
-        else:
-            ds_name = entry.get("name") or (ref.split("/")[-1] if ref else None)
-        assets.append(
-            node(
-                asset_type="dataset",
-                name=ds_name or "(未命名数据集)",
-                version=None,
-                purls=ds_purls,
-                license_value=None,
-                snapshot_id=snapshot_id,
-                evidence_chain=[evidence("modelCard.modelParameters.datasets", ref)],
-                source_file=source_file,
-                backfill_map=backfill_map,
+        for anc in ancestors:
+            anc_purl = anc.get("purl") or anc.get("bom-ref")
+            anc_purls = [anc_purl] if anc_purl else []
+            anc_name = (
+                f"{anc.get('group', '')}/{anc.get('name', '')}".strip("/")
+                or (anc.get("name") or "")
             )
-        )
-        edges.append({
-            "source": model_canonical,
-            "target": assets[-1]["canonical_id"],
-            "edge_type": "trained_on",
-            "evidence_level": EDGE_EVIDENCE_LEVEL,
-            "source_field": "modelCard.modelParameters.datasets",
-            "snapshot_id": snapshot_id,
-        })
+            anc_canonical = add_asset(
+                node(
+                    asset_type="model",
+                    name=anc_name or "(未命名祖先)",
+                    version=anc.get("version"),
+                    purls=anc_purls,
+                    license_value=component_license(anc) or None,
+                    snapshot_id=snapshot_id,
+                    evidence_chain=[evidence("pedigree.ancestors", anc_purl)],
+                    source_file=source_file,
+                    backfill_map=backfill_map,
+                )
+            )
+            add_edge(
+                model_canonical,
+                anc_canonical,
+                "derived_from",
+                ancestor_evidence_level(anc),
+                "pedigree.ancestors",
+            )
+
+        for entry in datasets:
+            if not isinstance(entry, dict):
+                entry = {"ref": None, "name": str(entry)}
+            ref = str(entry.get("ref") or "").strip()
+            ds_purls = [ref] if ref.startswith("pkg:") else []
+            if ds_purls:
+                # 名称由 node() 从 purl 坐标解析
+                ds_name = None
+            else:
+                ds_name = entry.get("name") or (ref.split("/")[-1] if ref else None)
+            ds_canonical = add_asset(
+                node(
+                    asset_type="dataset",
+                    name=ds_name or "(未命名数据集)",
+                    version=None,
+                    purls=ds_purls,
+                    license_value=None,
+                    snapshot_id=snapshot_id,
+                    evidence_chain=[evidence("modelCard.modelParameters.datasets", ref)],
+                    source_file=source_file,
+                    backfill_map=backfill_map,
+                )
+            )
+            add_edge(
+                model_canonical,
+                ds_canonical,
+                "trained_on",
+                EDGE_EVIDENCE_LEVEL,
+                "modelCard.modelParameters.datasets",
+            )
 
     return assets, edges
 
@@ -287,26 +330,28 @@ def main(argv=None) -> None:
 
     bom_paths = sorted(bom_dir.glob("*.json"))
 
-    # 第一遍：收集所有主模型的 entity_key -> 带版本 canonical_id，
+    # 第一遍：收集所有 machine-learning-model 的 entity_key -> 带版本 canonical_id，
     # 供祖先引用做版本补齐（GGUF 等派生模型的 pedigree 引用常不带版本）。
     backfill_map: dict[str, str] = {}
     for bom_path in bom_paths:
         data = json.loads(bom_path.read_text(encoding="utf-8"))
         comps = data.get("components", []) or []
-        if not comps:
-            continue
-        model = comps[0]
-        model_purl = model.get("purl")
-        if not model_purl:
-            continue
-        model_name = f"{model.get('group', '')}/{model.get('name', '')}".strip("/")
-        entity_key, canonical_id, _ = ba.build_asset_identifiers(
-            asset_type="model",
-            name=model_name,
-            version=model.get("version"),
-            purls=[model_purl],
-        )
-        backfill_map.setdefault(entity_key, canonical_id)
+        for model in comps:
+            if not isinstance(model, dict):
+                continue
+            if model.get("type") != "machine-learning-model":
+                continue
+            model_purl = model.get("purl")
+            if not model_purl:
+                continue
+            model_name = f"{model.get('group', '')}/{model.get('name', '')}".strip("/")
+            entity_key, canonical_id, _ = ba.build_asset_identifiers(
+                asset_type="model",
+                name=model_name,
+                version=model.get("version"),
+                purls=[model_purl],
+            )
+            backfill_map.setdefault(entity_key, canonical_id)
 
     all_assets: dict[str, dict] = {}
     all_edges: list[dict] = []
