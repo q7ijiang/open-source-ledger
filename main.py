@@ -16,7 +16,7 @@
     -> delta_engine.detect_delta
     -> propagation_engine.propagate
 
-report_basic.py 和 report_enhanced.py 当前不存在，因此 Markdown 报告在本入口中生成。
+基础模式 Markdown 报告由 report_basic.py 生成；深度/diff 模式由 report_enhanced.py 生成。
 """
 
 from __future__ import annotations
@@ -30,6 +30,8 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+import report_basic
 
 
 
@@ -98,10 +100,6 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
-def _basic_snapshot_id() -> str:
-    return f"basic-{datetime.now().strftime('%Y%m%d')}"
-
-
 def _cell(value: Any) -> str:
     """把任意值转换为可安全放入 Markdown 表格单元格的文本。"""
     if value is None or value == "":
@@ -119,55 +117,6 @@ def _table(headers: list[str], rows: list[list[Any]]) -> list[str]:
     ]
     lines.extend("| " + " | ".join(_cell(value) for value in row) + " |" for row in rows)
     return lines
-
-
-def _best_evidence_level(asset: dict[str, Any]) -> str | None:
-    levels = [
-        entry.get("evidence_level")
-        for entry in asset.get("evidence_chain", [])
-        if isinstance(entry, dict) and entry.get("evidence_level") in EVIDENCE_ORDER
-    ]
-    if not levels:
-        return None
-    return min(levels, key=lambda level: EVIDENCE_ORDER[level])
-
-
-def _license_assessment(license_text: Any) -> dict[str, Any]:
-    import license_db
-
-    if license_text is None or str(license_text).strip() == "":
-        return {
-            "risk_level": None,
-            "category_zh": "未知 / 待人工确认",
-            "is_ai_license": False,
-            "unknown_items": [],
-        }
-
-    expression = license_db.evaluate_expression(str(license_text))
-    category = expression.get("worst_category") or "unknown"
-    return {
-        "risk_level": expression.get("max_risk_level"),
-        "category_zh": license_db.CATEGORY_ZH.get(category, "未知 / 待人工确认"),
-        "is_ai_license": license_db.is_ai_license(str(license_text)),
-        "unknown_items": expression.get("unknown_items", []),
-    }
-
-
-def _evidence_links(asset: dict[str, Any]) -> list[str]:
-    links: list[str] = []
-    for entry in asset.get("evidence_chain", []):
-        if not isinstance(entry, dict):
-            continue
-        url = entry.get("source_url")
-        if url and str(url) not in links:
-            links.append(str(url))
-    return links
-
-
-def _format_links(urls: list[str]) -> str:
-    if not urls:
-        return "-"
-    return "<br>".join(f"[{index}]({url})" for index, url in enumerate(urls, start=1))
 
 
 def _is_hf_model_bom(bom: dict[str, Any]) -> bool:
@@ -274,173 +223,6 @@ def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
         "evidence_summary": evidence_summary,
         "edges": edges,
     }
-
-
-def _render_basic_report(snapshot: dict[str, Any]) -> str:
-    assets: list[dict[str, Any]] = snapshot["assets"]
-    edges: list[dict[str, Any]] = snapshot["edges"]
-    merge_log: list[dict[str, Any]] = snapshot["merge_log"]
-    evidence_summary: dict[str, Any] = snapshot["evidence_summary"]
-
-    assessments = {
-        asset.get("canonical_id"): _license_assessment(asset.get("license"))
-        for asset in assets
-    }
-    risk_distribution = Counter(
-        assessment["risk_level"]
-        for assessment in assessments.values()
-        if assessment["risk_level"] is not None
-    )
-    category_distribution = Counter(
-        assessment["category_zh"] for assessment in assessments.values()
-    )
-    unknown_assets = [
-        asset
-        for asset in assets
-        if assessments[asset.get("canonical_id")]["unknown_items"]
-    ]
-    attention_assets = [
-        asset
-        for asset in assets
-        if (assessments[asset.get("canonical_id")]["risk_level"] or 0) >= 4
-        or assessments[asset.get("canonical_id")]["is_ai_license"]
-    ]
-
-    lines = [
-        "# 开源及第三方资源使用清单",
-        "",
-        f"- 生成时间：{_utc_now()}",
-        f"- 输入 BOM：`{snapshot['path']}`",
-        f"- 快照 ID：`{snapshot['snapshot_id']}`",
-        "- 本报告由 `main.py` 调用 BOM 解析、实体对齐、证据补全和 HF 血缘提取模块生成；通用 depends_on 边已移除。",
-        "",
-        "## 摘要",
-        "",
-        f"- BOM 解析资产数：{len(snapshot['raw_assets'])}",
-        f"- 实体对齐后资产数：{len(assets)}",
-        f"- 候选配对日志数：{len(merge_log)}",
-        f"- HF 血缘边数：{len(edges)}",
-        f"- 支持远程证据的 purl 数：{evidence_summary['supported_purls']}",
-        f"- 成功补全远程证据数：{evidence_summary['remote_ok']}",
-        f"- 网络失败降级数：{evidence_summary['network_error']}",
-        f"- 处理前无证据资产：{evidence_summary['assets_without_evidence_before']}",
-        f"- 处理后无证据资产：{evidence_summary['assets_without_evidence_after']}",
-        "",
-        "## 许可证风险分布",
-        "",
-    ]
-    lines.extend(
-        _table(
-            ["风险等级", "资产数"],
-            [[level, risk_distribution[level]] for level in sorted(risk_distribution)],
-        )
-    )
-    lines.extend(["", "### 类别分布", ""])
-    lines.extend(
-        _table(
-            ["许可证类别", "资产数"],
-            [[category, count] for category, count in sorted(category_distribution.items())],
-        )
-    )
-
-    lines.extend(["", "## 重点资产", ""])
-    attention_rows = []
-    for asset in sorted(attention_assets, key=lambda item: str(item.get("canonical_id"))):
-        assessment = assessments[asset.get("canonical_id")]
-        attention_rows.append(
-            [
-                asset.get("canonical_id"),
-                asset.get("asset_type"),
-                asset.get("license"),
-                assessment["risk_level"],
-                assessment["category_zh"],
-                "是" if assessment["is_ai_license"] else "否",
-            ]
-        )
-    lines.extend(
-        _table(
-            ["canonical_id", "类型", "许可证", "风险等级", "类别", "AI 专用"],
-            attention_rows,
-        )
-    )
-
-    lines.extend(["", "## 资产清单", ""])
-    asset_rows = []
-    for asset in sorted(
-        assets,
-        key=lambda item: (
-            -(assessments[item.get("canonical_id")]["risk_level"] or 0),
-            str(item.get("asset_type") or ""),
-            str(item.get("canonical_id") or ""),
-        ),
-    ):
-        assessment = assessments[asset.get("canonical_id")]
-        asset_rows.append(
-            [
-                asset.get("canonical_id"),
-                asset.get("asset_type"),
-                asset.get("name"),
-                asset.get("version"),
-                asset.get("license"),
-                assessment["risk_level"] if assessment["risk_level"] is not None else "待人工确认",
-                assessment["category_zh"],
-                _best_evidence_level(asset) or "-",
-                _format_links(_evidence_links(asset)),
-            ]
-        )
-    lines.extend(
-        _table(
-            [
-                "canonical_id",
-                "类型",
-                "名称",
-                "版本",
-                "许可证",
-                "风险",
-                "类别",
-                "最佳证据",
-                "来源",
-            ],
-            asset_rows,
-        )
-    )
-
-    lines.extend(["", "## 待人工确认", ""])
-    if unknown_assets:
-        unknown_rows = []
-        for asset in sorted(unknown_assets, key=lambda item: str(item.get("canonical_id"))):
-            assessment = assessments[asset.get("canonical_id")]
-            unknown_rows.append(
-                [
-                    asset.get("canonical_id"),
-                    asset.get("license"),
-                    ", ".join(assessment["unknown_items"]),
-                ]
-            )
-        lines.extend(_table(["canonical_id", "原始许可证字段", "未识别项"], unknown_rows))
-    else:
-        lines.append("未发现无法识别的许可证片段。")
-
-    lines.extend(["", "## 血缘边统计", ""])
-    edge_distribution = Counter(edge.get("edge_type") for edge in edges)
-    edge_type_rows = [
-        [edge_type, count]
-        for edge_type, count in sorted(edge_distribution.items())
-        if edge_type
-    ]
-    lines.extend(_table(["边类型", "数量"], edge_type_rows))
-    lines.extend(
-        [
-            "",
-            "- 通用依赖关系边（depends_on）：已移除。",
-            "",
-            "## 免责声明",
-            "",
-            "本报告是基于结构化证据的辅助审计结果，不构成法律意见。",
-            "",
-        ]
-    )
-    return "\n".join(lines)
 
 
 def _format_path(path: list[dict[str, Any]]) -> str:
@@ -620,8 +402,8 @@ def _render_deep_report(
 
 
 def run_basic(args: argparse.Namespace) -> None:
-    snapshot = _build_snapshot(args.input, _basic_snapshot_id())
-    report = _render_basic_report(snapshot)
+    assets, bom = report_basic.generate(str(args.input))
+    report = report_basic.render_markdown(assets, bom)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(report, encoding="utf-8")
     print(f"基础模式报告已写入：{args.output}")
