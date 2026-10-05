@@ -731,6 +731,12 @@ def run_diff(before_bom: Path, after_bom: Path, output_path: Path) -> None:
     )
     print(f"三级判定分布：{dict(decision_distribution)}")
 
+    # 附带产物：用 t1 的 BOM 生成血缘图 PNG
+    _render_diff_lineage_png(
+        after_bom,
+        Path(__file__).resolve().parent / "outputs" / "diff_lineage_graph.png",
+    )
+
 
 def _run_py_script(script: Path, script_args: list[str], label: str) -> None:
     """以子进程方式调用仓库脚本，转发输出，失败时抛异常。"""
@@ -755,6 +761,55 @@ def _run_py_script(script: Path, script_args: list[str], label: str) -> None:
         print(proc.stderr.rstrip(), file=sys.stderr)
     if proc.returncode != 0:
         raise RuntimeError(f"{label} 执行失败（退出码 {proc.returncode}）")
+
+
+def _render_diff_lineage_png(t1_bom: Path, png_path: Path) -> None:
+    """diff 模式附带产物：用 t1 的 BOM 生成血缘图 PNG。
+
+    依次调用仓库现有脚本：
+    - work/extract_hf_lineage.py：从 t1 BOM 提取血缘（assets/edges/graph.json）
+    - build_graph.py：显式构建血缘图
+    - visualize_lineage.py：渲染 PNG
+    """
+    import shutil
+    import tempfile
+
+    root = Path(__file__).resolve().parent
+    png_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with tempfile.TemporaryDirectory(prefix="diff_lineage_") as tmp:
+        tmp_dir = Path(tmp)
+        bom_dir = tmp_dir / "bom"
+        extract_dir = tmp_dir / "extract"
+        bom_dir.mkdir()
+        extract_dir.mkdir()
+        # extract_hf_lineage.py 以目录为单位扫描 BOM，把 t1 单文件拷入临时目录。
+        shutil.copyfile(t1_bom, bom_dir / t1_bom.name)
+
+        _run_py_script(
+            root / "work" / "extract_hf_lineage.py",
+            ["--bom-dir", str(bom_dir), "--output-dir", str(extract_dir)],
+            "extract_hf_lineage",
+        )
+
+        graph_path = extract_dir / "graph.json"
+        _run_py_script(
+            root / "build_graph.py",
+            [
+                "--assets", str(extract_dir / "assets.json"),
+                "--edges", str(extract_dir / "edges.json"),
+                "--output", str(graph_path),
+            ],
+            "build_graph",
+        )
+
+        _run_py_script(
+            root / "visualize_lineage.py",
+            ["--graph", str(graph_path), "--output", str(png_path)],
+            "visualize_lineage",
+        )
+
+    print(f"diff 模式血缘图 PNG 已生成：{png_path}")
 
 
 def _component_name(component: dict[str, Any]) -> str:
