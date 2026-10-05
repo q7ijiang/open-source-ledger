@@ -1,362 +1,444 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-report_basic.py — 基础层中文合规清单生成器（模块5，成员 C）
+report_basic.py — 基础层中文合规清单生成器（模块5，成员 C）· v2 接口对齐版
 
-功能：
-    输入一个 CycloneDX BOM（JSON，cdxgen 生成或手工构造），输出一份可直接提交的
-    中文《开源及第三方资源使用清单》Markdown 文档，包含：
-      - 跨生态去重后的资产列表（同一模型在多个生态出现时合并，保留来源上下文）
-      - 许可证识别与高风险标注（GPL/AGPL/SSPL 等）
-      - 来源链接与证据位置
-      - 表格末尾免责声明
+v2 变更（对齐组长 main.py 集成要求）：
+    1. 去重：不再使用内部 merge_entities()，改为调用
+       entity_resolver.deduplicate_assets()（返回 去重资产 + 配对日志）；
+    2. 许可证：不再使用内部 classify_license()，改为调用 license_db
+       （evaluate_expression / risk_level / category_zh / is_ai_license）；
+    3. 字段：对齐 main.py 快照资产格式（bom_adapter.convert_bom 输出）：
+       canonical_id / entity_key / asset_type / name / version / purls /
+       license / evidence_chain（evidence_level、source_url、source_field、
+       raw_value）/ hashes / merge_status / reason_code / rule_version /
+       snapshot_id / source_file。
+
+可被 main.py 直接接入：
+    import report_basic
+    md = report_basic.render_report(
+        snapshot["assets"],
+        bom_path=str(snapshot["path"]),
+        snapshot_id=snapshot["snapshot_id"],
+        raw_count=len(snapshot["raw_assets"]),
+        merge_log=snapshot["merge_log"],
+        evidence_summary=snapshot["evidence_summary"],
+        edges=snapshot["edges"],
+    )
 
 用法：
-    python report_basic.py --bom sample_bom.json -o 开源合规清单.md
-    python report_basic.py --bom sample_bom.json          # 默认输出到 ./开源合规清单.md
-    python report_basic.py --bom sample_bom.json --stdout # 只打印到屏幕，不写文件
-
-模块间接口约定（成员 A/B 交付后如何对接）：
-    - 本模块以 --bom 指向的 CycloneDX BOM 为最终输入来源，可独立运行。
-    - 模块2（实体对齐）交付后：将 _merge_entities() 替换为对 entity_resolver 的调用；
-      若 A 侧输出的是下方 ASSET_SCHEMA 所述的合并资产 JSON，可新增 --assets 参数直接读取。
-    - 模块3（证据链补全）交付后：将 _extract_source_url() 替换为对 evidence_enricher 的调用。
-    - 模块4（许可证规则库）交付后：将 _classify_license() 替换为对 license_db 的调用。
-    - 中间资产字段名以本文件底部 ASSET_SCHEMA 为准，A/B 模块输出 JSON 时对齐即可无缝对接。
-
-免责声明：
-    本清单由开源账本自动生成，基于证据的辅助审计，不构成法律意见。
+    python report_basic.py --bom sample_bom.json -o 开源合规清单.md   # BOM 直出
+    python report_basic.py --assets assets_deduplicated.json -o 清单.md # 资产直读
+    python report_basic.py --bom sample_bom.json --stdout             # 只打印
 """
 
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import sys
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 # ---------------------------------------------------------------------------
-# 一、许可证风险分级（内置简化版，待模块4 license_db.py 交付后替换）
+# 依赖模块（仓库根目录，须与 main.py 同一目录）
 # ---------------------------------------------------------------------------
 
-# 高风险：传染性/强保护型许可证
-HIGH_RISK_LICENSES = {
-    "GPL-1.0-only", "GPL-1.0-or-later", "GPL-1.0+",
-    "GPL-2.0-only", "GPL-2.0-or-later", "GPL-2.0+",
-    "GPL-3.0-only", "GPL-3.0-or-later", "GPL-3.0+",
-    "AGPL-1.0-only", "AGPL-1.0-or-later",
-    "AGPL-3.0-only", "AGPL-3.0-or-later", "AGPL-3.0+",
-    "SSPL-1.0",
-    "CC-BY-NC-4.0", "CC-BY-NC-SA-4.0", "CC-BY-ND-4.0", "CC-BY-NC-ND-4.0",
-}
 
-# 中风险：弱传染型 / 带额外条件
-MEDIUM_RISK_LICENSES = {
-    "LGPL-2.0-only", "LGPL-2.0-or-later", "LGPL-2.1-only", "LGPL-2.1-or-later",
-    "LGPL-3.0-only", "LGPL-3.0-or-later",
-    "MPL-1.1", "MPL-2.0", "EPL-1.0", "EPL-2.0", "CDDL-1.0", "CDDL-1.1",
-}
-
-# AI 模型常见非 SPDX 许可证（可识别的写法；完整条款需人工核对）
-AI_LICENSE_MAP = {
-    "llama2": "Llama-2-Community（非 SPDX，需人工核对条款）",
-    "llama3": "Llama-3-Community（非 SPDX，需人工核对条款）",
-    "openrail-m": "OpenRAIL-M（非 SPDX，需人工核对条款）",
-    "openrail": "OpenRAIL（非 SPDX，需人工核对条款）",
-    "gemma": "Gemma Terms（非 SPDX，需人工核对条款）",
-    "apache-2.0": "Apache-2.0",
-    "mit": "MIT",
-    "bsd-3-clause": "BSD-3-Clause",
-    "cc-by-4.0": "CC-BY-4.0",
-}
-
-HIGH_RISK_NOTE = {
-    "GPL": "高风险｜传染性许可证（GPL 类）：分发或修改时需遵守开源义务，可能影响整体分发方式",
-    "AGPL": "高风险｜传染性许可证（AGPL 类）：网络服务方式使用同样触发开源义务",
-    "SSPL": "高风险｜SSPL：商业托管场景义务苛刻，需重点人工核对",
-    "CC-BY-NC": "高风险｜非商业用途限制：商业使用需另行授权",
-    "CC-BY-ND": "高风险｜禁止演绎：不得修改后分发",
-    "default": "高风险｜强约束许可证，建议人工核对义务条款",
-}
-
-ECOSYSTEM_LABEL = {
-    "pypi": "PyPI",
-    "npm": "npm",
-    "huggingface": "HuggingFace",
-    "github": "GitHub",
-    "maven": "Maven",
-    "golang": "Go",
-}
+def _import(module_name: str):
+    """导入仓库根目录的模块，缺失时给出中文提示。"""
+    try:
+        return importlib.import_module(module_name)
+    except ImportError as exc:
+        raise RuntimeError(
+            f"缺少依赖模块 {module_name}.py：请从组长仓库拉取该文件到本项目根目录后重试。"
+        ) from exc
 
 
 # ---------------------------------------------------------------------------
-# 二、BOM 读取
+# 一、许可证评估（license_db 封装）
 # ---------------------------------------------------------------------------
 
-def load_bom(path: str) -> dict:
-    """读取并校验 CycloneDX BOM JSON。"""
-    p = Path(path)
-    if not p.exists():
-        raise FileNotFoundError(f"BOM 文件不存在: {p}")
-    with open(p, encoding="utf-8") as f:
-        data = json.load(f)
-    if data.get("bomFormat") != "CycloneDX":
-        raise ValueError(f"{p.name} 不是 CycloneDX BOM（bomFormat 应为 CycloneDX）")
-    return data
+RISK_LEVEL_ZH = {
+    1: "低风险（宽松/公有领域）",
+    2: "低风险（宽松+额外义务）",
+    3: "中风险（弱 copyleft / AI 受限）",
+    4: "高风险（强 copyleft / AI 商用受限）",
+    5: "高风险（网络 copyleft）",
+}
+
+RISK_BADGE = {1: "🟢 低", 2: "🟢 低", 3: "🟠 中", 4: "🔴 高", 5: "🔴 高"}
+
+ASSET_TYPE_ZH = {
+    "model": "模型",
+    "package": "软件包",
+    "dataset": "数据集",
+    "repository": "仓库",
+    "framework": "框架",
+}
 
 
-def _iter_components(bom: dict):
-    """产出 BOM 中全部组件（不含 metadata.component 根组件，避免把项目自身当依赖列出）。"""
-    root_ref = None
-    meta = bom.get("metadata") or {}
-    if meta.get("component"):
-        root_ref = meta["component"].get("bom-ref")
-    for comp in bom.get("components", []):
-        if comp.get("bom-ref") == root_ref:
+def assess_license(license_text: Any) -> dict[str, Any]:
+    """用 license_db 评估许可证字段，返回对齐 main.py 的评估结果。
+
+    返回：{
+        "risk_level": int | None,      # 1-5；None 表示未声明或全未识别
+        "category_zh": str,            # 类别中文
+        "is_ai_license": bool,
+        "known_items": [canonical_id], # 已识别项
+        "unknown_items": [raw],        # 未识别项
+    }
+    """
+    license_db = _import("license_db")
+    if license_text is None or str(license_text).strip() == "":
+        return {
+            "risk_level": None,
+            "category_zh": "未知 / 待人工确认",
+            "is_ai_license": False,
+            "known_items": [],
+            "unknown_items": [],
+        }
+
+    expression = license_db.evaluate_expression(str(license_text))
+    worst = expression.get("worst_category") or "unknown"
+    return {
+        "risk_level": expression.get("max_risk_level"),
+        "category_zh": license_db.CATEGORY_ZH.get(worst, "未知 / 待人工确认"),
+        "is_ai_license": license_db.is_ai_license(str(license_text)),
+        "known_items": [
+            item["canonical_id"]
+            for item in expression.get("items", [])
+            if item.get("known") and item.get("canonical_id")
+        ],
+        "unknown_items": list(expression.get("unknown_items", [])),
+    }
+
+
+def license_display(license_text: Any, assessment: dict[str, Any]) -> str:
+    """许可证展示文本：已识别 canonical_id（AI 专用加注）+ 未识别项原文。"""
+    parts = list(assessment["known_items"])
+    if assessment["is_ai_license"]:
+        parts = [f"{cid}（AI 专用）" for cid in parts]
+    parts.extend(f"{raw}（未识别）" for raw in assessment["unknown_items"])
+    if parts:
+        return "；".join(parts)
+    return str(license_text).strip() if license_text and str(license_text).strip() else "未声明"
+
+
+# ---------------------------------------------------------------------------
+# 二、资产工具（字段对齐 main.py 快照资产）
+# ---------------------------------------------------------------------------
+
+EVIDENCE_ORDER = {"A": 0, "B": 1, "C": 2}
+
+
+def best_evidence_level(asset: dict[str, Any]) -> str | None:
+    """最佳证据等级：evidence_chain 中 evidence_level 最小（A<B<C）。"""
+    levels = [
+        entry.get("evidence_level")
+        for entry in asset.get("evidence_chain", [])
+        if isinstance(entry, dict) and entry.get("evidence_level") in EVIDENCE_ORDER
+    ]
+    if not levels:
+        return None
+    return min(levels, key=lambda level: EVIDENCE_ORDER[level])
+
+
+def evidence_links(asset: dict[str, Any]) -> list[str]:
+    """来源链接：evidence_chain[].source_url 去重保序。"""
+    links: list[str] = []
+    for entry in asset.get("evidence_chain", []):
+        if not isinstance(entry, dict):
             continue
-        yield comp
+        url = entry.get("source_url")
+        if url and str(url) not in links:
+            links.append(str(url))
+    return links
 
 
-# ---------------------------------------------------------------------------
-# 三、实体对齐（简化版，模块2 交付后替换为 entity_resolver 调用）
-# ---------------------------------------------------------------------------
-
-def _model_merge_key(comp: dict) -> tuple:
-    """AI 模型的合并键：name + modelFamily + 证据位置。"""
-    props = {p.get("name"): p.get("value") for p in comp.get("properties", [])}
-    family = props.get("cdx:ai:modelFamily", "")
-    ev_locs = tuple(sorted(_evidence_locations(comp)))
-    return ("model", comp.get("name", ""), family, ev_locs)
-
-
-def _library_merge_key(comp: dict) -> tuple:
-    """普通库的合并键：purl（同名不同版本/不同 hash 不合并）。"""
-    return ("library", comp.get("purl", comp.get("bom-ref", "")))
-
-
-def _evidence_locations(comp: dict) -> list:
-    """提取 evidence.occurrences[].location 列表。"""
-    locs = []
-    for occ in (comp.get("evidence") or {}).get("occurrences", []):
-        loc = occ.get("location")
-        if loc:
-            locs.append(loc)
+def evidence_locations(asset: dict[str, Any]) -> list[str]:
+    """证据文件位置：evidence_chain 中 source_field 含 location/occurrence 的 raw_value。"""
+    locs: list[str] = []
+    for entry in asset.get("evidence_chain", []):
+        if not isinstance(entry, dict):
+            continue
+        field = str(entry.get("source_field") or "").lower()
+        if not any(token in field for token in ("location", "occurrence", "filepath")):
+            continue
+        value = entry.get("raw_value")
+        if isinstance(value, dict):
+            value = value.get("location") or value.get("path")
+        if value and str(value) not in locs:
+            locs.append(str(value))
     return locs
 
 
-def merge_entities(components: list) -> list:
-    """
-    跨生态实体对齐（简化版）：
-      - 普通库：按 purl 严格去重（同名不同版本不合并）；
-      - AI 模型：name + modelFamily + 证据位置 相同则合并，保留全部 purl 与来源上下文。
-    返回合并后的资产列表（ASSET_SCHEMA 见文件底部）。
-    """
-    groups = {}
-    for comp in components:
-        ctype = comp.get("type", "")
-        if ctype == "machine-learning-model":
-            key = _model_merge_key(comp)
-        else:
-            key = _library_merge_key(comp)
-        groups.setdefault(key, []).append(comp)
-
-    assets = []
-    for key, comps in groups.items():
-        first = comps[0]
-        ctype = first.get("type", "")
-        if ctype == "machine-learning-model":
-            props = {p.get("name"): p.get("value") for p in first.get("properties", [])}
-            purls = sorted({c.get("purl") for c in comps if c.get("purl")})
-            asset = {
-                "asset_id": first.get("name", ""),
-                "type": ctype,
-                "name": first.get("name", ""),
-                "version": first.get("version", ""),
-                "purls": purls,
-                "ecosystems": sorted({_ecosystem_of(p) for p in purls if _ecosystem_of(p)}),
-                "model_family": props.get("cdx:ai:modelFamily", ""),
-                "licenses": _collect_licenses(comps),
-                "evidence_locations": sorted({loc for c in comps for loc in _evidence_locations(c)}),
-                "merged_from": [c.get("bom-ref", "") for c in comps],
-            }
-        else:
-            asset = {
-                "asset_id": f"{first.get('name', '')}@{first.get('version', '')}",
-                "type": ctype,
-                "name": first.get("name", ""),
-                "version": first.get("version", ""),
-                "purls": [first.get("purl", "")] if first.get("purl") else [],
-                "ecosystems": [_ecosystem_of(first.get("purl", ""))] if _ecosystem_of(first.get("purl", "")) else [],
-                "model_family": "",
-                "licenses": _collect_licenses([first]),
-                "evidence_locations": _evidence_locations(first),
-                "merged_from": [first.get("bom-ref", "")],
-            }
-        asset["source_urls"] = _extract_source_urls(first)
-        assets.append(asset)
-    return assets
-
-
-def _ecosystem_of(purl: str) -> str:
-    """从 purl 提取生态名，例如 pkg:pypi/... -> pypi。"""
-    if not purl or not purl.startswith("pkg:"):
-        return ""
-    parts = purl.split("/")
-    return parts[0].split(":")[1] if len(parts) >= 2 else ""
-
-
-def _collect_licenses(comps: list) -> list:
-    """收集组件声明的许可证 id（保持出现顺序、去重）。"""
-    out = []
-    for comp in comps:
-        for lic in comp.get("licenses", []):
-            l = lic.get("license") or {}
-            lid = l.get("id") or l.get("name") or ""
-            if lid and lid not in out:
-                out.append(lid)
-    return out
-
-
-# ---------------------------------------------------------------------------
-# 四、证据补全（简化版，模块3 交付后替换为 evidence_enricher 调用）
-# ---------------------------------------------------------------------------
-
-def _extract_source_urls(comp: dict) -> list:
-    """
-    从组件中提取可点击的来源链接，优先级：
-      1. externalReferences 中 type=distribution/vcs/website 的 url；
-      2. evidence.identity[].methods[].value（cdxgen 远程扫描把 API 地址放在这里）；
-    没有则返回空列表（降级为 L1：仅本地证据位置，不丢失组件）。
-    """
-    urls = []
-    for ref in comp.get("externalReferences", []):
-        rtype = ref.get("type", "")
-        url = ref.get("url", "")
-        if url and rtype in ("distribution", "vcs", "website", "documentation"):
-            urls.append(url)
+def format_links(urls: list[str]) -> str:
+    """把链接列表渲染为 Markdown 链接，空列表返回占位文本。"""
     if not urls:
-        for ident in (comp.get("evidence") or {}).get("identity", []):
-            for m in ident.get("methods", []):
-                v = m.get("value", "")
-                if v.startswith("http://") or v.startswith("https://"):
-                    urls.append(v)
-    # 去重保序
-    seen, out = set(), []
-    for u in urls:
-        if u not in seen:
-            seen.add(u)
-            out.append(u)
-    return out
+        return "未提供 URL（本地证据）"
+    return "；".join(f"[链接]({url})" for url in urls)
+
+
+def _cell(value: Any) -> str:
+    """清洗单元格文本，避免破坏 Markdown 表格。"""
+    return str(value or "").replace("|", "\\|").replace("\r", " ").replace("\n", "<br>").strip()
 
 
 # ---------------------------------------------------------------------------
-# 五、许可证分类（简化版，模块4 交付后替换为 license_db 调用）
+# 三、实体去重（entity_resolver.deduplicate_assets）
 # ---------------------------------------------------------------------------
 
-def classify_license(licenses: list, comp_type: str) -> tuple:
+
+def deduplicate_assets(assets: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """调用 entity_resolver.deduplicate_assets() 执行跨生态实体对齐。
+
+    返回 (去重后资产列表, 逐对判定日志)。
     """
-    返回 (展示名, 风险等级, 风险提示)。
-    风险等级：high / medium / low / unknown
+    entity_resolver = _import("entity_resolver")
+    return entity_resolver.deduplicate_assets(assets)
+
+
+# ---------------------------------------------------------------------------
+# 四、Markdown 渲染（字段对齐 main.py 快照）
+# ---------------------------------------------------------------------------
+
+
+def _table(headers: list[str], rows: list[list[Any]]) -> list[str]:
+    if not rows:
+        return ["_无数据_"]
+    lines = [
+        "| " + " | ".join(headers) + " |",
+        "| " + " | ".join("---" for _ in headers) + " |",
+    ]
+    lines.extend("| " + " | ".join(_cell(value) for value in row) + " |" for row in rows)
+    return lines
+
+
+def render_report(
+    assets: list[dict[str, Any]],
+    *,
+    bom_path: str | None = None,
+    snapshot_id: str | None = None,
+    raw_count: int | None = None,
+    merge_log: list[dict[str, Any]] | None = None,
+    evidence_summary: dict[str, Any] | None = None,
+    edges: list[dict[str, Any]] | None = None,
+) -> str:
+    """渲染中文《开源及第三方资源使用清单》。
+
+    assets 为资产 dict 列表，字段对齐 main.py 快照（bom_adapter / entity_resolver 输出）。
+    其余可选参数用于在摘要中展示流水线统计（main.py 可传入）。
     """
-    if not licenses:
-        if comp_type == "machine-learning-model":
-            return "未声明", "unknown", "待人工确认｜模型未声明许可证，不得默认猜测（模型卡缺失≠无许可证）"
-        return "未声明", "unknown", "待人工确认｜未声明许可证，需向提供方核实"
-
-    labels, levels = [], []
-    for lid in licenses:
-        low = lid.lower().strip()
-        display = AI_LICENSE_MAP.get(low, lid)
-        labels.append(display)
-
-        if low in {k.lower() for k in HIGH_RISK_LICENSES}:
-            levels.append("high")
-        elif low in {k.lower() for k in MEDIUM_RISK_LICENSES}:
-            levels.append("medium")
-        elif low.startswith(("gpl", "agpl", "sspl")):
-            levels.append("high")
-        else:
-            levels.append("low")
-
-    worst = "high" if "high" in levels else ("medium" if "medium" in levels else "low")
-    label = "、".join(labels)
-
-    if worst == "high":
-        for prefix, note in HIGH_RISK_NOTE.items():
-            if any(l.lower().startswith(prefix.lower()) for l in licenses):
-                return label, worst, note
-        return label, worst, HIGH_RISK_NOTE["default"]
-    if worst == "medium":
-        return label, worst, "中风险｜弱传染性许可证（LGPL/MPL/EPL 类），分发时注意对应义务"
-    return label, worst, "低风险｜宽松许可证"
-
-
-# ---------------------------------------------------------------------------
-# 六、Markdown 渲染
-# ---------------------------------------------------------------------------
-
-RISK_ICON = {"high": "🔴 高", "medium": "🟠 中", "low": "🟢 低", "unknown": "⚪ 待确认"}
-
-
-def _cell(text: str) -> str:
-    """清洗单元格文本，避免破坏表格。"""
-    return (text or "").replace("|", "\\|").replace("\n", " ").strip()
-
-
-def render_markdown(assets: list, bom_meta: dict) -> str:
-    """渲染中文 Markdown 清单。"""
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
-    lines = []
+    assessments = {
+        asset.get("canonical_id") or asset.get("name"): assess_license(asset.get("license"))
+        for asset in assets
+    }
+
+    # 统计
+    high_risk = sum(
+        1 for a in assessments.values() if (a["risk_level"] or 0) >= 4
+    )
+    ai_count = sum(1 for a in assessments.values() if a["is_ai_license"])
+    unknown = sum(
+        1 for a in assessments.values() if a["unknown_items"] or a["risk_level"] is None
+    )
+    merged_pairs = sum(
+        1 for entry in (merge_log or []) if entry.get("status") == "merged"
+    )
+
+    lines: list[str] = []
     lines.append("# 开源及第三方资源使用清单")
     lines.append("")
     lines.append(f"> 生成时间：{now}")
-    lines.append(f"> 输入 BOM：{bom_meta.get('serialNumber', '—')}")
-    lines.append(f"> 生成工具：开源账本（基础层）· report_basic.py")
+    lines.append(f"> 生成工具：开源账本（基础层）· report_basic.py（v2：entity_resolver + license_db 接入）")
+    if bom_path:
+        lines.append(f"> 输入 BOM：`{bom_path}`")
+    if snapshot_id:
+        lines.append(f"> 快照 ID：`{snapshot_id}`")
     lines.append("")
 
-    # 统计摘要
-    total = len(assets)
-    high = sum(1 for a in assets if classify_license(a["licenses"], a["type"])[1] == "high")
-    unknown = sum(1 for a in assets if not a["licenses"])
-    merged = sum(1 for a in assets if len(a.get("merged_from", [])) > 1)
+    # 一、统计摘要
     lines.append("## 一、统计摘要")
     lines.append("")
-    lines.append(f"- 资产总数（去重后）：**{total}**")
-    lines.append(f"- 高风险许可证资产：**{high}**")
-    lines.append(f"- 待人工确认（未声明许可证）：**{unknown}**")
-    lines.append(f"- 跨生态合并去重资产：**{merged}**")
+    if raw_count is not None:
+        lines.append(f"- BOM 解析资产数：**{raw_count}**")
+    lines.append(f"- 实体对齐后资产数：**{len(assets)}**")
+    if merged_pairs:
+        lines.append(f"- 自动合并对数：**{merged_pairs}**")
+    if merge_log is not None:
+        lines.append(f"- 候选配对日志数：**{len(merge_log)}**")
+    if edges is not None:
+        lines.append(f"- HF 血缘边数：**{len(edges)}**")
+    lines.append(f"- 高风险许可证资产（风险等级 ≥ 4）：**{high_risk}**")
+    lines.append(f"- AI 专用许可证资产：**{ai_count}**")
+    lines.append(f"- 待人工确认（未声明或未识别）：**{unknown}**")
+    if evidence_summary:
+        lines.append("")
+        lines.append("### 远程证据补全（evidence_enricher）")
+        lines.append("")
+        lines.append(
+            f"- 支持远程证据的 purl 数：**{evidence_summary.get('supported_purls', 0)}**"
+        )
+        lines.append(f"- 成功补全远程证据数：**{evidence_summary.get('remote_ok', 0)}**")
+        lines.append(f"- 网络失败降级数：**{evidence_summary.get('network_error', 0)}**")
+        lines.append(
+            f"- 处理前无证据资产：**{evidence_summary.get('assets_without_evidence_before', 0)}**"
+        )
+        lines.append(
+            f"- 处理后无证据资产：**{evidence_summary.get('assets_without_evidence_after', 0)}**"
+        )
     lines.append("")
 
-    # 资产明细表
-    lines.append("## 二、资产明细")
+    # 二、许可证风险分布
+    lines.append("## 二、许可证风险分布")
     lines.append("")
-    lines.append("| 资源名称 | 版本 | 许可证 | 风险 | 来源链接 | 证据位置 | 来源生态 |")
-    lines.append("|---|---|---|---|---|---|---|")
-    for a in sorted(assets, key=lambda x: (x["type"] != "machine-learning-model", x["name"].lower())):
-        name = a["name"]
-        if a["model_family"]:
-            name = f"{name}（{a['model_family']}）"
-        version = a["version"] or "—"
-        lic_label, risk, risk_note = classify_license(a["licenses"], a["type"])
-        lic_cell = f"{lic_label}<br>{risk_note}"
-        if a["purls"]:
-            purl_txt = _cell("；".join(a["purls"]))
-            lic_cell = f"{lic_cell}<br><small>{purl_txt}</small>"
-        src = "；".join(f"[链接]({_cell(u)})" for u in a["source_urls"]) if a["source_urls"] else "未提供 URL（本地证据 L1）"
-        ev = "；".join(_cell(l) for l in a["evidence_locations"]) if a["evidence_locations"] else "—"
-        eco = "、".join(ECOSYSTEM_LABEL.get(e, e) for e in a["ecosystems"]) if a["ecosystems"] else "—"
-        lines.append(f"| {_cell(name)} | {_cell(version)} | {lic_cell} | {RISK_ICON[risk]} | {src} | {ev} | {eco} |")
+    risk_dist = {}
+    for a in assessments.values():
+        level = a["risk_level"]
+        risk_dist[level] = risk_dist.get(level, 0) + 1
+    lines.extend(
+        _table(
+            ["风险等级", "资产数"],
+            [
+                [
+                    f"{level}（{RISK_LEVEL_ZH.get(level, '待人工确认')}）",
+                    count,
+                ]
+                for level, count in sorted(
+                    risk_dist.items(), key=lambda kv: (kv[0] is None, kv[0] or 0)
+                )
+            ],
+        )
+    )
+    lines.append("")
+    lines.append("### 许可证类别分布")
+    lines.append("")
+    category_dist = {}
+    for a in assessments.values():
+        category_dist[a["category_zh"]] = category_dist.get(a["category_zh"], 0) + 1
+    lines.extend(
+        _table(
+            ["许可证类别", "资产数"],
+            [[category, count] for category, count in sorted(category_dist.items())],
+        )
+    )
     lines.append("")
 
-    # 风险说明
-    lines.append("## 三、风险说明")
+    # 三、重点资产
+    attention = [
+        asset
+        for asset in assets
+        if (assessments[asset.get("canonical_id") or asset.get("name")]["risk_level"] or 0) >= 4
+        or assessments[asset.get("canonical_id") or asset.get("name")]["is_ai_license"]
+    ]
+    lines.append("## 三、重点资产（高风险 / AI 专用）")
     lines.append("")
-    lines.append("- 🔴 高：许可证含传染性或强约束条款，使用/分发前必须核对义务（详见各条提示）。")
-    lines.append("- ⚪ 待确认：组件未声明许可证，或声明为非 SPDX 的 AI 专用条款，需人工核对官方文本。")
+    if attention:
+        rows = []
+        for asset in sorted(
+            attention, key=lambda item: str(item.get("canonical_id") or item.get("name"))
+        ):
+            key = asset.get("canonical_id") or asset.get("name")
+            assessment = assessments[key]
+            rows.append(
+                [
+                    asset.get("canonical_id") or "—",
+                    ASSET_TYPE_ZH.get(asset.get("asset_type"), asset.get("asset_type") or "—"),
+                    license_display(asset.get("license"), assessment),
+                    assessment["risk_level"] if assessment["risk_level"] is not None else "待人工确认",
+                    assessment["category_zh"],
+                    "是" if assessment["is_ai_license"] else "否",
+                ]
+            )
+        lines.extend(_table(["canonical_id", "类型", "许可证", "风险等级", "类别", "AI 专用"], rows))
+    else:
+        lines.append("未发现风险等级 ≥ 4 或 AI 专用许可证的资产。")
     lines.append("")
 
-    # 免责声明
+    # 四、资产明细
+    lines.append("## 四、资产明细")
+    lines.append("")
+    rows = []
+    for asset in sorted(
+        assets,
+        key=lambda item: (
+            -(assessments[item.get("canonical_id") or item.get("name")]["risk_level"] or 0),
+            str(item.get("asset_type") or ""),
+            str(item.get("canonical_id") or item.get("name") or ""),
+        ),
+    ):
+        key = asset.get("canonical_id") or asset.get("name")
+        assessment = assessments[key]
+        version = asset.get("version") or "—"
+        lic = license_display(asset.get("license"), assessment)
+        risk = (
+            f"{assessment['risk_level']}（{RISK_BADGE.get(assessment['risk_level'], '')}）"
+            if assessment["risk_level"] is not None
+            else "待人工确认"
+        )
+        best = best_evidence_level(asset) or "—"
+        links = format_links(evidence_links(asset))
+        purls = "；".join(asset.get("purls") or [])
+        rows.append(
+            [
+                asset.get("canonical_id") or "—",
+                ASSET_TYPE_ZH.get(asset.get("asset_type"), asset.get("asset_type") or "—"),
+                asset.get("name") or "—",
+                version,
+                lic,
+                risk,
+                assessment["category_zh"],
+                best,
+                links,
+                purls,
+            ]
+        )
+    lines.extend(
+        _table(
+            ["canonical_id", "类型", "名称", "版本", "许可证", "风险", "类别", "最佳证据", "来源链接", "purl"],
+            rows,
+        )
+    )
+    lines.append("")
+
+    # 五、待人工确认
+    lines.append("## 五、待人工确认")
+    lines.append("")
+    unknown_assets = [
+        asset
+        for asset in assets
+        if assessments[asset.get("canonical_id") or asset.get("name")]["unknown_items"]
+    ]
+    if unknown_assets:
+        rows = []
+        for asset in sorted(
+            unknown_assets, key=lambda item: str(item.get("canonical_id") or item.get("name"))
+        ):
+            assessment = assessments[asset.get("canonical_id") or asset.get("name")]
+            rows.append(
+                [
+                    asset.get("canonical_id") or "—",
+                    str(asset.get("license") or "未声明"),
+                    "；".join(assessment["unknown_items"]),
+                ]
+            )
+        lines.extend(_table(["canonical_id", "原始许可证字段", "未识别项"], rows))
+    else:
+        lines.append("未发现无法识别的许可证片段。")
+    lines.append("")
+
+    # 六、风险说明与免责声明
+    lines.append("## 六、风险说明")
+    lines.append("")
+    lines.append("- 风险等级 1–5 来自 license_db 规则库：1–2 低风险（宽松/公有领域）；3 中风险（弱 copyleft / AI 受限）；4–5 高风险（强 copyleft / 网络 copyleft）。")
+    lines.append("- 🔴 高：许可证含传染性或强约束条款（GPL/AGPL/SSPL 等），使用/分发前必须核对义务。")
+    lines.append("- ⚪ 待确认：组件未声明许可证，或存在规则库无法识别的许可证写法，需人工核对官方文本。")
+    lines.append("- AI 专用许可证（Llama 2 社区许可、OpenRAIL-M、Gemma 条款等）非 SPDX，义务条款需重点人工核对。")
+    lines.append("")
     lines.append("---")
     lines.append("")
     lines.append("> **免责声明**：本清单由开源账本自动生成，基于证据的辅助审计，不构成法律意见，也不能替代针对具体许可证、司法辖区和业务模式的执业法律审查。")
@@ -365,31 +447,79 @@ def render_markdown(assets: list, bom_meta: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
-# 七、主流程
+# 五、流水线入口
 # ---------------------------------------------------------------------------
 
-def generate(bom_path: str) -> list:
-    """完整流水线：BOM -> 对齐 -> 证据 -> 分类 -> 资产列表。"""
-    bom = load_bom(bom_path)
-    components = list(_iter_components(bom))
-    assets = merge_entities(components)
-    return assets, bom
+
+def generate_from_bom(
+    bom_path: str,
+    *,
+    snapshot_id: str | None = None,
+    deduplicate: bool = True,
+) -> tuple[list[dict[str, Any]], str]:
+    """BOM → bom_adapter.convert_bom → entity_resolver.deduplicate_assets → 中文清单。
+
+    返回 (去重后资产列表, 渲染好的 Markdown 文本)。
+    """
+    bom_adapter = _import("bom_adapter")
+    path = Path(bom_path)
+    bom = bom_adapter.load_json(path)
+    if not isinstance(bom, dict):
+        raise ValueError(f"BOM 根节点必须是对象：{path}")
+
+    sid = snapshot_id or f"basic-{datetime.now().strftime('%Y%m%d')}"
+    raw_assets = bom_adapter.convert_bom(
+        bom=bom,
+        source_file=str(path.resolve()),
+        snapshot_id=sid,
+    )
+    if deduplicate:
+        assets, merge_log = deduplicate_assets(raw_assets)
+    else:
+        assets, merge_log = raw_assets, []
+    md = render_report(
+        assets,
+        bom_path=str(path),
+        snapshot_id=sid,
+        raw_count=len(raw_assets),
+        merge_log=merge_log,
+    )
+    return assets, md
+
+
+def generate(bom_path: str) -> tuple[list[dict[str, Any]], str]:
+    """兼容旧调用：返回 (资产列表, Markdown 文本)。"""
+    return generate_from_bom(bom_path)
+
+
+# ---------------------------------------------------------------------------
+# 六、CLI
+# ---------------------------------------------------------------------------
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="开源账本·基础层：中文开源合规清单生成器")
-    parser.add_argument("--bom", required=True, help="CycloneDX BOM JSON 路径")
+    parser = argparse.ArgumentParser(description="开源账本·基础层：中文开源合规清单生成器（v2）")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--bom", help="CycloneDX BOM JSON 路径（自动：bom_adapter → entity_resolver → 渲染）")
+    group.add_argument("--assets", help="资产 JSON 路径（bom_adapter / entity_resolver / main.py 产物，直接渲染）")
     parser.add_argument("-o", "--output", default="开源合规清单.md", help="输出 Markdown 路径")
     parser.add_argument("--stdout", action="store_true", help="只输出到屏幕，不写文件")
+    parser.add_argument("--snapshot-id", default=None, help="快照 ID（默认 basic-YYYYMMDD）")
     args = parser.parse_args(argv)
 
     try:
-        assets, bom = generate(args.bom)
-    except (FileNotFoundError, ValueError, json.JSONDecodeError) as e:
-        print(f"[错误] {e}", file=sys.stderr)
+        if args.bom:
+            assets, md = generate_from_bom(args.bom, snapshot_id=args.snapshot_id)
+        else:
+            with open(args.assets, encoding="utf-8") as f:
+                assets = json.load(f)
+            if not isinstance(assets, list):
+                raise ValueError(f"资产文件顶层必须是数组：{args.assets}")
+            md = render_report(assets, bom_path=args.assets, snapshot_id=args.snapshot_id)
+    except (FileNotFoundError, ValueError, json.JSONDecodeError, RuntimeError) as exc:
+        print(f"[错误] {exc}", file=sys.stderr)
         return 2
 
-    md = render_markdown(assets, bom)
     if args.stdout:
         print(md)
         return 0
@@ -402,22 +532,10 @@ def main(argv=None):
     return 0
 
 
-# ---------------------------------------------------------------------------
-# ASSET_SCHEMA（模块间对接用的中间资产格式，A/B 模块输出 JSON 时对齐此字段）
-# ---------------------------------------------------------------------------
-ASSET_SCHEMA = {
-    "asset_id": "资产唯一标识（模型用名称，库用 name@version）",
-    "type": "library | machine-learning-model | dataset",
-    "name": "资源名称",
-    "version": "版本或空串",
-    "purls": ["全部来源 purl（跨生态合并后多个）"],
-    "ecosystems": ["pypi", "npm", "huggingface", ...],
-    "model_family": "AI 模型族（非模型为空串）",
-    "licenses": ["声明的许可证 id"],
-    "evidence_locations": ["evidence.occurrences[].location"],
-    "source_urls": ["可点击来源链接"],
-    "merged_from": ["被合并的原始 bom-ref"],
-}
-
 if __name__ == "__main__":
+    # Windows 终端 UTF-8，避免中文乱码。
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(encoding="utf-8")
     sys.exit(main())
