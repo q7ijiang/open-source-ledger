@@ -1,0 +1,336 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:cf043584-70b8-4cc5-ace5-ac24a2687bd6",
+  "version": 2,
+  "metadata": {
+    "timestamp": "2026-09-18T15:44:19Z",
+    "tools": {
+      "components": [
+        {
+          "group": "@cyclonedx",
+          "name": "cdxgen",
+          "version": "12.8.4",
+          "purl": "pkg:npm/%40cyclonedx/cdxgen@12.8.4",
+          "type": "application",
+          "bom-ref": "pkg:npm/@cyclonedx/cdxgen@12.8.4",
+          "publisher": "OWASP Foundation",
+          "authors": [
+            {
+              "name": "OWASP Foundation"
+            }
+          ]
+        }
+      ]
+    },
+    "authors": [
+      {
+        "name": "OWASP Foundation"
+      }
+    ],
+    "lifecycles": [
+      {
+        "phase": "build"
+      }
+    ],
+    "component": {
+      "group": "",
+      "name": "HuggingFaceTB",
+      "version": "latest",
+      "type": "application",
+      "bom-ref": "pkg:generic/HuggingFaceTB@latest",
+      "purl": "pkg:generic/HuggingFaceTB@latest"
+    },
+    "properties": [
+      {
+        "name": "cdx:bom:componentTypes",
+        "value": "huggingface"
+      },
+      {
+        "name": "cdx:bom:componentNamespaces",
+        "value": "HuggingFaceTB"
+      },
+      {
+        "name": "cdx:bom:componentSrcFiles",
+        "value": "pkg:huggingface\\HuggingFaceTB\\SmolLM2-135M-Instruct@12fd25f77366fa6b3b4b768ec3050bf629380bac"
+      }
+    ]
+  },
+  "components": [
+    {
+      "group": "HuggingFaceTB",
+      "name": "SmolLM2-135M-Instruct",
+      "version": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+      "licenses": [
+        {
+          "license": {
+            "url": "https://opensource.org/licenses/Apache-2.0",
+            "id": "Apache-2.0",
+            "properties": [
+              {
+                "name": "cdx:license:category",
+                "value": "Permissive"
+              },
+              {
+                "name": "cdx:license:foss",
+                "value": "true"
+              },
+              {
+                "name": "cdx:license:osiApproved",
+                "value": "true"
+              },
+              {
+                "name": "cdx:license:fsfLibre",
+                "value": "true"
+              },
+              {
+                "name": "cdx:license:deprecated",
+                "value": "false"
+              }
+            ]
+          }
+        }
+      ],
+      "purl": "pkg:huggingface/HuggingFaceTB/SmolLM2-135M-Instruct@12fd25f77366fa6b3b4b768ec3050bf629380bac",
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/VIDraft/global-llm-leaderboard",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/StentorLabs/SLM_Arena",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/CodeSoft/SLM-Arena",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/K00B404/LLM_Quantization",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/Harley-ml/SmolLM2_Chat",
+          "comment": "Related Hugging Face Space"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "bom-ref": "pkg:huggingface/HuggingFaceTB/SmolLM2-135M",
+            "type": "machine-learning-model",
+            "group": "HuggingFaceTB",
+            "name": "SmolLM2-135M",
+            "purl": "pkg:huggingface/HuggingFaceTB/SmolLM2-135M"
+          }
+        ],
+        "notes": "Detected variants: quantized"
+      },
+      "modelCard": {
+        "modelParameters": {
+          "task": "text-generation",
+          "architectureFamily": "llama",
+          "modelArchitecture": "LlamaForCausalLM",
+          "inputs": [
+            {
+              "format": "text"
+            }
+          ],
+          "outputs": [
+            {
+              "format": "text"
+            }
+          ]
+        },
+        "considerations": {
+          "useCases": [
+            "text-generation"
+          ]
+        },
+        "properties": [
+          {
+            "name": "cdx:huggingface:language",
+            "value": "en"
+          },
+          {
+            "name": "cdx:ai:safetensors:parameterCount",
+            "value": "134515008"
+          },
+          {
+            "name": "cdx:ai:safetensors:parameterCountLabel",
+            "value": "135M params"
+          },
+          {
+            "name": "cdx:ai:safetensors:tensorType",
+            "value": "BF16"
+          }
+        ]
+      },
+      "type": "machine-learning-model",
+      "bom-ref": "pkg:huggingface/HuggingFaceTB/SmolLM2-135M-Instruct@12fd25f77366fa6b3b4b768ec3050bf629380bac",
+      "tags": [
+        "ai",
+        "arxiv:2502.02737",
+        "base_model:HuggingFaceTB/SmolLM2-135M",
+        "base_model:quantized:HuggingFaceTB/SmolLM2-135M",
+        "conversational",
+        "en",
+        "endpoints_compatible",
+        "huggingface",
+        "license:apache-2.0",
+        "llama",
+        "machine-learning-model",
+        "model",
+        "onnx",
+        "quantized",
+        "region:us",
+        "safetensors",
+        "tensorboard",
+        "text-generation",
+        "text-generation-inference",
+        "transformers",
+        "transformers.js"
+      ],
+      "properties": [
+        {
+          "name": "cdx:ai:provider",
+          "value": "huggingface"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "huggingface-api"
+        },
+        {
+          "name": "cdx:ai:kind",
+          "value": "model"
+        },
+        {
+          "name": "cdx:ai:modality",
+          "value": "text-generation"
+        },
+        {
+          "name": "cdx:huggingface:downloads",
+          "value": "1505483"
+        },
+        {
+          "name": "cdx:huggingface:downloadsAllTime",
+          "value": "15331076"
+        },
+        {
+          "name": "cdx:huggingface:likes",
+          "value": "420"
+        },
+        {
+          "name": "cdx:huggingface:gated",
+          "value": "false"
+        },
+        {
+          "name": "cdx:huggingface:private",
+          "value": "false"
+        },
+        {
+          "name": "cdx:huggingface:disabled",
+          "value": "false"
+        },
+        {
+          "name": "cdx:huggingface:createdAt",
+          "value": "2024-10-31T13:41:10.000Z"
+        },
+        {
+          "name": "cdx:huggingface:lastModified",
+          "value": "2025-09-22T20:43:15.000Z"
+        },
+        {
+          "name": "cdx:huggingface:fileCount",
+          "value": "25"
+        },
+        {
+          "name": "cdx:huggingface:libraryName",
+          "value": "transformers"
+        },
+        {
+          "name": "cdx:huggingface:spaceCount",
+          "value": "100"
+        },
+        {
+          "name": "cdx:huggingface:inferenceProviderCount",
+          "value": "1"
+        },
+        {
+          "name": "cdx:ai:variant",
+          "value": "quantized"
+        },
+        {
+          "name": "cdx:ai:parameterCount",
+          "value": "134515008"
+        },
+        {
+          "name": "cdx:license:category",
+          "value": "Permissive"
+        }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.7,
+            "concludedValue": "pkg:huggingface\\HuggingFaceTB\\SmolLM2-135M-Instruct@12fd25f77366fa6b3b4b768ec3050bf629380bac",
+            "methods": [
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "model metadata from Hugging Face API for HuggingFaceTB\\SmolLM2-135M-Instruct @ HEAD"
+              },
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "https:\\huggingface.co\\api\\models\\HuggingFaceTB\\SmolLM2-135M-Instruct\\revision\\HEAD"
+              },
+              {
+                "technique": "source-code-analysis",
+                "confidence": 0.6,
+                "value": "huggingface:model:HuggingFaceTB\\SmolLM2-135M-Instruct"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "dependencies": [],
+  "annotations": [
+    {
+      "bom-ref": "metadata-annotations",
+      "subjects": [
+        "pkg:generic/HuggingFaceTB@latest"
+      ],
+      "annotator": {
+        "component": {
+          "group": "@cyclonedx",
+          "name": "cdxgen",
+          "version": "12.8.4",
+          "purl": "pkg:npm/%40cyclonedx/cdxgen@12.8.4",
+          "type": "application",
+          "bom-ref": "pkg:npm/@cyclonedx/cdxgen@12.8.4",
+          "publisher": "OWASP Foundation",
+          "authors": [
+            {
+              "name": "OWASP Foundation"
+            }
+          ]
+        }
+      },
+      "timestamp": "2026-09-18T15:44:19Z",
+      "text": "This Machine-Learning Bill-of-Materials (ML-BOM) document was created on Friday, September 18, 2026 with cdxgen. The data was captured during the build lifecycle phase. The document describes an application named 'HuggingFaceTB'. It inventories 1 AI model(s), 0 AI service(s), and 0 dataset(s). Documented model tasks include text-generation. Pedigree information is captured for 1 model(s), which helps reviewers trace upstream bases and downstream variants. Detected model variants include quantized, so modified artifacts remain visible in the BOM. There are 1 components. The package type in this ML-BOM is huggingface with a single purl namespace 'HuggingFaceTB' described under components. The components were identified from the source files: pkg:huggingface\\HuggingFaceTB\\SmolLM2-135M-Instruct@12fd25f77366fa6b3b4b768ec3050bf629380bac."
+    }
+  ]
+}

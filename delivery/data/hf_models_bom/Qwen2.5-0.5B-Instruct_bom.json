@@ -1,0 +1,340 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:1ed0237b-da65-4cab-ab0e-2c9697765ed7",
+  "version": 2,
+  "metadata": {
+    "timestamp": "2026-09-18T15:44:23Z",
+    "tools": {
+      "components": [
+        {
+          "group": "@cyclonedx",
+          "name": "cdxgen",
+          "version": "12.8.4",
+          "purl": "pkg:npm/%40cyclonedx/cdxgen@12.8.4",
+          "type": "application",
+          "bom-ref": "pkg:npm/@cyclonedx/cdxgen@12.8.4",
+          "publisher": "OWASP Foundation",
+          "authors": [
+            {
+              "name": "OWASP Foundation"
+            }
+          ]
+        }
+      ]
+    },
+    "authors": [
+      {
+        "name": "OWASP Foundation"
+      }
+    ],
+    "lifecycles": [
+      {
+        "phase": "build"
+      }
+    ],
+    "component": {
+      "group": "",
+      "name": "Qwen",
+      "version": "latest",
+      "type": "application",
+      "bom-ref": "pkg:generic/Qwen@latest",
+      "purl": "pkg:generic/Qwen@latest"
+    },
+    "properties": [
+      {
+        "name": "cdx:bom:componentTypes",
+        "value": "huggingface"
+      },
+      {
+        "name": "cdx:bom:componentNamespaces",
+        "value": "Qwen"
+      },
+      {
+        "name": "cdx:bom:componentSrcFiles",
+        "value": "pkg:huggingface\\Qwen\\Qwen2.5-0.5B-Instruct@7ae557604adf67be50417f59c2c2f167def9a775"
+      }
+    ]
+  },
+  "components": [
+    {
+      "group": "Qwen",
+      "name": "Qwen2.5-0.5B-Instruct",
+      "version": "7ae557604adf67be50417f59c2c2f167def9a775",
+      "licenses": [
+        {
+          "license": {
+            "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct/blob/main/LICENSE",
+            "id": "Apache-2.0",
+            "properties": [
+              {
+                "name": "cdx:license:category",
+                "value": "Permissive"
+              },
+              {
+                "name": "cdx:license:foss",
+                "value": "true"
+              },
+              {
+                "name": "cdx:license:osiApproved",
+                "value": "true"
+              },
+              {
+                "name": "cdx:license:fsfLibre",
+                "value": "true"
+              },
+              {
+                "name": "cdx:license:deprecated",
+                "value": "false"
+              }
+            ]
+          }
+        }
+      ],
+      "purl": "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct@7ae557604adf67be50417f59c2c2f167def9a775",
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct"
+        },
+        {
+          "type": "license",
+          "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct/blob/main/LICENSE"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/embedl/hfviewer",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/pliny-the-prompter/obliteratus",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/M3st3rJ4k3l/FLUX.2-Klein-Multi-LoRA-v2",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/VIDraft/global-llm-leaderboard",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/K00B404/LLM_Quantization",
+          "comment": "Related Hugging Face Space"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "bom-ref": "pkg:huggingface/Qwen/Qwen2.5-0.5B",
+            "type": "machine-learning-model",
+            "group": "Qwen",
+            "name": "Qwen2.5-0.5B",
+            "purl": "pkg:huggingface/Qwen/Qwen2.5-0.5B"
+          }
+        ],
+        "notes": "Detected variants: fine-tuned"
+      },
+      "modelCard": {
+        "modelParameters": {
+          "task": "text-generation",
+          "architectureFamily": "qwen2",
+          "modelArchitecture": "Qwen2ForCausalLM",
+          "inputs": [
+            {
+              "format": "text"
+            }
+          ],
+          "outputs": [
+            {
+              "format": "text"
+            }
+          ]
+        },
+        "considerations": {
+          "useCases": [
+            "text-generation",
+            "chat"
+          ]
+        },
+        "properties": [
+          {
+            "name": "cdx:huggingface:language",
+            "value": "en"
+          },
+          {
+            "name": "cdx:ai:safetensors:parameterCount",
+            "value": "494032768"
+          },
+          {
+            "name": "cdx:ai:safetensors:parameterCountLabel",
+            "value": "494M params"
+          },
+          {
+            "name": "cdx:ai:safetensors:tensorType",
+            "value": "BF16"
+          }
+        ]
+      },
+      "type": "machine-learning-model",
+      "bom-ref": "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct@7ae557604adf67be50417f59c2c2f167def9a775",
+      "tags": [
+        "ai",
+        "arxiv:2407.10671",
+        "base_model:Qwen/Qwen2.5-0.5B",
+        "base_model:finetune:Qwen/Qwen2.5-0.5B",
+        "chat",
+        "conversational",
+        "deploy:azure",
+        "en",
+        "endpoints_compatible",
+        "fine-tuned",
+        "huggingface",
+        "license:apache-2.0",
+        "machine-learning-model",
+        "model",
+        "qwen2",
+        "region:us",
+        "safetensors",
+        "text-generation",
+        "text-generation-inference",
+        "transformers"
+      ],
+      "properties": [
+        {
+          "name": "cdx:ai:provider",
+          "value": "huggingface"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "huggingface-api"
+        },
+        {
+          "name": "cdx:ai:kind",
+          "value": "model"
+        },
+        {
+          "name": "cdx:ai:modality",
+          "value": "text-generation"
+        },
+        {
+          "name": "cdx:huggingface:downloads",
+          "value": "8490193"
+        },
+        {
+          "name": "cdx:huggingface:downloadsAllTime",
+          "value": "68773702"
+        },
+        {
+          "name": "cdx:huggingface:likes",
+          "value": "627"
+        },
+        {
+          "name": "cdx:huggingface:gated",
+          "value": "false"
+        },
+        {
+          "name": "cdx:huggingface:private",
+          "value": "false"
+        },
+        {
+          "name": "cdx:huggingface:disabled",
+          "value": "false"
+        },
+        {
+          "name": "cdx:huggingface:createdAt",
+          "value": "2024-09-16T11:52:46.000Z"
+        },
+        {
+          "name": "cdx:huggingface:lastModified",
+          "value": "2024-09-25T12:32:56.000Z"
+        },
+        {
+          "name": "cdx:huggingface:fileCount",
+          "value": "10"
+        },
+        {
+          "name": "cdx:huggingface:libraryName",
+          "value": "transformers"
+        },
+        {
+          "name": "cdx:huggingface:spaceCount",
+          "value": "100"
+        },
+        {
+          "name": "cdx:huggingface:inferenceProviderCount",
+          "value": "1"
+        },
+        {
+          "name": "cdx:ai:variant",
+          "value": "fine-tuned"
+        },
+        {
+          "name": "cdx:ai:parameterCount",
+          "value": "494032768"
+        },
+        {
+          "name": "cdx:license:category",
+          "value": "Permissive"
+        }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.7,
+            "concludedValue": "pkg:huggingface\\Qwen\\Qwen2.5-0.5B-Instruct@7ae557604adf67be50417f59c2c2f167def9a775",
+            "methods": [
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "model metadata from Hugging Face API for Qwen\\Qwen2.5-0.5B-Instruct @ HEAD"
+              },
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "https:\\huggingface.co\\api\\models\\Qwen\\Qwen2.5-0.5B-Instruct\\revision\\HEAD"
+              },
+              {
+                "technique": "source-code-analysis",
+                "confidence": 0.6,
+                "value": "huggingface:model:Qwen\\Qwen2.5-0.5B-Instruct"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "dependencies": [],
+  "annotations": [
+    {
+      "bom-ref": "metadata-annotations",
+      "subjects": [
+        "pkg:generic/Qwen@latest"
+      ],
+      "annotator": {
+        "component": {
+          "group": "@cyclonedx",
+          "name": "cdxgen",
+          "version": "12.8.4",
+          "purl": "pkg:npm/%40cyclonedx/cdxgen@12.8.4",
+          "type": "application",
+          "bom-ref": "pkg:npm/@cyclonedx/cdxgen@12.8.4",
+          "publisher": "OWASP Foundation",
+          "authors": [
+            {
+              "name": "OWASP Foundation"
+            }
+          ]
+        }
+      },
+      "timestamp": "2026-09-18T15:44:23Z",
+      "text": "This Machine-Learning Bill-of-Materials (ML-BOM) document was created on Friday, September 18, 2026 with cdxgen. The data was captured during the build lifecycle phase. The document describes an application named 'Qwen'. It inventories 1 AI model(s), 0 AI service(s), and 0 dataset(s). Documented model tasks include text-generation. Pedigree information is captured for 1 model(s), which helps reviewers trace upstream bases and downstream variants. Detected model variants include fine-tuned, so modified artifacts remain visible in the BOM. There are 1 components. The package type in this ML-BOM is huggingface with a single purl namespace 'Qwen' described under components. The components were identified from the source files: pkg:huggingface\\Qwen\\Qwen2.5-0.5B-Instruct@7ae557604adf67be50417f59c2c2f167def9a775."
+    }
+  ]
+}
