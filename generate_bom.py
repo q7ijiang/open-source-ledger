@@ -9,7 +9,7 @@
 
 依赖:
     本机需有可用的 cdxgen（Windows 下为 cdxgen.cmd）。
-    可通过环境变量 CDXGEN_BIN 指定 cdxgen 可执行文件路径。
+    可通过环境变量 CDXGEN_PATH 指定 cdxgen 可执行文件路径。
     可通过环境变量 HF_TOKEN / HUGGING_FACE_HUB_TOKEN 提供 HF 访问令牌
     （扫描 gated 模型元数据无需令牌；仅在需要读取 gated 文件内容时才有用）。
 """
@@ -22,22 +22,43 @@ import subprocess
 import sys
 from pathlib import Path
 
-# cdxgen 默认位置（便携版 Node 全局安装路径）；可用 CDXGEN_BIN 覆盖。
-DEFAULT_CDXGEN = (
+# Windows 硬编码 fallback（便携版 Node 全局安装路径）；仅作为最后兜底。
+_WINDOWS_FALLBACK_CDXGEN = (
     r"C:\Users\Qijiang\AppData\Local\Temp\cdxgen_node"
     r"\node-v24.19.0-win-x64\cdxgen.cmd"
 )
 
 
 def find_cdxgen():
-    """按优先级定位 cdxgen：环境变量 -> 默认路径 -> PATH。"""
-    env_bin = os.environ.get("CDXGEN_BIN")
+    """跨平台定位 cdxgen：CDXGEN_PATH -> PATH -> Windows 兜底路径。
+
+    按以下顺序查找：
+    1. 环境变量 CDXGEN_PATH（存在且有效）
+    2. shutil.which("cdxgen")（PATH 中）
+    3. Windows 硬编码 fallback
+    都找不到时抛出 RuntimeError，错误信息包含安装命令与 CDXGEN_PATH 提示。
+    """
+    # a. 环境变量 CDXGEN_PATH（存在且有效）
+    env_bin = os.environ.get("CDXGEN_PATH")
     if env_bin and Path(env_bin).exists():
         return env_bin
-    if Path(DEFAULT_CDXGEN).exists():
-        return DEFAULT_CDXGEN
-    found = shutil.which("cdxgen") or shutil.which("cdxgen.cmd") or shutil.which("aibom")
-    return found
+
+    # b. PATH 中的 cdxgen
+    found = shutil.which("cdxgen")
+    if found:
+        return found
+
+    # c. Windows 硬编码 fallback
+    if Path(_WINDOWS_FALLBACK_CDXGEN).exists():
+        return _WINDOWS_FALLBACK_CDXGEN
+
+    # d. 都找不到时报错
+    raise RuntimeError(
+        "cdxgen 未找到。\n"
+        "请先安装：npm install -g @cyclonedx/cdxgen\n"
+        "或将 cdxgen 加入 PATH；"
+        "也可以设置环境变量 CDXGEN_PATH 指向 cdxgen 可执行文件。"
+    )
 
 
 def run_cdxgen(model, out_file, cdxgen_bin, asset_type, extra_args):
@@ -193,9 +214,10 @@ def main(argv=None):
     parser.add_argument("--outdir", default=None, help="递归扫描时的输出目录（默认 outputs/lineage_scan）")
     args = parser.parse_args(argv)
 
-    cdxgen_bin = find_cdxgen()
-    if not cdxgen_bin:
-        print("错误: 找不到 cdxgen。请设置环境变量 CDXGEN_BIN 或将其加入 PATH。", file=sys.stderr)
+    try:
+        cdxgen_bin = find_cdxgen()
+    except RuntimeError as exc:
+        print(str(exc), file=sys.stderr)
         return 1
 
     if args.recursive:

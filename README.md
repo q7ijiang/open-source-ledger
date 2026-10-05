@@ -25,14 +25,45 @@
 
 ## 安装
 
-- Python 最低版本：3.10+
-- 安装项目依赖：
+### 1. 安装 Node.js
+
+cdxgen 依赖 Node.js，请先安装 Node.js（建议 18 及以上，可通过官方安装包或 nvm 安装）。
+
+### 2. 安装 cdxgen
+
+```bash
+npm install -g @cyclonedx/cdxgen
+```
+
+安装后确认可用：
+
+```bash
+cdxgen --version
+```
+
+### 3. 安装 Python 依赖
+
+Python 最低版本：3.10+
 
 ```bash
 pip install -r requirements.txt
 ```
 
-`tools/` 目录不在仓库中，需要单独安装 `cdxgen`。可执行 `npm install -g @cyclonedx/cdxgen` 安装，或按 `tools/cdxgen/README` 的说明在本机准备 cdxgen。
+### 4.（可选）设置 CDXGEN_PATH 环境变量
+
+如果 `cdxgen` 不在 PATH 中，可设置环境变量 `CDXGEN_PATH` 指向 cdxgen 可执行文件，脚本会优先使用它：
+
+- Windows（PowerShell）：
+
+  ```powershell
+  $env:CDXGEN_PATH = "C:\path\to\cdxgen.cmd"
+  ```
+
+- Linux / macOS：
+
+  ```bash
+  export CDXGEN_PATH=/path/to/cdxgen
+  ```
 
 ## 快速开始
 
