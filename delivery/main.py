@@ -65,27 +65,32 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "  python main.py --mode deep --before t0_bom.json --after t1_bom.json "
             "--output report.md\n"
             "  python main.py --model TheBloke/Llama-2-7B-Chat-GGUF "
-            "--output report.md"
+            "--output report.md\n"
+            "  python main.py --project test-project/ --output report.md"
         ),
     )
     parser.add_argument("--mode", choices=("basic", "deep"), required=False,
                         help="基础/深度模式（与 --model / --diff 二选一）")
     parser.add_argument("--model", type=str, default=None,
-                        help="HF 模型名，触发模型血缘扫描模式（与 --mode / --diff 二选一）")
+                        help="HF 模型名，触发模型血缘扫描模式（与 --mode / --diff / --project 二选一）")
+    parser.add_argument("--project", type=Path, default=None,
+                        help="项目路径，触发项目扫描模式：识别项目内 HF 模型并生成合并血缘图")
     parser.add_argument("--diff", action="store_true",
-                        help="BOM 对比模式，输出风险报告（与 --model / --mode 互斥）")
+                        help="BOM 对比模式，输出风险报告（与 --model / --mode / --project 互斥）")
     parser.add_argument("--input", type=Path, help="基础模式的 CycloneDX BOM")
     parser.add_argument("--before", type=Path, help="深度/diff 模式的 t0 CycloneDX BOM")
     parser.add_argument("--after", type=Path, help="深度/diff 模式的 t1 CycloneDX BOM")
     parser.add_argument("--output", type=Path, required=True, help="输出 Markdown 报告")
     args = parser.parse_args(argv)
 
-    if args.diff and (args.model is not None or args.mode is not None):
-        parser.error("--diff 与 --model / --mode 互斥，请二选一")
-    if args.model is not None and args.mode is not None:
-        parser.error("--model 与 --mode 互斥，请二选一")
-    if not args.diff and args.model is None and args.mode is None:
-        parser.error("必须提供 --diff 或 --mode（basic/deep）或 --model")
+    if args.diff and (args.model is not None or args.mode is not None or args.project is not None):
+        parser.error("--diff 与 --model / --mode / --project 互斥，请二选一")
+    if args.model is not None and (args.mode is not None or args.project is not None):
+        parser.error("--model 与 --mode / --project 互斥，请二选一")
+    if args.project is not None and args.mode is not None:
+        parser.error("--project 与 --mode 互斥，请二选一")
+    if not args.diff and args.model is None and args.mode is None and args.project is None:
+        parser.error("必须提供 --diff 或 --mode（basic/deep）或 --model 或 --project")
     if args.diff and (args.before is None or args.after is None):
         parser.error("--diff 必须同时提供 --before 和 --after")
     if args.mode == "basic" and args.input is None:
@@ -512,10 +517,26 @@ def run_diff(before_bom: Path, after_bom: Path, output_path: Path) -> None:
     )
     print(f"三级判定分布：{dict(decision_distribution)}")
 
-    # 附带产物：用 t1 的 BOM 生成血缘图 PNG
+    # 附带产物：写出事件与路径证书，供可视化脚本叠加风险传播高亮
+    outputs_dir = Path(__file__).resolve().parent / "outputs"
+    events_path = outputs_dir / "diff_events.json"
+    certificates_path = outputs_dir / "diff_certificates.json"
+    outputs_dir.mkdir(parents=True, exist_ok=True)
+    events_path.write_text(
+        json.dumps(events, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    certificates_path.write_text(
+        json.dumps(propagated["path_certificates"], ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    # 附带产物：用 t1 的 BOM 生成血缘图 PNG，并叠加风险传播高亮
     _render_diff_lineage_png(
         after_bom,
-        Path(__file__).resolve().parent / "outputs" / "diff_lineage_graph.png",
+        outputs_dir / "diff_lineage_graph.png",
+        events_path,
+        certificates_path,
     )
 
 
@@ -544,13 +565,18 @@ def _run_py_script(script: Path, script_args: list[str], label: str) -> None:
         raise RuntimeError(f"{label} 执行失败（退出码 {proc.returncode}）")
 
 
-def _render_diff_lineage_png(t1_bom: Path, png_path: Path) -> None:
+def _render_diff_lineage_png(
+    t1_bom: Path,
+    png_path: Path,
+    events_path: Path | None = None,
+    certificates_path: Path | None = None,
+) -> None:
     """diff 模式附带产物：用 t1 的 BOM 生成血缘图 PNG。
 
     依次调用仓库现有脚本：
     - work/extract_hf_lineage.py：从 t1 BOM 提取血缘（assets/edges/graph.json）
     - build_graph.py：显式构建血缘图
-    - visualize_lineage.py：渲染 PNG
+    - visualize_lineage.py：渲染 PNG（传入 events/certificates 时叠加风险高亮）
     """
     import shutil
     import tempfile
@@ -584,9 +610,15 @@ def _render_diff_lineage_png(t1_bom: Path, png_path: Path) -> None:
             "build_graph",
         )
 
+        viz_args = ["--graph", str(graph_path), "--output", str(png_path)]
+        if events_path and certificates_path:
+            viz_args += [
+                "--events", str(events_path),
+                "--certificates", str(certificates_path),
+            ]
         _run_py_script(
             root / "visualize_lineage.py",
-            ["--graph", str(graph_path), "--output", str(png_path)],
+            viz_args,
             "visualize_lineage",
         )
 
@@ -772,12 +804,241 @@ def run_model(args: argparse.Namespace) -> None:
     print(f"模型模式报告已写入：{args.output}")
 
 
+def _safe_model_file(model: str) -> str:
+    """把 HF 模型名转成 generate_bom 使用的安全文件名（'/' -> '__'）。"""
+    return model.replace("/", "__")
+
+
+def _bom_ancestry_map(bom_dir: Path) -> dict[str, list[str]]:
+    """扫描 BOM 目录，构建 模型名 -> 直接祖先列表 的映射。"""
+    ancestry: dict[str, list[str]] = {}
+    for bom_path in sorted(bom_dir.glob("*.json")):
+        try:
+            model, ancestors = _bom_ancestors(bom_path)
+        except (json.JSONDecodeError, OSError):
+            continue
+        if model:
+            ancestry[model] = ancestors
+    return ancestry
+
+
+def _lineage_chain(
+    start: str,
+    ancestry: dict[str, list[str]],
+    seen: set[str] | None = None,
+) -> list[str]:
+    """返回从 start 出发的祖先链（start 的祖先 → 祖先的祖先 → ...），带环保护。"""
+    if seen is None:
+        seen = set()
+    if start in seen:
+        return []
+    seen.add(start)
+    chain: list[str] = []
+    for ancestor in ancestry.get(start, []):
+        chain.append(ancestor)
+        chain.extend(_lineage_chain(ancestor, ancestry, seen))
+    return chain
+
+
+def _render_project_report(
+    project_path: Path,
+    models: list[str],
+    bom_dir: Path,
+    extract_dir: Path | None,
+    png_path: Path | None,
+    duration_s: float,
+) -> str:
+    """渲染项目模式的中文 Markdown 报告。"""
+    if not models:
+        return (
+            "# 项目 AI 模型血缘扫描报告\n\n"
+            f"- 项目路径：`{project_path}`\n"
+            f"- 生成时间：{_utc_now()}\n"
+            f"- 识别模型数：**0**\n"
+            f"- 本报告生成：**成功**（未识别到 HF 模型，跳过血缘图构建）\n\n"
+            "## 一、项目识别出的模型\n\n_无数据_\n\n"
+            "## 免责声明\n\n"
+            "本报告基于结构化证据与血缘图的辅助分析结果，不构成法律意见。\n"
+        )
+
+    graph = json.loads((extract_dir / "graph.json").read_text(encoding="utf-8"))
+    nodes = graph.get("nodes", [])
+    edges = graph.get("edges", [])
+    ancestry = _bom_ancestry_map(bom_dir)
+
+    node_type_counter = Counter((n.get("asset_type") or "unknown") for n in nodes)
+    edge_type_counter = Counter((e.get("edge_type") or "unknown") for e in edges)
+
+    model_rows: list[list[Any]] = []
+    bom_rows: list[list[Any]] = []
+    for model in models:
+        bom_file = bom_dir / f"{_safe_model_file(model)}.json"
+        root_name = model
+        if bom_file.exists():
+            try:
+                root_name, _ = _bom_ancestors(bom_file)
+            except (json.JSONDecodeError, OSError):
+                root_name = model
+            bom_rows.append([root_name, bom_file.name, bom_file.stat().st_size])
+        chain = _lineage_chain(root_name, ancestry)
+        model_rows.append(
+            [model, root_name, len(chain), " -> ".join([root_name, *chain]) or root_name]
+        )
+
+    node_rows = [
+        [
+            n.get("canonical_id"),
+            n.get("asset_type"),
+            n.get("name") or n.get("canonical_id"),
+            n.get("version"),
+            n.get("license"),
+        ]
+        for n in nodes
+    ]
+    edge_rows = [
+        [e.get("source"), e.get("edge_type"), e.get("target"), e.get("evidence_level")]
+        for e in edges
+    ]
+
+    lines: list[str] = [
+        "# 项目 AI 模型血缘扫描报告",
+        "",
+        f"- 项目路径：`{project_path}`",
+        f"- 生成时间：{_utc_now()}",
+        f"- 识别模型数：**{len(models)}**",
+        f"- 合并血缘图节点数：**{len(nodes)}**，边数：**{len(edges)}**",
+        f"- SCC 强连通分量：**{graph.get('scc_count', 0)}**",
+        f"- 合并血缘图 PNG：**{'已生成' if png_path and png_path.exists() else '未生成'}**（`{png_path}`）",
+        f"- 本报告生成：**成功**（流水线耗时 {duration_s:.1f}s）",
+        "",
+        "## 一、项目识别出的模型",
+        "",
+    ]
+    lines.extend(_table(["项目内名称", "BOM 主组件", "祖先层数", "血缘链（根 → 祖先）"], model_rows))
+    lines.extend(["", "## 二、各模型 BOM 清单", ""])
+    lines.extend(_table(["模型", "文件", "大小（字节）"], bom_rows))
+    lines.extend(["", "## 三、合并血缘图节点", ""])
+    lines.extend(_table(["canonical_id", "类型", "名称", "版本", "许可证"], node_rows))
+    lines.extend(["", "## 四、合并血缘边", ""])
+    lines.extend(_table(["来源", "边类型", "目标", "证据等级"], edge_rows))
+    lines.extend(
+        [
+            "",
+            "## 五、统计",
+            "",
+            f"- 节点类型分布：`{dict(node_type_counter)}`",
+            f"- 边类型分布：`{dict(edge_type_counter)}`",
+            "",
+            "## 免责声明",
+            "",
+            "本报告基于结构化证据与血缘图的辅助分析结果，不构成法律意见。",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def run_project(args: argparse.Namespace) -> None:
+    """项目模式：扫描项目 → 识别 HF 模型 → 逐模型递归扫祖先 → 合并血缘图 → 中文报告。"""
+    import shutil
+    import tempfile
+
+    root = Path(__file__).resolve().parent
+    project_path = Path(args.project)
+    scan_dir = root / "outputs" / "project_scan"
+    scan_dir.mkdir(parents=True, exist_ok=True)
+    # 清空旧 *.json，避免上次运行残留混入本次合并图。
+    for stale in scan_dir.glob("*.json"):
+        try:
+            stale.unlink()
+        except OSError:
+            pass
+
+    started = datetime.now(timezone.utc)
+
+    # 1. 调 scan_project.py 拿到模型名列表
+    models_json = root / "outputs" / "project_models.json"
+    _run_py_script(
+        root / "scan_project.py",
+        ["--project", str(project_path), "--output", str(models_json)],
+        "scan_project",
+    )
+    models = json.loads(models_json.read_text(encoding="utf-8"))
+    if not models:
+        report = _render_project_report(project_path, [], scan_dir, None, None, 0.0)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(report, encoding="utf-8")
+        print(f"项目模式报告已写入：{args.output}")
+        return
+
+    # 2. 逐模型递归扫祖先链（BOM 先落到临时目录，再汇入共享 scan_dir）
+    with tempfile.TemporaryDirectory(prefix="project_lineage_") as tmp:
+        tmp_root = Path(tmp)
+        for model in models:
+            work_dir = tmp_root / _safe_model_file(model)
+            work_dir.mkdir(parents=True, exist_ok=True)
+            _run_py_script(
+                root / "generate_bom.py",
+                [model, "--recursive", "--outdir", str(work_dir)],
+                "generate_bom",
+            )
+            _run_py_script(
+                root / "enrich_lineage.py",
+                ["--bom-dir", str(work_dir), "--model", model],
+                "enrich_lineage",
+            )
+            # 把该模型整条祖先链的 BOM 汇入共享目录（按文件名去重）。
+            for bom_path in sorted(work_dir.glob("*.json")):
+                target = scan_dir / bom_path.name
+                if not target.exists():
+                    shutil.copy2(bom_path, target)
+
+    # 3. 提取合并血缘 → assets/edges/graph.json
+    extract_dir = root / "outputs" / "project_extract"
+    extract_dir.mkdir(parents=True, exist_ok=True)
+    _run_py_script(
+        root / "work" / "extract_hf_lineage.py",
+        ["--bom-dir", str(scan_dir), "--output-dir", str(extract_dir)],
+        "extract_hf_lineage",
+    )
+
+    # 4. 显式构建合并血缘图
+    graph_path = extract_dir / "graph.json"
+    _run_py_script(
+        root / "build_graph.py",
+        [
+            "--assets", str(extract_dir / "assets.json"),
+            "--edges", str(extract_dir / "edges.json"),
+            "--output", str(graph_path),
+        ],
+        "build_graph",
+    )
+
+    # 5. 可视化合并血缘图 → PNG
+    png_path = root / "outputs" / "project_lineage_graph.png"
+    _run_py_script(
+        root / "visualize_lineage.py",
+        ["--graph", str(graph_path), "--output", str(png_path)],
+        "visualize_lineage",
+    )
+
+    duration_s = (datetime.now(timezone.utc) - started).total_seconds()
+    report = _render_project_report(
+        project_path, models, scan_dir, extract_dir, png_path, duration_s
+    )
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(report, encoding="utf-8")
+    print(f"项目模式报告已写入：{args.output}")
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     if args.diff:
         run_diff(args.before, args.after, args.output)
     elif args.model is not None:
         run_model(args)
+    elif args.project is not None:
+        run_project(args)
     elif args.mode == "basic":
         run_basic(args)
     else:
