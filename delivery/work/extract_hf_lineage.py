@@ -11,8 +11,9 @@ v0.3（2026-10-01）与主链路版本化对齐：
 - 调用 bom_adapter.build_asset_identifiers() 生成 entity_key / 版本化 canonical_id，
   不再手拼 asset_type:name；
 - 资产节点补齐 merge_status / reason_code / rule_version / hashes / evidence_chain；
-- 边证据等级由 A 改为 B：源数据虽是 HF 官方模型卡字段，但载体是 cdxgen 产出的
-  CycloneDX BOM，按 docs/接口约定.md v0.2「工具产物或结构化依赖证据」归为 B 级；
+- 边证据等级按实际来源标注（A=官方数据，B=工具产物，C=推断）：源数据虽是 HF 官方
+  模型卡字段，但载体是 cdxgen 产出的 CycloneDX BOM，默认按 docs/接口约定.md v0.2
+  「工具产物或结构化依赖证据」归为 B 级；祖先对象自带 evidence_level 时原样保留；
 - 保留全部 HF 特化能力：递归展开 pedigree.ancestors、数据集 purl 归一化、
   query 剥离、缺失祖先自动补建、18 节点 / 12 边演示。
 
@@ -22,7 +23,7 @@ v0.3（2026-10-01）与主链路版本化对齐：
 
 输出（均符合 docs/接口约定.md v0.2）：
     out/hf_lineage/assets.json   资产节点（model / dataset，版本化 canonical_id）
-    out/hf_lineage/edges.json    血缘边（derived_from / trained_on，证据 B 级）
+    out/hf_lineage/edges.json    血缘边（derived_from / trained_on，证据等级按实际来源标注，缺省 B 级）
     out/hf_lineage/graph.json    模块 8 构建的血缘图（含 SCC 与统计）
 """
 
