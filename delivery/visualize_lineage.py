@@ -10,6 +10,10 @@
 用法：
     python visualize_lineage.py --graph out/hf_lineage/graph.json \
                                 --output outputs/lineage_graph.png
+
+    # diff 模式：叠加风险传播高亮（变更=红、受影响=橙、无关=灰）
+    python visualize_lineage.py --graph out/graph_t1.json --output outputs/diff.png \
+                                --events out/events.json --certificates out/certificates.json
 """
 
 from __future__ import annotations
@@ -27,6 +31,16 @@ import matplotlib.pyplot as plt  # noqa: E402
 import networkx as nx  # noqa: E402
 from matplotlib.lines import Line2D  # noqa: E402
 from matplotlib.patches import Circle, FancyArrowPatch, Patch  # noqa: E402
+from matplotlib.transforms import ScaledTranslation  # noqa: E402
+
+# 中文字体（用于 diff 模式的图例/标题/标签前缀），避免默认 DejaVu Sans 缺字显示为方框
+plt.rcParams["font.sans-serif"] = [
+    "Microsoft YaHei",
+    "SimHei",
+    "Noto Sans SC",
+    "DejaVu Sans",
+]
+plt.rcParams["axes.unicode_minus"] = False
 
 # 颜色
 MODEL_COLOR = "#4A7EBB"
@@ -36,6 +50,28 @@ TRAINED_COLOR = "#1f77b4"
 DEFAULT_NODE_COLOR = "#55a868"
 DEFAULT_EDGE_COLOR = "#7f7f7f"
 
+# 风险传播（diff 模式）颜色与线宽
+CHANGE_COLOR = "#d62728"
+AFFECTED_COLOR = "#ff7f0e"
+UNRELATED_COLOR = "#cccccc"
+PROPAGATION_EDGE_COLOR = "#d62728"
+PROPAGATION_EDGE_WIDTH = 2.5
+UNRELATED_EDGE_WIDTH = 0.8
+
+# 证据等级（A/B/C）对应的传播路径边颜色：A=深红、B=橙红、C=浅红
+EVIDENCE_EDGE_COLORS = {
+    "A": "#7a0000",
+    "B": "#c0392b",
+    "C": "#e67e73",
+}
+
+# 三级判定颜色：RISK_CONFIRMED 深橙、RISK_POTENTIAL 浅橙、UNDETERMINED 黄
+DECISION_COLORS = {
+    "RISK_CONFIRMED": "#d95f02",
+    "RISK_POTENTIAL": "#ff9d4d",
+    "UNDETERMINED": "#f4d03f",
+}
+
 # 尺寸与布局参数
 MODEL_RADIUS = 0.35
 DATASET_RADIUS = MODEL_RADIUS * 0.6   # 数据集半径 = 模型的 60%
@@ -43,6 +79,7 @@ DEPTH_SPACING = 1.4                    # 相邻血缘深度的垂直间距
 DATASET_SPACING = 0.8                  # 右侧数据集列的节点间距
 DATASET_X_GAP = 1.8                    # 数据集列与模型列的横向间距
 LABEL_MAX_LEN = 20
+LABEL_LONG_MAX_LEN = 30   # 标签冲突时使用的更长显示长度
 LABEL_V_GAP = 0.08
 
 
@@ -71,17 +108,138 @@ def load_graph(path: Path) -> nx.MultiDiGraph:
     return graph
 
 
+def load_change_nodes(path: Path) -> set[str]:
+    """从 events.json 提取变更节点集合（events[].seed）。"""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if isinstance(data, dict):
+        data = data.get("events", data.get("nodes", []))
+    return {str(item.get("seed")) for item in data if item.get("seed")}
+
+
+def _evidence_rank(level: str) -> int:
+    """证据等级排序：A 最强(0)、C 最弱(2)；未知按最弱处理。"""
+    return {"A": 0, "B": 1, "C": 2}.get(str(level).upper(), 2)
+
+
+def load_diff_info(path: Path) -> dict:
+    """从 certificates.json 提取受影响节点、传播路径边、边上证据等级与节点判定。
+
+    返回 dict，字段：
+        affected: set[str]                         受影响节点集合
+        edges: set[tuple[str, str]]                传播路径边 (source, target)
+        edge_evidence: dict[tuple[str, str], str]  每条边的证据等级 (A/B/C)
+        node_decision: dict[str, str]              受影响节点 -> 三级判定
+    """
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if isinstance(data, dict):
+        data = data.get("path_certificates", data.get("certificates", []))
+    affected: set[str] = set()
+    edges: set[tuple[str, str]] = set()
+    edge_evidence: dict[tuple[str, str], str] = {}
+    node_decision: dict[str, str] = {}
+    for cert in data:
+        affected_id = cert.get("affected")
+        decision = cert.get("decision")
+        if affected_id:
+            affected_id = str(affected_id)
+            affected.add(affected_id)
+            if decision and affected_id not in node_decision:
+                node_decision[affected_id] = str(decision)
+        for step in cert.get("path", []) or []:
+            source = step.get("source")
+            target = step.get("target")
+            if source and target:
+                key = (str(source), str(target))
+                edges.add(key)
+                level = str(step.get("evidence_level") or "").upper()
+                if level and (
+                    key not in edge_evidence
+                    or _evidence_rank(level) > _evidence_rank(edge_evidence[key])
+                ):
+                    edge_evidence[key] = level
+    return {
+        "affected": affected,
+        "edges": edges,
+        "edge_evidence": edge_evidence,
+        "node_decision": node_decision,
+    }
+
+
+def _truncate(text: str, max_len: int) -> str:
+    """超长时中间省略、保留结尾，确保不截断关键后缀。"""
+    text = (text or "").strip()
+    if len(text) <= max_len:
+        return text
+    keep = max_len - 3
+    tail = keep // 2
+    head = keep - tail
+    return text[:head] + "..." + text[-tail:]
+
+
 def short_label(name: str) -> str:
     """取名称最后一段（去掉 org/ 前缀），超 20 字符时中间省略以保留结尾。"""
     name = (name or "").strip()
     if "/" in name:
         name = name.rsplit("/", 1)[-1]
-    if len(name) > LABEL_MAX_LEN:
-        keep = LABEL_MAX_LEN - 3
-        tail = keep // 2
-        head = keep - tail
-        name = name[:head] + "..." + name[-tail:]
-    return name
+    return _truncate(name, LABEL_MAX_LEN)
+
+
+def _canonical_tail(canonical_id: str, max_len: int = 30) -> str:
+    """取 canonical_id 的后 max_len 个字符；超长时前置省略号。"""
+    canonical_id = (canonical_id or "").strip()
+    if len(canonical_id) <= max_len:
+        return canonical_id
+    return "…" + canonical_id[-(max_len - 1):]
+
+
+def compute_node_labels(graph: nx.MultiDiGraph) -> dict[str, str]:
+    """为每个节点分配展示标签，保证不同 canonical_id 的标签互不相同。
+
+    规则：
+    1. 先按短标签（去 org/ 前缀）分配；
+    2. 若多个节点的短标签相同（如裸名 bert-base-uncased 与
+       google-bert/bert-base-uncased 截断后相同），冲突组改用更长显示：
+       优先保留 org/ 前缀的全名，其次 canonical_id 后 30 字符；
+    3. 兜底：若仍撞车，追加短后缀，确保全局唯一。
+    """
+    base: dict[str, str] = {}
+    for nid, attrs in graph.nodes(data=True):
+        base[nid] = short_label(attrs.get("name") or nid)
+
+    groups: dict[str, list[str]] = defaultdict(list)
+    for nid, lbl in base.items():
+        groups[lbl].append(nid)
+
+    labels: dict[str, str] = {}
+    used: set[str] = set()
+    for nid in sorted(graph.nodes()):
+        attrs = graph.nodes[nid]
+        name = (attrs.get("name") or nid).strip()
+        candidates: list[str] = []
+        if len(groups[base[nid]]) == 1:
+            candidates.append(base[nid])
+        else:
+            # 冲突组：优先保留 org/ 前缀，其次 canonical_id 后 30 字符
+            candidates.append(_truncate(name, LABEL_LONG_MAX_LEN))
+            candidates.append(_canonical_tail(nid))
+            candidates.append(_truncate(nid, LABEL_LONG_MAX_LEN))
+        assigned = False
+        for cand in candidates:
+            if cand not in used:
+                labels[nid] = cand
+                used.add(cand)
+                assigned = True
+                break
+        if not assigned:
+            suffix = f" ({nid[-6:]})"
+            cand = f"{base[nid]}{suffix}"
+            counter = 2
+            while cand in used:
+                cand = f"{base[nid]}{suffix}#{counter}"
+                counter += 1
+            labels[nid] = cand
+            used.add(cand)
+    return labels
 
 
 def compute_model_depths(graph: nx.MultiDiGraph) -> dict:
@@ -152,7 +310,7 @@ def _node_color(attrs: dict) -> str:
     return DEFAULT_NODE_COLOR
 
 
-def _draw_arrow(ax, pos, u, v, color, linestyle, r_u, r_v) -> None:
+def _draw_arrow(ax, pos, u, v, color, linestyle, r_u, r_v, linewidth=1.4) -> None:
     """从 u 指向 v 的箭头，两端缩进到各自节点圆边。"""
     x1, y1 = pos[u]
     x2, y2 = pos[v]
@@ -171,7 +329,7 @@ def _draw_arrow(ax, pos, u, v, color, linestyle, r_u, r_v) -> None:
             mutation_scale=14,
             color=color,
             linestyle=linestyle,
-            linewidth=1.4,
+            linewidth=linewidth,
             zorder=2,
             shrinkA=0,
             shrinkB=0,
@@ -213,9 +371,10 @@ def render(graph: nx.MultiDiGraph, out_path: Path) -> None:
         )
 
     # 3. 标签（节点下方，不重叠）
+    labels = compute_node_labels(graph)
     for nid, (x, y) in pos.items():
         attrs = graph.nodes[nid]
-        label = short_label(attrs.get("name") or nid)
+        label = labels[nid]
         ax.text(
             x,
             y - _node_radius(attrs) - LABEL_V_GAP,
@@ -256,14 +415,194 @@ def render(graph: nx.MultiDiGraph, out_path: Path) -> None:
     plt.close()
 
 
+def _node_diff_kind(nid: str, diff: dict) -> str:
+    """返回节点在 diff 模式下的分类：change / affected / unrelated。"""
+    if nid in diff["change"]:
+        return "change"
+    if nid in diff["affected"]:
+        return "affected"
+    return "unrelated"
+
+
+def _node_diff_color(kind: str) -> str:
+    return {
+        "change": CHANGE_COLOR,
+        "affected": AFFECTED_COLOR,
+        "unrelated": UNRELATED_COLOR,
+    }[kind]
+
+
+def render_diff(graph: nx.MultiDiGraph, out_path: Path, diff: dict) -> None:
+    """渲染风险传播图：变更节点红、受影响节点橙、其余灰；传播路径按证据等级着色并标注判定。"""
+    pos = compute_layout(graph)
+    propagation_edges = diff["edges"]
+    edge_evidence = diff.get("edge_evidence", {})
+    node_decision = diff.get("node_decision", {})
+
+    fig, ax = plt.subplots(figsize=(12, 12))
+
+    # 1. 边：传播路径按证据等级着色（A 深红 / B 橙红 / C 浅红），其余灰色细线
+    for u, v, _key, data in graph.edges(keys=True, data=True):
+        r_u = _node_radius(graph.nodes[u])
+        r_v = _node_radius(graph.nodes[v])
+        on_path = (u, v) in propagation_edges
+        level = edge_evidence.get((u, v)) if on_path else None
+        if on_path:
+            color = EVIDENCE_EDGE_COLORS.get(level or "B", EVIDENCE_EDGE_COLORS["B"])
+            linewidth = PROPAGATION_EDGE_WIDTH
+        else:
+            color = UNRELATED_COLOR
+            linewidth = UNRELATED_EDGE_WIDTH
+        if data.get("edge_type") == "derived_from":
+            _draw_arrow(ax, pos, v, u, color, "solid", r_v, r_u, linewidth=linewidth)
+        else:
+            _draw_arrow(ax, pos, u, v, color, "solid", r_u, r_v, linewidth=linewidth)
+        # 传播路径边：在中点标注证据等级
+        if on_path and level:
+            x_mid = (pos[u][0] + pos[v][0]) / 2.0
+            y_mid = (pos[u][1] + pos[v][1]) / 2.0
+            ax.text(
+                x_mid,
+                y_mid,
+                f"({level})",
+                ha="center",
+                va="center",
+                fontsize=7,
+                zorder=5,
+                bbox=dict(facecolor="white", edgecolor="none", alpha=0.85, pad=0.6),
+            )
+
+    # 2. 节点：变更红、受影响橙、其余灰
+    for nid, (x, y) in pos.items():
+        attrs = graph.nodes[nid]
+        kind = _node_diff_kind(nid, diff)
+        ax.add_patch(
+            Circle(
+                (x, y),
+                radius=_node_radius(attrs),
+                facecolor=_node_diff_color(kind),
+                edgecolor="white",
+                linewidth=1.0,
+                zorder=3,
+            )
+        )
+
+    # 3. 标签（加前缀标记风险角色；受影响节点下方标注三级判定）
+    labels = compute_node_labels(graph)
+    for nid, (x, y) in pos.items():
+        attrs = graph.nodes[nid]
+        kind = _node_diff_kind(nid, diff)
+        label = labels[nid]
+        if kind == "change":
+            label = f"[变更] {label}"
+        elif kind == "affected":
+            label = f"[受影响] {label}"
+        anchor_y = y - _node_radius(attrs) - LABEL_V_GAP
+        ax.text(
+            x,
+            anchor_y,
+            label,
+            ha="center",
+            va="top",
+            fontsize=8,
+            zorder=4,
+        )
+        if kind == "affected":
+            decision = node_decision.get(nid)
+            if decision:
+                ax.text(
+                    x,
+                    anchor_y,
+                    decision,
+                    ha="center",
+                    va="top",
+                    fontsize=7,
+                    zorder=4,
+                    fontweight="bold",
+                    color=DECISION_COLORS.get(decision, "#000000"),
+                    transform=ax.transData + ScaledTranslation(0, -12 / 72, fig.dpi_scale_trans),
+                )
+
+    # 4. 图例（说明颜色含义）
+    legend_handles = [
+        Patch(facecolor=CHANGE_COLOR, edgecolor="white", label="变更"),
+        Patch(facecolor=AFFECTED_COLOR, edgecolor="white", label="受影响"),
+        Patch(facecolor=UNRELATED_COLOR, edgecolor="white", label="无关"),
+        Line2D([0], [0], color=EVIDENCE_EDGE_COLORS["A"], linestyle="-",
+               linewidth=PROPAGATION_EDGE_WIDTH, marker=">", markersize=7,
+               label="证据A"),
+        Line2D([0], [0], color=EVIDENCE_EDGE_COLORS["B"], linestyle="-",
+               linewidth=PROPAGATION_EDGE_WIDTH, marker=">", markersize=7,
+               label="证据B"),
+        Line2D([0], [0], color=EVIDENCE_EDGE_COLORS["C"], linestyle="-",
+               linewidth=PROPAGATION_EDGE_WIDTH, marker=">", markersize=7,
+               label="证据C"),
+        Patch(facecolor=DECISION_COLORS["RISK_CONFIRMED"], edgecolor="white",
+              label="RISK_CONFIRMED"),
+        Patch(facecolor=DECISION_COLORS["RISK_POTENTIAL"], edgecolor="white",
+              label="RISK_POTENTIAL"),
+        Patch(facecolor=DECISION_COLORS["UNDETERMINED"], edgecolor="white",
+              label="UNDETERMINED"),
+    ]
+    ax.legend(handles=legend_handles, loc="upper right", fontsize=8, framealpha=0.9)
+
+    # 5. 坐标范围与标题
+    if pos:
+        xs = [p[0] for p in pos.values()]
+        ys = [p[1] for p in pos.values()]
+        ax.set_xlim(min(xs) - 1.2, max(xs) + 1.2)
+        ax.set_ylim(min(ys) - 1.0, max(ys) + 1.2)
+    ax.set_aspect("equal")
+    ax.axis("off")
+    decision_counts: dict[str, int] = defaultdict(int)
+    for decision in node_decision.values():
+        decision_counts[decision] += 1
+    ax.set_title(
+        f"风险传播图（{len(diff['change'])} 处变更，"
+        f"{len(diff['affected'])} 个受影响节点；"
+        f"{decision_counts.get('RISK_CONFIRMED', 0)} 确认，"
+        f"{decision_counts.get('RISK_POTENTIAL', 0)} 可能，"
+        f"{decision_counts.get('UNDETERMINED', 0)} 无法判定）",
+        fontsize=12,
+    )
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(out_path, dpi=150, bbox_inches="tight")
+    plt.close()
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="把血缘图渲染成 PNG")
     parser.add_argument("--graph", required=True, help="模块 8 的 graph.json")
     parser.add_argument("--output", required=True, help="输出 PNG 路径")
+    parser.add_argument("--events", default=None,
+                        help="events.json（可选）：触发 diff 风险高亮，与 --certificates 成对使用")
+    parser.add_argument("--certificates", default=None,
+                        help="certificates.json（可选）：受影响节点与传播路径")
     args = parser.parse_args(argv)
 
     graph = load_graph(Path(args.graph))
-    render(graph, Path(args.output))
+
+    if args.events or args.certificates:
+        if not args.events or not args.certificates:
+            parser.error("--events 与 --certificates 需同时提供")
+        change_nodes = load_change_nodes(Path(args.events))
+        diff_info = load_diff_info(Path(args.certificates))
+        diff = {
+            "change": change_nodes,
+            "affected": diff_info["affected"],
+            "edges": diff_info["edges"],
+            "edge_evidence": diff_info["edge_evidence"],
+            "node_decision": diff_info["node_decision"],
+        }
+        render_diff(graph, Path(args.output), diff)
+        print(
+            f"变更节点：{len(change_nodes)}，受影响节点：{len(diff_info['affected'])}，"
+            f"传播路径边：{len(diff_info['edges'])}"
+        )
+    else:
+        render(graph, Path(args.output))
+
     print(f"节点：{graph.number_of_nodes()}，边：{graph.number_of_edges()}")
     print(f"已写入 {args.output}")
     return 0
