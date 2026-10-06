@@ -76,7 +76,7 @@ LICENSE_DB: dict[str, LicenseRule] = {
         category="permissive",
         permissions=("商用", "修改", "分发", "私人使用", "再许可", "专利授权"),
         duties=("附带许可证全文", "保留 NOTICE 文件", "修改文件需显著声明变更"),
-        prohibitions=("不得使用贡献者商标", "专利诉讼反制条款"),
+        prohibitions=("不得使用贡献者商标", "专利诉讼反制条款", "不得附加额外限制"),
         risk_level=2,
     ),
     "BSD-3-Clause": LicenseRule(
@@ -176,6 +176,27 @@ LICENSE_DB: dict[str, LicenseRule] = {
         spdx_like=False,
         note="Debian 中的宽松类标注（permissive / __AUTO_PERMISSIVE__ / FSFUL 等），无统一许可证文本",
     ),
+    # ---- 数据集许可（Creative Commons）----
+    "CC-BY-4.0": LicenseRule(
+        canonical_id="CC-BY-4.0",
+        name_zh="知识共享署名 4.0（数据集常用）",
+        category="dataset",
+        permissions=("商用", "修改", "分发", "私人使用", "再许可"),
+        duties=("保留署名", "附带许可证链接", "标明修改"),
+        prohibitions=(),
+        risk_level=2,
+        note="署名（Attribution）许可，训练数据集常见；Hugging Face 数据集卡片常写作 cc-by-4.0",
+    ),
+    "CC-BY-NC-4.0": LicenseRule(
+        canonical_id="CC-BY-NC-4.0",
+        name_zh="知识共享署名-非商业 4.0（数据集常用）",
+        category="dataset",
+        permissions=("修改", "分发", "私人使用"),
+        duties=("保留署名", "附带许可证链接", "标明修改"),
+        prohibitions=("不得用于商业用途",),
+        risk_level=3,
+        note="署名-非商业许可，禁止商用；Hugging Face 数据集卡片常写作 cc-by-nc-4.0",
+    ),
     # ---- 弱 copyleft ----
     "MPL-2.0": LicenseRule(
         canonical_id="MPL-2.0",
@@ -269,7 +290,7 @@ LICENSE_DB: dict[str, LicenseRule] = {
         name_zh="Llama 2 社区许可证",
         category="ai_restricted",
         permissions=("商用", "修改", "分发", "私人使用"),
-        duties=("保留许可证文本", "附带归属声明", "遵守可接受使用政策"),
+        duties=("保留许可证文本", "附带归属声明", "遵守可接受使用政策", "衍生作品保留相同许可证"),
         prohibitions=(
             "禁止使用模型输出训练其他大语言模型",
             "月活用户超过 7 亿需 Meta 书面许可",
@@ -352,6 +373,10 @@ LICENSE_ALIASES: dict[str, str] = {
     # 公有领域标记（非许可证文本，按低风险处理）
     "cc0": "CC0-1.0",
     "cc0-1.0": "CC0-1.0",
+    "cc-by-4.0": "CC-BY-4.0",
+    "cc-by": "CC-BY-4.0",
+    "cc-by-nc-4.0": "CC-BY-NC-4.0",
+    "cc-by-nc": "CC-BY-NC-4.0",
     "public-domain": "Public-Domain",
     "public domain": "Public-Domain",
     "pd": "Public-Domain",
@@ -462,6 +487,7 @@ CATEGORY_ZH = {
     "weak_copyleft": "弱 copyleft",
     "strong_copyleft": "强 copyleft",
     "network_copyleft": "网络 copyleft",
+    "dataset": "数据集许可",
     "ai_restricted": "AI 专用（受限）",
     "unknown": "未知 / 待人工确认",
 }
