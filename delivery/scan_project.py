@@ -42,6 +42,9 @@ ML_MODEL_TYPES = {"machine-learning-model", "model"}
 # 匹配 from_pretrained("模型名") / from_pretrained('模型名')，提取完整模型名。
 FROM_PRETRAINED_RE = re.compile(r"""from_pretrained\(\s*["']([^"']+)["']""")
 
+# 匹配 pipeline(..., model="owner/model") 等 model= 关键字传参。
+MODEL_KWARG_RE = re.compile(r"""\bmodel\s*=\s*["']([^"']+)["']""")
+
 
 def run_project_scan(project_path: Path, out_file: Path) -> subprocess.CompletedProcess:
     """调 cdxgen 扫描项目，把 BOM 写到 out_file。"""
@@ -100,8 +103,67 @@ def _read_model_from_source(project_path: Path, location: str) -> str | None:
         return None
     match = FROM_PRETRAINED_RE.search(lines[line_no - 1])
     if not match:
+        match = MODEL_KWARG_RE.search(lines[line_no - 1])
+    if not match:
         return None
     return match.group(1).strip() or None
+
+
+def _component_from_static_asset(project_path: Path | None, component: dict) -> bool:
+    """判断组件是否由 huggingface.co 静态资源 URL 误报而来。
+
+    cdxgen 会把源码里的静态资源 URL（如
+    https://huggingface.co/front/assets/homepage/hugs-mobile.svg）误识别为
+    machine-learning-model（group=front、name=assets）。若组件任一 occurrence
+    所在源码行是 URL，则视为静态资源误报，不作为模型。
+    """
+    if project_path is None:
+        return False
+    evidence = component.get("evidence") or {}
+    occurrences = evidence.get("occurrences", []) if isinstance(evidence, dict) else []
+    for occ in occurrences or []:
+        if not isinstance(occ, dict):
+            continue
+        file_part, line_no = _split_location(occ.get("location") or "")
+        if not file_part or line_no is None:
+            continue
+        try:
+            lines = (project_path / file_part).read_text(encoding="utf-8").splitlines()
+        except (OSError, UnicodeDecodeError):
+            continue
+        if line_no < 1 or line_no > len(lines):
+            continue
+        if "://" in lines[line_no - 1]:
+            return True
+    return False
+
+
+def _complete_model_org(component: dict, name: str) -> str:
+    """为缺少 org 前缀的模型名补全 org。
+
+    当源码只给出裸模型名（如 pipeline(model="gpt2")）或经变量传参时，
+    从 BOM 的 group 或 externalReferences 中补全。仅当 purl 为
+    pkg:huggingface/<org>/<name> 时，group 才是真实 org；
+    pkg:npm/pypi/huggingface/<name> 的 group 是占位符（如 gpt2 的 huggingface）。
+    """
+    name = (name or "").strip()
+    if not name or "/" in name:
+        return name
+
+    group = str(component.get("group") or "").strip()
+    purl = str(component.get("purl") or "")
+    if purl.lower().startswith("pkg:huggingface/") and group:
+        return f"{group}/{name}"
+
+    for ref in component.get("externalReferences", []) or []:
+        if not isinstance(ref, dict):
+            continue
+        url = str(ref.get("url") or "")
+        m = re.search(r"huggingface\.co/([^/]+)/([^/?#]+)", url)
+        if m and m.group(2) == name:
+            return f"{m.group(1)}/{name}"
+
+    return name
 
 
 def extract_model_names(bom_path: Path, project_path: Path | None = None) -> list[str]:
@@ -118,6 +180,11 @@ def extract_model_names(bom_path: Path, project_path: Path | None = None) -> lis
         if not isinstance(component, dict):
             continue
         if component.get("type") not in ML_MODEL_TYPES:
+            continue
+        purl = str(component.get("purl") or "")
+        if "huggingface" not in purl.lower():
+            continue
+        if _component_from_static_asset(project_path, component):
             continue
         name = (component.get("name") or "").strip()
         if not name:
@@ -138,7 +205,7 @@ def extract_model_names(bom_path: Path, project_path: Path | None = None) -> lis
                 if resolved:
                     break
 
-        final_name = resolved or name
+        final_name = _complete_model_org(component, resolved or name)
         if final_name in seen:
             continue
         seen.add(final_name)

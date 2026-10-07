@@ -86,6 +86,12 @@ def check_license_conflict(upstream_license, downstream_license):
         {conflict: bool, type: str, detail: str}
         type 为 "duty_prohibition" 或 "none"。
     """
+    if upstream_license == downstream_license:
+        return {
+            "conflict": False,
+            "type": "none",
+            "detail": "同一许可证，自我兼容",
+        }
     upstream = get_triplets(upstream_license)
     downstream = get_triplets(downstream_license)
     if upstream is None or downstream is None:

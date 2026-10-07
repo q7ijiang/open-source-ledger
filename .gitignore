@@ -250,3 +250,21 @@ out/propagated.json
 
 # 缓存（__pycache__/ 和 .pytest_cache/ 已在上方配置）
 *.pyc
+
+# 批量扫描中间产物
+work/large_scale/
+
+# 临时抓取脚本
+work/fetch_real_projects*.py
+
+# 其他临时 JSON
+work/*.json
+
+# 工作空间清理追加规则
+work/*
+!work/extract_hf_lineage.py
+outputs/lineage_scan/
+outputs/lineage_extract/
+outputs/project_scan/
+outputs/project_extract/
+outputs/*.json

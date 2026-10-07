@@ -82,6 +82,15 @@ LABEL_MAX_LEN = 20
 LABEL_LONG_MAX_LEN = 30   # 标签冲突时使用的更长显示长度
 LABEL_V_GAP = 0.08
 
+# 大图自动切换参数
+LARGE_GRAPH_THRESHOLD = 50
+LARGE_MAX_NODES = 100               # 模式 3：过滤孤立节点后仍超此上限，只保留度数最高 100 个
+LARGE_NODE_RADIUS_SCALE = 0.3
+LARGE_TOP_LABEL_NODES = 20
+LARGE_EDGE_ALPHA = 0.25
+LARGE_FIG_WIDTH_IN = 16.0
+LARGE_FIG_HEIGHT_IN = 1600.0 / 150.0
+
 
 def load_graph(path: Path) -> nx.MultiDiGraph:
     """从 graph.json 还原 networkx 有向多图。"""
@@ -264,8 +273,8 @@ def compute_model_depths(graph: nx.MultiDiGraph) -> dict:
     return depth
 
 
-def compute_layout(graph: nx.MultiDiGraph) -> dict:
-    """计算节点坐标：模型按深度纵向分层（祖宗在上），数据集放右侧单列。"""
+def _compute_single_layout(graph: nx.MultiDiGraph) -> dict:
+    """单个连通分量的层次布局：模型按深度纵向分层，数据集放右侧单列。"""
     depths = compute_model_depths(graph)
     model_nodes = [
         n for n, a in graph.nodes(data=True) if a.get("asset_type") == "model"
@@ -297,6 +306,72 @@ def compute_layout(graph: nx.MultiDiGraph) -> dict:
     return pos
 
 
+def compute_layout(graph: nx.MultiDiGraph) -> dict:
+    """层次布局：每个连通分量独立布局，再按网格排列，避免分量互相合并。"""
+    components = [
+        graph.subgraph(c) for c in nx.connected_components(graph.to_undirected())
+    ]
+    components.sort(key=lambda g: g.number_of_nodes(), reverse=True)
+    if len(components) <= 1:
+        return _compute_single_layout(graph)
+
+    local_layouts = [_compute_single_layout(comp) for comp in components]
+    bounds = []
+    for layout in local_layouts:
+        if not layout:
+            bounds.append((0.0, 0.0, 0.0, 0.0))
+            continue
+        xs = [p[0] for p in layout.values()]
+        ys = [p[1] for p in layout.values()]
+        bounds.append((min(xs), max(xs), min(ys), max(ys)))
+
+    max_width = max(b[1] - b[0] for b in bounds) or 1.0
+    max_height = max(b[3] - b[2] for b in bounds) or 1.0
+    cols = max(1, int(math.ceil(math.sqrt(len(local_layouts)))))
+    col_gap = 2.0
+    row_gap = 2.0
+
+    pos: dict = {}
+    for index, (layout, (min_x, _max_x, _min_y, max_y)) in enumerate(
+        zip(local_layouts, bounds)
+    ):
+        col = index % cols
+        row = index // cols
+        offset_x = col * (max_width + col_gap)
+        offset_y = -row * (max_height + row_gap)
+        for nid, (x, y) in layout.items():
+            pos[nid] = (x - min_x + offset_x, y - max_y + offset_y)
+    return pos
+
+
+def compute_force_layout(graph: nx.MultiDiGraph) -> dict:
+    """力导向布局：spring_layout(k=3/sqrt(n), iterations=200)，异常时回退 kamada_kawai_layout。"""
+    simple = nx.Graph()
+    simple.add_nodes_from(graph.nodes())
+    simple.add_edges_from((u, v) for u, v, _key in graph.edges(keys=True))
+    n = simple.number_of_nodes()
+    k = 3.0 / math.sqrt(n) if n > 0 else None
+    try:
+        return nx.spring_layout(simple, seed=42, k=k, iterations=200)
+    except Exception:
+        return nx.kamada_kawai_layout(simple)
+
+
+def filter_isolated(graph: nx.MultiDiGraph) -> nx.MultiDiGraph:
+    """过滤孤立节点：仅保留度数 ≥ 1 的节点。"""
+    keep = [nid for nid in graph.nodes() if graph.degree(nid) >= 1]
+    return graph.subgraph(keep).copy()
+
+
+def compute_top_degree_nodes(graph: nx.MultiDiGraph, top_k: int) -> set[str]:
+    """返回度数最高的 top_k 个节点。"""
+    if top_k <= 0 or graph.number_of_nodes() == 0:
+        return set()
+    degree = graph.degree()
+    ordered = sorted(graph.nodes(), key=lambda n: degree[n], reverse=True)
+    return set(ordered[:top_k])
+
+
 def _node_radius(attrs: dict) -> float:
     return MODEL_RADIUS if attrs.get("asset_type") == "model" else DATASET_RADIUS
 
@@ -310,7 +385,7 @@ def _node_color(attrs: dict) -> str:
     return DEFAULT_NODE_COLOR
 
 
-def _draw_arrow(ax, pos, u, v, color, linestyle, r_u, r_v, linewidth=1.4) -> None:
+def _draw_arrow(ax, pos, u, v, color, linestyle, r_u, r_v, linewidth=1.4, alpha=1.0) -> None:
     """从 u 指向 v 的箭头，两端缩进到各自节点圆边。"""
     x1, y1 = pos[u]
     x2, y2 = pos[v]
@@ -330,6 +405,7 @@ def _draw_arrow(ax, pos, u, v, color, linestyle, r_u, r_v, linewidth=1.4) -> Non
             color=color,
             linestyle=linestyle,
             linewidth=linewidth,
+            alpha=alpha,
             zorder=2,
             shrinkA=0,
             shrinkB=0,
@@ -337,24 +413,54 @@ def _draw_arrow(ax, pos, u, v, color, linestyle, r_u, r_v, linewidth=1.4) -> Non
     )
 
 
-def render(graph: nx.MultiDiGraph, out_path: Path) -> None:
-    """把图渲染为分层 PNG：模型按血缘深度纵向分层，数据集在右侧单列。"""
-    pos = compute_layout(graph)
+def render(graph: nx.MultiDiGraph, out_path: Path) -> str:
+    """渲染血缘图并返回布局类型：≤50 节点用层次布局，>50 节点用力导向布局。"""
+    original_count = graph.number_of_nodes()
+    large = original_count > LARGE_GRAPH_THRESHOLD
 
-    fig, ax = plt.subplots(figsize=(12, 12))
+    # 模式 1：只画有血缘边的节点（过滤孤立节点，度数 ≥ 1）
+    filtered = filter_isolated(graph)
+    # 模式 3：大图过滤孤立节点后仍超上限，仅保留度数最高的 100 个节点
+    if large and filtered.number_of_nodes() > LARGE_MAX_NODES:
+        top = compute_top_degree_nodes(filtered, LARGE_MAX_NODES)
+        filtered = filtered.subgraph(top).copy()
+    graph = filtered
+
+    node_count = graph.number_of_nodes()
+    print(f"渲染节点：{node_count}（过滤前 {original_count}），边：{graph.number_of_edges()}")
+
+    if large:
+        pos = compute_force_layout(graph)
+        figsize = (LARGE_FIG_WIDTH_IN, LARGE_FIG_HEIGHT_IN)
+        radius_scale = LARGE_NODE_RADIUS_SCALE
+        edge_alpha = LARGE_EDGE_ALPHA
+        label_nodes = compute_top_degree_nodes(graph, LARGE_TOP_LABEL_NODES)
+        bbox_inches = None
+    else:
+        pos = compute_layout(graph)
+        figsize = (12, 12)
+        radius_scale = 1.0
+        edge_alpha = 1.0
+        label_nodes = None
+        bbox_inches = "tight"
+
+    fig, ax = plt.subplots(figsize=figsize)
 
     # 1. 边：derived_from 反向（祖宗->后代），trained_on 正向（模型->数据集）
     for u, v, _key, data in graph.edges(keys=True, data=True):
         etype = data.get("edge_type")
-        r_u = _node_radius(graph.nodes[u])
-        r_v = _node_radius(graph.nodes[v])
+        r_u = _node_radius(graph.nodes[u]) * radius_scale
+        r_v = _node_radius(graph.nodes[v]) * radius_scale
         if etype == "derived_from":
             # 数据中 u(下游/后代) -> v(上游/祖宗)；绘制时反向：祖宗 -> 后代（从上往下）
-            _draw_arrow(ax, pos, v, u, DERIVED_COLOR, "solid", r_v, r_u)
+            _draw_arrow(ax, pos, v, u, DERIVED_COLOR, "solid", r_v, r_u,
+                        alpha=edge_alpha)
         elif etype == "trained_on":
-            _draw_arrow(ax, pos, u, v, TRAINED_COLOR, "dashed", r_u, r_v)
+            _draw_arrow(ax, pos, u, v, TRAINED_COLOR, "dashed", r_u, r_v,
+                        alpha=edge_alpha)
         else:
-            _draw_arrow(ax, pos, u, v, DEFAULT_EDGE_COLOR, "solid", r_u, r_v)
+            _draw_arrow(ax, pos, u, v, DEFAULT_EDGE_COLOR, "solid", r_u, r_v,
+                        alpha=edge_alpha)
 
     # 2. 节点
     for nid, (x, y) in pos.items():
@@ -362,7 +468,7 @@ def render(graph: nx.MultiDiGraph, out_path: Path) -> None:
         ax.add_patch(
             Circle(
                 (x, y),
-                radius=_node_radius(attrs),
+                radius=_node_radius(attrs) * radius_scale,
                 facecolor=_node_color(attrs),
                 edgecolor="white",
                 linewidth=1.0,
@@ -370,15 +476,16 @@ def render(graph: nx.MultiDiGraph, out_path: Path) -> None:
             )
         )
 
-    # 3. 标签（节点下方，不重叠）
+    # 3. 标签（大图只给度数最高的 20 个节点画标签）
     labels = compute_node_labels(graph)
     for nid, (x, y) in pos.items():
+        if large and nid not in label_nodes:
+            continue
         attrs = graph.nodes[nid]
-        label = labels[nid]
         ax.text(
             x,
-            y - _node_radius(attrs) - LABEL_V_GAP,
-            label,
+            y - _node_radius(attrs) * radius_scale - LABEL_V_GAP,
+            labels[nid],
             ha="center",
             va="top",
             fontsize=8,
@@ -404,15 +511,29 @@ def render(graph: nx.MultiDiGraph, out_path: Path) -> None:
         ax.set_ylim(min(ys) - 1.0, max(ys) + 1.2)
     ax.set_aspect("equal")
     ax.axis("off")
+    layout_name = "force-directed" if large else "hierarchical"
     ax.set_title(
         f"Lineage Graph ({graph.number_of_nodes()} nodes, "
-        f"{graph.number_of_edges()} edges)",
+        f"{graph.number_of_edges()} edges, {layout_name} layout)",
         fontsize=12,
     )
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(out_path, dpi=150, bbox_inches="tight")
+    plt.savefig(out_path, dpi=150, bbox_inches=bbox_inches)
     plt.close()
+    return layout_name
+
+
+def compute_diff_nodes(graph: nx.MultiDiGraph, diff: dict) -> set[str]:
+    """模式 2：变更节点 + 受影响节点 + 传播路径上的中间节点。"""
+    keep = set(diff.get("change", set()))
+    keep |= set(diff.get("affected", set()))
+    for source, target in diff.get("edges", set()):
+        if graph.has_node(source):
+            keep.add(source)
+        if graph.has_node(target):
+            keep.add(target)
+    return {nid for nid in keep if graph.has_node(nid)}
 
 
 def _node_diff_kind(nid: str, diff: dict) -> str:
@@ -433,7 +554,19 @@ def _node_diff_color(kind: str) -> str:
 
 
 def render_diff(graph: nx.MultiDiGraph, out_path: Path, diff: dict) -> None:
-    """渲染风险传播图：变更节点红、受影响节点橙、其余灰；传播路径按证据等级着色并标注判定。"""
+    """渲染风险传播图：只画变更/受影响/传播路径中间节点，其余不画。"""
+    original_count = graph.number_of_nodes()
+    change_nodes = set(diff["change"])
+    affected_nodes = set(diff["affected"])
+    keep = compute_diff_nodes(graph, diff)
+    graph = graph.subgraph(keep).copy()
+    intermediate_nodes = keep - change_nodes - affected_nodes
+    print(
+        f"渲染节点：{graph.number_of_nodes()}（过滤前 {original_count}；"
+        f"变更 {len(change_nodes)}，受影响 {len(affected_nodes)}，"
+        f"中间 {len(intermediate_nodes)}），边：{graph.number_of_edges()}"
+    )
+
     pos = compute_layout(graph)
     propagation_edges = diff["edges"]
     edge_evidence = diff.get("edge_evidence", {})
@@ -601,9 +734,11 @@ def main(argv=None) -> int:
             f"传播路径边：{len(diff_info['edges'])}"
         )
     else:
-        render(graph, Path(args.output))
+        layout_name = render(graph, Path(args.output))
 
-    print(f"节点：{graph.number_of_nodes()}，边：{graph.number_of_edges()}")
+    print(f"原始图：节点 {graph.number_of_nodes()}，边 {graph.number_of_edges()}")
+    if not (args.events or args.certificates):
+        print(f"布局类型：{layout_name}")
     print(f"已写入 {args.output}")
     return 0
 
