@@ -52,6 +52,8 @@ CHANGE_TYPE_ZH = {
 
 HF_MODEL_TYPES = {"machine-learning-model", "model"}
 HF_LINEAGE_EDGE_TYPES = {"derived_from", "trained_on"}
+HF_PURL_PREFIX = "pkg:huggingface/"
+MODELSCOPE_PURL_PREFIX = "pkg:modelscope/"
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -123,8 +125,8 @@ def _table(headers: list[str], rows: list[list[Any]]) -> list[str]:
     return lines
 
 
-def _is_hf_model_bom(bom: dict[str, Any]) -> bool:
-    """判断 BOM 是否为 work/extract_hf_lineage.py 支持的 HF 模型 BOM。"""
+def _is_model_bom(bom: dict[str, Any]) -> bool:
+    """判断 BOM 是否为模型血缘提取器支持的模型 BOM（HF 或 ModelScope）。"""
     components = bom.get("components")
     if not isinstance(components, list) or not components:
         return False
@@ -132,7 +134,9 @@ def _is_hf_model_bom(bom: dict[str, Any]) -> bool:
     if not isinstance(first, dict):
         return False
     purl = str(first.get("purl") or "")
-    return first.get("type") in HF_MODEL_TYPES and purl.startswith("pkg:huggingface/")
+    if first.get("type") not in HF_MODEL_TYPES:
+        return False
+    return purl.startswith(HF_PURL_PREFIX) or purl.startswith(MODELSCOPE_PURL_PREFIX)
 
 
 def _merge_lineage_assets(
@@ -158,20 +162,11 @@ def _merge_lineage_assets(
     return merged
 
 
-def _extract_hf_edges(
-    path: Path,
-    bom: dict[str, Any],
-    assets: list[dict[str, Any]],
+def _normalize_lineage_edges(
+    lineage_edges: list[dict[str, Any]],
     snapshot_id: str,
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """调用 HF 专用提取器，并统一边字段与当前快照 ID。"""
-    if not _is_hf_model_bom(bom):
-        return assets, []
-
-    from work.extract_hf_lineage import extract as extract_hf_lineage
-
-    lineage_assets, lineage_edges = extract_hf_lineage(path)
-    merged_assets = _merge_lineage_assets(assets, lineage_assets, snapshot_id)
+) -> list[dict[str, Any]]:
+    """把提取器产出的边统一为当前快照的接口约定格式并去重。"""
     edges: list[dict[str, Any]] = []
     seen: set[tuple[str, str, str]] = set()
     for edge in lineage_edges:
@@ -194,6 +189,56 @@ def _extract_hf_edges(
                 "snapshot_id": snapshot_id,
             }
         )
+    return edges
+
+
+def _extract_modelscope_edges(
+    path: Path,
+    bom: dict[str, Any],
+    assets: list[dict[str, Any]],
+    snapshot_id: str,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """调用 ModelScope 血缘提取器：从 BOM 的 purl 解析 ns/name 后走 API。"""
+    import bom_adapter
+
+    from work.extract_modelscope_lineage import extract as extract_modelscope_lineage
+
+    first = bom["components"][0]
+    purl = str(first.get("purl") or "")
+    identity = bom_adapter.parse_purl_identity(purl)
+    ns = (identity.namespace if identity else "") or ""
+    name = (identity.name if identity else "") or ""
+    if not ns or not name:
+        full = f"{first.get('group', '')}/{first.get('name', '')}".strip("/")
+        if "/" in full:
+            ns, name = full.split("/", 1)
+
+    source_file = f"https://www.modelscope.cn/api/v1/models/{ns}/{name}"
+    lineage_assets, lineage_edges = extract_modelscope_lineage(ns, name, snapshot_id, source_file)
+    merged_assets = _merge_lineage_assets(assets, lineage_assets, snapshot_id)
+    edges = _normalize_lineage_edges(lineage_edges, snapshot_id)
+    return merged_assets, edges
+
+
+def _extract_model_edges(
+    path: Path,
+    bom: dict[str, Any],
+    assets: list[dict[str, Any]],
+    snapshot_id: str,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """按 BOM 的 purl 路由到 HF / ModelScope 血缘提取器，并统一边字段。"""
+    if not _is_model_bom(bom):
+        return assets, []
+
+    first_purl = str(bom["components"][0].get("purl") or "")
+    if first_purl.startswith(MODELSCOPE_PURL_PREFIX):
+        return _extract_modelscope_edges(path, bom, assets, snapshot_id)
+
+    from work.extract_hf_lineage import extract as extract_hf_lineage
+
+    lineage_assets, lineage_edges = extract_hf_lineage(path)
+    merged_assets = _merge_lineage_assets(assets, lineage_assets, snapshot_id)
+    edges = _normalize_lineage_edges(lineage_edges, snapshot_id)
     return merged_assets, edges
 
 
@@ -217,7 +262,7 @@ def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
         deduplicated,
         evidence_enricher.REQUEST_TIMEOUT_SECONDS,
     )
-    assets, edges = _extract_hf_edges(path, bom, enriched, snapshot_id)
+    assets, edges = _extract_model_edges(path, bom, enriched, snapshot_id)
     return {
         "path": path,
         "snapshot_id": snapshot_id,
@@ -748,10 +793,23 @@ def _render_model_report(
     return "\n".join(lines)
 
 
-def run_model(args: argparse.Namespace) -> None:
-    """模型模式：递归扫祖先 → 补数据 → 提取血缘 → 建图 → 可视化 → 中文报告。"""
-    model = args.model
-    root = Path(__file__).resolve().parent
+def _probe_modelscope(model: str) -> bool | None:
+    """探测模型是否在 ModelScope：命中详情 API 返回 True，404 返回 False，网络异常返回 None。"""
+    import modelscope_adapter
+
+    model = model.strip().strip("/")
+    if "/" not in model:
+        return False
+    ns, name = model.split("/", 1)
+    try:
+        detail = modelscope_adapter.fetch_model_detail(ns, name)
+    except Exception:
+        return None
+    return detail is not None
+
+
+def _run_hf_model(args: argparse.Namespace, model: str, root: Path) -> None:
+    """HF 模型模式：递归扫祖先 → 补数据 → 提取血缘 → 建图 → 可视化 → 中文报告。"""
     bom_dir = root / "outputs" / "lineage_scan"
     extract_dir = root / "outputs" / "lineage_extract"
     png_path = root / "outputs" / "lineage_graph.png"
@@ -802,6 +860,122 @@ def run_model(args: argparse.Namespace) -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(report, encoding="utf-8")
     print(f"模型模式报告已写入：{args.output}")
+
+
+def _run_modelscope_model(args: argparse.Namespace, model: str, root: Path) -> None:
+    """ModelScope 模型模式：提取血缘 → 建图 → 可视化 → 中文报告。"""
+    model = model.strip().strip("/")
+    extract_dir = root / "outputs" / "modelscope_validation"
+    png_path = extract_dir / "lineage_graph.png"
+
+    started = datetime.now(timezone.utc)
+
+    # 1. 提取血缘（详情 + lineage → assets/edges/graph.json）
+    _run_py_script(
+        root / "work" / "extract_modelscope_lineage.py",
+        ["--model", model, "--output-dir", str(extract_dir)],
+        "extract_modelscope_lineage",
+    )
+
+    # 2. 可视化 → PNG
+    _run_py_script(
+        root / "visualize_lineage.py",
+        ["--graph", str(extract_dir / "graph.json"), "--output", str(png_path)],
+        "visualize_lineage",
+    )
+
+    duration_s = (datetime.now(timezone.utc) - started).total_seconds()
+    report = _render_modelscope_report(model, extract_dir, png_path, duration_s)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(report, encoding="utf-8")
+    print(f"模型模式报告已写入：{args.output}")
+
+
+def run_model(args: argparse.Namespace) -> None:
+    """模型模式：自动探测 HF / ModelScope 来源并运行对应流水线。"""
+    model = args.model
+    root = Path(__file__).resolve().parent
+
+    is_modelscope = _probe_modelscope(model)
+    if is_modelscope is True:
+        _run_modelscope_model(args, model, root)
+    elif is_modelscope is False:
+        _run_hf_model(args, model, root)
+    else:
+        print("提示：ModelScope 探测因网络异常失败，回退到 Hugging Face 旧链路。", file=sys.stderr)
+        _run_hf_model(args, model, root)
+
+
+def _render_modelscope_report(
+    model: str,
+    extract_dir: Path,
+    png_path: Path,
+    duration_s: float,
+) -> str:
+    """渲染 ModelScope 模型血缘扫描的中文 Markdown 报告。"""
+    graph = json.loads((extract_dir / "graph.json").read_text(encoding="utf-8"))
+    assets = json.loads((extract_dir / "assets.json").read_text(encoding="utf-8"))
+    nodes = graph.get("nodes", [])
+    edges = graph.get("edges", [])
+    aggregate_nodes = [a for a in assets if a.get("aggregate")]
+    current = next((a for a in assets if not a.get("aggregate")), {})
+
+    node_rows = [
+        [
+            n.get("canonical_id"),
+            n.get("asset_type"),
+            n.get("name") or n.get("canonical_id"),
+            n.get("version"),
+            n.get("license"),
+        ]
+        for n in nodes
+    ]
+    edge_rows = [
+        [e.get("source"), e.get("edge_type"), e.get("target"), e.get("evidence_level")]
+        for e in edges
+    ]
+    aggregate_rows = [
+        [
+            a.get("name"),
+            a.get("count"),
+            (a.get("evidence_chain") or [{}])[0].get("source_field") if a.get("evidence_chain") else None,
+        ]
+        for a in aggregate_nodes
+    ]
+
+    lines: list[str] = [
+        "# AI 模型血缘扫描报告（ModelScope）",
+        "",
+        f"- 扫描模型：`{model}`",
+        f"- 生成时间：{_utc_now()}",
+        f"- 许可证：**{current.get('license') or '（未识别）'}**",
+        f"- 血缘图节点数：**{len(nodes)}**，边数：**{len(edges)}**",
+        f"- 聚合节点：**{len(aggregate_nodes)}** 个（聚合 {sum(a.get('count', 0) for a in aggregate_nodes)} 个派生/祖先模型）",
+        f"- SCC 强连通分量：**{graph.get('scc_count', 0)}**",
+        f"- 血缘图 PNG：**{'已生成' if png_path.exists() else '未生成'}**（`{png_path}`）",
+        f"- 本报告生成：**成功**（流水线耗时 {duration_s:.1f}s）",
+        "",
+        "## 一、血缘图节点",
+        "",
+    ]
+    lines.extend(_table(["canonical_id", "类型", "名称", "版本", "许可证"], node_rows))
+    lines.extend(["", "## 二、聚合节点（计数降维）", ""])
+    if aggregate_rows:
+        lines.extend(_table(["名称", "count", "来源字段"], aggregate_rows))
+    else:
+        lines.append("_无聚合节点_")
+    lines.extend(["", "## 三、血缘边", ""])
+    lines.extend(_table(["来源", "边类型", "目标", "证据等级"], edge_rows))
+    lines.extend(
+        [
+            "",
+            "## 免责声明",
+            "",
+            "本报告基于 ModelScope 官方 API 的结构化证据与血缘图的辅助分析结果，不构成法律意见。",
+            "",
+        ]
+    )
+    return "\n".join(lines)
 
 
 def _safe_model_file(model: str) -> str:
