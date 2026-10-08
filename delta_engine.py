@@ -45,7 +45,7 @@ import json
 from pathlib import Path
 
 from build_graph import EVIDENCE_ORDER, load_assets, load_edges
-from license_db import compare_direction
+from license_db import compare_direction, get_triplets
 
 # 证据等级 -> 三级判定
 DECISION_BY_EVIDENCE = {
@@ -59,6 +59,71 @@ LINEAGE_EDGE_TYPES = {"derived_from", "trained_on", "depends_on"}
 
 # 禁止自动视为同一实体的合并状态（模块 2 决策表）
 NON_AUTO_MERGE_STATUS = {"REVIEW", "UNDETERMINED"}
+
+# 许可证继承冲突：上游"继承型义务"要求衍生作品沿用/开源相同许可证，
+# 与下游"不得附加额外限制"禁止项相互矛盾。
+INHERITANCE_DUTIES = {
+    "衍生作品保留相同许可证",
+    "衍生分发需附带相同使用限制",
+    "衍生作品必须以 GPL 开源",
+    "衍生作品必须以 AGPL 开源",
+    "衍生文档必须以 GFDL 分发",
+}
+
+NO_EXTRA_RESTRICTION_PROHIBITIONS = {
+    "不得附加额外限制",
+    "不得附加限制",
+}
+
+
+def check_license_conflict(upstream_license, downstream_license):
+    """检测许可证继承冲突：上游义务（Duty）与下游禁止（Prohibition）是否矛盾。
+
+    上游许可证若带有"继承型义务"（衍生作品须沿用/开源相同许可证），
+    而下游许可证禁止"附加额外限制"，二者即构成继承冲突。
+
+    返回：
+        {conflict: bool, type: str, detail: str}
+        type 为 "duty_prohibition" 或 "none"。
+    """
+    if upstream_license == downstream_license:
+        return {
+            "conflict": False,
+            "type": "none",
+            "detail": "同一许可证，自我兼容",
+        }
+    upstream = get_triplets(upstream_license)
+    downstream = get_triplets(downstream_license)
+    if upstream is None or downstream is None:
+        return {
+            "conflict": False,
+            "type": "none",
+            "detail": "上游或下游许可证规则未知，无法判定继承冲突",
+        }
+
+    up_duties = set(upstream.get("duties", []))
+    down_prohibitions = set(downstream.get("prohibitions", []))
+
+    conflict_duty = next((d for d in up_duties if d in INHERITANCE_DUTIES), None)
+    conflict_prohibition = next(
+        (p for p in down_prohibitions if p in NO_EXTRA_RESTRICTION_PROHIBITIONS),
+        None,
+    )
+
+    if conflict_duty and conflict_prohibition:
+        return {
+            "conflict": True,
+            "type": "duty_prohibition",
+            "detail": (
+                f"上游 {upstream['canonical_id']} 义务『{conflict_duty}』"
+                f"与下游 {downstream['canonical_id']} 禁止『{conflict_prohibition}』冲突"
+            ),
+        }
+    return {
+        "conflict": False,
+        "type": "none",
+        "detail": "上游义务与下游禁止未检测到冲突",
+    }
 
 
 def best_evidence(asset: dict, field_keywords: tuple[str, ...] | None = None) -> str | None:
@@ -235,6 +300,7 @@ def detect_delta(
                 best_evidence(old_asset, ("license",)),
                 best_evidence(new_asset, ("license",)),
             )
+            conflict = check_license_conflict(new_license, old_license)
             event = {
                 "event_id": next(gen),
                 "seed": canonical_id,
@@ -245,6 +311,9 @@ def detect_delta(
                 "evidence_level": evidence,
                 "decision": decision_for(evidence),
                 "direction": compare_direction(old_license, new_license),
+                "conflict_detected": conflict["conflict"],
+                "conflict_type": conflict["type"],
+                "conflict_detail": conflict["detail"],
             }
             events.append(event)
 

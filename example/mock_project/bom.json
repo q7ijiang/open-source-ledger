@@ -1,0 +1,17 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "components": [
+    {
+      "type": "machine-learning-model",
+      "name": "Qwen-Image-2.1",
+      "purl": "pkg:modelscope/Qwen/Qwen-Image-2.1@master"
+    },
+    {
+      "type": "library",
+      "name": "lodash",
+      "purl": "pkg:npm/lodash@4.17.21"
+    }
+  ]
+}

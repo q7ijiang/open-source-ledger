@@ -1,0 +1,142 @@
+[
+  {
+    "canonical_id": "model:meta-llama/Llama-2-7b",
+    "asset_type": "model",
+    "name": "meta-llama/Llama-2-7b",
+    "version": "main",
+    "purls": ["pkg:huggingface/meta-llama/Llama-2-7b@main"],
+    "license": "llama2",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "huggingface",
+        "source_url": "https://huggingface.co/api/models/meta-llama/Llama-2-7b",
+        "source_field": "cardData.license",
+        "retrieved_at": "2026-10-01T02:00:00Z",
+        "status": "ok",
+        "raw_value": "llama2"
+      }
+    ],
+    "snapshot_id": "deep-t0"
+  },
+  {
+    "canonical_id": "model:my-org/finetuned-model",
+    "asset_type": "model",
+    "name": "my-org/finetuned-model",
+    "version": "1.2.0",
+    "purls": ["pkg:huggingface/my-org/finetuned-model@1.2.0"],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "huggingface",
+        "source_url": "https://huggingface.co/api/models/my-org/finetuned-model",
+        "source_field": "cardData.license",
+        "retrieved_at": "2026-10-01T02:00:00Z",
+        "status": "ok",
+        "raw_value": "Apache-2.0"
+      }
+    ],
+    "snapshot_id": "deep-t0"
+  },
+  {
+    "canonical_id": "model:my-org/serving-model",
+    "asset_type": "model",
+    "name": "my-org/serving-model",
+    "version": "0.9.0",
+    "purls": ["pkg:huggingface/my-org/serving-model@0.9.0"],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "model_card.license",
+        "retrieved_at": "2026-10-01T02:00:00Z",
+        "status": "ok",
+        "raw_value": "Apache-2.0"
+      }
+    ],
+    "snapshot_id": "deep-t0"
+  },
+  {
+    "canonical_id": "package:pypi/example-parser",
+    "asset_type": "package",
+    "name": "example-parser",
+    "version": "1.2.0",
+    "purls": ["pkg:pypi/example-parser@1.2.0"],
+    "license": "MIT",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "pypi",
+        "source_url": "https://pypi.org/pypi/example-parser/1.2.0/json",
+        "source_field": "info.license",
+        "retrieved_at": "2026-10-01T02:00:00Z",
+        "status": "ok",
+        "raw_value": "MIT"
+      }
+    ],
+    "snapshot_id": "deep-t0"
+  },
+  {
+    "canonical_id": "package:pypi/lib-x",
+    "asset_type": "package",
+    "name": "lib-x",
+    "version": "0.3.0",
+    "purls": ["pkg:pypi/lib-x@0.3.0"],
+    "license": "MIT",
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-10-01T02:00:00Z",
+        "status": "ok",
+        "raw_value": "MIT"
+      }
+    ],
+    "snapshot_id": "deep-t0"
+  },
+  {
+    "canonical_id": "dataset:my-org/training-data",
+    "asset_type": "dataset",
+    "name": "my-org/training-data",
+    "version": "2026-09-01",
+    "purls": ["pkg:huggingface/datasets/my-org/training-data@2026-09-01"],
+    "license": "CC0-1.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "huggingface",
+        "source_url": "https://huggingface.co/api/datasets/my-org/training-data",
+        "source_field": "cardData.license",
+        "retrieved_at": "2026-10-01T02:00:00Z",
+        "status": "ok",
+        "raw_value": "CC0-1.0"
+      }
+    ],
+    "snapshot_id": "deep-t0"
+  },
+  {
+    "canonical_id": "model:legacy/old-model",
+    "asset_type": "model",
+    "name": "legacy/old-model",
+    "version": "v1",
+    "purls": ["pkg:huggingface/legacy/old-model@v1"],
+    "license": "MIT",
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "model_card.license",
+        "retrieved_at": "2026-10-01T02:00:00Z",
+        "status": "ok",
+        "raw_value": "MIT"
+      }
+    ],
+    "snapshot_id": "deep-t0"
+  }
+]

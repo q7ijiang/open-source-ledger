@@ -229,3 +229,42 @@ node_modules/
 # 通用临时文件
 *.tmp
 *.cache
+*.txt
+!requirements.txt
+
+# 本地运行产物
+outputs/
+
+# 隔离安装的第三方测试依赖
+work/task4_deps/
+
+# 一次性批量验证产物
+work/stage5/
+
+# 运行输出（可能包含本地绝对路径）
+out/assets.json
+out/edges.json
+out/graph.json
+out/hf_lineage/
+out/propagated.json
+
+# 缓存（__pycache__/ 和 .pytest_cache/ 已在上方配置）
+*.pyc
+
+# 批量扫描中间产物
+work/large_scale/
+
+# 临时抓取脚本
+work/fetch_real_projects*.py
+
+# 其他临时 JSON
+work/*.json
+
+# 工作空间清理追加规则
+work/*
+!work/extract_hf_lineage.py
+outputs/lineage_scan/
+outputs/lineage_extract/
+outputs/project_scan/
+outputs/project_extract/
+outputs/*.json

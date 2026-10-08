@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import os
 import socket
 import sys
 from collections import Counter
@@ -37,7 +38,7 @@ BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_INPUT_PATH = BASE_DIR / "outputs" / "assets_deduplicated.json"
 DEFAULT_OUTPUT_PATH = BASE_DIR / "outputs" / "assets_enriched.json"
 REQUEST_TIMEOUT_SECONDS = 3.0
-SUPPORTED_PURL_TYPES = {"pypi", "npm", "huggingface"}
+SUPPORTED_PURL_TYPES = {"pypi", "npm", "huggingface", "modelscope"}
 
 
 def load_assets(path: Path) -> list[dict[str, Any]]:
@@ -94,6 +95,21 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def _modelscope_api_key() -> str:
+    """读取 ModelScope API Key（优先进程环境，其次项目根 .env）。"""
+
+    key = os.getenv("MODELSCOPE_API_KEY", "").strip()
+    if key:
+        return key
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env", override=False)
+    except ImportError:
+        pass
+    return os.getenv("MODELSCOPE_API_KEY", "").strip()
+
+
 def parse_purl(purl: str) -> dict[str, str] | None:
     """解析项目支持的 purl，返回类型、包名、版本和请求 URL。"""
 
@@ -123,6 +139,9 @@ def parse_purl(purl: str) -> dict[str, str] | None:
     elif purl_type == "npm":
         encoded_name = quote(package_name, safe="@")
         source_url = f"https://registry.npmjs.org/{encoded_name}"
+    elif purl_type == "modelscope":
+        encoded_name = quote(package_name, safe="/")
+        source_url = f"https://www.modelscope.cn/api/v1/models/{encoded_name}"
     else:
         encoded_name = quote(package_name, safe="/")
         source_url = f"https://huggingface.co/api/models/{encoded_name}"
@@ -237,6 +256,22 @@ def extract_huggingface_license(
     return "cardData.license", license_value, "missing"
 
 
+def extract_modelscope_license(
+    payload: dict[str, Any],
+) -> tuple[str, Any, str]:
+    """提取 ModelScope 详情 Data.LicenseName / Data.License 中的许可证。"""
+
+    name_value = payload.get("LicenseName")
+    if is_meaningful_value(name_value):
+        return "Data.LicenseName", name_value, "ok"
+
+    license_value = payload.get("License")
+    if is_meaningful_value(license_value):
+        return "Data.License", license_value, "ok"
+
+    return "Data.LicenseName", name_value, "missing"
+
+
 def extract_license(
     source_api: str,
     payload: dict[str, Any],
@@ -248,24 +283,34 @@ def extract_license(
         return extract_pypi_license(payload)
     if source_api == "npm":
         return extract_npm_license(payload, version)
+    if source_api == "modelscope":
+        return extract_modelscope_license(payload)
     return extract_huggingface_license(payload)
 
 
-def request_json(url: str, timeout: float) -> dict[str, Any]:
-    """请求 JSON，并校验响应顶层是否为对象。"""
+def request_json(
+    url: str,
+    timeout: float,
+    headers_extra: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    """请求 JSON，支持 Bearer 认证，并剥离 ModelScope 的 {Code, Data} 信封。"""
 
-    request = Request(
-        url,
-        headers={
-            "Accept": "application/json",
-            "User-Agent": "KaiYuanLedger-evidence-enricher/0.1",
-        },
-    )
+    headers = {
+        "Accept": "application/json",
+        "User-Agent": "KaiYuanLedger-evidence-enricher/0.1",
+    }
+    if headers_extra:
+        headers.update(headers_extra)
+    request = Request(url, headers=headers)
     with urlopen(request, timeout=timeout) as response:
         raw = response.read()
     payload = json.loads(raw.decode("utf-8"))
     if not isinstance(payload, dict):
         raise ValueError("API 响应顶层不是 JSON 对象")
+    # ModelScope 信封：{"Code": 200, "Data": {...}, ...}，剥离为 Data
+    if "Data" in payload and "Code" in payload:
+        data = payload.get("Data")
+        return data if isinstance(data, dict) else {}
     return payload
 
 
@@ -291,7 +336,12 @@ def fetch_remote_evidence(
     source_url = target["source_url"]
     retrieved_at = utc_now()
     try:
-        payload = request_json(source_url, timeout)
+        headers_extra: dict[str, str] | None = None
+        if source_api == "modelscope":
+            key = _modelscope_api_key()
+            if key:
+                headers_extra = {"Authorization": f"Bearer {key}"}
+        payload = request_json(source_url, timeout, headers_extra)
         source_field, raw_value, status = extract_license(
             source_api,
             payload,

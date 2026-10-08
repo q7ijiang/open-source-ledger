@@ -1,0 +1,7 @@
+{
+  "model_type": "qwen",
+  "model_id": "Qwen/Qwen-Image-2.1",
+  "nested": {
+    "base_model": "totally/fake-model-xyz-000"
+  }
+}
