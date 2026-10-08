@@ -308,6 +308,26 @@ LICENSE_DB: dict[str, LicenseRule] = {
         spdx_like=False,
         note="非许可证文本，属使用条款；Hugging Face 卡片写作 gemma",
     ),
+    # ---- Creative Commons（数据集 / 文档场景）----
+    "CC-BY-4.0": LicenseRule(
+        canonical_id="CC-BY-4.0",
+        name_zh="知识共享 署名 4.0",
+        category="permissive",
+        permissions=("商用", "修改", "分发", "私人使用"),
+        duties=("保留署名", "附许可证链接", "标注修改"),
+        prohibitions=(),
+        risk_level=1,
+    ),
+    "CC-BY-NC-4.0": LicenseRule(
+        canonical_id="CC-BY-NC-4.0",
+        name_zh="知识共享 署名-非商业 4.0",
+        category="ai_restricted",
+        permissions=("修改", "分发", "私人使用"),
+        duties=("保留署名", "附许可证链接", "标注修改"),
+        prohibitions=("禁止商业使用",),
+        risk_level=3,
+        note="数据集场景常见；非商业限制使基于其训练/衍生产品的商业化受限",
+    ),
 }
 
 # 别名 / 常见变体 -> 规范化标识。大小写、空白已在 normalize_license 中预处理。
@@ -352,6 +372,12 @@ LICENSE_ALIASES: dict[str, str] = {
     # 公有领域标记（非许可证文本，按低风险处理）
     "cc0": "CC0-1.0",
     "cc0-1.0": "CC0-1.0",
+    # Creative Commons
+    "cc-by-4.0": "CC-BY-4.0",
+    "cc by 4.0": "CC-BY-4.0",
+    "cc-by-nc-4.0": "CC-BY-NC-4.0",
+    "cc by-nc 4.0": "CC-BY-NC-4.0",
+    "creative commons attribution 4.0": "CC-BY-4.0",
     "public-domain": "Public-Domain",
     "public domain": "Public-Domain",
     "pd": "Public-Domain",
