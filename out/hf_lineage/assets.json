@@ -33,6 +33,15 @@
             "ref": "pkg:huggingface/embedding-data/WikiAnswers?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
           }
         ]
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "license",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "Apache-2.0"
       }
     ],
     "snapshot_id": "79576a36-90a1-4964-abee-25d33aeca4b2",
@@ -121,6 +130,15 @@
             "ref": "pkg:huggingface/datasets/wikipedia?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
           }
         ]
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "license",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "Apache-2.0"
       }
     ],
     "snapshot_id": "88d721ea-9a45-43a0-8913-bdab94519b2f",
@@ -179,6 +197,15 @@
         "raw_value": [
           "pkg:huggingface/meta-llama/Llama-2-7b-chat-hf"
         ]
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "license",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "LLAMA2"
       }
     ],
     "snapshot_id": "90399a3e-046f-422e-b91f-2fd4b5290a35",
@@ -250,6 +277,15 @@
             "ref": "pkg:huggingface/stanfordnlp/snli?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
           }
         ]
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "license",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "Apache-2.0"
       }
     ],
     "snapshot_id": "77d14fe8-0b5b-4d9e-a2f5-4b63e153595d",
@@ -337,6 +373,15 @@
           "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct",
           "pkg:huggingface/Qwen/Qwen2.5-0.5B"
         ]
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "license",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "Apache-2.0"
       }
     ],
     "snapshot_id": "5502d0f2-678b-4501-93df-964e1978cf25",
@@ -423,6 +468,15 @@
         "raw_value": [
           "pkg:huggingface/HuggingFaceTB/SmolLM2-135M"
         ]
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "license",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "Apache-2.0"
       }
     ],
     "snapshot_id": "cf043584-70b8-4cc5-ace5-ac24a2687bd6",
@@ -494,6 +548,15 @@
             "ref": "pkg:huggingface/sentence-transformers/stsb?repository_url=https%3A%2F%2Fhuggingface.co%2Fdatasets"
           }
         ]
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "license",
+        "retrieved_at": null,
+        "status": "ok",
+        "raw_value": "Apache-2.0"
       }
     ],
     "snapshot_id": "d2e84278-914b-4aa6-9395-11029f612a44",

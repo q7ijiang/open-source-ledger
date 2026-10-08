@@ -1,7 +1,7 @@
 {
   "module": "license_db",
   "version": "0.2",
-  "count": 24,
+  "count": 26,
   "categories": {
     "permissive": "宽松许可",
     "public_domain": "公有领域",
@@ -148,6 +148,49 @@
       "risk_level": 2,
       "is_ai_license": false,
       "note": "含原版 BSD 广告条款，Debian 常写作 BSD-4-Clause"
+    },
+    "CC-BY-4.0": {
+      "canonical_id": "CC-BY-4.0",
+      "name_zh": "知识共享 署名 4.0",
+      "category": "permissive",
+      "category_zh": "宽松许可",
+      "permissions": [
+        "商用",
+        "修改",
+        "分发",
+        "私人使用"
+      ],
+      "duties": [
+        "保留署名",
+        "附许可证链接",
+        "标注修改"
+      ],
+      "prohibitions": [],
+      "risk_level": 1,
+      "is_ai_license": false,
+      "note": ""
+    },
+    "CC-BY-NC-4.0": {
+      "canonical_id": "CC-BY-NC-4.0",
+      "name_zh": "知识共享 署名-非商业 4.0",
+      "category": "ai_restricted",
+      "category_zh": "AI 专用（受限）",
+      "permissions": [
+        "修改",
+        "分发",
+        "私人使用"
+      ],
+      "duties": [
+        "保留署名",
+        "附许可证链接",
+        "标注修改"
+      ],
+      "prohibitions": [
+        "禁止商业使用"
+      ],
+      "risk_level": 3,
+      "is_ai_license": false,
+      "note": "数据集场景常见；非商业限制使基于其训练/衍生产品的商业化受限"
     },
     "CC0-1.0": {
       "canonical_id": "CC0-1.0",
