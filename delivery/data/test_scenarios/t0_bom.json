@@ -1,0 +1,374 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:00000000-0000-4000-8000-0000000000t0",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-09-25T12:00:00+08:00",
+    "tools": [
+      {
+        "vendor": "CycloneDX",
+        "name": "cdxgen",
+        "version": "12.8.4"
+      }
+    ],
+    "component": {
+      "bom-ref": "pkg:github/student-org/llama2-demo-app@0.1.0",
+      "type": "application",
+      "name": "llama2-demo-app",
+      "version": "0.1.0",
+      "purl": "pkg:github/student-org/llama2-demo-app@0.1.0",
+      "description": "t0 快照：基座模型 Llama-2-7b 许可证为宽松态（Apache-2.0）时的项目依赖与血缘全貌"
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "cdxgen:ai:model:hf:meta-llama/Llama-2-7b",
+      "type": "machine-learning-model",
+      "group": "meta-llama",
+      "name": "Llama-2-7b",
+      "version": "8d08c96",
+      "purl": "pkg:huggingface/meta-llama/Llama-2-7b@8d08c96",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://huggingface.co/meta-llama/Llama-2-7b"
+        }
+      ],
+      "modelCard": {
+        "modelParameters": {
+          "datasets": []
+        }
+      },
+      "pedigree": {
+        "ancestors": [],
+        "notes": "基座模型，无祖先"
+      },
+      "properties": [
+        { "name": "cdx:ai:kind", "value": "model" },
+        { "name": "cdx:ai:modelFamily", "value": "llama" },
+        { "name": "cdx:ai:runtime", "value": "transformers" },
+        { "name": "cdx:ai:provider", "value": "huggingface" },
+        { "name": "cdx:ai:source", "value": "huggingface-api" },
+        { "name": "cdx:ai:confidence", "value": "high" }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.8,
+            "concludedValue": "pkg:huggingface/meta-llama/Llama-2-7b@8d08c96",
+            "methods": [
+              {
+                "technique": "other",
+                "confidence": 0.8,
+                "value": "https://huggingface.co/api/models/meta-llama/Llama-2-7b"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "cdxgen:ai:model:hf:student-org/llama2-finetune-demo",
+      "type": "machine-learning-model",
+      "group": "student-org",
+      "name": "llama2-finetune-demo",
+      "version": "a1b2c3d4",
+      "purl": "pkg:huggingface/student-org/llama2-finetune-demo@a1b2c3d4",
+      "licenses": [
+        {
+          "license": {
+            "name": "Llama-2-Community"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://huggingface.co/student-org/llama2-finetune-demo"
+        }
+      ],
+      "modelCard": {
+        "modelParameters": {
+          "datasets": [
+            {
+              "ref": "pkg:huggingface/student-org/instruction-dataset@v1"
+            }
+          ]
+        }
+      },
+      "pedigree": {
+        "ancestors": [
+          {
+            "purl": "pkg:huggingface/meta-llama/Llama-2-7b@8d08c96"
+          }
+        ],
+        "notes": "Hugging Face relation: finetune"
+      },
+      "properties": [
+        { "name": "cdx:ai:kind", "value": "model" },
+        { "name": "cdx:ai:modelFamily", "value": "llama" },
+        { "name": "cdx:ai:runtime", "value": "transformers" },
+        { "name": "cdx:ai:provider", "value": "huggingface" },
+        { "name": "cdx:ai:source", "value": "huggingface-api" },
+        { "name": "cdx:ai:confidence", "value": "medium" }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.7,
+            "concludedValue": "pkg:huggingface/student-org/llama2-finetune-demo@a1b2c3d4",
+            "methods": [
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "https://huggingface.co/api/models/student-org/llama2-finetune-demo"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "cdxgen:ai:model:hf:student-org/llama2-chat-demo",
+      "type": "machine-learning-model",
+      "group": "student-org",
+      "name": "llama2-chat-demo",
+      "version": "e5f6a7b8",
+      "purl": "pkg:huggingface/student-org/llama2-chat-demo@e5f6a7b8",
+      "licenses": [
+        {
+          "license": {
+            "name": "Llama-2-Community"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://huggingface.co/student-org/llama2-chat-demo"
+        }
+      ],
+      "modelCard": {
+        "modelParameters": {
+          "datasets": []
+        }
+      },
+      "pedigree": {
+        "ancestors": [
+          {
+            "purl": "pkg:huggingface/student-org/llama2-finetune-demo@a1b2c3d4"
+          }
+        ],
+        "notes": "Hugging Face relation: finetune"
+      },
+      "properties": [
+        { "name": "cdx:ai:kind", "value": "model" },
+        { "name": "cdx:ai:modelFamily", "value": "llama" },
+        { "name": "cdx:ai:runtime", "value": "transformers" },
+        { "name": "cdx:ai:provider", "value": "huggingface" },
+        { "name": "cdx:ai:source", "value": "huggingface-api" },
+        { "name": "cdx:ai:confidence", "value": "medium" }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.7,
+            "concludedValue": "pkg:huggingface/student-org/llama2-chat-demo@e5f6a7b8",
+            "methods": [
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "https://huggingface.co/api/models/student-org/llama2-chat-demo"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "cdxgen:ai:dataset:hf:student-org/instruction-dataset",
+      "type": "dataset",
+      "group": "student-org",
+      "name": "instruction-dataset",
+      "version": "v1",
+      "purl": "pkg:huggingface/student-org/instruction-dataset@v1",
+      "licenses": [
+        {
+          "license": {
+            "id": "CC-BY-4.0"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://huggingface.co/datasets/student-org/instruction-dataset"
+        }
+      ],
+      "properties": [
+        { "name": "cdx:ai:kind", "value": "dataset" },
+        { "name": "cdx:ai:provider", "value": "huggingface" },
+        { "name": "cdx:ai:source", "value": "huggingface-api" }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.7,
+            "concludedValue": "pkg:huggingface/student-org/instruction-dataset@v1",
+            "methods": [
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "https://huggingface.co/api/datasets/student-org/instruction-dataset"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:pypi/transformers@4.44.2",
+      "type": "library",
+      "group": "pypi",
+      "name": "transformers",
+      "version": "4.44.2",
+      "purl": "pkg:pypi/transformers@4.44.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://pypi.org/project/transformers/4.44.2/"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "requirements.txt#L1"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:pypi/torch@2.3.0",
+      "type": "library",
+      "group": "pypi",
+      "name": "torch",
+      "version": "2.3.0",
+      "purl": "pkg:pypi/torch@2.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://pypi.org/project/torch/2.3.0/"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "requirements.txt#L2"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "pkg:pypi/accelerate@0.33.0",
+      "type": "library",
+      "group": "pypi",
+      "name": "accelerate",
+      "version": "0.33.0",
+      "purl": "pkg:pypi/accelerate@0.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://pypi.org/project/accelerate/0.33.0/"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "requirements.txt#L3"
+          }
+        ]
+      }
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:github/student-org/llama2-demo-app@0.1.0",
+      "dependsOn": [
+        "pkg:huggingface/student-org/llama2-chat-demo@e5f6a7b8",
+        "pkg:pypi/transformers@4.44.2",
+        "pkg:pypi/torch@2.3.0",
+        "pkg:pypi/accelerate@0.33.0"
+      ]
+    },
+    {
+      "ref": "cdxgen:ai:model:hf:meta-llama/Llama-2-7b",
+      "dependsOn": []
+    },
+    {
+      "ref": "cdxgen:ai:model:hf:student-org/llama2-finetune-demo",
+      "dependsOn": [
+        "cdxgen:ai:model:hf:meta-llama/Llama-2-7b",
+        "cdxgen:ai:dataset:hf:student-org/instruction-dataset",
+        "pkg:pypi/transformers@4.44.2",
+        "pkg:pypi/torch@2.3.0"
+      ]
+    },
+    {
+      "ref": "cdxgen:ai:model:hf:student-org/llama2-chat-demo",
+      "dependsOn": [
+        "cdxgen:ai:model:hf:student-org/llama2-finetune-demo",
+        "pkg:pypi/transformers@4.44.2",
+        "pkg:pypi/torch@2.3.0"
+      ]
+    },
+    {
+      "ref": "cdxgen:ai:dataset:hf:student-org/instruction-dataset",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/transformers@4.44.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/torch@2.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/accelerate@0.33.0",
+      "dependsOn": []
+    }
+  ]
+}

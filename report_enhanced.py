@@ -163,6 +163,15 @@ def _ev_field(ev: dict, key: str, default=""):
     return ev.get(key.replace("_", "-"), default)
 
 
+def _truthy(v) -> bool:
+    """把事件里的布尔字段归一化为 Python bool（兼容 JSON 反序列化后的 true/false）。"""
+    if v is True:
+        return True
+    if v is False or v is None:
+        return False
+    return str(v).strip().lower() == "true"
+
+
 def _state_audit(st) -> str:
     """从 before/after 状态对象提取审计字段（merge_status / reason_code / rule_version）。"""
     if not isinstance(st, dict):
@@ -314,8 +323,34 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
             L.append("")
         L.append("")
 
-    # ---- 三、路径证书 ----
-    L.append("## 三、路径证书")
+    # ---- 三、许可证继承冲突分析 ----
+    L.append("## 三、许可证继承冲突分析")
+    L.append("")
+    license_events = [e for e in events if _ev_field(e, "change_type") == "license_changed"]
+    conflicts = [e for e in license_events if _truthy(_ev_field(e, "conflict_detected", False))]
+    if not license_events:
+        L.append("未检测到许可证变更事件（license_changed），无许可证继承冲突需要分析。")
+        L.append("")
+    else:
+        L.append("对每个许可证变更事件，比较上游许可证义务（Duty）与下游许可证禁止（Prohibition），检测是否存在继承冲突：")
+        L.append("")
+        L.append(f"共 **{len(license_events)}** 个许可证变更事件，其中检测到继承冲突 **{len(conflicts)}** 个。")
+        L.append("")
+        L.append("| 事件 ID | 风险源（seed） | 变更（before → after） | 冲突检测 | 冲突类型 | 冲突描述 |")
+        L.append("|---|---|---|---|---|---|")
+        for ev in license_events:
+            eid = _ev_field(ev, "event_id") or "—"
+            seed = _human(_ev_field(ev, "seed"), names)
+            change = _render_change(ev, names)
+            detected = _truthy(_ev_field(ev, "conflict_detected", False))
+            detected_label = "⚠️ 冲突" if detected else "无冲突"
+            ctype = _ev_field(ev, "conflict_type") or "none"
+            detail = str(_ev_field(ev, "conflict_detail") or "—").replace("|", "\\|")
+            L.append(f"| {eid} | {seed} | {change} | {detected_label} | `{ctype}` | {detail} |")
+        L.append("")
+
+    # ---- 四、路径证书 ----
+    L.append("## 四、路径证书")
     L.append("")
     if not certs:
         L.append("未生成任何路径证书（path_certificates 为空，path_certificates 数为 0）。")
@@ -338,8 +373,8 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
             L.append(f"| {cid} | {affected} | {ctype} | {hops} | {weakest} | {decision} | {termination} | {missing} | {fp} |")
         L.append("")
 
-    # ---- 四、受影响资产（按三级判定分组） ----
-    L.append("## 四、受影响资产（按判定分组）")
+    # ---- 五、受影响资产（按三级判定分组） ----
+    L.append("## 五、受影响资产（按判定分组）")
     L.append("")
     groups = defaultdict(list)
     for c in certs:
@@ -367,8 +402,8 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
                 L.append(f"| {affected} | {ctype} | {hops} | {weakest} | {cid} |")
             L.append("")
 
-    # ---- 五、风险源汇总 ----
-    L.append("## 五、风险源汇总")
+    # ---- 六、风险源汇总 ----
+    L.append("## 六、风险源汇总")
     L.append("")
     seeds = Counter(_human(_ev_field(e, "seed"), names) for e in events if _ev_field(e, "seed"))
     if not seeds:
@@ -381,8 +416,8 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
             L.append(f"| {seed} | {n} |")
         L.append("")
 
-    # ---- 六、证据等级与判定说明 ----
-    L.append("## 六、证据等级与判定说明")
+    # ---- 七、证据等级与判定说明 ----
+    L.append("## 七、证据等级与判定说明")
     L.append("")
     L.append("| 等级 | 定义（接口约定 v0.3） |")
     L.append("|---|---|")
@@ -396,7 +431,7 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
     L.append("| RISK_POTENTIAL | 路径上存在 B 级边，规则可能适用 |")
     L.append("| UNDETERMINED | 路径上存在 C 级边、缺失祖先或冲突字段 |")
     L.append("")
-    L.append("> 口径（接口约定 v0.3）：Hugging Face 官方 API 返回的模型卡元数据本可为 A，但 BOM 为 CycloneDX 工具产物，**血缘边证据等级统一按 B 级处理**，避免口径混用。")
+    L.append("> 口径（接口约定 v0.3）：血缘边证据等级按实际来源标注（A=官方数据，B=工具产物，C=推断）；例如 Hugging Face 官方 API 直接返回的模型卡元数据为 A，CycloneDX BOM 等工具产物为 B，推断、启发式或降级证据为 C。")
     L.append("> 风险传播使用 weakest link 规则：路径证据等级取路径中最低等级；`UNDETERMINED` 不是“无风险”，而是“证据不足以判定”。")
     L.append("")
     L.append("---")

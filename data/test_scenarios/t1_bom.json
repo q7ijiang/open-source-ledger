@@ -18,7 +18,7 @@
       "name": "llama2-demo-app",
       "version": "0.1.0",
       "purl": "pkg:github/student-org/llama2-demo-app@0.1.0",
-      "description": "t1 快照：基座模型 Llama-2-7b 许可证收紧为 Llama-2-Community、训练数据集改为 CC-BY-NC-4.0 后的项目依赖与血缘全貌"
+      "description": "t1 快照：基座模型 Llama-2-7b 许可证收紧为 Llama-2-Community 后的项目依赖与血缘全貌"
     }
   },
   "components": [
@@ -108,7 +108,8 @@
       "pedigree": {
         "ancestors": [
           {
-            "purl": "pkg:huggingface/meta-llama/Llama-2-7b@8d08c96"
+            "purl": "pkg:huggingface/meta-llama/Llama-2-7b@8d08c96",
+            "evidence_level": "A"
           }
         ],
         "notes": "Hugging Face relation: finetune"
@@ -166,7 +167,8 @@
       "pedigree": {
         "ancestors": [
           {
-            "purl": "pkg:huggingface/student-org/llama2-finetune-demo@a1b2c3d4"
+            "purl": "pkg:huggingface/student-org/llama2-finetune-demo@a1b2c3d4",
+            "evidence_level": "B"
           }
         ],
         "notes": "Hugging Face relation: finetune"
@@ -197,6 +199,66 @@
       }
     },
     {
+      "bom-ref": "cdxgen:ai:model:hf:student-org/quantized-demo",
+      "type": "machine-learning-model",
+      "group": "student-org",
+      "name": "quantized-demo",
+      "version": "f7a1b2c3",
+      "purl": "pkg:huggingface/student-org/quantized-demo@f7a1b2c3",
+      "licenses": [
+        {
+          "license": {
+            "name": "Llama-2-Community"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://huggingface.co/student-org/quantized-demo"
+        }
+      ],
+      "modelCard": {
+        "modelParameters": {
+          "datasets": []
+        }
+      },
+      "pedigree": {
+        "ancestors": [
+          {
+            "purl": "pkg:huggingface/student-org/llama2-chat-demo@e5f6a7b8",
+            "evidence_level": "C",
+            "source": "lineage_backfill"
+          }
+        ],
+        "notes": "量化自 chat-demo（补数据推断）"
+      },
+      "properties": [
+        { "name": "cdx:ai:kind", "value": "model" },
+        { "name": "cdx:ai:modelFamily", "value": "llama" },
+        { "name": "cdx:ai:runtime", "value": "transformers" },
+        { "name": "cdx:ai:provider", "value": "huggingface" },
+        { "name": "cdx:ai:source", "value": "huggingface-api" },
+        { "name": "cdx:ai:confidence", "value": "low" }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.5,
+            "concludedValue": "pkg:huggingface/student-org/quantized-demo@f7a1b2c3",
+            "methods": [
+              {
+                "technique": "other",
+                "confidence": 0.5,
+                "value": "https://huggingface.co/api/models/student-org/quantized-demo"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "bom-ref": "cdxgen:ai:dataset:hf:student-org/instruction-dataset",
       "type": "dataset",
       "group": "student-org",
@@ -206,7 +268,7 @@
       "licenses": [
         {
           "license": {
-            "id": "CC-BY-NC-4.0"
+            "id": "CC-BY-4.0"
           }
         }
       ],
@@ -350,6 +412,14 @@
       "ref": "cdxgen:ai:model:hf:student-org/llama2-chat-demo",
       "dependsOn": [
         "cdxgen:ai:model:hf:student-org/llama2-finetune-demo",
+        "pkg:pypi/transformers@4.44.2",
+        "pkg:pypi/torch@2.3.0"
+      ]
+    },
+    {
+      "ref": "cdxgen:ai:model:hf:student-org/quantized-demo",
+      "dependsOn": [
+        "cdxgen:ai:model:hf:student-org/llama2-chat-demo",
         "pkg:pypi/transformers@4.44.2",
         "pkg:pypi/torch@2.3.0"
       ]

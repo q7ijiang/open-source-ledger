@@ -1,0 +1,112 @@
+[
+  {
+    "event_id": "evt-00000000-0000-4000-8000-0000000000t1-001",
+    "seed": "dataset:huggingface/student-org/instruction-dataset@v1",
+    "change_type": "license_changed",
+    "before": {
+      "canonical_id": "dataset:huggingface/student-org/instruction-dataset@v1",
+      "entity_key": "dataset:huggingface/student-org/instruction-dataset",
+      "license": "CC-BY-4.0",
+      "purls": [
+        "pkg:huggingface/student-org/instruction-dataset@v1"
+      ],
+      "snapshot_id": "00000000-0000-4000-8000-0000000000t0",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v2"
+    },
+    "after": {
+      "canonical_id": "dataset:huggingface/student-org/instruction-dataset@v1",
+      "entity_key": "dataset:huggingface/student-org/instruction-dataset",
+      "license": "CC-BY-NC-4.0",
+      "purls": [
+        "pkg:huggingface/student-org/instruction-dataset@v1"
+      ],
+      "snapshot_id": "00000000-0000-4000-8000-0000000000t1",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v2"
+    },
+    "path": [],
+    "evidence_level": "B",
+    "decision": "RISK_POTENTIAL",
+    "direction": {
+      "old": {
+        "raw": "CC-BY-4.0",
+        "canonical_ids": [
+          "CC-BY-4.0"
+        ],
+        "risk_level": 1,
+        "category": "permissive",
+        "unknown_items": []
+      },
+      "new": {
+        "raw": "CC-BY-NC-4.0",
+        "canonical_ids": [
+          "CC-BY-NC-4.0"
+        ],
+        "risk_level": 3,
+        "category": "ai_restricted",
+        "unknown_items": []
+      },
+      "direction": "宽松→严格",
+      "risk_increased": true,
+      "ai_involved": false
+    }
+  },
+  {
+    "event_id": "evt-00000000-0000-4000-8000-0000000000t1-002",
+    "seed": "model:huggingface/meta-llama/Llama-2-7b@8d08c96",
+    "change_type": "license_changed",
+    "before": {
+      "canonical_id": "model:huggingface/meta-llama/Llama-2-7b@8d08c96",
+      "entity_key": "model:huggingface/meta-llama/Llama-2-7b",
+      "license": "Apache-2.0",
+      "purls": [
+        "pkg:huggingface/meta-llama/Llama-2-7b@8d08c96"
+      ],
+      "snapshot_id": "00000000-0000-4000-8000-0000000000t0",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v2"
+    },
+    "after": {
+      "canonical_id": "model:huggingface/meta-llama/Llama-2-7b@8d08c96",
+      "entity_key": "model:huggingface/meta-llama/Llama-2-7b",
+      "license": "Llama-2-Community",
+      "purls": [
+        "pkg:huggingface/meta-llama/Llama-2-7b@8d08c96"
+      ],
+      "snapshot_id": "00000000-0000-4000-8000-0000000000t1",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v2"
+    },
+    "path": [],
+    "evidence_level": "B",
+    "decision": "RISK_POTENTIAL",
+    "direction": {
+      "old": {
+        "raw": "Apache-2.0",
+        "canonical_ids": [
+          "Apache-2.0"
+        ],
+        "risk_level": 2,
+        "category": "permissive",
+        "unknown_items": []
+      },
+      "new": {
+        "raw": "Llama-2-Community",
+        "canonical_ids": [
+          "Llama-2-Community-License"
+        ],
+        "risk_level": 4,
+        "category": "ai_restricted",
+        "unknown_items": []
+      },
+      "direction": "宽松→严格",
+      "risk_increased": true,
+      "ai_involved": true
+    }
+  }
+]

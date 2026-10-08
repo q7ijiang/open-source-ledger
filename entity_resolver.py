@@ -11,17 +11,37 @@ import sys
 from collections import Counter
 from pathlib import Path
 from typing import Any
-from urllib.parse import unquote, urlsplit, urlunsplit
+from urllib.parse import quote, unquote, urlsplit, urlunsplit
+
+from bom_adapter import (
+    PurlIdentity,
+    build_asset_identifiers,
+    parse_purl_identity,
+)
 
 
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_INPUT_PATH = BASE_DIR / "outputs" / "assets.json"
 DEFAULT_OUTPUT_PATH = BASE_DIR / "outputs" / "assets_deduplicated.json"
 DEFAULT_LOG_PATH = BASE_DIR / "outputs" / "merge_log.json"
+RULE_VERSION = "merge-policy-v2"
+# URL 类型覆盖 homepage 与 repository 等标准外部引用。
+PAIR_STATUSES = {
+    "AUTO_MERGE",
+    "REVIEW",
+    "KEEP_SEPARATE",
+    "UNDETERMINED",
+}
+MERGE_STATUS_BY_DECISION = {
+    "AUTO_MERGE": "MERGED",
+    "REVIEW": "REVIEW",
+    "KEEP_SEPARATE": "KEPT_SEPARATE",
+    "UNDETERMINED": "UNDETERMINED",
+}
 
-# 仅这些模型生态允许使用一个明确且狭窄的跨生态别名例外。
-MODEL_ALIAS_PURL_TYPES = frozenset({"npm", "pypi", "huggingface"})
-URL_REFERENCE_TYPES = frozenset({"website", "distribution", "homepage"})
+URL_REFERENCE_TYPES = frozenset(
+    {"website", "distribution", "homepage", "repository", "vcs"}
+)
 HASH_ALGORITHM_ALIASES = {
     "sha1": "sha1",
     "sha224": "sha224",
@@ -183,27 +203,45 @@ def extract_hashes(asset: dict[str, Any]) -> dict[str, set[str]]:
     return hashes
 
 
+def compare_hashes(
+    left_hashes: dict[str, set[str]], right_hashes: dict[str, set[str]]
+) -> tuple[dict[str, set[str]], dict[str, dict[str, list[str]]]]:
+    """同时返回共享摘要和冲突摘要，避免共享命中覆盖同算法冲突。"""
+
+    shared: dict[str, set[str]] = {}
+    conflicts: dict[str, dict[str, list[str]]] = {}
+    for algorithm in left_hashes.keys() & right_hashes.keys():
+        left_values = left_hashes[algorithm]
+        right_values = right_hashes[algorithm]
+        common_values = left_values & right_values
+        if common_values:
+            shared[algorithm] = common_values
+
+        # 同一算法出现任一侧独有摘要，就保留为冲突证据。
+        if left_values != right_values:
+            conflicts[algorithm] = {
+                "left_only": sorted(left_values - right_values),
+                "right_only": sorted(right_values - left_values),
+            }
+    return shared, conflicts
+
+
 def common_hashes(
     left_hashes: dict[str, set[str]], right_hashes: dict[str, set[str]]
 ) -> dict[str, set[str]]:
-    """返回双方同算法交集摘要；相同摘要可直接确认同一实体。"""
+    """兼容旧日志调用，只返回双方同算法交集摘要。"""
 
-    return {
-        algorithm: left_hashes[algorithm] & right_hashes[algorithm]
-        for algorithm in left_hashes.keys() & right_hashes.keys()
-        if left_hashes[algorithm] & right_hashes[algorithm]
-    }
+    shared, _ = compare_hashes(left_hashes, right_hashes)
+    return shared
 
 
 def has_hash_conflict(
     left_hashes: dict[str, set[str]], right_hashes: dict[str, set[str]]
 ) -> bool:
-    """同算法摘要完全不同时视为冲突，禁止继续使用其他信号合并。"""
+    """兼容旧调用；同算法摘要集合不完全相同时视为冲突。"""
 
-    return any(
-        not (left_hashes[algorithm] & right_hashes[algorithm])
-        for algorithm in left_hashes.keys() & right_hashes.keys()
-    )
+    _, conflicts = compare_hashes(left_hashes, right_hashes)
+    return bool(conflicts)
 
 
 def normalize_url(value: Any) -> str | None:
@@ -328,14 +366,12 @@ def purl_version(purl: str) -> str | None:
 def effective_version(asset: dict[str, Any]) -> str | None:
     """优先读取 version 字段，缺省时再从 purl 读取版本。"""
 
-    version = clean_text(asset.get("version"))
-    if version:
-        return version
+    # purl 是统一身份层的坐标源，版本冲突时以 purl 版本为准。
     for purl in extract_purls(asset):
         version = purl_version(purl)
         if version:
             return version
-    return None
+    return clean_text(asset.get("version"))
 
 
 def normalize_location(raw_value: Any) -> str | None:
@@ -453,183 +489,6 @@ def choose_main_asset(assets: list[dict[str, Any]]) -> tuple[int, dict[str, Any]
     return max(enumerate(assets), key=score)
 
 
-def is_model_alias_bridge(
-    left: dict[str, Any],
-    right: dict[str, Any],
-    left_types: set[str],
-    right_types: set[str],
-    left_version: str | None,
-    right_version: str | None,
-    common_locations: set[str],
-) -> bool:
-    """判断是否命中同模型跨生态别名的窄例外。"""
-
-    if not common_locations or left_version != right_version:
-        return False
-    if clean_text(left.get("asset_type")) != "model":
-        return False
-    if clean_text(right.get("asset_type")) != "model":
-        return False
-    combined_types = left_types | right_types
-    return bool(combined_types) and combined_types <= MODEL_ALIAS_PURL_TYPES
-
-
-def evaluate_pair(
-    left: dict[str, Any], right: dict[str, Any]
-) -> dict[str, Any]:
-    """判断一对同名资产是否可合并，并返回完整判定结果。"""
-
-    if clean_text(left.get("name")) != clean_text(right.get("name")):
-        return {
-            "status": "skipped: name_mismatch",
-            "confidence": None,
-            "basis": None,
-            "note": "名称不同，不进入实体对齐。",
-        }
-
-    left_purls = set(extract_purls(left))
-    right_purls = set(extract_purls(right))
-    if not left_purls or not right_purls:
-        return {
-            "status": "skipped: missing_purl",
-            "confidence": None,
-            "basis": None,
-            "note": "任一方缺少 purl，无法确认生态和包坐标。",
-        }
-
-    left_types = extract_purl_types(left)
-    right_types = extract_purl_types(right)
-    if not left_types or not right_types:
-        return {
-            "status": "skipped: missing_purl_type",
-            "confidence": None,
-            "basis": None,
-            "note": "任一方 purl 缺少可解析的生态类型。",
-        }
-
-    left_version = effective_version(left)
-    right_version = effective_version(right)
-    left_locations = extract_evidence_locations(left)
-    right_locations = extract_evidence_locations(right)
-    common_locations = left_locations & right_locations
-    left_hashes = extract_hashes(left)
-    right_hashes = extract_hashes(right)
-    shared_hashes = common_hashes(left_hashes, right_hashes)
-    hash_conflict = has_hash_conflict(left_hashes, right_hashes)
-    shared_urls = extract_urls(left) & extract_urls(right)
-    shared_authors = extract_authors(left) & extract_authors(right)
-
-    # 新信号 1：相同文件哈希可直接确认同一实体；同算法不同摘要必须阻断合并。
-    if shared_hashes:
-        return {
-            "status": "merged",
-            "confidence": 1.0,
-            "basis": "包哈希相同",
-            "note": "双方至少一个哈希算法与摘要完全一致。",
-        }
-    if hash_conflict:
-        return {
-            "status": "skipped: hash_conflict",
-            "confidence": None,
-            "basis": None,
-            "note": "同一哈希算法下摘要不同，禁止使用其他信号覆盖冲突。",
-        }
-
-    # 新信号 2：website/distribution URL 相同，置信度为 0.95。
-    if left_version == right_version and shared_urls:
-        return {
-            "status": "merged",
-            "confidence": 0.95,
-            "basis": "homepage或repository URL相同",
-            "note": "同版本下存在相同的 website/distribution URL。",
-        }
-
-    # 新信号 3：同名、同版本且 author/maintainer 相同，置信度为 0.85。
-    if (
-        left_version is not None
-        and left_version == right_version
-        and shared_authors
-    ):
-        return {
-            "status": "merged",
-            "confidence": 0.85,
-            "basis": "同名+同版本+同author或maintainer",
-            "note": "作者字段一致，且名称和版本均相同。",
-        }
-
-
-    # 规则 3：不同 purl type 默认禁止自动合并。
-    if left_types.isdisjoint(right_types):
-        if is_model_alias_bridge(
-            left,
-            right,
-            left_types,
-            right_types,
-            left_version,
-            right_version,
-            common_locations,
-        ):
-            return {
-                "status": "merged",
-                "confidence": 0.9,
-                "basis": "模型别名跨生态+同名+同版本+相同有效文件位置",
-                "note": (
-                    "规则 3 的显式窄例外：仅用于同一模型在包生态中的别名，"
-                    "且必须存在相同有效文件路径。"
-                ),
-            }
-        return {
-            "status": "skipped: cross_ecosystem",
-            "confidence": None,
-            "basis": None,
-            "note": "purl type 不同，按保守规则禁止自动合并。",
-        }
-
-    # 版本是 Delta 检测的实体边界；不同版本只允许由完全相同哈希覆盖。
-    if left_version != right_version:
-        return {
-            "status": "skipped: version_mismatch",
-            "confidence": None,
-            "basis": None,
-            "note": "名称相同但版本不同，禁止基于 URL、作者或位置证据合并。",
-        }
-
-
-    # 规则 1：只有通过 is_valid_location 校验的具体文件路径才可用作位置证据。
-    if common_locations:
-        return {
-            "status": "merged",
-            "confidence": 0.9,
-            "basis": "相同有效文件位置",
-            "note": "同名、同版本、同生态且共享具体文件路径。",
-        }
-
-    # 相同 purl 主体但位置不同，说明更可能是同一包在不同目录中的多份安装。
-    left_canonical = {canonical_purl(purl) for purl in left_purls}
-    right_canonical = {canonical_purl(purl) for purl in right_purls}
-    if left_canonical & right_canonical:
-        return {
-            "status": "skipped: no_valid_location_match",
-            "confidence": None,
-            "basis": None,
-            "note": "包坐标相同，但没有共同的具体文件路径证据。",
-        }
-
-    # 同名、同版本、同生态但不是同一 purl 时，保留原有的保守名称+版本规则。
-    if left_version is not None and right_version is not None:
-        return {
-            "status": "needs_review",
-            "confidence": 0.7,
-            "basis": "同名+同版本+同 purl 类型",
-            "note": "证据不足，仅进入 0.7-0.85 人工复核区，不自动合并。",
-        }
-
-    return {
-        "status": "skipped: missing_version",
-        "confidence": None,
-        "basis": None,
-        "note": "双方均无有效版本，且没有共同具体文件路径。",
-    }
 
 
 def merge_assets(
@@ -670,7 +529,7 @@ def merge_assets(
             name = item.strip()
             if name and name not in licenses:
                 licenses.append(name)
-    result["license"] = "; ".join(licenses)
+    result["license"] = "; ".join(licenses) or None
 
     if not clean_text(result.get("version")):
         result["version"] = merged_asset.get("version", "")
@@ -708,6 +567,11 @@ def build_pair_log_entry(
     right_authors = extract_authors(right)
     left_layer_locations = extract_layer_locations(left)
     right_layer_locations = extract_layer_locations(right)
+    evidence_signals = {
+        str(evidence.get("signal"))
+        for evidence in decision.get("supporting_evidence", [])
+        if isinstance(evidence, dict)
+    }
     return {
         "name": clean_text(left.get("name")),
         "kept_asset_id": clean_text(left.get("canonical_id")),
@@ -752,92 +616,272 @@ def build_pair_log_entry(
         "merged_location_level": (
             "A" if right_locations else ("B" if right_layer_locations else "C")
         ),
-        "auto_merge": decision["status"] == "merged",
-        "review_required": decision["status"] == "needs_review",
+        "auto_merge": decision["status"] in {"merged", "AUTO_MERGE"},
+        "review_required": decision["status"] in {"needs_review", "REVIEW"},
         "status": decision["status"],
         "confidence": decision["confidence"],
         "basis": decision["basis"],
         "note": decision["note"],
+        "merge_status": MERGE_STATUS_BY_DECISION[decision["status"]],
+        "reason_code": decision["reason_code"],
+        "rule_version": decision["rule_version"],
+        "supporting_evidence": decision["supporting_evidence"],
+        "conflicting_evidence": decision["conflicting_evidence"],
+        "triggered_by_url_or_author": bool(
+            evidence_signals & {"url", "author"}
+        ),
+        "veto_edge": bool(
+            decision["status"] == "KEEP_SEPARATE"
+            or decision["conflicting_evidence"]
+        ),
     }
+
+
+def candidate_group_keys(asset: dict[str, Any]) -> set[str]:
+    """生成候选分组键；保留同名不同 namespace，供护栏判定。"""
+
+    asset_type = clean_text(asset.get("asset_type")) or ""
+    name = clean_text(asset.get("name"))
+    keys: set[str] = set()
+    if name:
+        keys.add(f"name:{asset_type}:{name.casefold()}")
+    for identity in purl_identities_for_asset(asset):
+        keys.add(
+            f"purl-name:{asset_type}:{identity.purl_type}:{identity.name.casefold()}"
+        )
+    return keys
+
+
+def candidate_pairs(assets: list[dict[str, Any]]) -> list[tuple[int, int]]:
+    """按名称和规范化 purl 名称生成去重候选对。"""
+
+    indices_by_key: dict[str, list[int]] = {}
+    for index, asset in enumerate(assets):
+        for key in candidate_group_keys(asset):
+            indices_by_key.setdefault(key, []).append(index)
+
+    pairs: set[tuple[int, int]] = set()
+    for indices in indices_by_key.values():
+        if len(indices) < 2:
+            continue
+        for left_position, left_index in enumerate(indices):
+            for right_index in indices[left_position + 1 :]:
+                pairs.add((min(left_index, right_index), max(left_index, right_index)))
+    return sorted(pairs)
+
+
+def pair_decision_priority(entry: dict[str, Any]) -> tuple[int, str]:
+    """为分量摘要选择最保守且最具体的代表边。"""
+
+    reason_code = str(entry.get("reason_code") or "")
+    if reason_code.startswith("HASH_") or reason_code == "PURL_COORDINATE_EXACT":
+        priority = 0
+    elif reason_code.startswith("COMMON_VALID_LOCATION"):
+        priority = 1
+    else:
+        priority = 2
+    return priority, str(entry.get("kept_asset_id"))
+
+
+def canonical_id_suffix(asset: dict[str, Any]) -> str:
+    """为极端冲突输出可解释且确定的 purl 坐标后缀。"""
+
+    identities = purl_identities_for_asset(asset)
+    if identities:
+        return identities[0].coordinate_suffix
+    asset_type = clean_text(asset.get("asset_type")) or "unknown"
+    name = clean_text(asset.get("name")) or "unnamed"
+    version = effective_version(asset)
+    return f"{asset_type}/{name}" + (f"@{version}" if version else "")
+
+
+def ensure_unique_canonical_ids(assets: list[dict[str, Any]]) -> None:
+    """对未合并但 canonical_id 相同的极端情况追加确定后缀。"""
+
+    used_ids: set[str] = set()
+    for asset in assets:
+        canonical_id = clean_text(asset.get("canonical_id"))
+        if not canonical_id or canonical_id not in used_ids:
+            if canonical_id:
+                used_ids.add(canonical_id)
+            continue
+
+        suffix = quote(canonical_id_suffix(asset), safe="/:@._-")
+        candidate = f"{canonical_id}#purl={suffix}"
+        occurrence = 2
+        while candidate in used_ids:
+            candidate = f"{canonical_id}#purl={suffix}#{occurrence}"
+            occurrence += 1
+        asset["canonical_id"] = candidate
+        asset["canonical_id_disambiguation"] = {
+            "base_canonical_id": canonical_id,
+            "suffix": suffix,
+            "reason": "same canonical id without an auto-mergeable conflict resolution",
+        }
+        used_ids.add(candidate)
 
 
 def deduplicate_assets(
     assets: list[dict[str, Any]],
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """执行资产对齐，并返回去重结果与逐对判定日志。"""
+    """执行受限传递对齐，并返回去重结果与逐对判定日志。"""
 
-    indices_by_name: dict[str, list[int]] = {}
-    for index, asset in enumerate(assets):
-        name = clean_text(asset.get("name")) or ""
-        indices_by_name.setdefault(name, []).append(index)
+    candidate_index_pairs = candidate_pairs(assets)
+    parent = list(range(len(assets)))
+
+    def find(index: int) -> int:
+        while parent[index] != index:
+            parent[index] = parent[parent[index]]
+            index = parent[index]
+        return index
+
+    def union(left_index: int, right_index: int) -> None:
+        left_root = find(left_index)
+        right_root = find(right_index)
+        if left_root != right_root:
+            parent[right_root] = left_root
+
+    pair_log: dict[tuple[int, int], dict[str, Any]] = {}
+    for pair in candidate_index_pairs:
+        left_index, right_index = pair
+        decision = evaluate_pair(assets[left_index], assets[right_index])
+        pair_log[pair] = build_pair_log_entry(
+            assets[left_index], assets[right_index], decision
+        )
+        if decision["status"] == "AUTO_MERGE":
+            union(left_index, right_index)
+
+    positions_by_root: dict[int, list[int]] = {}
+    for index in range(len(assets)):
+        positions_by_root.setdefault(find(index), []).append(index)
 
     dropped_indices: set[int] = set()
     merged_by_main_index: dict[int, dict[str, Any]] = {}
-    merge_log: list[dict[str, Any]] = []
+    status_by_index: dict[int, str] = {
+        index: "KEPT_SEPARATE" for index in range(len(assets))
+    }
+    reason_by_index: dict[int, str] = {}
 
-    for name, indices in indices_by_name.items():
-        if len(indices) < 2:
+    for component_index, positions in enumerate(
+        sorted(positions_by_root.values(), key=lambda values: values[0]), start=1
+    ):
+        if len(positions) < 2:
             continue
 
-        # 先对本组所有原始记录两两判定，再用并查集处理传递关系。
-        parent = list(range(len(indices)))
-
-        def find(position: int) -> int:
-            while parent[position] != position:
-                parent[position] = parent[parent[position]]
-                position = parent[position]
-            return position
-
-        def union(left_position: int, right_position: int) -> None:
-            left_root = find(left_position)
-            right_root = find(right_position)
-            if left_root != right_root:
-                parent[right_root] = left_root
-
-        pair_decisions: list[tuple[int, int, dict[str, Any]]] = []
-        for left_position in range(len(indices)):
-            for right_position in range(left_position + 1, len(indices)):
-                left_index = indices[left_position]
-                right_index = indices[right_position]
-                left_asset = assets[left_index]
-                right_asset = assets[right_index]
-                decision = evaluate_pair(left_asset, right_asset)
-                pair_decisions.append((left_position, right_position, decision))
-                merge_log.append(
-                    build_pair_log_entry(left_asset, right_asset, decision)
+        # 自动分量内补齐所有原始配对，确保 A-B、B-C 时仍检查 A-C 冲突。
+        for left_position, left_index in enumerate(positions):
+            for right_index in positions[left_position + 1 :]:
+                pair = (min(left_index, right_index), max(left_index, right_index))
+                if pair in pair_log:
+                    continue
+                decision = evaluate_pair(assets[pair[0]], assets[pair[1]])
+                pair_log[pair] = build_pair_log_entry(
+                    assets[pair[0]], assets[pair[1]], decision
                 )
-                if decision["status"] == "merged":
-                    union(left_position, right_position)
 
-        positions_by_root: dict[int, list[int]] = {}
-        for position in range(len(indices)):
-            positions_by_root.setdefault(find(position), []).append(position)
+        component_pairs = [
+            pair
+            for pair in pair_log
+            if pair[0] in positions and pair[1] in positions
+        ]
+        component_entries = [pair_log[pair] for pair in component_pairs]
+        auto_entries = [
+            entry for entry in component_entries if entry["status"] == "AUTO_MERGE"
+        ]
+        conflicting_entries = [
+            entry for entry in component_entries if entry["veto_edge"]
+        ]
+        component_auto_folded = bool(auto_entries) and not conflicting_entries
+        component_status = (
+            "MERGED"
+            if component_auto_folded
+            else ("REVIEW" if conflicting_entries else "KEPT_SEPARATE")
+        )
+        minimum_support = min(auto_entries, key=pair_decision_priority) if auto_entries else None
+        component_summary = {
+            "component_id": f"component-{component_index}",
+            "component_size": len(positions),
+            "component_auto_folded": component_auto_folded,
+            "component_status": component_status,
+            "component_min_support_edge": (
+                {
+                    "left": minimum_support["kept_asset_id"],
+                    "right": minimum_support["merged_asset_id"],
+                    "reason_code": minimum_support["reason_code"],
+                }
+                if minimum_support
+                else None
+            ),
+            "component_conflicting_edges": [
+                {
+                    "left": entry["kept_asset_id"],
+                    "right": entry["merged_asset_id"],
+                    "reason_code": entry["reason_code"],
+                }
+                for entry in conflicting_entries
+            ],
+            "component_review_triggered_by_url_or_author": any(
+                entry["triggered_by_url_or_author"] for entry in component_entries
+            ),
+        }
+        for entry in component_entries:
+            entry.update(component_summary)
 
-        for positions in positions_by_root.values():
-            if len(positions) < 2:
-                continue
-
-            component_assets = [assets[indices[position]] for position in positions]
+        if component_auto_folded:
+            component_assets = [assets[index] for index in positions]
             main_position, main_asset = choose_main_asset(component_assets)
-            main_asset_index = indices[positions[main_position]]
+            main_asset_index = positions[main_position]
             result_asset = copy.deepcopy(main_asset)
-
-            for position in positions:
-                index = indices[position]
+            for index in positions:
                 if index == main_asset_index:
                     continue
                 result_asset = merge_assets(result_asset, assets[index])
                 dropped_indices.add(index)
-
+            result_asset["merge_status"] = "MERGED"
+            result_asset["reason_code"] = (
+                minimum_support["reason_code"] if minimum_support else "AUTO_MERGE"
+            )
+            result_asset["rule_version"] = RULE_VERSION
+            result_asset["merge_component_id"] = component_summary["component_id"]
             merged_by_main_index[main_asset_index] = result_asset
+            for index in positions:
+                status_by_index[index] = "MERGED"
+                reason_by_index[index] = result_asset["reason_code"]
+        elif conflicting_entries:
+            for index in positions:
+                status_by_index[index] = "REVIEW"
+                reason_by_index[index] = conflicting_entries[0]["reason_code"]
+
+    for pair, entry in pair_log.items():
+        for index in pair:
+            if status_by_index[index] == "MERGED":
+                continue
+            if entry["status"] == "REVIEW":
+                status_by_index[index] = "REVIEW"
+                reason_by_index.setdefault(index, entry["reason_code"])
+            elif entry["status"] == "UNDETERMINED" and status_by_index[index] == "KEPT_SEPARATE":
+                status_by_index[index] = "UNDETERMINED"
+                reason_by_index.setdefault(index, entry["reason_code"])
+            elif entry["status"] == "KEEP_SEPARATE":
+                if status_by_index[index] != "REVIEW":
+                    status_by_index[index] = "KEPT_SEPARATE"
+                reason_by_index.setdefault(index, entry["reason_code"])
 
     deduplicated: list[dict[str, Any]] = []
     for index, asset in enumerate(assets):
+        if index in dropped_indices:
+            continue
         if index in merged_by_main_index:
             deduplicated.append(merged_by_main_index[index])
-        elif index not in dropped_indices:
-            deduplicated.append(asset)
+            continue
+        output_asset = copy.deepcopy(asset)
+        output_asset["merge_status"] = status_by_index[index]
+        output_asset["reason_code"] = reason_by_index.get(index, "NO_MERGE_CANDIDATE")
+        output_asset["rule_version"] = RULE_VERSION
+        deduplicated.append(output_asset)
 
+    ensure_unique_canonical_ids(deduplicated)
+    merge_log = [pair_log[pair] for pair in sorted(pair_log)]
     return deduplicated, merge_log
 
 
@@ -870,54 +914,439 @@ def main() -> None:
     write_json(args.output, deduplicated)
     write_json(args.log, merge_log)
 
-    merged_entries = [
-        entry for entry in merge_log if entry["status"] == "merged"
-    ]
-    review_entries = [
-        entry for entry in merge_log if entry["status"] == "needs_review"
-    ]
-    skipped_entries = [
-        entry for entry in merge_log
-        if entry["status"] not in {"merged", "needs_review"}
-    ]
-    confidence_distribution = Counter(
-        str(entry["confidence"]) for entry in merged_entries
-    )
-    skip_distribution = Counter(
-        str(entry["status"]) for entry in skipped_entries
+    status_distribution = Counter(entry["status"] for entry in merge_log)
+    reason_distribution = Counter(entry["reason_code"] for entry in merge_log)
+    asset_status_distribution = Counter(
+        str(asset.get("merge_status")) for asset in deduplicated
     )
 
     print(f"读取资产：{args.input}")
     print(f"资产数量：{len(assets)} -> {len(deduplicated)}")
-    print(f"同名配对总数：{len(merge_log)}")
-    print(f"合并对数：{len(merged_entries)}")
-    print(f"需人工复核对数：{len(review_entries)}")
-    print(f"跳过对数：{len(skipped_entries)}")
+    print(f"候选配对总数：{len(merge_log)}")
+    for status in ("AUTO_MERGE", "REVIEW", "KEEP_SEPARATE", "UNDETERMINED"):
+        print(f"{status}：{status_distribution.get(status, 0)}")
     print(
-        "置信度分布："
-        + (
-            "，".join(
-                f"{confidence}={count}"
-                for confidence, count in sorted(
-                    confidence_distribution.items(),
-                    reverse=True,
-                )
-            )
-            or "无"
+        "资产合并状态分布："
+        + "，".join(
+            f"{status}={asset_status_distribution.get(status, 0)}"
+            for status in ("MERGED", "REVIEW", "KEPT_SEPARATE", "UNDETERMINED")
         )
     )
     print(
-        "跳过原因分布："
+        "原因码分布："
         + (
             "，".join(
                 f"{reason}={count}"
-                for reason, count in sorted(skip_distribution.items())
+                for reason, count in sorted(reason_distribution.items())
             )
             or "无"
         )
     )
     print(f"去重结果：{args.output}")
     print(f"配对日志：{args.log}")
+
+
+def make_decision(
+    status: str,
+    reason_code: str,
+    note: str,
+    *,
+    supporting_evidence: list[dict[str, Any]] | None = None,
+    conflicting_evidence: list[dict[str, Any]] | None = None,
+    confidence: float | None = None,
+    basis: str | None = None,
+) -> dict[str, Any]:
+    """构造统一决策对象；confidence 仅用于旧接口兼容。"""
+
+    if status not in PAIR_STATUSES:
+        raise ValueError(f"未知合并状态：{status}")
+    return {
+        "status": status,
+        "reason_code": reason_code,
+        "supporting_evidence": supporting_evidence or [],
+        "conflicting_evidence": conflicting_evidence or [],
+        "rule_version": RULE_VERSION,
+        "confidence": confidence,
+        "basis": basis or reason_code,
+        "note": note,
+    }
+
+
+def purl_identities_for_asset(asset: dict[str, Any]) -> list[PurlIdentity]:
+    """解析资产全部 purl，忽略无法解析的脏值。"""
+
+    identities: list[PurlIdentity] = []
+    for purl in extract_purls(asset):
+        identity = parse_purl_identity(purl)
+        if identity is not None:
+            identities.append(identity)
+    return identities
+
+
+def purl_identity_evidence(identity: PurlIdentity) -> dict[str, Any]:
+    """把 purl 四元组转成日志可序列化对象。"""
+
+    return {
+        "signal": "purl",
+        "type": identity.purl_type,
+        "namespace": identity.namespace,
+        "name": identity.name,
+        "version": identity.version,
+    }
+
+
+def identity_name_compatible(
+    left: dict[str, Any],
+    right: dict[str, Any],
+    left_identities: list[PurlIdentity],
+    right_identities: list[PurlIdentity],
+    exact_identity_matches: list[tuple[PurlIdentity, PurlIdentity]],
+    same_nonempty_version: bool,
+) -> bool:
+    """名称兼容时允许比较；purl 规范化名称相同可覆盖原始名称差异。"""
+
+    left_name = clean_text(left.get("name"))
+    right_name = clean_text(right.get("name"))
+    if left_name and right_name and left_name.casefold() == right_name.casefold():
+        return True
+    if same_nonempty_version and exact_identity_matches:
+        return True
+    return any(
+        left_identity.purl_type == right_identity.purl_type
+        and left_identity.name == right_identity.name
+        for left_identity in left_identities
+        for right_identity in right_identities
+    )
+
+
+def evaluate_pair(
+    left: dict[str, Any], right: dict[str, Any]
+) -> dict[str, Any]:
+    """按确定性决策表判断一对资产，不再使用硬编码分数控制结果。"""
+
+    left_types = extract_purl_types(left)
+    right_types = extract_purl_types(right)
+    left_identities = purl_identities_for_asset(left)
+    right_identities = purl_identities_for_asset(right)
+    left_version = effective_version(left)
+    right_version = effective_version(right)
+    same_version = (
+        left_version is not None
+        and right_version is not None
+        and left_version == right_version
+    )
+    version_mismatch = (
+        left_version is not None
+        and right_version is not None
+        and left_version != right_version
+    )
+
+    exact_identity_matches = [
+        (left_identity, right_identity)
+        for left_identity in left_identities
+        for right_identity in right_identities
+        if left_identity.coordinate == right_identity.coordinate
+    ]
+
+    if not identity_name_compatible(
+        left,
+        right,
+        left_identities,
+        right_identities,
+        exact_identity_matches,
+        same_version,
+    ):
+        return make_decision(
+            "KEEP_SEPARATE",
+            "NAME_MISMATCH",
+            "名称及规范化 purl 名称均不一致，确定为不同实体。",
+            conflicting_evidence=[{"signal": "name"}],
+            confidence=0.0,
+        )
+
+    if clean_text(left.get("asset_type")) != clean_text(right.get("asset_type")):
+        return make_decision(
+            "KEEP_SEPARATE",
+            "ASSET_TYPE_MISMATCH",
+            "资产类型不同，保持为不同节点。",
+            conflicting_evidence=[{"signal": "asset_type"}],
+            confidence=0.0,
+        )
+
+    left_locations = extract_evidence_locations(left)
+    right_locations = extract_evidence_locations(right)
+    common_locations = left_locations & right_locations
+    left_hashes = extract_hashes(left)
+    right_hashes = extract_hashes(right)
+    shared_hashes, hash_conflicts = compare_hashes(left_hashes, right_hashes)
+    shared_urls = extract_urls(left) & extract_urls(right)
+    shared_authors = extract_authors(left) & extract_authors(right)
+
+    hash_support = [
+        {"signal": "hash", "algorithm": algorithm, "digests": sorted(digests)}
+        for algorithm, digests in sorted(shared_hashes.items())
+    ]
+    hash_conflict_evidence = [
+        {
+            "signal": "hash_conflict",
+            "algorithm": algorithm,
+            "left_only": details["left_only"],
+            "right_only": details["right_only"],
+        }
+        for algorithm, details in sorted(hash_conflicts.items())
+    ]
+
+    # Bug 1：冲突证据优先，绝不因另一算法命中而覆盖冲突。
+    if hash_conflict_evidence:
+        return make_decision(
+            "REVIEW",
+            "HASH_CONFLICT",
+            "同算法同时存在共享摘要和不同摘要，进入人工复核。",
+            supporting_evidence=hash_support,
+            conflicting_evidence=hash_conflict_evidence,
+            confidence=0.8,
+        )
+
+    if hash_support:
+        if version_mismatch:
+            return make_decision(
+                "REVIEW",
+                "HASH_MATCH_VERSION_MISMATCH",
+                "哈希相同但版本不同，进入人工复核。",
+                supporting_evidence=hash_support,
+                conflicting_evidence=[
+                    {
+                        "signal": "version",
+                        "left": left_version,
+                        "right": right_version,
+                    }
+                ],
+                confidence=0.8,
+            )
+        if not left_identities and not right_identities:
+            return make_decision(
+                "AUTO_MERGE",
+                "HASH_MATCH_WITHOUT_PURL",
+                "无 purl 时相同包哈希可确认同一实体。",
+                supporting_evidence=hash_support,
+                confidence=1.0,
+            )
+        if not same_version:
+            return make_decision(
+                "REVIEW",
+                "HASH_MATCH_VERSION_UNKNOWN",
+                "哈希相同但版本缺失，进入人工复核。",
+                supporting_evidence=hash_support,
+                conflicting_evidence=[{"signal": "version_missing"}],
+                confidence=0.85,
+            )
+        return make_decision(
+            "AUTO_MERGE",
+            "HASH_MATCH_SAME_VERSION",
+            "同算法哈希相同且版本相同，确认同一实体。",
+            supporting_evidence=hash_support,
+            confidence=1.0,
+        )
+
+    if exact_identity_matches:
+        exact_evidence = [
+            purl_identity_evidence(left_identity)
+            for left_identity, _ in exact_identity_matches
+        ]
+        has_versioned_identity = any(
+            left_identity.version is not None
+            for left_identity, _ in exact_identity_matches
+        )
+        if has_versioned_identity and not version_mismatch:
+            return make_decision(
+                "AUTO_MERGE",
+                "PURL_COORDINATE_EXACT",
+                "purl 四元坐标完全相同，确认同一实体。",
+                supporting_evidence=exact_evidence,
+                confidence=1.0,
+            )
+        if common_locations:
+            return make_decision(
+                "AUTO_MERGE",
+                "PURL_COORDINATE_UNVERSIONED_WITH_LOCATION",
+                "purl 坐标相同且存在共同文件路径，确认同一实体。",
+                supporting_evidence=exact_evidence + [
+                    {"signal": "location", "paths": sorted(common_locations)}
+                ],
+                confidence=0.9,
+            )
+        return make_decision(
+            "REVIEW",
+            "PURL_COORDINATE_UNVERSIONED",
+            "purl 坐标相同但缺少版本和共同路径，进入人工复核。",
+            supporting_evidence=exact_evidence,
+            conflicting_evidence=[{"signal": "version_missing"}],
+            confidence=0.8,
+        )
+
+    if version_mismatch:
+        return make_decision(
+            "KEEP_SEPARATE",
+            "VERSION_MISMATCH",
+            "双方版本均为非空且不同，确定为不同版本节点。",
+            conflicting_evidence=[
+                {
+                    "signal": "version",
+                    "left": left_version,
+                    "right": right_version,
+                }
+            ],
+            confidence=0.0,
+        )
+
+    cross_ecosystem = bool(
+        left_types and right_types and left_types.isdisjoint(right_types)
+    )
+    same_ecosystem = bool(left_types & right_types)
+
+    if cross_ecosystem:
+        if shared_urls:
+            return make_decision(
+                "REVIEW",
+                "CROSS_ECOSYSTEM_URL_REVIEW",
+                "跨生态组件仅共享 URL，只能进入人工复核。",
+                supporting_evidence=[
+                    {"signal": "url", "values": sorted(shared_urls)}
+                ],
+                conflicting_evidence=[
+                    {
+                        "signal": "ecosystem",
+                        "left": sorted(left_types),
+                        "right": sorted(right_types),
+                    }
+                ],
+                confidence=0.85,
+            )
+        if shared_authors:
+            return make_decision(
+                "REVIEW",
+                "CROSS_ECOSYSTEM_AUTHOR_REVIEW",
+                "跨生态组件仅共享作者字段，只能进入人工复核。",
+                supporting_evidence=[
+                    {"signal": "author", "values": sorted(shared_authors)}
+                ],
+                conflicting_evidence=[
+                    {
+                        "signal": "ecosystem",
+                        "left": sorted(left_types),
+                        "right": sorted(right_types),
+                    }
+                ],
+                confidence=0.8,
+            )
+        return make_decision(
+            "KEEP_SEPARATE",
+            "CROSS_ECOSYSTEM_DEFAULT",
+            "跨生态默认不合并，且没有 URL 或 author 复核信号。",
+            conflicting_evidence=[
+                {
+                    "signal": "ecosystem",
+                    "left": sorted(left_types),
+                    "right": sorted(right_types),
+                }
+            ],
+            confidence=0.0,
+        )
+
+    if common_locations:
+        if same_version and left_identities and right_identities and same_ecosystem:
+            return make_decision(
+                "AUTO_MERGE",
+                "COMMON_VALID_LOCATION_SAME_VERSION",
+                "同生态、同版本且存在共同有效文件路径，确认合并。",
+                supporting_evidence=[
+                    {"signal": "location", "paths": sorted(common_locations)},
+                    {"signal": "version", "value": left_version},
+                ],
+                confidence=0.9,
+            )
+        return make_decision(
+            "REVIEW",
+            "COMMON_VALID_LOCATION_REVIEW",
+            "存在共同文件路径，但版本或 purl 信息不足，进入人工复核。",
+            supporting_evidence=[
+                {"signal": "location", "paths": sorted(common_locations)}
+            ],
+            conflicting_evidence=[
+                {"signal": "version_or_purl_missing"}
+            ],
+            confidence=0.85,
+        )
+
+    if shared_urls:
+        url_evidence = [{"signal": "url", "values": sorted(shared_urls)}]
+        if not left_identities and not right_identities and same_version:
+            return make_decision(
+                "AUTO_MERGE",
+                "URL_SAME_VERSION_WITHOUT_PURL",
+                "无 purl 且 URL、版本均相同，确认合并。",
+                supporting_evidence=url_evidence
+                + [{"signal": "version", "value": left_version}],
+                confidence=0.95,
+            )
+        return make_decision(
+            "REVIEW",
+            "URL_SHARED_REVIEW",
+            "URL 是中等信号，只能进入人工复核。",
+            supporting_evidence=url_evidence,
+            confidence=0.85,
+        )
+
+    if shared_authors:
+        return make_decision(
+            "REVIEW",
+            "AUTHOR_SHARED_REVIEW",
+            "author/maintainer 是中等信号，只能进入人工复核。",
+            supporting_evidence=[
+                {"signal": "author", "values": sorted(shared_authors)}
+            ],
+            confidence=0.8,
+        )
+
+    if not left_identities and not right_identities:
+        if same_version:
+            return make_decision(
+                "UNDETERMINED",
+                "NO_PURL_NAME_VERSION_ONLY",
+                "只有 name 和 version 相同，缺少其他可验证信号。",
+                supporting_evidence=[
+                    {"signal": "name", "value": clean_text(left.get("name"))},
+                    {"signal": "version", "value": left_version},
+                ],
+                confidence=None,
+            )
+        return make_decision(
+            "UNDETERMINED",
+            "NAME_ONLY_OR_VERSION_MISSING",
+            "只有 name 相同或版本缺失，信息不足，不合并。",
+            supporting_evidence=[
+                {"signal": "name", "value": clean_text(left.get("name"))}
+            ],
+            conflicting_evidence=[{"signal": "version_or_purl_missing"}],
+            confidence=None,
+        )
+
+    if same_version and same_ecosystem:
+        return make_decision(
+            "REVIEW",
+            "SAME_ECOSYSTEM_VERSION_ONLY",
+            "同生态且同名同版本，但没有共同路径、URL 或作者证据，进入人工复核。",
+            supporting_evidence=[{"signal": "version", "value": left_version}],
+            confidence=0.7,
+        )
+
+    return make_decision(
+        "UNDETERMINED",
+        "SAME_ECOSYSTEM_INSUFFICIENT_EVIDENCE",
+        "生态相同但版本或其他身份信号不足，不自动合并。",
+        conflicting_evidence=[{"signal": "version_missing"}],
+        confidence=None,
+    )
 
 
 if __name__ == "__main__":

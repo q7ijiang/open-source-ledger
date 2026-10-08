@@ -1,0 +1,45 @@
+name: Weekly Model Lineage Monitor
+
+on:
+  schedule:
+    # UTC 每周一 01:00 = 北京时间周一 09:00
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+    inputs:
+      model:
+        description: '要扫描的 HF 模型名'
+        required: true
+        default: 'TheBloke/Qwen2.5-0.5B-Instruct-GGUF'
+
+permissions:
+  contents: read
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install cdxgen
+        run: npm install -g @cyclonedx/cdxgen
+
+      - name: Run model lineage scan
+        run: python main.py --model ${{ github.event.inputs.model || 'TheBloke/Qwen2.5-0.5B-Instruct-GGUF' }} --output reports/monitor.md
+
+      - name: Upload monitor artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitor-report
+          path: |
+            reports/monitor.md
+            outputs/lineage_graph.png
+          if-no-files-found: error

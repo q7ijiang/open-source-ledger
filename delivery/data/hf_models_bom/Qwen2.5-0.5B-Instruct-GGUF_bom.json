@@ -1,0 +1,325 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:5502d0f2-678b-4501-93df-964e1978cf25",
+  "version": 2,
+  "metadata": {
+    "timestamp": "2026-09-18T15:44:28Z",
+    "tools": {
+      "components": [
+        {
+          "group": "@cyclonedx",
+          "name": "cdxgen",
+          "version": "12.8.4",
+          "purl": "pkg:npm/%40cyclonedx/cdxgen@12.8.4",
+          "type": "application",
+          "bom-ref": "pkg:npm/@cyclonedx/cdxgen@12.8.4",
+          "publisher": "OWASP Foundation",
+          "authors": [
+            {
+              "name": "OWASP Foundation"
+            }
+          ]
+        }
+      ]
+    },
+    "authors": [
+      {
+        "name": "OWASP Foundation"
+      }
+    ],
+    "lifecycles": [
+      {
+        "phase": "build"
+      }
+    ],
+    "component": {
+      "group": "",
+      "name": "bartowski",
+      "version": "latest",
+      "type": "application",
+      "bom-ref": "pkg:generic/bartowski@latest",
+      "purl": "pkg:generic/bartowski@latest"
+    },
+    "properties": [
+      {
+        "name": "cdx:bom:componentTypes",
+        "value": "huggingface"
+      },
+      {
+        "name": "cdx:bom:componentNamespaces",
+        "value": "bartowski"
+      },
+      {
+        "name": "cdx:bom:componentSrcFiles",
+        "value": "pkg:huggingface\\bartowski\\Qwen2.5-0.5B-Instruct-GGUF@41ba88dbac95fed2528c92514c131d73eb5a174b"
+      }
+    ]
+  },
+  "components": [
+    {
+      "group": "bartowski",
+      "name": "Qwen2.5-0.5B-Instruct-GGUF",
+      "version": "41ba88dbac95fed2528c92514c131d73eb5a174b",
+      "licenses": [
+        {
+          "license": {
+            "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct/blob/main/LICENSE",
+            "id": "Apache-2.0",
+            "properties": [
+              {
+                "name": "cdx:license:category",
+                "value": "Permissive"
+              },
+              {
+                "name": "cdx:license:foss",
+                "value": "true"
+              },
+              {
+                "name": "cdx:license:osiApproved",
+                "value": "true"
+              },
+              {
+                "name": "cdx:license:fsfLibre",
+                "value": "true"
+              },
+              {
+                "name": "cdx:license:deprecated",
+                "value": "false"
+              }
+            ]
+          }
+        }
+      ],
+      "purl": "pkg:huggingface/bartowski/Qwen2.5-0.5B-Instruct-GGUF@41ba88dbac95fed2528c92514c131d73eb5a174b",
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://huggingface.co/bartowski/Qwen2.5-0.5B-Instruct-GGUF"
+        },
+        {
+          "type": "license",
+          "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct/blob/main/LICENSE"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/ZehaoLiu/QwenChat",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/RoyalityAi/Aibyroyal",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/AInive/AI-Nive0.1beta-lite",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/rajeshlion/ask-baba-bhAIro",
+          "comment": "Related Hugging Face Space"
+        },
+        {
+          "type": "website",
+          "url": "https://huggingface.co/spaces/ZehaoLiu/QwenRAG",
+          "comment": "Related Hugging Face Space"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "bom-ref": "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct",
+            "type": "machine-learning-model",
+            "group": "Qwen",
+            "name": "Qwen2.5-0.5B-Instruct",
+            "purl": "pkg:huggingface/Qwen/Qwen2.5-0.5B-Instruct",
+            "pedigree": {
+              "ancestors": [
+                {
+                  "bom-ref": "pkg:huggingface/Qwen/Qwen2.5-0.5B",
+                  "type": "machine-learning-model",
+                  "group": "Qwen",
+                  "name": "Qwen2.5-0.5B",
+                  "purl": "pkg:huggingface/Qwen/Qwen2.5-0.5B"
+                }
+              ],
+              "notes": "Detected variants: fine-tuned"
+            }
+          }
+        ],
+        "notes": "Detected variants: quantized"
+      },
+      "modelCard": {
+        "modelParameters": {
+          "task": "text-generation",
+          "inputs": [
+            {
+              "format": "text"
+            }
+          ],
+          "outputs": [
+            {
+              "format": "text"
+            }
+          ]
+        },
+        "considerations": {
+          "useCases": [
+            "text-generation",
+            "chat"
+          ]
+        },
+        "properties": [
+          {
+            "name": "cdx:huggingface:language",
+            "value": "en"
+          }
+        ]
+      },
+      "type": "machine-learning-model",
+      "bom-ref": "pkg:huggingface/bartowski/Qwen2.5-0.5B-Instruct-GGUF@41ba88dbac95fed2528c92514c131d73eb5a174b",
+      "tags": [
+        "ai",
+        "base_model:Qwen/Qwen2.5-0.5B-Instruct",
+        "base_model:quantized:Qwen/Qwen2.5-0.5B-Instruct",
+        "chat",
+        "conversational",
+        "en",
+        "endpoints_compatible",
+        "gguf",
+        "huggingface",
+        "license:apache-2.0",
+        "machine-learning-model",
+        "model",
+        "quantized",
+        "region:us",
+        "text-generation"
+      ],
+      "properties": [
+        {
+          "name": "cdx:ai:provider",
+          "value": "huggingface"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "huggingface-api"
+        },
+        {
+          "name": "cdx:ai:kind",
+          "value": "model"
+        },
+        {
+          "name": "cdx:ai:modality",
+          "value": "text-generation"
+        },
+        {
+          "name": "cdx:huggingface:downloads",
+          "value": "85402"
+        },
+        {
+          "name": "cdx:huggingface:downloadsAllTime",
+          "value": "318439"
+        },
+        {
+          "name": "cdx:huggingface:likes",
+          "value": "18"
+        },
+        {
+          "name": "cdx:huggingface:gated",
+          "value": "false"
+        },
+        {
+          "name": "cdx:huggingface:private",
+          "value": "false"
+        },
+        {
+          "name": "cdx:huggingface:disabled",
+          "value": "false"
+        },
+        {
+          "name": "cdx:huggingface:createdAt",
+          "value": "2024-09-17T19:30:40.000Z"
+        },
+        {
+          "name": "cdx:huggingface:lastModified",
+          "value": "2024-09-19T17:51:30.000Z"
+        },
+        {
+          "name": "cdx:huggingface:fileCount",
+          "value": "27"
+        },
+        {
+          "name": "cdx:huggingface:spaceCount",
+          "value": "11"
+        },
+        {
+          "name": "cdx:huggingface:inferenceProviderCount",
+          "value": "1"
+        },
+        {
+          "name": "cdx:ai:variant",
+          "value": "quantized"
+        },
+        {
+          "name": "cdx:license:category",
+          "value": "Permissive"
+        }
+      ],
+      "evidence": {
+        "identity": [
+          {
+            "field": "purl",
+            "confidence": 0.7,
+            "concludedValue": "pkg:huggingface\\bartowski\\Qwen2.5-0.5B-Instruct-GGUF@41ba88dbac95fed2528c92514c131d73eb5a174b",
+            "methods": [
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "model metadata from Hugging Face API for bartowski\\Qwen2.5-0.5B-Instruct-GGUF @ HEAD"
+              },
+              {
+                "technique": "other",
+                "confidence": 0.7,
+                "value": "https:\\huggingface.co\\api\\models\\bartowski\\Qwen2.5-0.5B-Instruct-GGUF\\revision\\HEAD"
+              },
+              {
+                "technique": "source-code-analysis",
+                "confidence": 0.6,
+                "value": "huggingface:model:bartowski\\Qwen2.5-0.5B-Instruct-GGUF"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "dependencies": [],
+  "annotations": [
+    {
+      "bom-ref": "metadata-annotations",
+      "subjects": [
+        "pkg:generic/bartowski@latest"
+      ],
+      "annotator": {
+        "component": {
+          "group": "@cyclonedx",
+          "name": "cdxgen",
+          "version": "12.8.4",
+          "purl": "pkg:npm/%40cyclonedx/cdxgen@12.8.4",
+          "type": "application",
+          "bom-ref": "pkg:npm/@cyclonedx/cdxgen@12.8.4",
+          "publisher": "OWASP Foundation",
+          "authors": [
+            {
+              "name": "OWASP Foundation"
+            }
+          ]
+        }
+      },
+      "timestamp": "2026-09-18T15:44:28Z",
+      "text": "This Machine-Learning Bill-of-Materials (ML-BOM) document was created on Friday, September 18, 2026 with cdxgen. The data was captured during the build lifecycle phase. The document describes an application named 'bartowski'. It inventories 1 AI model(s), 0 AI service(s), and 0 dataset(s). Documented model tasks include text-generation. Pedigree information is captured for 1 model(s), which helps reviewers trace upstream bases and downstream variants. Detected model variants include quantized, so modified artifacts remain visible in the BOM. There are 1 components. The package type in this ML-BOM is huggingface with a single purl namespace 'bartowski' described under components. The components were identified from the source files: pkg:huggingface\\bartowski\\Qwen2.5-0.5B-Instruct-GGUF@41ba88dbac95fed2528c92514c131d73eb5a174b."
+    }
+  ]
+}
