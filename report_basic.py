@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-report_basic.py — 基础层中文合规清单生成器（模块5，成员 C）· v2 接口对齐版
+report_basic.py — 基础层中文合规清单生成器（模块5，成员 C）· v3 ModelScope 适配版
 
 v2 变更（对齐组长 main.py 集成要求）：
     1. 去重：不再使用内部 merge_entities()，改为调用
@@ -13,6 +13,13 @@ v2 变更（对齐组长 main.py 集成要求）：
        license / evidence_chain（evidence_level、source_url、source_field、
        raw_value）/ hashes / merge_status / reason_code / rule_version /
        snapshot_id / source_file。
+
+v3 变更（响应组长 10-07 ModelScope 转向要求）：
+    1. 数据源标注：自动检测 ModelScope / Hugging Face / 混合生态，
+       报告头部标明「来源：ModelScope（魔搭社区）」等字样；
+    2. P/D/P 判定结论：新增判定区块（🟢 安全 / 🟡 潜在风险 / 🔴 风险），
+       依据 license_db 评估结果输出「绿灯出表、红灯出图」提示；
+    3. 渲染语境：血缘边数等统计不再写死 HF 字样，兼容 ModelScope 聚合节点。
 
 可被 main.py 直接接入：
     import report_basic
@@ -78,6 +85,59 @@ ASSET_TYPE_ZH = {
     "repository": "仓库",
     "framework": "框架",
 }
+
+# P/D/P 判定（ModelScope 场景）：灯色、结果码与提示
+PDP_LIGHT = {"SAFE": "🟢 安全", "RISK_POTENTIAL": "🟡 潜在风险", "RISK": "🔴 风险"}
+
+
+def detect_source(assets: list[dict[str, Any]]) -> str:
+    """检测数据源生态：ModelScope / Hugging Face / 混合 / 未知。
+
+    依据：资产 purls 与 evidence_chain 中的 source_url / source_api / source_field。
+    """
+    hits: set[str] = set()
+    for asset in assets:
+        for purl in asset.get("purls") or []:
+            text = str(purl).lower()
+            if "modelscope" in text:
+                hits.add("ModelScope")
+            elif "huggingface" in text:
+                hits.add("Hugging Face")
+        for entry in asset.get("evidence_chain", []):
+            if not isinstance(entry, dict):
+                continue
+            text = " ".join(
+                str(entry.get(key) or "")
+                for key in ("source_url", "source_api", "source_field")
+            ).lower()
+            if "modelscope" in text:
+                hits.add("ModelScope")
+            elif "huggingface" in text:
+                hits.add("Hugging Face")
+    if not hits:
+        return "未知（本地 BOM / 未标注生态）"
+    return " / ".join(sorted(hits))
+
+
+def pd_judge(assessment: dict[str, Any]) -> tuple[str, str]:
+    """P/D/P 判定：依据 license_db 评估结果输出 (灯色码, 判定依据)。
+
+    - SAFE 绿灯：许可证全部识别且风险等级 ≤ 2（宽松/公有领域）
+    - RISK_POTENTIAL 黄灯：存在未识别写法（如 qwen-research 等非标协议）、
+      风险等级 3、AI 专用许可证、或未声明许可证
+    - RISK 红灯：风险等级 ≥ 4（传染性 / 强约束条款）
+    """
+    risk = assessment.get("risk_level")
+    unknown = assessment.get("unknown_items") or []
+    if risk is None:
+        return "RISK_POTENTIAL", "许可证未声明或规则库未识别（如 qwen-research 等非标协议），需人工核对官方文本"
+    if risk >= 4:
+        return "RISK", "许可证含传染性或强约束条款（GPL/AGPL/SSPL 等），使用/分发前必须核对义务"
+    if risk == 3 or assessment.get("is_ai_license"):
+        return "RISK_POTENTIAL", "中风险许可证或 AI 专用许可证，需重点核对许可义务"
+    if unknown:
+        return "RISK_POTENTIAL", "存在未识别许可证写法，需人工核对"
+    return "SAFE", "宽松/公有领域许可证，常规合规"
 
 
 def assess_license(license_text: Any) -> dict[str, Any]:
@@ -254,7 +314,8 @@ def render_report(
     lines.append("# 开源及第三方资源使用清单")
     lines.append("")
     lines.append(f"> 生成时间：{now}")
-    lines.append(f"> 生成工具：开源账本（基础层）· report_basic.py（v2：entity_resolver + license_db 接入）")
+    lines.append(f"> 生成工具：开源账本（基础层）· report_basic.py（v3：ModelScope 渲染适配）")
+    lines.append(f"> 数据源：**{detect_source(assets)}**")
     if bom_path:
         lines.append(f"> 输入 BOM：`{bom_path}`")
     if snapshot_id:
@@ -272,7 +333,7 @@ def render_report(
     if merge_log is not None:
         lines.append(f"- 候选配对日志数：**{len(merge_log)}**")
     if edges is not None:
-        lines.append(f"- HF 血缘边数：**{len(edges)}**")
+        lines.append(f"- 血缘边数：**{len(edges)}**")
     lines.append(f"- 高风险许可证资产（风险等级 ≥ 4）：**{high_risk}**")
     lines.append(f"- AI 专用许可证资产：**{ai_count}**")
     lines.append(f"- 待人工确认（未声明或未识别）：**{unknown}**")
@@ -293,8 +354,57 @@ def render_report(
         )
     lines.append("")
 
-    # 二、许可证风险分布
-    lines.append("## 二、许可证风险分布")
+    # 二、P/D/P 判定结论（ModelScope 适配：绿灯出表 / 红灯出图）
+    verdicts = {
+        asset.get("canonical_id") or asset.get("name"): pd_judge(
+            assessments[asset.get("canonical_id") or asset.get("name")]
+        )
+        for asset in assets
+    }
+    safe_count = sum(1 for code, _ in verdicts.values() if code == "SAFE")
+    potential_count = sum(1 for code, _ in verdicts.values() if code == "RISK_POTENTIAL")
+    risk_count = sum(1 for code, _ in verdicts.values() if code == "RISK")
+    lines.append("## 二、P/D/P 判定结论")
+    lines.append("")
+    lines.append(
+        f"- 判定结果：🟢 安全 **{safe_count}** 个 / 🟡 潜在风险 **{potential_count}** 个 / 🔴 风险 **{risk_count}** 个"
+    )
+    if risk_count or potential_count:
+        lines.append(
+            "- 输出方式：存在 🟡/🔴 资产，需配合 **风险血缘图**（--model / --diff）查看传播路径，本清单附判定依据。"
+        )
+    else:
+        lines.append("- 输出方式：**绿灯出表**——全部资产合规，仅输出本中文表格（10 秒内完成）。")
+    lines.append("")
+    lines.append("### 模型判定表")
+    lines.append("")
+    rows = []
+    for asset in sorted(
+        assets,
+        key=lambda item: (
+            -(assessments[item.get("canonical_id") or item.get("name")]["risk_level"] or 0),
+            str(item.get("name") or ""),
+        ),
+    ):
+        key = asset.get("canonical_id") or asset.get("name")
+        assessment = assessments[key]
+        code, reason = verdicts[key]
+        version = asset.get("version") or "—"
+        lic = license_display(asset.get("license"), assessment)
+        rows.append(
+            [
+                asset.get("name") or "—",
+                version,
+                lic,
+                PDP_LIGHT.get(code, code),
+                reason,
+            ]
+        )
+    lines.extend(_table(["模型名", "版本", "许可", "判定结果", "判定依据"], rows))
+    lines.append("")
+
+    # 三、许可证风险分布
+    lines.append("## 三、许可证风险分布")
     lines.append("")
     risk_dist = {}
     for a in assessments.values():
@@ -335,7 +445,7 @@ def render_report(
         if (assessments[asset.get("canonical_id") or asset.get("name")]["risk_level"] or 0) >= 4
         or assessments[asset.get("canonical_id") or asset.get("name")]["is_ai_license"]
     ]
-    lines.append("## 三、重点资产（高风险 / AI 专用）")
+    lines.append("## 四、重点资产（高风险 / AI 专用）")
     lines.append("")
     if attention:
         rows = []
@@ -359,8 +469,8 @@ def render_report(
         lines.append("未发现风险等级 ≥ 4 或 AI 专用许可证的资产。")
     lines.append("")
 
-    # 四、资产明细
-    lines.append("## 四、资产明细")
+    # 五、资产明细
+    lines.append("## 五、资产明细")
     lines.append("")
     rows = []
     for asset in sorted(
@@ -405,8 +515,8 @@ def render_report(
     )
     lines.append("")
 
-    # 五、待人工确认
-    lines.append("## 五、待人工确认")
+    # 六、待人工确认
+    lines.append("## 六、待人工确认")
     lines.append("")
     unknown_assets = [
         asset
@@ -431,13 +541,14 @@ def render_report(
         lines.append("未发现无法识别的许可证片段。")
     lines.append("")
 
-    # 六、风险说明与免责声明
-    lines.append("## 六、风险说明")
+    # 七、风险说明与免责声明
+    lines.append("## 七、风险说明")
     lines.append("")
     lines.append("- 风险等级 1–5 来自 license_db 规则库：1–2 低风险（宽松/公有领域）；3 中风险（弱 copyleft / AI 受限）；4–5 高风险（强 copyleft / 网络 copyleft）。")
     lines.append("- 🔴 高：许可证含传染性或强约束条款（GPL/AGPL/SSPL 等），使用/分发前必须核对义务。")
     lines.append("- ⚪ 待确认：组件未声明许可证，或存在规则库无法识别的许可证写法，需人工核对官方文本。")
     lines.append("- AI 专用许可证（Llama 2 社区许可、OpenRAIL-M、Gemma 条款等）非 SPDX，义务条款需重点人工核对。")
+    lines.append("- ModelScope 场景：非标协议（如 qwen-research）不在规则库中，一律判定为潜在风险（黄灯），需人工核对官方许可文本后确认。")
     lines.append("")
     lines.append("---")
     lines.append("")
@@ -498,7 +609,7 @@ def generate(bom_path: str) -> tuple[list[dict[str, Any]], str]:
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="开源账本·基础层：中文开源合规清单生成器（v2）")
+    parser = argparse.ArgumentParser(description="开源账本·基础层：中文开源合规清单生成器（v3 ModelScope 适配）")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--bom", help="CycloneDX BOM JSON 路径（自动：bom_adapter → entity_resolver → 渲染）")
     group.add_argument("--assets", help="资产 JSON 路径（bom_adapter / entity_resolver / main.py 产物，直接渲染）")
