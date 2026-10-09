@@ -103,16 +103,19 @@ DATA.nodes.forEach(n => nodeById[n.id] = n);
 
 const nodes = DATA.nodes.map(n => {
   const j = judge(n);
+  const isAgg = n.aggregate || (n.name || "").indexOf("(Total:") >= 0;
   return {
     id: n.id, name: n.name || n.id, value: n.version || "",
-    symbolSize: n.type === "model" ? 34 : (n.type === "dataset" ? 26 : 20),
-    itemStyle: { color: j.color, borderColor: j.code === "RISK_POTENTIAL" ? "#f0ad4e" : "#bbb", borderWidth: j.code === "RISK_POTENTIAL" ? 2 : 1 },
+    symbol: isAgg ? "rect" : (n.type === "dataset" ? "diamond" : "circle"),
+    symbolSize: isAgg ? 24 : (n.type === "model" ? 36 : 28),
+    itemStyle: { color: j.color, borderColor: j.code === "RISK_POTENTIAL" ? "#f0ad4e" : "#bbb", borderWidth: j.code === "RISK_POTENTIAL" ? 2 : 1, borderRadius: isAgg ? 4 : 0 },
     category: j.code,
-    label: { show: true, formatter: n.name || "", fontSize: 12, color: "#333", position: "right" },
+    label: { show: true, formatter: n.name || "", fontSize: 11, color: "#333", position: "right" },
     tooltip: {
       formatter: () => {
         const ev = (n.evidence || []).map(e => e.evidence_level || "").join("/") || "—";
-        return `<b>${n.name}</b><br/>版本：${n.version || "—"}<br/>类型：${n.type}<br/>许可证：${n.license || "未声明"}<br/>判定：${j.label}<br/>证据等级：${ev}`;
+        const agg = isAgg ? `<br/>聚合计数：${n.count || "—"}` : "";
+        return `<b>${n.name}</b>${agg}<br/>版本：${n.version || "—"}<br/>类型：${n.type}<br/>许可证：${n.license || "未声明"}<br/>判定：${j.label}<br/>证据等级：${ev}`;
       }
     }
   };
@@ -140,7 +143,7 @@ chart.setOption({
   legend: { show: false },
   series: [{
     type: "graph", layout: "force", roam: true, draggable: true,
-    force: { repulsion: 500, edgeLength: [80, 160], gravity: 0.08 },
+    force: { repulsion: 650, edgeLength: [110, 200], gravity: 0.07, friction: 0.6 },
     data: nodes, links: edges,
     categories: [{ name: "RISK" }, { name: "RISK_POTENTIAL" }, { name: "SAFE" }],
     emphasis: { focus: "adjacency", label: { show: true, fontSize: 14, fontWeight: "bold", color: "#111" } }
