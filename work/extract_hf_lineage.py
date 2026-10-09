@@ -11,9 +11,8 @@ v0.3（2026-10-01）与主链路版本化对齐：
 - 调用 bom_adapter.build_asset_identifiers() 生成 entity_key / 版本化 canonical_id，
   不再手拼 asset_type:name；
 - 资产节点补齐 merge_status / reason_code / rule_version / hashes / evidence_chain；
-- 边证据等级按实际来源标注（A=官方数据，B=工具产物，C=推断）：源数据虽是 HF 官方
-  模型卡字段，但载体是 cdxgen 产出的 CycloneDX BOM，默认按 docs/接口约定.md v0.2
-  「工具产物或结构化依赖证据」归为 B 级；祖先对象自带 evidence_level 时原样保留；
+- 边证据等级由 A 改为 B：源数据虽是 HF 官方模型卡字段，但载体是 cdxgen 产出的
+  CycloneDX BOM，按 docs/接口约定.md v0.2「工具产物或结构化依赖证据」归为 B 级；
 - 保留全部 HF 特化能力：递归展开 pedigree.ancestors、数据集 purl 归一化、
   query 剥离、缺失祖先自动补建、18 节点 / 12 边演示。
 
@@ -23,7 +22,7 @@ v0.3（2026-10-01）与主链路版本化对齐：
 
 输出（均符合 docs/接口约定.md v0.2）：
     out/hf_lineage/assets.json   资产节点（model / dataset，版本化 canonical_id）
-    out/hf_lineage/edges.json    血缘边（derived_from / trained_on，证据等级按实际来源标注，缺省 B 级）
+    out/hf_lineage/edges.json    血缘边（derived_from / trained_on，证据 B 级）
     out/hf_lineage/graph.json    模块 8 构建的血缘图（含 SCC 与统计）
 """
 
@@ -41,16 +40,6 @@ import build_graph as bg
 
 RULE_VERSION = "merge-policy-v2"
 EDGE_EVIDENCE_LEVEL = "B"  # 见 docstring：CycloneDX 工具产物按接口约定为 B 级
-
-
-def ancestor_evidence_level(ancestor: dict) -> str:
-    """读取祖先对象自带的 evidence_level，缺省回退到 B（CycloneDX 工具产物）。
-
-    enrich_lineage.py 补数据时会把推断祖先标注为 C；cdxgen 原生 BOM 的祖先
-    不含该字段，仍按接口约定归为 B 级。
-    """
-    level = (ancestor.get("evidence_level") or "").strip().upper()
-    return level or EDGE_EVIDENCE_LEVEL
 
 
 def component_license(component: dict) -> str | None:
@@ -116,6 +105,23 @@ def node(
         canonical_id = filled
         if "@" in filled:
             version = filled.split("@", 1)[1]
+    # 有许可证的节点补一条 license 证据（B 级：CycloneDX 工具产物），
+    # 供 Delta 检测 license_changed 时取证据等级（接口约定 v0.3）。
+    if license_value and not any(
+        ev.get("source_field") == "license" for ev in evidence_chain
+    ):
+        evidence_chain = [
+            *evidence_chain,
+            {
+                "evidence_level": EDGE_EVIDENCE_LEVEL,
+                "source_api": "cyclonedx",
+                "source_url": None,
+                "source_field": "license",
+                "retrieved_at": None,
+                "status": "ok",
+                "raw_value": license_value,
+            },
+        ]
     return {
         "entity_key": entity_key,
         "canonical_id": canonical_id,
@@ -134,16 +140,42 @@ def node(
     }
 
 
+MODEL_TYPES = ("machine-learning-model", "model")
+
+
+def _ancestors_of(component: dict) -> list[dict]:
+    """递归展开 pedigree.ancestors（保留全部祖先链）。"""
+    out = []
+    for anc in component.get("pedigree", {}).get("ancestors", []) or []:
+        if not isinstance(anc, dict):
+            continue
+        out.append(anc)
+        out.extend(_ancestors_of(anc))
+    return out
+
+
+def _datasets_of(component: dict) -> list:
+    """提取 modelCard.modelParameters.datasets（兼容对象/字符串两种形态）。"""
+    return (
+        component.get("modelCard", {})
+        .get("modelParameters", {})
+        .get("datasets", []) or []
+    )
+
+
 def extract(
     bom_path: Path,
     backfill_map: dict[str, str] | None = None,
 ) -> tuple[list[dict], list[dict]]:
     """从单个 BOM 提取资产节点与血缘边。
 
-    backfill_map：entity_key -> 带版本 canonical_id 的映射。祖先引用
-    （pedigree.ancestors）的 purl 常不带版本（如 GGUF 引用基座模型）；
-    若全局存在同一 entity_key 的带版本主模型，则把无版本引用对齐到
-    该版本化 canonical_id，保证同实体跨 BOM 引用归一（演示 18 节点/12 边）。
+    按模型组件数自动分派：
+    - 单模型 BOM（data/hf_models_bom/*.json，1 个 model 组件）：只提取主模型
+      + 递归祖先（derived_from）+ 训练数据集（trained_on），保持 18 节点/12 边；
+    - 多组件项目 BOM（data/test_scenarios/t0_bom.json / t1_bom.json，
+      >= 2 个 model 组件）：遍历每个模型组件提取其 pedigree.ancestors 与
+      modelCard.modelParameters.datasets，数据集/库组件作为独立节点并保留
+      自身许可证（供 Delta 检测 license_changed）。
     """
     backfill_map = backfill_map or {}
     data = json.loads(bom_path.read_text(encoding="utf-8"))
@@ -152,12 +184,9 @@ def extract(
         or f"snapshot-{bom_path.stem}"
     )
     source_file = str(bom_path.resolve())
-    assets: list[dict] = []
-    edges: list[dict] = []
-
     components = data.get("components", []) or []
     if not components:
-        return assets, edges
+        return [], []
 
     def evidence(field: str, raw_value: object) -> dict:
         return {
@@ -170,133 +199,232 @@ def extract(
             "raw_value": raw_value,
         }
 
-    # derived_from：pedigree.ancestors（递归展开，保留全部祖先）
-    def ancestors_of(component: dict) -> list[dict]:
-        out = []
-        for anc in component.get("pedigree", {}).get("ancestors", []) or []:
-            if not isinstance(anc, dict):
-                continue
-            out.append(anc)
-            out.extend(ancestors_of(anc))
-        return out
+    def comp_name(component: dict, fallback: str) -> str:
+        return (
+            f"{component.get('group', '')}/{component.get('name', '')}".strip("/")
+            or (component.get("name") or fallback)
+        )
 
-    # 项目级 BOM 可含多个 machine-learning-model 组件，逐一提取；
-    # 资产按 canonical_id、边按 (source, target, edge_type) 去重。
-    seen_assets: set[str] = set()
-    seen_edges: set[tuple[str, str, str]] = set()
+    model_count = sum(1 for c in components if c.get("type") in MODEL_TYPES)
+    if model_count <= 1:
+        return _extract_single(
+            components, snapshot_id, source_file, backfill_map, evidence, comp_name
+        )
+    return _extract_multi(
+        components, snapshot_id, source_file, backfill_map, evidence, comp_name
+    )
 
-    def add_asset(asset: dict) -> str:
-        canonical_id = asset["canonical_id"]
-        if canonical_id and canonical_id not in seen_assets:
-            seen_assets.add(canonical_id)
-            assets.append(asset)
-        return canonical_id
 
-    def add_edge(
-        source: str,
-        target: str,
-        edge_type: str,
-        evidence_level: str,
-        source_field: str,
-    ) -> None:
-        signature = (source, target, edge_type)
-        if signature in seen_edges:
-            return
-        seen_edges.add(signature)
+def _extract_single(
+    components: list[dict],
+    snapshot_id: str,
+    source_file: str,
+    backfill_map: dict[str, str],
+    evidence,
+    comp_name,
+) -> tuple[list[dict], list[dict]]:
+    """单模型 BOM：主模型（components[0]）+ 递归祖先 + 训练数据集。"""
+    assets: list[dict] = []
+    edges: list[dict] = []
+    model = components[0]
+    model_name = f"{model.get('group', '')}/{model.get('name', '')}".strip("/")
+    model_purl = model.get("purl")
+    model_purls = [model_purl] if model_purl else []
+    model_chain: list[dict] = []
+
+    ancestors = _ancestors_of(model)
+    if ancestors:
+        model_chain.append(
+            evidence(
+                "pedigree.ancestors",
+                [anc.get("purl") or anc.get("bom-ref") for anc in ancestors],
+            )
+        )
+    datasets = _datasets_of(model)
+    if datasets:
+        model_chain.append(evidence("modelCard.modelParameters.datasets", datasets))
+
+    assets.append(
+        node(
+            asset_type="model",
+            name=model_name,
+            version=model.get("version"),
+            purls=model_purls,
+            license_value=component_license(model),
+            snapshot_id=snapshot_id,
+            evidence_chain=model_chain,
+            source_file=source_file,
+            backfill_map=backfill_map,
+        )
+    )
+    model_canonical = assets[-1]["canonical_id"]
+
+    for anc in ancestors:
+        anc_purl = anc.get("purl") or anc.get("bom-ref")
+        anc_purls = [anc_purl] if anc_purl else []
+        anc_name = (
+            f"{anc.get('group', '')}/{anc.get('name', '')}".strip("/")
+            or (anc.get("name") or "")
+        )
+        assets.append(
+            node(
+                asset_type="model",
+                name=anc_name or "(未命名祖先)",
+                version=anc.get("version"),
+                purls=anc_purls,
+                license_value=component_license(anc) or None,
+                snapshot_id=snapshot_id,
+                evidence_chain=[evidence("pedigree.ancestors", anc_purl)],
+                source_file=source_file,
+                backfill_map=backfill_map,
+            )
+        )
         edges.append({
-            "source": source,
-            "target": target,
-            "edge_type": edge_type,
-            "evidence_level": evidence_level,
-            "source_field": source_field,
+            "source": model_canonical,
+            "target": assets[-1]["canonical_id"],
+            "edge_type": "derived_from",
+            "evidence_level": EDGE_EVIDENCE_LEVEL,
+            "source_field": "pedigree.ancestors",
             "snapshot_id": snapshot_id,
         })
 
-    for model in components:
-        if not isinstance(model, dict):
-            continue
-        if model.get("type") != "machine-learning-model":
-            continue
+    for entry in datasets:
+        if not isinstance(entry, dict):
+            entry = {"ref": None, "name": str(entry)}
+        ref = str(entry.get("ref") or "").strip()
+        ds_purls = [ref] if ref.startswith("pkg:") else []
+        ds_name = entry.get("name") or (ref.split("/")[-1] if ref else None)
+        assets.append(
+            node(
+                asset_type="dataset",
+                name=ds_name or "(未命名数据集)",
+                version=None,
+                purls=ds_purls,
+                license_value=None,
+                snapshot_id=snapshot_id,
+                evidence_chain=[evidence("modelCard.modelParameters.datasets", ref)],
+                source_file=source_file,
+                backfill_map=backfill_map,
+            )
+        )
+        edges.append({
+            "source": model_canonical,
+            "target": assets[-1]["canonical_id"],
+            "edge_type": "trained_on",
+            "evidence_level": EDGE_EVIDENCE_LEVEL,
+            "source_field": "modelCard.modelParameters.datasets",
+            "snapshot_id": snapshot_id,
+        })
 
-        model_name = f"{model.get('group', '')}/{model.get('name', '')}".strip("/")
-        model_purl = model.get("purl")
-        model_purls = [model_purl] if model_purl else []
-        model_chain: list[dict] = []
+    return assets, edges
 
-        ancestors = ancestors_of(model)
+
+def _extract_multi(
+    components: list[dict],
+    snapshot_id: str,
+    source_file: str,
+    backfill_map: dict[str, str],
+    evidence,
+    comp_name,
+) -> tuple[list[dict], list[dict]]:
+    """多组件项目 BOM：遍历每个模型组件的血缘，数据集/库组件作独立节点。"""
+    # 第一遍：所有组件建节点（模型 / 数据集 / 库，带自身许可证），
+    # 并记录 purl -> canonical_id 供血缘引用解析。
+    assets: dict[str, dict] = {}
+    by_purl: dict[str, str] = {}
+    for comp in components:
+        ctype = comp.get("type")
+        purl = comp.get("purl")
+        if ctype in MODEL_TYPES:
+            asset_type = "model"
+        elif ctype == "dataset":
+            asset_type = "dataset"
+        else:
+            asset_type = "package"  # library / application / container 等
+        asset = node(
+            asset_type=asset_type,
+            name=comp_name(comp, "(未命名组件)"),
+            version=comp.get("version"),
+            purls=[purl] if purl else [],
+            license_value=component_license(comp),
+            snapshot_id=snapshot_id,
+            evidence_chain=[],
+            source_file=source_file,
+            backfill_map=backfill_map,
+        )
+        assets.setdefault(asset["canonical_id"], asset)
+        if purl:
+            by_purl.setdefault(purl, asset["canonical_id"])
+
+    # 第二遍：模型组件的血缘边（derived_from / trained_on）
+    edges: list[dict] = []
+    for comp in components:
+        if comp.get("type") not in MODEL_TYPES:
+            continue
+        purl = comp.get("purl")
+        ancestors = _ancestors_of(comp)
+        datasets = _datasets_of(comp)
+        chain: list[dict] = []
         if ancestors:
-            model_chain.append(
+            chain.append(
                 evidence(
                     "pedigree.ancestors",
                     [anc.get("purl") or anc.get("bom-ref") for anc in ancestors],
                 )
             )
-
-        # trained_on：modelCard.modelParameters.datasets
-        datasets = (
-            model.get("modelCard", {})
-            .get("modelParameters", {})
-            .get("datasets", []) or []
-        )
         if datasets:
-            model_chain.append(
-                evidence("modelCard.modelParameters.datasets", datasets)
-            )
-
-        model_canonical = add_asset(
-            node(
-                asset_type="model",
-                name=model_name,
-                version=model.get("version"),
-                purls=model_purls,
-                license_value=component_license(model),
-                snapshot_id=snapshot_id,
-                evidence_chain=model_chain,
-                source_file=source_file,
-                backfill_map=backfill_map,
-            )
+            chain.append(evidence("modelCard.modelParameters.datasets", datasets))
+        asset = node(
+            asset_type="model",
+            name=comp_name(comp, "(未命名组件)"),
+            version=comp.get("version"),
+            purls=[purl] if purl else [],
+            license_value=component_license(comp),
+            snapshot_id=snapshot_id,
+            evidence_chain=chain,
+            source_file=source_file,
+            backfill_map=backfill_map,
         )
+        existed = asset["canonical_id"] in assets
+        assets.setdefault(asset["canonical_id"], asset)
+        if existed and chain and not assets[asset["canonical_id"]].get("evidence_chain"):
+            assets[asset["canonical_id"]]["evidence_chain"] = chain
+        cid = asset["canonical_id"]
 
         for anc in ancestors:
             anc_purl = anc.get("purl") or anc.get("bom-ref")
-            anc_purls = [anc_purl] if anc_purl else []
-            anc_name = (
-                f"{anc.get('group', '')}/{anc.get('name', '')}".strip("/")
-                or (anc.get("name") or "")
-            )
-            anc_canonical = add_asset(
-                node(
+            anc_asset = assets.get(by_purl[anc_purl]) if anc_purl and anc_purl in by_purl else None
+            if anc_asset is None:
+                anc_asset = node(
                     asset_type="model",
-                    name=anc_name or "(未命名祖先)",
+                    name=comp_name(anc, "(未命名祖先)"),
                     version=anc.get("version"),
-                    purls=anc_purls,
+                    purls=[anc_purl] if anc_purl else [],
                     license_value=component_license(anc) or None,
                     snapshot_id=snapshot_id,
                     evidence_chain=[evidence("pedigree.ancestors", anc_purl)],
                     source_file=source_file,
                     backfill_map=backfill_map,
                 )
-            )
-            add_edge(
-                model_canonical,
-                anc_canonical,
-                "derived_from",
-                ancestor_evidence_level(anc),
-                "pedigree.ancestors",
-            )
+                assets.setdefault(anc_asset["canonical_id"], anc_asset)
+            edges.append({
+                "source": cid,
+                "target": anc_asset["canonical_id"],
+                "edge_type": "derived_from",
+                "evidence_level": EDGE_EVIDENCE_LEVEL,
+                "source_field": "pedigree.ancestors",
+                "snapshot_id": snapshot_id,
+            })
 
         for entry in datasets:
             if not isinstance(entry, dict):
                 entry = {"ref": None, "name": str(entry)}
             ref = str(entry.get("ref") or "").strip()
-            ds_purls = [ref] if ref.startswith("pkg:") else []
-            if ds_purls:
-                # 名称由 node() 从 purl 坐标解析
-                ds_name = None
-            else:
+            ds_asset = assets.get(by_purl[ref]) if ref and ref in by_purl else None
+            if ds_asset is None:
+                ds_purls = [ref] if ref.startswith("pkg:") else []
                 ds_name = entry.get("name") or (ref.split("/")[-1] if ref else None)
-            ds_canonical = add_asset(
-                node(
+                ds_asset = node(
                     asset_type="dataset",
                     name=ds_name or "(未命名数据集)",
                     version=None,
@@ -307,16 +435,17 @@ def extract(
                     source_file=source_file,
                     backfill_map=backfill_map,
                 )
-            )
-            add_edge(
-                model_canonical,
-                ds_canonical,
-                "trained_on",
-                EDGE_EVIDENCE_LEVEL,
-                "modelCard.modelParameters.datasets",
-            )
+                assets.setdefault(ds_asset["canonical_id"], ds_asset)
+            edges.append({
+                "source": cid,
+                "target": ds_asset["canonical_id"],
+                "edge_type": "trained_on",
+                "evidence_level": EDGE_EVIDENCE_LEVEL,
+                "source_field": "modelCard.modelParameters.datasets",
+                "snapshot_id": snapshot_id,
+            })
 
-    return assets, edges
+    return list(assets.values()), edges
 
 
 def main(argv=None) -> None:
@@ -331,26 +460,23 @@ def main(argv=None) -> None:
 
     bom_paths = sorted(bom_dir.glob("*.json"))
 
-    # 第一遍：收集所有 machine-learning-model 的 entity_key -> 带版本 canonical_id，
+    # 第一遍：收集所有模型组件的 entity_key -> 带版本 canonical_id，
     # 供祖先引用做版本补齐（GGUF 等派生模型的 pedigree 引用常不带版本）。
     backfill_map: dict[str, str] = {}
     for bom_path in bom_paths:
         data = json.loads(bom_path.read_text(encoding="utf-8"))
-        comps = data.get("components", []) or []
-        for model in comps:
-            if not isinstance(model, dict):
+        for comp in data.get("components", []) or []:
+            if comp.get("type") not in MODEL_TYPES:
                 continue
-            if model.get("type") != "machine-learning-model":
+            purl = comp.get("purl")
+            if not purl:
                 continue
-            model_purl = model.get("purl")
-            if not model_purl:
-                continue
-            model_name = f"{model.get('group', '')}/{model.get('name', '')}".strip("/")
+            name = f"{comp.get('group', '')}/{comp.get('name', '')}".strip("/")
             entity_key, canonical_id, _ = ba.build_asset_identifiers(
                 asset_type="model",
-                name=model_name,
-                version=model.get("version"),
-                purls=[model_purl],
+                name=name,
+                version=comp.get("version"),
+                purls=[purl],
             )
             backfill_map.setdefault(entity_key, canonical_id)
 
