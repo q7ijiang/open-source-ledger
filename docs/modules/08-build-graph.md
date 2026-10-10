@@ -58,25 +58,9 @@
 - 识别出 1 个 SCC 环：`example-parser ↔ lib-x`；
 - 压缩图边证据按 weakest link 正确聚合。
 
-## 真实数据验证（2026-09-25 首版；2026-10-01 版本化对齐 v0.3）
+## 数据源说明
 
-配合 A 的真实 HF 模型 BOM（`data/hf_models_bom/`，9 份 CycloneDX），新增血缘提取工具 `work/extract_hf_lineage.py`，把 `pedigree.ancestors`（→ `derived_from`）与 `modelCard.modelParameters.datasets`（→ `trained_on`）转为接口约定格式并建图：
-
-```
-python work/extract_hf_lineage.py --bom-dir data/hf_models_bom --output-dir out/hf_lineage
-```
-
-结果（v0.3，canonical_id 已版本化）：
-- **18 个资产节点（含缺失祖先自动补建）、12 条血缘边（8 derived_from + 4 trained_on）**；
-- canonical_id 为版本化格式（如 `model:huggingface/meta-llama/Llama-2-7b-chat-hf@f5db02...`），由 `bom_adapter.build_asset_identifiers()` 生成，不再手拼；
-- 资产节点补齐 `entity_key / merge_status / reason_code / rule_version / purls / evidence_chain / hashes`；
-- **边证据等级 B**（源数据是 HF 官方模型卡字段，但载体是 cdxgen 产出的 CycloneDX BOM，按接口约定 v0.2「工具产物或结构化依赖证据」归为 B 级——两个口径不混用）；
-- 祖先引用版本补齐：GGUF 等派生模型的 `pedigree.ancestors` 引用不带版本时，若全局存在同 entity_key 的带版本主模型，则对齐到该版本化 ID（演示 18 节点/12 边保持）；
-- 18 个 SCC 分量（真实 HF 血缘为 DAG，无环，符合预期）；
-- HF 特化能力全部保留：递归展开 pedigree.ancestors、数据集 purl 归一化、`?repository_url=...` query 剥离、缺失祖先自动补建。
-
-图节点字段（v0.3 起）：
-`canonical_id / entity_key / asset_type / name / version / purls / license / evidence_chain / snapshot_id / merge_status / reason_code / rule_version / hashes / scc_id`——下游传播可直接取到证据链与合并状态。
+HF 遗留代码已完全剥离，当前主线仅支持 ModelScope 数据源。
 
 ## 暴露了什么问题
 
@@ -90,15 +74,13 @@ python work/extract_hf_lineage.py --bom-dir data/hf_models_bom --output-dir out/
 
 1. `python build_graph.py --assets tests/fixtures/deep_t1_assets.json --edges tests/fixtures/deep_t1_edges.json --output out/graph_t1.json`。
 2. 打开输出 JSON，确认节点数、边数、SCC 数与统计一致。
-3. `python work/extract_hf_lineage.py`：真实数据建图可复现（统计同上）。
-4. `python -m pytest tests/test_build_graph.py`：回归测试全部通过。
+3. `python -m pytest tests/test_build_graph.py`：回归测试全部通过。
 
 ## 相关文件
 
 | 文件 | 路径 |
 |---|---|
 | 血缘图代码 | `build_graph.py` |
-| 血缘提取工具（真实数据） | `work/extract_hf_lineage.py` |
 | 测试夹具 | `tests/fixtures/deep_t0/t1_*.json` |
 | 回归测试 | `tests/test_build_graph.py` |
 
