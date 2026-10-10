@@ -135,7 +135,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         if args.model is not None:
             args.output = _model_output_dir(root, args.model) / "report.md"
         elif args.project is not None:
-            args.output = _project_output_dir(root, args.project) / "project_report.md"
+            args.output = _project_output_dir(root, args.project) / "report.md"
         else:
             parser.error("--diff / --mode 模式必须提供 --output")
     return args
@@ -1056,8 +1056,7 @@ def run_project(args: argparse.Namespace) -> None:
     # 3. 输出目录。
     report_dir = _project_output_dir(root, project_path)
     report_dir.mkdir(parents=True, exist_ok=True)
-    report_path = report_dir / "project_report.md"
-    extract_dir = report_dir / "project_extract"
+    report_path = report_dir / "report.md"
 
     if not models:
         report = _render_modelscope_project_report(
@@ -1071,7 +1070,6 @@ def run_project(args: argparse.Namespace) -> None:
         return
 
     # 4. 逐模型提取血缘并合并（按 canonical_id 与边签名去重）。
-    extract_dir.mkdir(parents=True, exist_ok=True)
     merged_assets: list[dict[str, Any]] = []
     merged_edges: list[dict[str, Any]] = []
     seen_assets: set[str] = set()
@@ -1106,8 +1104,8 @@ def run_project(args: argparse.Namespace) -> None:
         _write_project_report(report, report_path, args)
         return
 
-    assets_path = extract_dir / "assets.json"
-    edges_path = extract_dir / "edges.json"
+    assets_path = report_dir / "assets.json"
+    edges_path = report_dir / "edges.json"
     assets_path.write_text(
         json.dumps(merged_assets, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -1118,7 +1116,7 @@ def run_project(args: argparse.Namespace) -> None:
     )
 
     # 5. 显式构建合并血缘图。
-    graph_path = extract_dir / "graph.json"
+    graph_path = report_dir / "graph.json"
     _run_py_script(
         root / "build_graph.py",
         [
