@@ -50,7 +50,8 @@
       <span><i style="background:#f56c6c"></i>高风险（红灯）</span>
       <span><i style="background:#e6a23c"></i>潜在风险（黄灯）</span>
       <span><i style="background:#d3d7de"></i>安全（浅灰）</span>
-      <span>—— 传播路径证书（红线 = 风险传播）</span>
+      <span><i style="background:#c0392b;border-radius:2px;width:20px;height:4px"></i>红线箭头 = 风险传播（风险源 → 衍生体）</span>
+      <span style="margin-left:4px;color:#606266">节点形状：○ 真实模型 · □ 聚合节点（适配/微调/合并/量化）· ◆ 数据集</span>
     </div>
     <div id="chart"></div>
 
@@ -106,26 +107,35 @@ const nodes = DATA.nodes.map(n => {
   const isAgg = n.aggregate || (n.name || "").indexOf("(Total:") >= 0;
   return {
     id: n.id, name: n.name || n.id, value: n.version || "",
+    x: n.x, y: n.y,
     symbol: isAgg ? "rect" : (n.type === "dataset" ? "diamond" : "circle"),
-    symbolSize: isAgg ? 24 : (n.type === "model" ? 36 : 28),
-    itemStyle: { color: j.color, borderColor: j.code === "RISK_POTENTIAL" ? "#f0ad4e" : "#bbb", borderWidth: j.code === "RISK_POTENTIAL" ? 2 : 1, borderRadius: isAgg ? 4 : 0 },
+    symbolSize: isAgg ? 26 : (n.type === "model" ? 40 : 30),
+    itemStyle: { color: j.color, borderColor: j.code === "RISK_POTENTIAL" ? "#e6a23c" : "#bbb", borderWidth: j.code === "RISK_POTENTIAL" ? 3 : 1.5, borderRadius: isAgg ? 5 : 0 },
     category: j.code,
-    label: { show: true, formatter: n.name || "", fontSize: 11, color: "#333", position: "right" },
+    label: { show: true, formatter: () => (isAgg ? ((n.name || "").split(" · ").pop() || n.name) : (n.name || n.id)), fontSize: 11, color: "#333", position: n.lp || "bottom" },
     tooltip: {
       formatter: () => {
         const ev = (n.evidence || []).map(e => e.evidence_level || "").join("/") || "—";
         const agg = isAgg ? `<br/>聚合计数：${n.count || "—"}` : "";
-        return `<b>${n.name}</b>${agg}<br/>版本：${n.version || "—"}<br/>类型：${n.type}<br/>许可证：${n.license || "未声明"}<br/>判定：${j.label}<br/>证据等级：${ev}`;
+        return `<b>${n.name}</b>${agg}<br/>版本：${n.version || "—"}<br/>类型：${n.type}${isAgg ? "（聚合节点）" : ""}<br/>许可证：${n.license || "未声明"}<br/>判定：${j.label}<br/>证据等级：${ev}`;
       }
     }
   };
 });
 
+// 风险传播边：命中路径证书，或一端为风险节点（红线 = 风险从风险源向其衍生体传播）
+const nodeRiskById = {};
+DATA.nodes.forEach(n => nodeRiskById[n.id] = judge(n).code);
+
 const edges = DATA.edges.map(e => {
-  const risky = certPaths.has(e.source + ">" + e.target) || certPaths.has(e.target + ">" + e.source);
+  const risky = certPaths.has(e.source + ">" + e.target) || certPaths.has(e.target + ">" + e.source)
+    || (nodeRiskById[e.source] === "RISK_POTENTIAL" || nodeRiskById[e.source] === "RISK"
+        || nodeRiskById[e.target] === "RISK_POTENTIAL" || nodeRiskById[e.target] === "RISK");
   return {
     source: e.source, target: e.target,
-    label: { show: true, formatter: e.edge_type, fontSize: 10, color: risky ? "#c0392b" : "#7f8c8d" },
+    edgeSymbol: ["none", "arrow"],
+    edgeSymbolSize: [0, 11],
+    label: { show: true, formatter: e.edge_type, fontSize: 10, color: risky ? "#c0392b" : "#7f8c8d", position: "middle" },
     lineStyle: {
       width: risky ? 4 : 2,
       color: risky ? "#c0392b" : (e.edge_type === "trained_on" ? "#2980b9" : "#95a5a6"),
@@ -142,8 +152,7 @@ chart.setOption({
   tooltip: { trigger: "item", backgroundColor: "#fff", borderColor: "#d0d7de", textStyle: { color: "#333" } },
   legend: { show: false },
   series: [{
-    type: "graph", layout: "force", roam: true, draggable: true,
-    force: { repulsion: 650, edgeLength: [110, 200], gravity: 0.07, friction: 0.6 },
+    type: "graph", layout: "none", roam: true, draggable: true,
     data: nodes, links: edges,
     categories: [{ name: "RISK" }, { name: "RISK_POTENTIAL" }, { name: "SAFE" }],
     emphasis: { focus: "adjacency", label: { show: true, fontSize: 14, fontWeight: "bold", color: "#111" } }

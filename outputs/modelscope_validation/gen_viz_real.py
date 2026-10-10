@@ -37,6 +37,29 @@ for e in edges:
         "edge_type": e.get("edge_type"), "evidence_level": e.get("evidence_level"),
     })
 
+# ---- 森林分层布局：每棵基座树 = 基座在上 + 聚合节点在下（两行两列展开）----
+nodeById = {n["id"]: n for n in nodes}
+base_nodes = [n for n in nodes if not n.get("aggregate")]
+base_ids = [n["id"] for n in base_nodes]
+children_of = {bid: [] for bid in base_ids}
+for e in edgelist:
+    if e["target"] in children_of and e["source"] not in children_of:
+        children_of[e["target"]].append(e["source"])
+
+for idx, b in enumerate(base_nodes):
+    b["x"] = 140 + idx * 370
+    b["y"] = 120
+    b["lp"] = "top"
+    for kid_i, kid in enumerate(children_of.get(b["id"], [])):
+        col = kid_i % 2
+        row = kid_i // 2
+        xoff = -110 if col == 0 else 110
+        yoff = 180 + row * 150
+        if kid in nodeById:
+            nodeById[kid]["x"] = b["x"] + xoff
+            nodeById[kid]["y"] = b["y"] + yoff
+            nodeById[kid]["lp"] = "bottom"
+
 viz = {"nodes": nodes, "edges": edgelist, "events": [], "certificates": []}
 
 tpl = TPL.read_text(encoding="utf-8")
