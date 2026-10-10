@@ -1,0 +1,74 @@
+[
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Adapters@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.SonModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Finetunes@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.SonModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Merges@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.SonModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Quantizations@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.SonModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen3-8B:son:Adapters@master",
+    "target": "model:modelscope/Qwen/Qwen3-8B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.SonModels",
+    "snapshot_id": "modelscope-Qwen__Qwen3-8B"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen3-8B:son:Finetunes@master",
+    "target": "model:modelscope/Qwen/Qwen3-8B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.SonModels",
+    "snapshot_id": "modelscope-Qwen__Qwen3-8B"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen3-8B:son:Merges@master",
+    "target": "model:modelscope/Qwen/Qwen3-8B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.SonModels",
+    "snapshot_id": "modelscope-Qwen__Qwen3-8B"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen3-8B:son:Quantizations@master",
+    "target": "model:modelscope/Qwen/Qwen3-8B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.SonModels",
+    "snapshot_id": "modelscope-Qwen__Qwen3-8B"
+  },
+  {
+    "source": "model:modelscope/XingChen-AGI/TeleOCR:son:Quantizations@master",
+    "target": "model:modelscope/XingChen-AGI/TeleOCR@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.SonModels",
+    "snapshot_id": "modelscope-XingChen-AGI__TeleOCR"
+  }
+]
