@@ -14,7 +14,7 @@
    `Data.Namespace`），按 `Path → Namespace → Organization.Name` 优先提取，正确生成
    PURL `pkg:modelscope/Qwen/Qwen-Image-2.1@master`。
 2. **`--model` 路由**：`run_model()` 增加 `_probe_modelscope()` 探测分支——命中详情 API
-   走 ModelScope 流水线；404 判定为 HF 模型走旧链路；网络异常回退 HF 并打印中文提示，
+   走 ModelScope 流水线；404 或网络异常均直接拦截提示，不再回退 HF，
    不抛莫名堆栈错误。
 3. **证据等级与聚合节点**：血缘边（官方 API 聚合计数）标 **B**；许可证（非标文本推断，
    如 `qwen-research`）标 **C**；`count` 保留在 `name` 中（如 `适配 (Total: 1873)`）。
@@ -38,7 +38,7 @@
 未修改（核心算法层，**零改动**）：
 
 - `entity_resolver.py`、`delta_engine.py`、`propagation_engine.py`、
-  `build_graph.py`、`work/extract_hf_lineage.py`
+  `build_graph.py`
 
 ## 四、运行结果（终端日志摘要）
 

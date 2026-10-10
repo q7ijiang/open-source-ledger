@@ -8,7 +8,7 @@
     bom_adapter.convert_bom
     -> entity_resolver.deduplicate_assets
     -> evidence_enricher.enrich_assets
-    -> work.extract_hf_lineage.extract（仅 HF 模型 BOM）
+    -> work.extract_modelscope_lineage.extract（ModelScope 模型 BOM）
 
 深度模式：
     对 t0/t1 分别执行基础数据转换，然后：
@@ -56,6 +56,13 @@ HF_LINEAGE_EDGE_TYPES = {"derived_from", "trained_on"}
 HF_PURL_PREFIX = "pkg:huggingface/"
 MODELSCOPE_PURL_PREFIX = "pkg:modelscope/"
 
+# 三级判定中文标签（与 risk_evaluator 保持一致）
+_DECISION_ZH = {
+    "RISK_CONFIRMED": "高风险（红）",
+    "RISK_POTENTIAL": "潜在风险（黄）",
+    "UNDETERMINED": "待确认（灰）",
+}
+
 # ---- ModelScope 项目扫描（BOM-Driven）配置 ----
 _BOM_FILENAMES = {"bom.json", "cyclonedx.json", "sbom.json"}
 _CONFIG_FILENAMES = {"configuration.json", "config.json"}
@@ -73,6 +80,18 @@ _TEXT_MODEL_RE = re.compile(
     r"[A-Za-z0-9._-]+/[A-Za-z0-9._-]+"
     r"(?![A-Za-z0-9._-])"
 )
+
+
+def _model_output_dir(root: Path, model: str) -> Path:
+    """返回模型模式独立产物目录，避免不同模型互相覆盖。"""
+    safe_name = model.strip().strip("/").replace("/", "__")
+    return root / "outputs" / safe_name
+
+
+def _project_output_dir(root: Path, project_path: Path) -> Path:
+    """返回项目模式独立产物目录，避免不同项目互相覆盖。"""
+    safe_name = project_path.name.strip().strip("/").replace("/", "__")
+    return root / "outputs" / safe_name
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -101,7 +120,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--input", type=Path, help="基础模式的 CycloneDX BOM")
     parser.add_argument("--before", type=Path, help="深度/diff 模式的 t0 CycloneDX BOM")
     parser.add_argument("--after", type=Path, help="深度/diff 模式的 t1 CycloneDX BOM")
-    parser.add_argument("--output", type=Path, required=True, help="输出 Markdown 报告")
+    parser.add_argument("--output", type=Path, required=False, default=None, help="输出 Markdown 报告（模型/项目模式省略时自动生成）")
     args = parser.parse_args(argv)
 
     if args.diff and (args.model is not None or args.mode is not None or args.project is not None):
@@ -118,6 +137,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         parser.error("--mode basic 必须提供 --input")
     if args.mode == "deep" and (args.before is None or args.after is None):
         parser.error("--mode deep 必须同时提供 --before 和 --after")
+    if args.output is None:
+        root = Path(__file__).resolve().parent
+        if args.model is not None:
+            args.output = _model_output_dir(root, args.model) / "report.md"
+        elif args.project is not None:
+            args.output = _project_output_dir(root, args.project) / "report.md"
+        else:
+            parser.error("--diff / --mode 模式必须提供 --output")
     return args
 
 
@@ -144,125 +171,174 @@ def _table(headers: list[str], rows: list[list[Any]]) -> list[str]:
     return lines
 
 
-def _is_model_bom(bom: dict[str, Any]) -> bool:
-    """判断 BOM 是否为模型血缘提取器支持的模型 BOM（HF 或 ModelScope）。"""
-    components = bom.get("components")
-    if not isinstance(components, list) or not components:
-        return False
-    first = components[0]
-    if not isinstance(first, dict):
-        return False
-    purl = str(first.get("purl") or "")
-    if first.get("type") not in HF_MODEL_TYPES:
-        return False
-    return purl.startswith(HF_PURL_PREFIX) or purl.startswith(MODELSCOPE_PURL_PREFIX)
+def _component_purls(component: dict[str, Any]) -> list[str]:
+    """取组件的全部 purl（单 purl 字段 + bom-ref 里内嵌的 purl）。"""
+    purls: list[str] = []
+    single = component.get("purl")
+    if isinstance(single, str) and single.strip():
+        purls.append(single.strip())
+    bom_ref = str(component.get("bom-ref") or "")
+    if "pkg:" in bom_ref:
+        embedded = bom_ref[bom_ref.index("pkg:"):]
+        if embedded not in purls:
+            purls.append(embedded)
+    return purls
 
 
-def _merge_lineage_assets(
-    assets: list[dict[str, Any]],
-    lineage_assets: list[dict[str, Any]],
+def _primary_asset_id(
+    component: dict[str, Any],
+    purl_to_canonical: dict[str, str],
+) -> str | None:
+    """在快照资产中查回该组件的 canonical_id（先 purl 精确，再名称兜底）。"""
+    for purl in _component_purls(component):
+        canonical_id = purl_to_canonical.get(purl)
+        if canonical_id:
+            return canonical_id
+    full_name = f"{component.get('group', '')}/{component.get('name', '')}".strip("/")
+    if "/" in full_name:
+        canonical_id = purl_to_canonical.get(f"pkg:modelscope/{full_name}")
+        if canonical_id:
+            return canonical_id
+    return None
+
+
+def _lineage_placeholder_asset(
+    purl: str,
+    evidence_level: str,
     snapshot_id: str,
-) -> list[dict[str, Any]]:
-    """补入 HF 提取器自动创建的缺失祖先或数据集节点。"""
-    merged = list(assets)
-    known_ids = {
-        asset.get("canonical_id")
-        for asset in merged
-        if asset.get("canonical_id")
-    }
-    for asset in lineage_assets:
-        canonical_id = asset.get("canonical_id")
-        if not canonical_id or canonical_id in known_ids:
-            continue
-        merged_asset = dict(asset)
-        merged_asset["snapshot_id"] = snapshot_id
-        merged.append(merged_asset)
-        known_ids.add(canonical_id)
-    return merged
+    source_file: str,
+) -> dict[str, Any] | None:
+    """为"只在 pedigree.ancestors 里出现、BOM 未单列"的祖先建占位节点。
 
-
-def _normalize_lineage_edges(
-    lineage_edges: list[dict[str, Any]],
-    snapshot_id: str,
-) -> list[dict[str, Any]]:
-    """把提取器产出的边统一为当前快照的接口约定格式并去重。"""
-    edges: list[dict[str, Any]] = []
-    seen: set[tuple[str, str, str]] = set()
-    for edge in lineage_edges:
-        edge_type = str(edge.get("edge_type") or "")
-        source = str(edge.get("source") or "")
-        target = str(edge.get("target") or "")
-        if edge_type not in HF_LINEAGE_EDGE_TYPES or not source or not target:
-            continue
-        signature = (source, target, edge_type)
-        if signature in seen:
-            continue
-        seen.add(signature)
-        edges.append(
-            {
-                "source": source,
-                "target": target,
-                "edge_type": edge_type,
-                "evidence_level": str(edge.get("evidence_level") or "B"),
-                "source_field": str(edge.get("source_field") or ""),
-                "snapshot_id": snapshot_id,
-            }
-        )
-    return edges
-
-
-def _extract_modelscope_edges(
-    path: Path,
-    bom: dict[str, Any],
-    assets: list[dict[str, Any]],
-    snapshot_id: str,
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """调用 ModelScope 血缘提取器：从 BOM 的 purl 解析 ns/name 后走 API。"""
+    时间化对比要求 t0/t1 图包含同一批祖先节点，否则祖先本身消失后
+    变更事件与传播路径都会断链；占位节点显式标注 MISSING_ANCESTOR。
+    """
     import bom_adapter
 
-    from work.extract_modelscope_lineage import extract as extract_modelscope_lineage
-
-    first = bom["components"][0]
-    purl = str(first.get("purl") or "")
     identity = bom_adapter.parse_purl_identity(purl)
-    ns = (identity.namespace if identity else "") or ""
-    name = (identity.name if identity else "") or ""
-    if not ns or not name:
-        full = f"{first.get('group', '')}/{first.get('name', '')}".strip("/")
-        if "/" in full:
-            ns, name = full.split("/", 1)
+    if identity is None:
+        return None
+    asset_type = "model"
+    if "dataset" in purl:
+        asset_type = "dataset"
+    lower_name = identity.name.lower()
+    if any(token in lower_name for token in ("-data", "_data", "dataset", "-set")):
+        asset_type = "dataset"
+    name = "/".join(part for part in (identity.namespace, identity.name) if part)
+    entity_key, canonical_id, _ = bom_adapter.build_asset_identifiers(
+        asset_type, identity.name, identity.version, [purl]
+    )
+    return {
+        "entity_key": entity_key,
+        "canonical_id": canonical_id,
+        "asset_type": asset_type,
+        "name": name or identity.name,
+        "version": identity.version or "",
+        "purls": [purl],
+        "license": None,
+        "evidence_chain": [
+            {
+                "evidence_level": evidence_level,
+                "source_api": "bom",
+                "source_url": None,
+                "source_field": "pedigree.ancestors",
+                "status": "missing_ancestor",
+                "raw_value": purl,
+            }
+        ],
+        "snapshot_id": snapshot_id,
+        "merge_status": "KEPT_SEPARATE",
+        "reason_code": "MISSING_ANCESTOR",
+        "rule_version": "merge-policy-v2",
+        "hashes": [],
+        "source_file": source_file,
+    }
 
-    source_file = f"https://www.modelscope.cn/api/v1/models/{ns}/{name}"
-    lineage_assets, lineage_edges = extract_modelscope_lineage(ns, name, snapshot_id, source_file)
-    merged_assets = _merge_lineage_assets(assets, lineage_assets, snapshot_id)
-    edges = _normalize_lineage_edges(lineage_edges, snapshot_id)
-    return merged_assets, edges
 
-
-def _extract_model_edges(
+def _extract_bom_lineage_edges(
     path: Path,
     bom: dict[str, Any],
     assets: list[dict[str, Any]],
     snapshot_id: str,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """按 BOM 的 purl 路由到 HF / ModelScope 血缘提取器，并统一边字段。"""
-    if not _is_model_bom(bom):
+    """只读 BOM 里固化的血缘：逐组件读取 pedigree.ancestors，产出 derived_from 边。
+
+    --diff 的时间对比语义要求：t0/t1 必须用各自 BOM 内已固化的血缘，
+    不允许回退到在线 API，否则"上周快照"会被今天的最新血缘替换。
+    """
+    components = bom.get("components")
+    if not isinstance(components, list) or not components:
         return assets, []
 
-    first_purl = str(bom["components"][0].get("purl") or "")
-    if first_purl.startswith(MODELSCOPE_PURL_PREFIX):
-        return _extract_modelscope_edges(path, bom, assets, snapshot_id)
+    import bom_adapter
 
-    from work.extract_hf_lineage import extract as extract_hf_lineage
+    source_file = str(path.resolve())
+    purl_to_canonical: dict[str, str] = {}
+    for asset in assets:
+        canonical_id = asset.get("canonical_id")
+        if not canonical_id:
+            continue
+        for purl in (asset.get("purls") or []):
+            purl_to_canonical.setdefault(str(purl), str(canonical_id))
 
-    lineage_assets, lineage_edges = extract_hf_lineage(path)
-    merged_assets = _merge_lineage_assets(assets, lineage_assets, snapshot_id)
-    edges = _normalize_lineage_edges(lineage_edges, snapshot_id)
-    return merged_assets, edges
+    merged = list(assets)
+    known_ids = {a.get("canonical_id") for a in merged if a.get("canonical_id")}
+    edges: list[dict[str, Any]] = []
+    seen: set[tuple[str, str, str]] = set()
+
+    for component in components:
+        if not isinstance(component, dict):
+            continue
+        source_id = _primary_asset_id(component, purl_to_canonical)
+        if not source_id:
+            continue
+        ancestors = (component.get("pedigree") or {}).get("ancestors") or []
+        if not isinstance(ancestors, list):
+            continue
+        for ancestor in ancestors:
+            if not isinstance(ancestor, dict):
+                continue
+            ancestor_purl = str(ancestor.get("purl") or "").strip()
+            if not ancestor_purl:
+                continue
+            evidence_level = str(ancestor.get("evidence_level") or "B")
+            target_id = purl_to_canonical.get(ancestor_purl)
+            if not target_id:
+                placeholder = _lineage_placeholder_asset(
+                    ancestor_purl, evidence_level, snapshot_id, source_file
+                )
+                if placeholder is None:
+                    continue
+                target_id = str(placeholder["canonical_id"])
+                if target_id not in known_ids:
+                    merged.append(placeholder)
+                    known_ids.add(target_id)
+                purl_to_canonical.setdefault(ancestor_purl, target_id)
+            if not target_id or target_id == source_id:
+                continue
+            signature = (source_id, target_id, "derived_from")
+            if signature in seen:
+                continue
+            seen.add(signature)
+            edges.append(
+                {
+                    "source": source_id,
+                    "target": target_id,
+                    "edge_type": "derived_from",
+                    "evidence_level": evidence_level,
+                    "source_field": "pedigree.ancestors",
+                    "snapshot_id": snapshot_id,
+                }
+            )
+    return merged, edges
 
 
 def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
-    """按现有模块真实签名生成一个快照的资产、边和统计。"""
+    """按现有模块真实签名生成一个快照的资产、边和统计。
+
+    血缘边一律来自 BOM 内固化的 pedigree.ancestors，保证 --diff 的时间对比语义：
+    同一份 BOM 任何时候跑出的快照都完全一致，不受上游 API 当下状态影响。
+    """
     import bom_adapter
     import entity_resolver
     import evidence_enricher
@@ -281,7 +357,7 @@ def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
         deduplicated,
         evidence_enricher.REQUEST_TIMEOUT_SECONDS,
     )
-    assets, edges = _extract_model_edges(path, bom, enriched, snapshot_id)
+    assets, edges = _extract_bom_lineage_edges(path, bom, enriched, snapshot_id)
     return {
         "path": path,
         "snapshot_id": snapshot_id,
@@ -581,28 +657,6 @@ def run_diff(before_bom: Path, after_bom: Path, output_path: Path) -> None:
     )
     print(f"三级判定分布：{dict(decision_distribution)}")
 
-    # 附带产物：写出事件与路径证书，供可视化脚本叠加风险传播高亮
-    outputs_dir = Path(__file__).resolve().parent / "outputs"
-    events_path = outputs_dir / "diff_events.json"
-    certificates_path = outputs_dir / "diff_certificates.json"
-    outputs_dir.mkdir(parents=True, exist_ok=True)
-    events_path.write_text(
-        json.dumps(events, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    certificates_path.write_text(
-        json.dumps(propagated["path_certificates"], ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-
-    # 附带产物：用 t1 的 BOM 生成血缘图 PNG，并叠加风险传播高亮
-    _render_diff_lineage_png(
-        after_bom,
-        outputs_dir / "diff_lineage_graph.png",
-        events_path,
-        certificates_path,
-    )
-
 
 def _run_py_script(script: Path, script_args: list[str], label: str) -> None:
     """以子进程方式调用仓库脚本，转发输出，失败时抛异常。"""
@@ -629,189 +683,6 @@ def _run_py_script(script: Path, script_args: list[str], label: str) -> None:
         raise RuntimeError(f"{label} 执行失败（退出码 {proc.returncode}）")
 
 
-def _render_diff_lineage_png(
-    t1_bom: Path,
-    png_path: Path,
-    events_path: Path | None = None,
-    certificates_path: Path | None = None,
-) -> None:
-    """diff 模式附带产物：用 t1 的 BOM 生成血缘图 PNG。
-
-    依次调用仓库现有脚本：
-    - work/extract_hf_lineage.py：从 t1 BOM 提取血缘（assets/edges/graph.json）
-    - build_graph.py：显式构建血缘图
-    - visualize_lineage.py：渲染 PNG（传入 events/certificates 时叠加风险高亮）
-    """
-    import shutil
-    import tempfile
-
-    root = Path(__file__).resolve().parent
-    png_path.parent.mkdir(parents=True, exist_ok=True)
-
-    with tempfile.TemporaryDirectory(prefix="diff_lineage_") as tmp:
-        tmp_dir = Path(tmp)
-        bom_dir = tmp_dir / "bom"
-        extract_dir = tmp_dir / "extract"
-        bom_dir.mkdir()
-        extract_dir.mkdir()
-        # extract_hf_lineage.py 以目录为单位扫描 BOM，把 t1 单文件拷入临时目录。
-        shutil.copyfile(t1_bom, bom_dir / t1_bom.name)
-
-        _run_py_script(
-            root / "work" / "extract_hf_lineage.py",
-            ["--bom-dir", str(bom_dir), "--output-dir", str(extract_dir)],
-            "extract_hf_lineage",
-        )
-
-        graph_path = extract_dir / "graph.json"
-        _run_py_script(
-            root / "build_graph.py",
-            [
-                "--assets", str(extract_dir / "assets.json"),
-                "--edges", str(extract_dir / "edges.json"),
-                "--output", str(graph_path),
-            ],
-            "build_graph",
-        )
-
-        viz_args = ["--graph", str(graph_path), "--output", str(png_path)]
-        if events_path and certificates_path:
-            viz_args += [
-                "--events", str(events_path),
-                "--certificates", str(certificates_path),
-            ]
-        _run_py_script(
-            root / "visualize_lineage.py",
-            viz_args,
-            "visualize_lineage",
-        )
-
-    print(f"diff 模式血缘图 PNG 已生成：{png_path}")
-
-
-def _component_name(component: dict[str, Any]) -> str:
-    """由组件 group/name 拼接出 HF 模型 id 风格的名称。"""
-    return f"{component.get('group', '')}/{component.get('name', '')}".strip("/")
-
-
-def _bom_ancestors(bom_path: Path) -> tuple[str, list[str]]:
-    """读取单个 BOM 的主组件名与其直接祖先模型 id 列表。"""
-    data = json.loads(bom_path.read_text(encoding="utf-8"))
-    comps = data.get("components", []) or []
-    if not comps:
-        return _component_name({}), []
-    model = comps[0]
-    ancestors = [
-        _component_name(ancestor)
-        for ancestor in ((model.get("pedigree") or {}).get("ancestors") or [])
-        if isinstance(ancestor, dict) and (ancestor.get("name") or ancestor.get("purl"))
-    ]
-    return _component_name(model), ancestors
-
-
-def _ancestor_chain_depth(
-    model: str,
-    ancestry: dict[str, list[str]],
-    seen: set[str],
-) -> int:
-    """沿 pedigree.ancestors 递归求单个模型的祖先层数（带环保护）。"""
-    if model in seen:
-        return 0
-    seen = seen | {model}
-    depth = 0
-    for ancestor in ancestry.get(model, []):
-        depth = max(depth, 1 + _ancestor_chain_depth(ancestor, ancestry, seen))
-    return depth
-
-
-def _lineage_depth(bom_dir: Path) -> int:
-    """扫描 BOM 目录，返回所有模型血缘链的最大祖先层数。"""
-    ancestry: dict[str, list[str]] = {}
-    for bom_path in sorted(bom_dir.glob("*.json")):
-        try:
-            model, ancestors = _bom_ancestors(bom_path)
-        except (json.JSONDecodeError, OSError):
-            continue
-        if model:
-            ancestry[model] = ancestors
-    return max((_ancestor_chain_depth(m, ancestry, set()) for m in ancestry), default=0)
-
-
-def _render_model_report(
-    model: str,
-    bom_dir: Path,
-    extract_dir: Path,
-    png_path: Path,
-    duration_s: float,
-) -> str:
-    """渲染模型血缘扫描的中文 Markdown 报告。"""
-    graph = json.loads((extract_dir / "graph.json").read_text(encoding="utf-8"))
-    nodes = graph.get("nodes", [])
-    edges = graph.get("edges", [])
-    depth = _lineage_depth(bom_dir)
-    bom_files = sorted(bom_dir.glob("*.json"))
-
-    node_type_counter = Counter((n.get("asset_type") or "unknown") for n in nodes)
-    edge_type_counter = Counter((e.get("edge_type") or "unknown") for e in edges)
-
-    bom_rows = []
-    for bom_file in bom_files:
-        try:
-            name, _ = _bom_ancestors(bom_file)
-        except (json.JSONDecodeError, OSError):
-            name = bom_file.stem
-        bom_rows.append([name or bom_file.stem, bom_file.name, bom_file.stat().st_size])
-
-    node_rows = [
-        [
-            n.get("canonical_id"),
-            n.get("asset_type"),
-            n.get("name") or n.get("canonical_id"),
-            n.get("version"),
-            n.get("license"),
-        ]
-        for n in nodes
-    ]
-    edge_rows = [
-        [e.get("source"), e.get("edge_type"), e.get("target"), e.get("evidence_level")]
-        for e in edges
-    ]
-
-    lines: list[str] = [
-        "# AI 模型血缘扫描报告",
-        "",
-        f"- 扫描模型：`{model}`",
-        f"- 生成时间：{_utc_now()}",
-        f"- 血缘层级（祖先层数）：**{depth}**",
-        f"- 生成 BOM 数量：**{len(bom_files)}**",
-        f"- 血缘图节点数：**{len(nodes)}**，边数：**{len(edges)}**",
-        f"- SCC 强连通分量：**{graph.get('scc_count', 0)}**",
-        f"- 血缘图 PNG：**{'已生成' if png_path.exists() else '未生成'}**（`{png_path}`）",
-        f"- 本报告生成：**成功**（流水线耗时 {duration_s:.1f}s）",
-        "",
-        "## 一、BOM 清单",
-        "",
-    ]
-    lines.extend(_table(["模型", "文件", "大小（字节）"], bom_rows))
-    lines.extend(["", "## 二、血缘图节点", ""])
-    lines.extend(_table(["canonical_id", "类型", "名称", "版本", "许可证"], node_rows))
-    lines.extend(["", "## 三、血缘边", ""])
-    lines.extend(_table(["来源", "边类型", "目标", "证据等级"], edge_rows))
-    lines.extend([
-        "",
-        "## 四、统计",
-        "",
-        f"- 节点类型分布：`{dict(node_type_counter)}`",
-        f"- 边类型分布：`{dict(edge_type_counter)}`",
-        "",
-        "## 免责声明",
-        "",
-        "本报告基于结构化证据与血缘图的辅助分析结果，不构成法律意见。",
-        "",
-    ])
-    return "\n".join(lines)
-
-
 def _probe_modelscope(model: str) -> bool | None:
     """探测模型是否在 ModelScope：命中详情 API 返回 True，404 返回 False，网络异常返回 None。"""
     import modelscope_adapter
@@ -828,64 +699,95 @@ def _probe_modelscope(model: str) -> bool | None:
 
 
 def _run_hf_model(args: argparse.Namespace, model: str, root: Path) -> None:
-    """HF 模型模式：递归扫祖先 → 补数据 → 提取血缘 → 建图 → 可视化 → 中文报告。"""
-    bom_dir = root / "outputs" / "lineage_scan"
-    extract_dir = root / "outputs" / "lineage_extract"
-    png_path = root / "outputs" / "lineage_graph.png"
+    """HF 回退逻辑已隔离：本工具不再支持 Hugging Face 旧链路。
 
-    started = datetime.now(timezone.utc)
-
-    # 1. 递归扫描祖先链 → BOM 目录
-    _run_py_script(
-        root / "generate_bom.py",
-        [model, "--recursive", "--outdir", str(bom_dir)],
-        "generate_bom",
+    必须抛错而不是静默 return：静默返回会让调用方（含 GitHub Action）
+    以 0 退出码"成功"，但实际没有产出任何报告，形成假绿。
+    """
+    raise RuntimeError(
+        f"模型 {model} 无法在 ModelScope 检索；本工具已移除 HF 回退逻辑。"
+        "请改用 ModelScope 上的模型名，例如 Qwen/Qwen2.5-0.5B-Instruct。"
     )
 
-    # 2. 补数据：对 cdxgen 空 BOM 从模型名推断祖先（证据等级 C）
-    _run_py_script(
-        root / "enrich_lineage.py",
-        ["--bom-dir", str(bom_dir), "--model", model],
-        "enrich_lineage",
+
+def _risk_zh(value: Any) -> str:
+    """把 1-5 许可证风险等级渲染为中文标签。"""
+    if value is None:
+        return "未识别"
+    try:
+        level = int(value)
+    except (TypeError, ValueError):
+        return str(value)
+    return {
+        1: "1（宽松）",
+        2: "2（弱 copyleft）",
+        3: "3（待确认）",
+        4: "4（强 copyleft）",
+        5: "5（受限）",
+    }.get(level, str(level))
+
+
+def _enrich_risk_fields(
+    assets_path: Path,
+    edges_path: Path,
+    graph_path: Path,
+) -> dict[str, Any] | None:
+    """给提取器产出的节点补上 risk_evaluator 的判定字段。
+
+    A 的验收要求：输出节点要带 risk_level。这里在提取之后统一补字段，
+    不改提取器、不改引擎，只调用 risk_evaluator.evaluate_model_risk：
+      - 每个节点补 `risk_level`（1-5，未识别为 null）、`decision`、`decision_zh`
+      - 图 JSON 的顶层补 `overall_decision` / `overall_decision_zh`
+    """
+    import risk_evaluator
+
+    if not (assets_path.exists() and edges_path.exists()):
+        return None
+    assets = json.loads(assets_path.read_text(encoding="utf-8"))
+    edges = json.loads(edges_path.read_text(encoding="utf-8"))
+    if not isinstance(assets, list) or not isinstance(edges, list):
+        return None
+
+    result = risk_evaluator.evaluate_model_risk(assets, edges)
+    node_results = {n.get("canonical_id"): n for n in result.get("nodes", [])}
+
+    for asset in assets:
+        node = node_results.get(asset.get("canonical_id"))
+        if not node:
+            continue
+        asset["risk_level"] = node.get("risk_level")
+        asset["decision"] = node.get("decision")
+        asset["decision_zh"] = node.get("decision_zh")
+        asset["license_recognized"] = node.get("license_recognized")
+        # 兼容"risk_level 表示 1-5 等级"的既有口径：把判定原因一并写清。
+        asset["risk_note"] = node.get("note")
+
+    assets_path.write_text(
+        json.dumps(assets, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
 
-    # 3. 提取血缘边 → assets/edges/graph.json
-    _run_py_script(
-        root / "work" / "extract_hf_lineage.py",
-        ["--bom-dir", str(bom_dir), "--output-dir", str(extract_dir)],
-        "extract_hf_lineage",
-    )
-
-    # 4. 显式构建血缘图
-    _run_py_script(
-        root / "build_graph.py",
-        [
-            "--assets", str(extract_dir / "assets.json"),
-            "--edges", str(extract_dir / "edges.json"),
-            "--output", str(extract_dir / "graph.json"),
-        ],
-        "build_graph",
-    )
-
-    # 5. 可视化 → PNG
-    _run_py_script(
-        root / "visualize_lineage.py",
-        ["--graph", str(extract_dir / "graph.json"), "--output", str(png_path)],
-        "visualize_lineage",
-    )
-
-    duration_s = (datetime.now(timezone.utc) - started).total_seconds()
-    report = _render_model_report(model, bom_dir, extract_dir, png_path, duration_s)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(report, encoding="utf-8")
-    print(f"模型模式报告已写入：{args.output}")
+    if graph_path.exists():
+        graph = json.loads(graph_path.read_text(encoding="utf-8"))
+        if isinstance(graph, dict):
+            graph["overall_decision"] = result.get("overall_decision")
+            graph["overall_decision_zh"] = result.get("overall_decision_zh")
+            for node in graph.get("nodes", []):
+                detail = node_results.get(node.get("canonical_id"))
+                if not detail:
+                    continue
+                node["risk_level"] = detail.get("risk_level")
+                node["decision"] = detail.get("decision")
+                node["decision_zh"] = detail.get("decision_zh")
+            graph_path.write_text(
+                json.dumps(graph, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+            )
+    return result
 
 
 def _run_modelscope_model(args: argparse.Namespace, model: str, root: Path) -> None:
-    """ModelScope 模型模式：提取血缘 → 建图 → 可视化 → 中文报告。"""
+    """ModelScope 模型模式：提取血缘 → 风险判定 → 中文报告。"""
     model = model.strip().strip("/")
-    extract_dir = root / "outputs" / "modelscope_validation"
-    png_path = extract_dir / "lineage_graph.png"
+    extract_dir = _model_output_dir(root, model)
 
     started = datetime.now(timezone.utc)
 
@@ -896,22 +798,25 @@ def _run_modelscope_model(args: argparse.Namespace, model: str, root: Path) -> N
         "extract_modelscope_lineage",
     )
 
-    # 2. 可视化 → PNG
-    _run_py_script(
-        root / "visualize_lineage.py",
-        ["--graph", str(extract_dir / "graph.json"), "--output", str(png_path)],
-        "visualize_lineage",
-    )
+    # 2. 补风险判定字段（risk_level / decision），失败不阻断报告生成。
+    try:
+        _enrich_risk_fields(
+            extract_dir / "assets.json",
+            extract_dir / "edges.json",
+            extract_dir / "graph.json",
+        )
+    except Exception as exc:  # noqa: BLE001
+        print(f"提示：风险判定字段补全失败（{type(exc).__name__}: {exc}）", file=sys.stderr)
 
     duration_s = (datetime.now(timezone.utc) - started).total_seconds()
-    report = _render_modelscope_report(model, extract_dir, png_path, duration_s)
+    report = _render_modelscope_report(model, extract_dir, duration_s)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(report, encoding="utf-8")
     print(f"模型模式报告已写入：{args.output}")
 
 
 def run_model(args: argparse.Namespace) -> None:
-    """模型模式：自动探测 HF / ModelScope 来源并运行对应流水线。"""
+    """模型模式：自动探测 ModelScope 来源并运行对应流水线。"""
     model = args.model
     root = Path(__file__).resolve().parent
 
@@ -921,14 +826,13 @@ def run_model(args: argparse.Namespace) -> None:
     elif is_modelscope is False:
         _run_hf_model(args, model, root)
     else:
-        print("提示：ModelScope 探测因网络异常失败，回退到 Hugging Face 旧链路。", file=sys.stderr)
+        print("提示：ModelScope 探测因网络异常失败。", file=sys.stderr)
         _run_hf_model(args, model, root)
 
 
 def _render_modelscope_report(
     model: str,
     extract_dir: Path,
-    png_path: Path,
     duration_s: float,
 ) -> str:
     """渲染 ModelScope 模型血缘扫描的中文 Markdown 报告。"""
@@ -938,6 +842,7 @@ def _render_modelscope_report(
     edges = graph.get("edges", [])
     aggregate_nodes = [a for a in assets if a.get("aggregate")]
     current = next((a for a in assets if not a.get("aggregate")), {})
+    overall = graph.get("overall_decision") or current.get("decision")
 
     node_rows = [
         [
@@ -946,6 +851,8 @@ def _render_modelscope_report(
             n.get("name") or n.get("canonical_id"),
             n.get("version"),
             n.get("license"),
+            _risk_zh(n.get("risk_level")),
+            n.get("decision_zh") or n.get("decision") or "-",
         ]
         for n in nodes
     ]
@@ -968,16 +875,21 @@ def _render_modelscope_report(
         f"- 扫描模型：`{model}`",
         f"- 生成时间：{_utc_now()}",
         f"- 许可证：**{current.get('license') or '（未识别）'}**",
+        f"- 整体判定：**{_DECISION_ZH.get(overall, overall or '（未判定）')}**",
         f"- 血缘图节点数：**{len(nodes)}**，边数：**{len(edges)}**",
         f"- 聚合节点：**{len(aggregate_nodes)}** 个（聚合 {sum(a.get('count', 0) for a in aggregate_nodes)} 个派生/祖先模型）",
         f"- SCC 强连通分量：**{graph.get('scc_count', 0)}**",
-        f"- 血缘图 PNG：**{'已生成' if png_path.exists() else '未生成'}**（`{png_path}`）",
         f"- 本报告生成：**成功**（流水线耗时 {duration_s:.1f}s）",
         "",
         "## 一、血缘图节点",
         "",
     ]
-    lines.extend(_table(["canonical_id", "类型", "名称", "版本", "许可证"], node_rows))
+    lines.extend(
+        _table(
+            ["canonical_id", "类型", "名称", "版本", "许可证", "风险等级", "判定"],
+            node_rows,
+        )
+    )
     lines.extend(["", "## 二、聚合节点（计数降维）", ""])
     if aggregate_rows:
         lines.extend(_table(["名称", "count", "来源字段"], aggregate_rows))
@@ -1157,7 +1069,6 @@ def _render_modelscope_project_report(
     project_path: Path,
     models: list[dict[str, Any]],
     graph: dict[str, Any] | None,
-    png_path: Path | None,
     duration_s: float,
     no_manifest: bool,
 ) -> str:
@@ -1221,7 +1132,6 @@ def _render_modelscope_project_report(
         lines.extend([
             f"- 合并血缘图节点数：**{len(nodes)}**，边数：**{len(edges)}**",
             f"- SCC 强连通分量：**{graph.get('scc_count', 0)}**",
-            f"- 合并血缘图 PNG：**{'已生成' if png_path and png_path.exists() else '未生成'}**（`{png_path}`）",
             f"- 本报告生成：**成功**（流水线耗时 {duration_s:.1f}s）",
             "",
             "## 一、项目识别出的 ModelScope 模型（来源文件）",
@@ -1304,15 +1214,13 @@ def run_project(args: argparse.Namespace) -> None:
     models = _validate_modelscope_models(candidates)
 
     # 3. 输出目录。
-    report_dir = root / "outputs" / "modelscope_validation"
+    report_dir = _project_output_dir(root, project_path)
     report_dir.mkdir(parents=True, exist_ok=True)
-    report_path = report_dir / "project_report.md"
-    extract_dir = report_dir / "project_extract"
-    png_path = report_dir / "project_lineage_graph.png"
+    report_path = report_dir / "report.md"
 
     if not models:
         report = _render_modelscope_project_report(
-            project_path, [], None, None, 0.0, no_manifest
+            project_path, [], None, 0.0, no_manifest
         )
         if no_manifest:
             print(f"未在路径 {project_path} 下找到可识别的 ModelScope 模型清单", file=sys.stderr)
@@ -1322,7 +1230,6 @@ def run_project(args: argparse.Namespace) -> None:
         return
 
     # 4. 逐模型提取血缘并合并（按 canonical_id 与边签名去重）。
-    extract_dir.mkdir(parents=True, exist_ok=True)
     merged_assets: list[dict[str, Any]] = []
     merged_edges: list[dict[str, Any]] = []
     seen_assets: set[str] = set()
@@ -1352,13 +1259,13 @@ def run_project(args: argparse.Namespace) -> None:
 
     if not merged_assets:
         report = _render_modelscope_project_report(
-            project_path, models, None, None, duration_s, no_manifest
+            project_path, models, None, duration_s, no_manifest
         )
         _write_project_report(report, report_path, args)
         return
 
-    assets_path = extract_dir / "assets.json"
-    edges_path = extract_dir / "edges.json"
+    assets_path = report_dir / "assets.json"
+    edges_path = report_dir / "edges.json"
     assets_path.write_text(
         json.dumps(merged_assets, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -1369,7 +1276,7 @@ def run_project(args: argparse.Namespace) -> None:
     )
 
     # 5. 显式构建合并血缘图。
-    graph_path = extract_dir / "graph.json"
+    graph_path = report_dir / "graph.json"
     _run_py_script(
         root / "build_graph.py",
         [
@@ -1380,16 +1287,17 @@ def run_project(args: argparse.Namespace) -> None:
         "build_graph",
     )
 
-    # 6. 可视化 → PNG。
-    _run_py_script(
-        root / "visualize_lineage.py",
-        ["--graph", str(graph_path), "--output", str(png_path)],
-        "visualize_lineage",
-    )
-
     graph = json.loads(graph_path.read_text(encoding="utf-8"))
+
+    # 6. 补风险判定字段（risk_level / decision），失败不阻断报告生成。
+    try:
+        _enrich_risk_fields(assets_path, edges_path, graph_path)
+        graph = json.loads(graph_path.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        print(f"提示：风险判定字段补全失败（{type(exc).__name__}: {exc}）", file=sys.stderr)
+
     report = _render_modelscope_project_report(
-        project_path, models, graph, png_path, duration_s, no_manifest
+        project_path, models, graph, duration_s, no_manifest
     )
     _write_project_report(report, report_path, args)
 

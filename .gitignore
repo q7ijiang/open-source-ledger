@@ -262,7 +262,6 @@ work/*.json
 
 # 工作空间清理追加规则
 work/*
-!work/extract_hf_lineage.py
 outputs/lineage_scan/
 outputs/lineage_extract/
 outputs/project_scan/
