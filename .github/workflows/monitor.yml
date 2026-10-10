@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       model:
-        description: '要扫描的 HF 模型名'
+        description: '要扫描的 ModelScope 模型名（namespace/name）'
         required: true
-        default: 'TheBloke/Qwen2.5-0.5B-Instruct-GGUF'
+        default: 'Qwen/Qwen2.5-0.5B-Instruct'
 
 permissions:
   contents: read
@@ -33,7 +33,7 @@ jobs:
         run: npm install -g @cyclonedx/cdxgen
 
       - name: Run model lineage scan
-        run: python main.py --model ${{ github.event.inputs.model || 'TheBloke/Qwen2.5-0.5B-Instruct-GGUF' }} --output reports/monitor.md
+        run: python main.py --model ${{ github.event.inputs.model || 'Qwen/Qwen2.5-0.5B-Instruct' }} --output reports/monitor.md
 
       - name: Upload monitor artifacts
         uses: actions/upload-artifact@v4
@@ -41,5 +41,7 @@ jobs:
           name: monitor-report
           path: |
             reports/monitor.md
-            outputs/lineage_graph.png
+            outputs/**/assets.json
+            outputs/**/edges.json
+            outputs/**/graph.json
           if-no-files-found: error
