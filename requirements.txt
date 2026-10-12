@@ -3,3 +3,4 @@ matplotlib
 pytest
 python-dotenv
 requests
+streamlit

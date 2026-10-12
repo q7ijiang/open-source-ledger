@@ -1,0 +1,10 @@
+[
+  {
+    "source": "model:modelscope/XingChen-AGI/TeleOCR:son:Quantizations@master",
+    "target": "model:modelscope/XingChen-AGI/TeleOCR@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.SonModels",
+    "snapshot_id": "modelscope-XingChen-AGI__TeleOCR"
+  }
+]
