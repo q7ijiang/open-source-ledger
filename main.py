@@ -33,6 +33,7 @@ from pathlib import Path
 from typing import Any, Iterator
 
 import report_basic
+import export_bom
 
 
 
@@ -891,6 +892,15 @@ def _run_modelscope_model(args: argparse.Namespace, model: str, root: Path) -> N
     except Exception as exc:  # noqa: BLE001
         print(f"提示：风险判定字段补全失败（{type(exc).__name__}: {exc}）", file=sys.stderr)
 
+    # 3. 导出标准 CycloneDX BOM，供 --diff 离线对比使用。
+    bom_path = extract_dir / "bom.json"
+    export_bom.export_bom(
+        extract_dir / "assets.json",
+        extract_dir / "edges.json",
+        bom_path,
+    )
+    print(f"CycloneDX BOM 已写入：{bom_path}")
+
     duration_s = (datetime.now(timezone.utc) - started).total_seconds()
     report = _render_modelscope_report(model, extract_dir, duration_s)
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -1378,6 +1388,11 @@ def run_project(args: argparse.Namespace) -> None:
         graph = json.loads(graph_path.read_text(encoding="utf-8"))
     except Exception as exc:  # noqa: BLE001
         print(f"提示：风险判定字段补全失败（{type(exc).__name__}: {exc}）", file=sys.stderr)
+
+    # 7. 导出标准 CycloneDX BOM，供 --diff 离线对比使用。
+    bom_path = report_dir / "bom.json"
+    export_bom.export_bom(assets_path, edges_path, bom_path)
+    print(f"CycloneDX BOM 已写入：{bom_path}")
 
     report = _render_modelscope_project_report(
         project_path, models, graph, duration_s, no_manifest

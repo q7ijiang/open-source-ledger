@@ -281,11 +281,12 @@ def evidence_entry(
     raw_value: Any,
     retrieved_at: str,
     source_url: str | None = None,
+    evidence_level: str = "B",
 ) -> dict[str, Any]:
     """按统一结构创建一条证据。"""
 
     return {
-        "evidence_level": "B",
+        "evidence_level": evidence_level,
         "source_api": "cyclonedx",
         "source_url": source_url,
         "source_field": source_field,
@@ -303,11 +304,15 @@ def extract_evidence_chain(
     evidence_chain: list[dict[str, Any]] = []
 
     for entry in as_list(component.get("licenses")):
+        entry_evidence_level = "B"
+        if isinstance(entry, dict):
+            entry_evidence_level = clean_text(entry.get("evidence_level")) or "B"
         evidence_chain.append(
             evidence_entry(
                 "components[].licenses",
                 json.dumps(entry, ensure_ascii=False),
                 retrieved_at,
+                evidence_level=entry_evidence_level,
             )
         )
 
