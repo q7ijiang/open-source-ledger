@@ -370,5 +370,169 @@ class MergeRuleTests(unittest.TestCase):
         self.assertEqual(decision["reason_code"], "VERSION_MISMATCH")
 
 
+def make_aggregate_asset(
+    *,
+    name: str = "Qwen/Qwen-Image-2.1 · 适配 (Total: 2091)",
+    role: str = "son",
+    lineage_type: str = "Adapters",
+    count: int = 2091,
+    revision: str = "master",
+    aggregate_flag: bool = True,
+    source_file: str = "bom.json",
+) -> dict[str, Any]:
+    """构造 ModelScope 聚合计数节点（无 purl，带 count）。"""
+
+    entity_key = f"model:modelscope/{name.split(' · ')[0]}:{role}:{lineage_type}"
+    asset: dict[str, Any] = {
+        "entity_key": entity_key,
+        "canonical_id": f"{entity_key}@{revision}" if revision else entity_key,
+        "asset_type": "model",
+        "name": name,
+        "version": revision,
+        "purls": [],
+        "license": None,
+        "evidence_chain": [
+            {
+                "evidence_level": "B",
+                "source_api": "modelscope",
+                "source_field": "lineage",
+                "raw_value": {"LineAgeType": lineage_type, "Total": count},
+            }
+        ],
+        "count": count,
+        "source_file": source_file,
+    }
+    if aggregate_flag:
+        asset["aggregate"] = True
+    return asset
+
+
+class AggregateNodeCollapseTest(unittest.TestCase):
+    """聚合计数节点专用去重分支（不进入主干判断树）。"""
+
+    def test_duplicate_aggregates_converge(self) -> None:
+        """同一聚合节点重复出现（含从不同数据源重复读到）应收敛为一个。"""
+
+        assets = [
+            make_aggregate_asset(count=2091),
+            make_aggregate_asset(count=2091),
+            make_aggregate_asset(lineage_type="Finetunes", count=23),
+            make_aggregate_asset(lineage_type="Finetunes", count=23),
+            make_aggregate_asset(role="parent", lineage_type="Base Model", count=1),
+        ]
+
+        deduplicated, _ = entity_resolver.deduplicate_assets(assets)
+
+        self.assertEqual(len(deduplicated), 3)
+        self.assertEqual(
+            {asset["reason_code"] for asset in deduplicated},
+            {"AGGREGATE_KEY_MATCH", "NO_MERGE_CANDIDATE"},
+        )
+
+    def test_duplicate_aggregate_count_is_not_inflated(self) -> None:
+        """重复观测不放大原值：同一聚合节点重复 N 次，count 仍等于原始计数。"""
+
+        assets = [make_aggregate_asset(count=2091) for _ in range(4)]
+
+        deduplicated, _ = entity_resolver.deduplicate_assets(assets)
+
+        self.assertEqual(len(deduplicated), 1)
+        self.assertEqual(deduplicated[0]["count"], 2091)
+        self.assertEqual(deduplicated[0]["merged_occurrences"], 4)
+
+    def test_aggregate_count_total_is_conserved(self) -> None:
+        """收敛不得丢计数：去重后总和 == 去重前各"唯一聚合节点"之和（重复观测不计两次）。"""
+
+        assets = [
+            make_aggregate_asset(count=2091),
+            make_aggregate_asset(count=2091),
+            make_aggregate_asset(lineage_type="Finetunes", count=23),
+            make_aggregate_asset(lineage_type="Quantizations", count=26),
+        ]
+        count_by_key: dict[str, int] = {}
+        for asset in assets:
+            key = entity_resolver.aggregate_collapse_key(asset)
+            count_by_key.setdefault(key, asset["count"])
+        expected_total = sum(count_by_key.values())
+
+        deduplicated, _ = entity_resolver.deduplicate_assets(assets)
+
+        self.assertEqual(len(count_by_key), 3)
+        self.assertEqual(len(deduplicated), 3)
+        self.assertEqual(sum(asset["count"] for asset in deduplicated), expected_total)
+        self.assertEqual(expected_total, 2091 + 23 + 26)
+
+    def test_aggregate_detection_requires_count_and_no_purl(self) -> None:
+        """判定为聚合节点需要：aggregate 标记，或（无 purl + 整数 count + son/parent 标记）。"""
+
+        self.assertTrue(
+            entity_resolver.is_aggregate_count_asset(make_aggregate_asset())
+        )
+        # 带 purl 的普通资产不是聚合节点
+        self.assertFalse(
+            entity_resolver.is_aggregate_count_asset(
+                make_asset(purls=["pkg:modelscope/Qwen/Qwen-Image-2.1@master"])
+            )
+        )
+        # 无 purl 但无 count 的普通资产（如实测缺失祖先节点）不是聚合节点
+        self.assertFalse(
+            entity_resolver.is_aggregate_count_asset(
+                {**make_asset(), "count": None, "entity_key": "model:modelscope/a/b"}
+            )
+        )
+        # 无 purl + count，但既无 aggregate 标记也无 son/parent 标记 -> 不视为聚合节点
+        self.assertFalse(
+            entity_resolver.is_aggregate_count_asset(
+                {
+                    "entity_key": "model:modelscope/a/b",
+                    "canonical_id": "model:modelscope/a/b@v1",
+                    "purls": [],
+                    "count": 5,
+                }
+            )
+        )
+        # 无 aggregate 标记但符合 son/parent 计数签名 -> 仍视为聚合节点
+        self.assertTrue(
+            entity_resolver.is_aggregate_count_asset(
+                make_aggregate_asset(aggregate_flag=False)
+            )
+        )
+
+    def test_regular_assets_keep_main_path_result(self) -> None:
+        """混入聚合节点不得影响主干对常规资产的判定结果。"""
+
+        regular = [
+            make_asset(
+                name="demo",
+                version="1.0",
+                purls=["pkg:pypi/demo@1.0"],
+                marker="left",
+            ),
+            make_asset(
+                name="demo",
+                version="1.0",
+                purls=["pkg:pypi/demo@1.0"],
+                marker="right",
+            ),
+        ]
+        baseline, _ = entity_resolver.deduplicate_assets(
+            [dict(asset) for asset in regular]
+        )
+
+        mixed, _ = entity_resolver.deduplicate_assets(
+            [dict(asset) for asset in regular]
+            + [make_aggregate_asset(), make_aggregate_asset()]
+        )
+
+        regular_only = [
+            asset for asset in mixed if not asset.get("aggregate")
+        ]
+        self.assertEqual(len(regular_only), len(baseline))
+        self.assertEqual(
+            [asset["marker"] for asset in regular_only],
+            [asset["marker"] for asset in baseline],
+        )
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

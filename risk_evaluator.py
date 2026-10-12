@@ -27,16 +27,47 @@ from pathlib import Path
 import license_db
 from build_graph import build_graph, EVIDENCE_ORDER
 
-# 判定严重度（overall 取最严）
-_SEVERITY = {"RISK_CONFIRMED": 3, "RISK_POTENTIAL": 2, "UNDETERMINED": 1}
+# 判定严重度（overall 取最严；SAFE 最低，不参与"最严"竞争）
+_SEVERITY = {
+    "RISK_CONFIRMED": 3,
+    "RISK_POTENTIAL": 2,
+    "UNDETERMINED": 1,
+    "SAFE": 0,
+}
 _DECISION_ZH = {
     "RISK_CONFIRMED": "高风险（红）",
     "RISK_POTENTIAL": "潜在风险（黄）",
+    "SAFE": "安全（绿）",
     "UNDETERMINED": "待确认（灰）",
 }
-# 证据等级 -> 判定
-_KNOWN_LICENSE_DECISION = {"A": "RISK_CONFIRMED", "B": "RISK_POTENTIAL", "C": "UNDETERMINED"}
+# 判定优先级（整体判定按此取最严），SAFE 垫底
+_DECISION_PRIORITY = ["RISK_CONFIRMED", "RISK_POTENTIAL", "UNDETERMINED", "SAFE"]
+
+# 非标/未知协议（有协议文本但规则库不认识，如 qwen-research）：按证据等级降级
 _UNKNOWN_LICENSE_DECISION = {"A": "RISK_POTENTIAL", "B": "RISK_POTENTIAL", "C": "UNDETERMINED"}
+
+# 已知许可证：判定由"许可证本身的风险等级"决定，而不是由证据强弱决定。
+# 宽松许可证（risk_level 1~2，如 MIT/Apache-2.0/BSD-3-Clause）→ 绿灯；
+# 强/网络 copyleft（4~5，如 GPL-3.0/AGPL-3.0）→ 红灯；
+# 弱 copyleft 与 AI 专用限制（3，如 MPL-2.0/LGPL-3.0/CC-BY-NC）→ 按证据分级：
+#   证据 A（官方 API 原值）→ 红灯；证据 B → 黄灯；证据 C → 灰灯。
+_PERMISSIVE_MAX_RISK_LEVEL = 2
+_KNOWN_LICENSE_DECISION_BY_EVIDENCE = {
+    "A": "RISK_CONFIRMED",
+    "B": "RISK_POTENTIAL",
+    "C": "UNDETERMINED",
+}
+
+
+def decision_for_license(risk_level: int | None, ev_level: str) -> str:
+    """已知许可证的三/四态判定：风险等级优先，其次看证据等级。"""
+    if risk_level is None:
+        return "UNDETERMINED"
+    if risk_level <= _PERMISSIVE_MAX_RISK_LEVEL:
+        return "SAFE"
+    if risk_level >= 4:
+        return "RISK_CONFIRMED"
+    return _KNOWN_LICENSE_DECISION_BY_EVIDENCE.get(ev_level, "UNDETERMINED")
 
 
 def _best_evidence_level(evidence_chain: list[dict] | None) -> str:
@@ -61,10 +92,10 @@ def evaluate_node_risk(asset: dict) -> dict:
     has_license_text = bool(license_value and str(license_value).strip())
 
     if known:
-        # 已知许可证：按证据等级给判定（A=确认，B=潜在，C=待确认）
-        decision = _KNOWN_LICENSE_DECISION.get(ev_level, "UNDETERMINED")
+        # 已知许可证：先看许可证自身风险等级（宽松→绿，强 copyleft→红），风险等级 3 再按证据分级。
         risk_level = rule_eval.get("max_risk_level")
         category = rule_eval.get("worst_category", "unknown")
+        decision = decision_for_license(risk_level, ev_level)
         note = "license_recognized"
     elif has_license_text:
         # 非标/未知协议（如 qwen-research）：有协议文本但规则库不认识，按证据降级
@@ -108,22 +139,33 @@ def evaluate_model_risk(assets: list[dict], edges: list[dict]) -> dict:
 
     node_results = [evaluate_node_risk(a) for a in assets]
 
-    # overall 取全图最严判定
-    overall = "UNDETERMINED"
+    # overall 取全图最严判定；全绿时整体为绿灯（不能因为 SAFE 垫底就回落成灰）
+    overall = "SAFE"
     for nr in node_results:
         if _SEVERITY[nr["decision"]] > _SEVERITY[overall]:
             overall = nr["decision"]
 
-    risks = [nr for nr in node_results if nr["decision"] != "UNDETERMINED"]
+    risks = [
+        nr for nr in node_results
+        if nr["decision"] in ("RISK_CONFIRMED", "RISK_POTENTIAL")
+    ]
+    safe = [nr for nr in node_results if nr["decision"] == "SAFE"]
+    undetermined = [nr for nr in node_results if nr["decision"] == "UNDETERMINED"]
     nonstandard = [nr for nr in node_results if nr["note"] == "nonstandard_license"]
+    distribution = {name: 0 for name in _DECISION_PRIORITY}
+    for nr in node_results:
+        distribution[nr["decision"]] = distribution.get(nr["decision"], 0) + 1
 
     return {
         "overall_decision": overall,
         "overall_decision_zh": _DECISION_ZH.get(overall, overall),
         "node_count": node_count,
         "edge_count": edge_count,
+        "decision_distribution": distribution,
         "nodes": node_results,
         "risk_nodes": risks,
+        "safe_nodes": safe,
+        "undetermined_nodes": undetermined,
         "nonstandard_license_nodes": nonstandard,
     }
 
@@ -143,9 +185,21 @@ def main(argv=None) -> None:
     if args.output:
         Path(args.output).write_text(text + "\n", encoding="utf-8")
     print(f"整体判定：{result['overall_decision']}（{result['overall_decision_zh']}）")
-    print(f"节点 {result['node_count']} / 边 {result['edge_count']}；"
-          f"风险节点 {len(result['risk_nodes'])}；非标协议节点 {len(result['nonstandard_license_nodes'])}")
+    print(f"节点 {result['node_count']} / 边 {result['edge_count']}")
+    print("判定分布：")
+    for decision in _DECISION_PRIORITY:
+        count = result["decision_distribution"].get(decision, 0)
+        if count:
+            print(f"  {_DECISION_ZH[decision]:<12} {decision:<16} {count}")
+    print(f"非标协议节点：{len(result['nonstandard_license_nodes'])}")
+    reported: set[str] = set()
     for nr in result["risk_nodes"] + result["nonstandard_license_nodes"]:
+        if nr["decision"] not in ("RISK_CONFIRMED", "RISK_POTENTIAL"):
+            continue
+        key = str(nr.get("canonical_id") or nr.get("name"))
+        if key in reported:
+            continue
+        reported.add(key)
         print(f"  - [{nr['decision']}] {nr['name']} | license={nr['license']} | 证据={nr['evidence_level']}")
 
 

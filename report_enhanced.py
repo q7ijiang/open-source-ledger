@@ -254,7 +254,8 @@ def _format_path(path: list, names: dict) -> str:
 # ---------------------------------------------------------------------------
 
 def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | None,
-                  ev_path: str = "", cert_path: str = "") -> str:
+                  ev_path: str = "", cert_path: str = "",
+                  interval_lines: list[str] | None = None) -> str:
     names_t0 = _load_asset_names(bom_t0)
     names_t1 = _load_asset_names(bom_t1)
     names = {**names_t0, **names_t1}
@@ -264,6 +265,9 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
     L.append("# AI 模型血缘风险传播报告")
     L.append("")
     L.append(f"> 生成时间：{now}")
+    # 对比区间由调用方按 BOM 的 metadata.timestamp 计算后传入（缺时间戳时传「未知」+ 提示）。
+    for line in (interval_lines or []):
+        L.append(line)
     if ev_path:
         L.append(f"> 输入事件：`{ev_path}`" + (f" ｜ 路径证书：`{cert_path}`" if cert_path else ""))
     L.append(f"> 快照：t0 `{bom_t0 or '—'}` → t1 `{bom_t1 or '—'}`")
