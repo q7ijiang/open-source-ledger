@@ -23,7 +23,6 @@ import streamlit.components.v1 as components
 
 ROOT = Path(__file__).resolve().parent
 PY = sys.executable
-ECHARTS_CDN = "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
 
 
 def _run(args: list[str]) -> None:
@@ -45,9 +44,8 @@ def _run(args: list[str]) -> None:
 
 
 def _embed_html(html_path: Path, height: int = 620) -> None:
-    """内嵌 HTML 血缘图；本地 echarts 相对路径在 iframe 内失效，替换为 CDN。"""
+    """内嵌 HTML 血缘图（自包含：echarts 已内联，无任何 CDN / 外部依赖）。"""
     html = html_path.read_text(encoding="utf-8")
-    html = html.replace('src="./echarts.min.js"', 'src="%s"' % ECHARTS_CDN)
     components.html(html, height=height, scrolling=True)
 
 
@@ -134,5 +132,5 @@ else:  # 时间对比
                 p1 = Path(tmp) / "t1_bom.json"
                 p0.write_bytes(f0.getvalue())
                 p1.write_bytes(f1.getvalue())
-            with st.spinner("正在对比血缘变化并生成传播图…"):
-                run_diff(p0, p1)
+                with st.spinner("正在对比血缘变化并生成传播图…"):
+                    run_diff(p0, p1)  # 必须在 tmp 生命周期内调用
