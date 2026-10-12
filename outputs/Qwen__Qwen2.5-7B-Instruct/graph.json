@@ -15,11 +15,11 @@
       "license": "Apache-2.0",
       "evidence_chain": [
         {
-          "evidence_level": "C",
+          "evidence_level": "A",
           "source_api": "modelscope",
           "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
           "source_field": "Data.License",
-          "retrieved_at": "2026-10-10T15:40:40.767438Z",
+          "retrieved_at": "2026-10-12T10:13:41.597171Z",
           "status": "ok",
           "raw_value": "apache-2.0"
         }
@@ -31,8 +31,8 @@
       "hashes": [],
       "scc_id": "scc-0",
       "risk_level": 2,
-      "decision": "UNDETERMINED",
-      "decision_zh": "待确认（灰）"
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）"
     },
     {
       "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Adapters@master",
@@ -48,7 +48,7 @@
           "source_api": "modelscope",
           "source_url": null,
           "source_field": "lineage",
-          "retrieved_at": "2026-10-10T15:40:41.031927Z",
+          "retrieved_at": "2026-10-12T10:13:41.869462Z",
           "status": "ok",
           "raw_value": {
             "LineAgeType": "Adapters",
@@ -81,7 +81,7 @@
           "source_api": "modelscope",
           "source_url": null,
           "source_field": "lineage",
-          "retrieved_at": "2026-10-10T15:40:41.031943Z",
+          "retrieved_at": "2026-10-12T10:13:41.869480Z",
           "status": "ok",
           "raw_value": {
             "LineAgeType": "Finetunes",
@@ -114,7 +114,7 @@
           "source_api": "modelscope",
           "source_url": null,
           "source_field": "lineage",
-          "retrieved_at": "2026-10-10T15:40:41.031949Z",
+          "retrieved_at": "2026-10-12T10:13:41.869486Z",
           "status": "ok",
           "raw_value": {
             "LineAgeType": "Merges",
@@ -147,7 +147,7 @@
           "source_api": "modelscope",
           "source_url": null,
           "source_field": "lineage",
-          "retrieved_at": "2026-10-10T15:40:41.031953Z",
+          "retrieved_at": "2026-10-12T10:13:41.869490Z",
           "status": "ok",
           "raw_value": {
             "LineAgeType": "Quantizations",

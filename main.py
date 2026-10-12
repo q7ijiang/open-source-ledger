@@ -56,10 +56,11 @@ HF_LINEAGE_EDGE_TYPES = {"derived_from", "trained_on"}
 HF_PURL_PREFIX = "pkg:huggingface/"
 MODELSCOPE_PURL_PREFIX = "pkg:modelscope/"
 
-# 三级判定中文标签（与 risk_evaluator 保持一致）
+# 判定中文标签（与 risk_evaluator 保持一致，含绿灯 SAFE）
 _DECISION_ZH = {
     "RISK_CONFIRMED": "高风险（红）",
     "RISK_POTENTIAL": "潜在风险（黄）",
+    "SAFE": "安全（绿）",
     "UNDETERMINED": "待确认（灰）",
 }
 
@@ -333,6 +334,75 @@ def _extract_bom_lineage_edges(
     return merged, edges
 
 
+def _bom_snapshot_timestamp(bom: dict[str, Any]) -> str | None:
+    """读取 BOM 的 metadata.timestamp（兼容字符串与 CycloneDX 对象两种形态）。"""
+    metadata = bom.get("metadata")
+    if not isinstance(metadata, dict):
+        return None
+    value: Any = metadata.get("timestamp")
+    if isinstance(value, dict):
+        value = value.get("timestamp")
+    if value is None:
+        return None
+    text = str(value).strip()
+    return text or None
+
+
+def _format_snapshot_date(raw_timestamp: str | None) -> str:
+    """把 BOM 时间戳格式化为 YYYY-MM-DD；缺失或无法解析返回"未知"。"""
+    if not raw_timestamp:
+        return "未知"
+    text = str(raw_timestamp).strip()
+    if not text:
+        return "未知"
+    # 先按 ISO 8601 解析（含 Z / ±HH:MM 偏移），失败再取前 10 位日期形态。
+    candidate = text[:-1] + "+00:00" if text.endswith(("Z", "z")) else text
+    try:
+        return datetime.fromisoformat(candidate).date().isoformat()
+    except ValueError:
+        pass
+    match = re.match(r"^(\d{4}-\d{2}-\d{2})", text)
+    return match.group(1) if match else "未知"
+
+
+def _snapshot_interval_days(t0_date: str, t1_date: str) -> int | None:
+    """计算两个已格式化日期的间隔天数；任一为"未知"时返回 None。"""
+    if t0_date == "未知" or t1_date == "未知":
+        return None
+    try:
+        start = datetime.fromisoformat(t0_date).date()
+        end = datetime.fromisoformat(t1_date).date()
+    except ValueError:
+        return None
+    return (end - start).days
+
+
+def _diff_interval_lines(before_bom: dict[str, Any], after_bom: dict[str, Any]) -> list[str]:
+    """生成"对比区间"说明行；任一侧缺 metadata.timestamp 时给出"未知"与提示，不报错。"""
+    t0_raw = _bom_snapshot_timestamp(before_bom)
+    t1_raw = _bom_snapshot_timestamp(after_bom)
+    t0_date = _format_snapshot_date(t0_raw)
+    t1_date = _format_snapshot_date(t1_raw)
+
+    lines = [f"> 对比区间：{t0_date} → {t1_date}"]
+    days = _snapshot_interval_days(t0_date, t1_date)
+    if days is not None:
+        lines.append(f"> 间隔天数：{days} 天")
+    missing = [
+        label
+        for label, value in (("t0", t0_raw), ("t1", t1_raw))
+        if not value
+    ]
+    if missing:
+        lines.append(
+            f"> 提示：{'/'.join(missing)} 的 BOM 缺少 metadata.timestamp，"
+            "对比区间显示为「未知」；补齐该字段后即可显示真实区间。"
+        )
+    elif days is None:
+        lines.append("> 提示：BOM 的 metadata.timestamp 无法解析为日期，对比区间显示为「未知」。")
+    return lines
+
+
 def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
     """按现有模块真实签名生成一个快照的资产、边和统计。
 
@@ -366,6 +436,7 @@ def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
         "merge_log": merge_log,
         "evidence_summary": evidence_summary,
         "edges": edges,
+        "snapshot_timestamp": _bom_snapshot_timestamp(bom),
     }
 
 
@@ -614,6 +685,7 @@ def run_diff(before_bom: Path, after_bom: Path, output_path: Path) -> None:
     - report_enhanced.py：渲染中文风险传播报告
     """
     try:
+        import bom_adapter
         import build_graph
         import delta_engine
         import propagation_engine
@@ -642,6 +714,10 @@ def run_diff(before_bom: Path, after_bom: Path, output_path: Path) -> None:
         propagated["path_certificates"],
         str(before_bom),
         str(after_bom),
+        interval_lines=_diff_interval_lines(
+            bom_adapter.load_json(before_bom),
+            bom_adapter.load_json(after_bom),
+        ),
     )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -725,6 +801,13 @@ def _risk_zh(value: Any) -> str:
         4: "4（强 copyleft）",
         5: "5（受限）",
     }.get(level, str(level))
+
+
+def _decision_zh(value: Any) -> str:
+    """判定码 -> 中文标签（含绿灯）；未知码原样返回。"""
+    if not value:
+        return "-"
+    return _DECISION_ZH.get(str(value), str(value))
 
 
 def _enrich_risk_fields(
@@ -852,7 +935,7 @@ def _render_modelscope_report(
             n.get("version"),
             n.get("license"),
             _risk_zh(n.get("risk_level")),
-            n.get("decision_zh") or n.get("decision") or "-",
+            _decision_zh(n.get("decision")),
         ]
         for n in nodes
     ]
@@ -875,7 +958,7 @@ def _render_modelscope_report(
         f"- 扫描模型：`{model}`",
         f"- 生成时间：{_utc_now()}",
         f"- 许可证：**{current.get('license') or '（未识别）'}**",
-        f"- 整体判定：**{_DECISION_ZH.get(overall, overall or '（未判定）')}**",
+        f"- 整体判定：**{_decision_zh(overall) if overall else '（未判定）'}**",
         f"- 血缘图节点数：**{len(nodes)}**，边数：**{len(edges)}**",
         f"- 聚合节点：**{len(aggregate_nodes)}** 个（聚合 {sum(a.get('count', 0) for a in aggregate_nodes)} 个派生/祖先模型）",
         f"- SCC 强连通分量：**{graph.get('scc_count', 0)}**",

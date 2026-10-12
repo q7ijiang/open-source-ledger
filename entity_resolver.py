@@ -724,7 +724,91 @@ def ensure_unique_canonical_ids(assets: list[dict[str, Any]]) -> None:
 def deduplicate_assets(
     assets: list[dict[str, Any]],
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """执行受限传递对齐，并返回去重结果与逐对判定日志。"""
+    """执行受限传递对齐，并返回去重结果与逐对判定日志。
+
+    聚合计数节点（ModelScope SonModels/ParentsModels 降维产物）先由独立分支
+    收敛，再交给主干；分支不参与也不修改主干的判断树。
+    """
+
+    aggregate_assets, regular_assets = _partition_aggregate_assets(assets)
+    deduplicated, merge_log = _deduplicate_regular_assets(regular_assets)
+    collapsed_aggregates = _collapse_aggregate_assets(aggregate_assets)
+    return collapsed_aggregates + deduplicated, merge_log
+
+
+def is_aggregate_count_asset(asset: dict[str, Any]) -> bool:
+    """判断是否为无 purl 的聚合计数节点（如 ModelScope 的 son/parent 计数）。"""
+
+    if asset.get("aggregate") is True:
+        return True
+    if asset.get("purls"):
+        return False
+    if not isinstance(asset.get("count"), int):
+        return False
+    marker = f"{asset.get('entity_key') or ''}{asset.get('canonical_id') or ''}"
+    return ":son:" in marker or ":parent:" in marker
+
+
+def aggregate_collapse_key(asset: dict[str, Any]) -> str:
+    """聚合节点的独立合并键：同一聚合实体的多次出现必须落到同一个键。
+
+    优先用跨版本稳定的 entity_key（如 model:modelscope/ns/model:son:Finetunes），
+    退回 canonical_id（无版本时两者等价）。
+    """
+
+    key = asset.get("entity_key") or asset.get("canonical_id") or ""
+    return f"aggregate:{key}"
+
+
+def _partition_aggregate_assets(
+    assets: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """把输入切成（聚合节点, 常规资产），保持各自原有顺序。"""
+
+    aggregates: list[dict[str, Any]] = []
+    regular: list[dict[str, Any]] = []
+    for asset in assets:
+        (aggregates if is_aggregate_count_asset(asset) else regular).append(asset)
+    return aggregates, regular
+
+
+def _collapse_aggregate_assets(
+    aggregates: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """聚合节点专用收敛：按独立合并键去重，count 累加，不进入主干判断树。"""
+
+    collapsed: list[dict[str, Any]] = []
+    position_by_key: dict[str, int] = {}
+    for asset in aggregates:
+        key = aggregate_collapse_key(asset)
+        position = position_by_key.get(key)
+        if position is None:
+            output_asset = copy.deepcopy(asset)
+            output_asset["merge_status"] = "KEPT_SEPARATE"
+            output_asset["reason_code"] = "NO_MERGE_CANDIDATE"
+            output_asset["rule_version"] = RULE_VERSION
+            position_by_key[key] = len(collapsed)
+            collapsed.append(output_asset)
+            continue
+
+        merged_asset = collapsed[position]
+        merged_asset["aggregate"] = True
+        if isinstance(merged_asset.get("count"), int) and isinstance(asset.get("count"), int):
+            # 同一计数节点的多次出现：不重复累加（重复观测不放大原值）。
+            merged_asset["count"] = max(merged_asset["count"], asset["count"])
+        elif isinstance(asset.get("count"), int):
+            merged_asset["count"] = asset["count"]
+        merged_asset["merge_status"] = "MERGED"
+        merged_asset["reason_code"] = "AGGREGATE_KEY_MATCH"
+        merged_asset["rule_version"] = RULE_VERSION
+        merged_asset["merged_occurrences"] = merged_asset.get("merged_occurrences", 1) + 1
+    return collapsed
+
+
+def _deduplicate_regular_assets(
+    assets: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """主干去重逻辑（原有实现，未改动判断树）。"""
 
     candidate_index_pairs = candidate_pairs(assets)
     parent = list(range(len(assets)))

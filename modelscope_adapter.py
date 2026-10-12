@@ -31,8 +31,12 @@ API_BASE = "https://www.modelscope.cn/api/v1"
 REQUEST_TIMEOUT_SECONDS = 20.0
 RULE_VERSION = "merge-policy-v2"
 
-# 证据等级（任务约定）：许可证为非标文本推断 -> C；血缘为官方 API 但聚合计数 -> B。
-LICENSE_EVIDENCE_LEVEL = "C"
+# 证据等级（2026-10-12 A 最终口径）：
+#   A = "搬运"：ModelScope 官方 API 直接返回的字段值（如 Data.LicenseName）原样保留，不是推断也不是重构；
+#   B = "推导"：工具基于 API 数据计算/聚合/重组出来的东西（如 derived_from 血缘边、聚合计数节点）；
+#   C = "推断"：API 没给、由模型卡文本正则匹配猜出来的。
+# 因此许可证字段值 = A，血缘边 / 聚合节点 = B。
+LICENSE_EVIDENCE_LEVEL = "A"
 LINEAGE_EVIDENCE_LEVEL = "B"
 
 # 常见许可证别名 -> SPDX id；不在表内的按非标文本用 name 承载（如 qwen-research）。
@@ -168,7 +172,7 @@ def map_license(
     data: dict[str, Any],
     source_url: str | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], str | None]:
-    """把 ModelScope 详情映射为 CycloneDX 许可证对象 + C 级证据链，返回展示名。"""
+    """把 ModelScope 详情映射为 CycloneDX 许可证对象 + A 级证据链，返回展示名。"""
     license_value, field = license_name_of(data)
     if not license_value:
         return [], [], None
