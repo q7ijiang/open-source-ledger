@@ -280,7 +280,7 @@ def export_bom(
         "specVersion": "1.7",
         "version": 1,
         "metadata": {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now().astimezone().isoformat(),
         },
         "components": components,
         "dependencies": dependencies,
