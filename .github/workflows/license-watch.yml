@@ -1,0 +1,187 @@
+# ModelScope License Risk Watch
+#
+# 这个 workflow 面向最终使用本工具的用户仓库，不是 open-source-ledger 开发仓库。
+# 用户需要在 GitHub 仓库的 Settings -> Secrets and variables -> Actions 中配置 MODELSCOPE_API_KEY。
+# 默认 cron 为每周一 02:00 UTC，用户可按自己的扫描频率自行修改。
+# 首次运行时缓存中没有历史 BOM，因此会跳过 diff，只建立基线快照。
+
+name: ModelScope License Risk Watch
+
+on:
+  schedule:
+    # GitHub Actions cron 使用 UTC；02:00 UTC = 北京时间 10:00。
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  fork-pr-notice:
+    name: Fork PR notice
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain skipped scan
+        shell: bash
+        run: |
+          echo "::warning::Fork PR 无法读取仓库 Secrets；为避免泄露 MODELSCOPE_API_KEY，本次许可证风险扫描已跳过。"
+
+  license-watch:
+    name: Scan and compare license snapshot
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out user repository
+        uses: actions/checkout@v4
+
+      - name: Check out open-source-ledger
+        uses: actions/checkout@v4
+        with:
+          repository: q7ijiang/open-source-ledger
+          ref: main
+          path: .license-watch-tool
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Validate ModelScope API key
+        env:
+          MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
+        shell: bash
+        run: |
+          if [ -z "${MODELSCOPE_API_KEY:-}" ]; then
+            echo "::error::未配置 MODELSCOPE_API_KEY。请在 Settings -> Secrets and variables -> Actions 中添加仓库 Secret。"
+            exit 1
+          fi
+
+      - name: Install Python dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r .license-watch-tool/requirements.txt
+
+      - name: Prepare snapshot cache key
+        id: snapshot-key
+        shell: bash
+        run: echo "date=$(date -u +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+
+      - name: Restore previous BOM snapshot
+        id: snapshot-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .license-watch-cache/latest_bom.json
+          key: license-watch-snapshot-${{ steps.snapshot-key.outputs.date }}
+          restore-keys: |
+            license-watch-snapshot-
+
+      - name: Restore previous BOM as t0
+        id: previous-snapshot
+        shell: bash
+        run: |
+          if [ -f .license-watch-cache/latest_bom.json ]; then
+            mv .license-watch-cache/latest_bom.json prev_bom.json
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            echo "已恢复上一次 BOM 快照：prev_bom.json"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "缓存中没有历史 BOM，本次仅建立基线。"
+          fi
+
+      - name: Scan current project and create t1 BOM
+        id: scan
+        env:
+          MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
+          PYTHONUTF8: '1'
+          PYTHONIOENCODING: utf-8
+        shell: bash
+        run: |
+          mkdir -p outputs
+          python .license-watch-tool/main.py \
+            --project "$GITHUB_WORKSPACE" \
+            --output outputs/watch_report.md
+
+          BOM_PATH="$(find .license-watch-tool/outputs -type f -name bom.json | head -n 1)"
+          if [ -z "$BOM_PATH" ]; then
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::项目扫描未生成 bom.json。请检查项目路径、ModelScope 模型标识和 MODELSCOPE_API_KEY；本次跳过 diff 和风险检测。"
+            exit 0
+          fi
+
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          cp "$BOM_PATH" latest_bom.json
+          echo "已将最新 BOM 复制为 latest_bom.json：$BOM_PATH"
+
+      - name: Create first-run baseline report
+        if: steps.scan.outputs.found == 'true' && steps.previous-snapshot.outputs.found != 'true'
+        shell: bash
+        run: |
+          mkdir -p outputs
+          printf '%s\n' \
+            '# AI 模型血缘风险传播报告' \
+            '' \
+            '> 对比区间：无（首次运行只建立基线）' \
+            '> 状态：缓存中没有历史 BOM，本次已跳过 diff。' \
+            '' \
+            '后续运行会将本次 BOM 作为 t0，与新的项目扫描结果进行对比。' \
+            > outputs/diff_report.md
+
+      - name: Compare previous and latest BOM
+        if: steps.scan.outputs.found == 'true' && steps.previous-snapshot.outputs.found == 'true'
+        env:
+          PYTHONUTF8: '1'
+          PYTHONIOENCODING: utf-8
+        shell: bash
+        run: |
+          python .license-watch-tool/main.py \
+            --diff \
+            --before prev_bom.json \
+            --after latest_bom.json \
+            --output outputs/diff_report.md
+
+          if ! grep -q '对比区间' outputs/diff_report.md; then
+            echo "::error::diff_report.md 缺少「对比区间」说明行。"
+            exit 1
+          fi
+
+      - name: Detect confirmed license risk
+        id: risk-check
+        if: steps.scan.outputs.found == 'true'
+        shell: bash
+        run: |
+          # 只检查正文风险记录，排除报告末尾固定说明表中的 RISK_CONFIRMED，避免误报。
+          CONFIRMED_LINES="$(awk '/^## .*证据等级与判定说明/ {exit} {print}' outputs/diff_report.md | grep -F 'RISK_CONFIRMED' || true)"
+          if [ -n "$CONFIRMED_LINES" ]; then
+            printf '%s\n' "$CONFIRMED_LINES"
+            echo "::error::检测到 RISK_CONFIRMED，许可证风险检查未通过，阻断本次 PR 合并。"
+            exit 1
+          fi
+          echo "未检测到 RISK_CONFIRMED，许可证风险检查通过。"
+
+      - name: Stage latest BOM for cache
+        if: success() && steps.scan.outputs.found == 'true'
+        shell: bash
+        run: |
+          mkdir -p .license-watch-cache
+          cp latest_bom.json .license-watch-cache/latest_bom.json
+
+      - name: Save latest BOM snapshot
+        if: success() && steps.scan.outputs.found == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .license-watch-cache/latest_bom.json
+          key: license-watch-snapshot-${{ steps.snapshot-key.outputs.date }}
+
+      - name: Upload license report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-report
+          path: |
+            outputs/diff_report.md
+            outputs/watch_report.md
+          if-no-files-found: warn
