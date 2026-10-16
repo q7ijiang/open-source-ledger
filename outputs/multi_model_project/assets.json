@@ -11,11 +11,11 @@
     "license": "Apache-2.0",
     "evidence_chain": [
       {
-        "evidence_level": "C",
+        "evidence_level": "A",
         "source_api": "modelscope",
         "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
         "source_field": "Data.License",
-        "retrieved_at": "2026-10-10T15:41:09.951229Z",
+        "retrieved_at": "2026-10-13T15:39:13.175733Z",
         "status": "ok",
         "raw_value": "apache-2.0"
       }
@@ -27,8 +27,8 @@
     "hashes": [],
     "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
     "risk_level": 2,
-    "decision": "UNDETERMINED",
-    "decision_zh": "待确认（灰）",
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
     "license_recognized": true,
     "risk_note": "license_recognized"
   },
@@ -46,7 +46,7 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T15:41:10.221775Z",
+        "retrieved_at": "2026-10-13T15:39:13.436381Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Adapters",
@@ -83,7 +83,7 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T15:41:10.221792Z",
+        "retrieved_at": "2026-10-13T15:39:13.436396Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Finetunes",
@@ -120,7 +120,7 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T15:41:10.221798Z",
+        "retrieved_at": "2026-10-13T15:39:13.436402Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Merges",
@@ -157,7 +157,7 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T15:41:10.221803Z",
+        "retrieved_at": "2026-10-13T15:39:13.436407Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Quantizations",
@@ -192,11 +192,11 @@
     "license": "Apache-2.0",
     "evidence_chain": [
       {
-        "evidence_level": "C",
+        "evidence_level": "A",
         "source_api": "modelscope",
         "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B",
         "source_field": "Data.License",
-        "retrieved_at": "2026-10-10T15:41:10.688759Z",
+        "retrieved_at": "2026-10-13T15:39:13.980338Z",
         "status": "ok",
         "raw_value": "apache-2.0"
       }
@@ -208,8 +208,8 @@
     "hashes": [],
     "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B",
     "risk_level": 2,
-    "decision": "UNDETERMINED",
-    "decision_zh": "待确认（灰）",
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
     "license_recognized": true,
     "risk_note": "license_recognized"
   },
@@ -227,7 +227,7 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T15:41:10.951828Z",
+        "retrieved_at": "2026-10-13T15:39:14.252512Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Adapters",
@@ -254,7 +254,7 @@
     "entity_key": "model:modelscope/Qwen/Qwen3-8B:son:Finetunes",
     "canonical_id": "model:modelscope/Qwen/Qwen3-8B:son:Finetunes@master",
     "asset_type": "model",
-    "name": "Qwen/Qwen3-8B · 微调 (Total: 551)",
+    "name": "Qwen/Qwen3-8B · 微调 (Total: 552)",
     "version": "master",
     "purls": [],
     "license": null,
@@ -264,12 +264,12 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T15:41:10.951845Z",
+        "retrieved_at": "2026-10-13T15:39:14.252525Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Finetunes",
           "LineAgeTypeCh": "微调",
-          "Total": 551
+          "Total": 552
         }
       }
     ],
@@ -280,7 +280,7 @@
     "hashes": [],
     "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B",
     "aggregate": true,
-    "count": 551,
+    "count": 552,
     "risk_level": null,
     "decision": "UNDETERMINED",
     "decision_zh": "待确认（灰）",
@@ -301,7 +301,7 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T15:41:10.951851Z",
+        "retrieved_at": "2026-10-13T15:39:14.252530Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Merges",
@@ -338,7 +338,7 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T15:41:10.951859Z",
+        "retrieved_at": "2026-10-13T15:39:14.252535Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Quantizations",
@@ -398,7 +398,7 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T15:41:11.634201Z",
+        "retrieved_at": "2026-10-13T15:39:14.931072Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Quantizations",

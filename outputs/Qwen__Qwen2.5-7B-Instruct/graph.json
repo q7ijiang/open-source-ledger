@@ -19,7 +19,7 @@
           "source_api": "modelscope",
           "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
           "source_field": "Data.License",
-          "retrieved_at": "2026-10-12T10:13:41.597171Z",
+          "retrieved_at": "2026-10-13T15:39:05.606584Z",
           "status": "ok",
           "raw_value": "apache-2.0"
         }
@@ -48,7 +48,7 @@
           "source_api": "modelscope",
           "source_url": null,
           "source_field": "lineage",
-          "retrieved_at": "2026-10-12T10:13:41.869462Z",
+          "retrieved_at": "2026-10-13T15:39:05.885829Z",
           "status": "ok",
           "raw_value": {
             "LineAgeType": "Adapters",
@@ -81,7 +81,7 @@
           "source_api": "modelscope",
           "source_url": null,
           "source_field": "lineage",
-          "retrieved_at": "2026-10-12T10:13:41.869480Z",
+          "retrieved_at": "2026-10-13T15:39:05.885844Z",
           "status": "ok",
           "raw_value": {
             "LineAgeType": "Finetunes",
@@ -114,7 +114,7 @@
           "source_api": "modelscope",
           "source_url": null,
           "source_field": "lineage",
-          "retrieved_at": "2026-10-12T10:13:41.869486Z",
+          "retrieved_at": "2026-10-13T15:39:05.885851Z",
           "status": "ok",
           "raw_value": {
             "LineAgeType": "Merges",
@@ -147,7 +147,7 @@
           "source_api": "modelscope",
           "source_url": null,
           "source_field": "lineage",
-          "retrieved_at": "2026-10-12T10:13:41.869490Z",
+          "retrieved_at": "2026-10-13T15:39:05.885855Z",
           "status": "ok",
           "raw_value": {
             "LineAgeType": "Quantizations",

@@ -11,11 +11,11 @@
     "license": "qwen-research",
     "evidence_chain": [
       {
-        "evidence_level": "C",
+        "evidence_level": "A",
         "source_api": "modelscope",
         "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
         "source_field": "Data.LicenseName",
-        "retrieved_at": "2026-10-10T16:34:14.574894Z",
+        "retrieved_at": "2026-10-13T15:38:44.222629Z",
         "status": "ok",
         "raw_value": "qwen-research"
       }
@@ -27,8 +27,8 @@
     "hashes": [],
     "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
     "risk_level": null,
-    "decision": "UNDETERMINED",
-    "decision_zh": "待确认（灰）",
+    "decision": "RISK_POTENTIAL",
+    "decision_zh": "潜在风险（黄）",
     "license_recognized": false,
     "risk_note": "nonstandard_license"
   },
@@ -36,7 +36,7 @@
     "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1:son:Adapters",
     "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1:son:Adapters@master",
     "asset_type": "model",
-    "name": "Qwen/Qwen-Image-2.1 · 适配 (Total: 2095)",
+    "name": "Qwen/Qwen-Image-2.1 · 适配 (Total: 2320)",
     "version": "master",
     "purls": [],
     "license": null,
@@ -46,12 +46,12 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T16:34:14.855669Z",
+        "retrieved_at": "2026-10-13T15:38:44.527590Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Adapters",
           "LineAgeTypeCh": "适配",
-          "Total": 2095
+          "Total": 2320
         }
       }
     ],
@@ -62,7 +62,7 @@
     "hashes": [],
     "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
     "aggregate": true,
-    "count": 2095,
+    "count": 2320,
     "risk_level": null,
     "decision": "UNDETERMINED",
     "decision_zh": "待确认（灰）",
@@ -73,7 +73,7 @@
     "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1:son:Finetunes",
     "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1:son:Finetunes@master",
     "asset_type": "model",
-    "name": "Qwen/Qwen-Image-2.1 · 微调 (Total: 23)",
+    "name": "Qwen/Qwen-Image-2.1 · 微调 (Total: 22)",
     "version": "master",
     "purls": [],
     "license": null,
@@ -83,12 +83,12 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T16:34:14.855685Z",
+        "retrieved_at": "2026-10-13T15:38:44.527605Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Finetunes",
           "LineAgeTypeCh": "微调",
-          "Total": 23
+          "Total": 22
         }
       }
     ],
@@ -99,7 +99,7 @@
     "hashes": [],
     "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
     "aggregate": true,
-    "count": 23,
+    "count": 22,
     "risk_level": null,
     "decision": "UNDETERMINED",
     "decision_zh": "待确认（灰）",
@@ -120,7 +120,7 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T16:34:14.855692Z",
+        "retrieved_at": "2026-10-13T15:38:44.527611Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Quantizations",

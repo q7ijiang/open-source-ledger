@@ -1,11 +1,11 @@
 # 项目 ModelScope 模型血缘扫描报告
 
 - 项目路径：`example\multi_model_project`
-- 生成时间：2026-10-10T15:41:12Z
+- 生成时间：2026-10-13T15:39:15Z
 - 识别模型数：**3**
 - 合并血缘图节点数：**12**，边数：**9**
 - SCC 强连通分量：**12**
-- 本报告生成：**成功**（流水线耗时 4.0s）
+- 本报告生成：**成功**（流水线耗时 3.7s）
 
 ## 一、项目识别出的 ModelScope 模型（来源文件）
 
@@ -26,7 +26,7 @@
 | model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Quantizations@master | model | Qwen/Qwen2.5-7B-Instruct · 量化 (Total: 50) | master | - |
 | model:modelscope/Qwen/Qwen3-8B@master | model | Qwen/Qwen3-8B | master | Apache-2.0 |
 | model:modelscope/Qwen/Qwen3-8B:son:Adapters@master | model | Qwen/Qwen3-8B · 适配 (Total: 20) | master | - |
-| model:modelscope/Qwen/Qwen3-8B:son:Finetunes@master | model | Qwen/Qwen3-8B · 微调 (Total: 551) | master | - |
+| model:modelscope/Qwen/Qwen3-8B:son:Finetunes@master | model | Qwen/Qwen3-8B · 微调 (Total: 552) | master | - |
 | model:modelscope/Qwen/Qwen3-8B:son:Merges@master | model | Qwen/Qwen3-8B · 合并 (Total: 14) | master | - |
 | model:modelscope/Qwen/Qwen3-8B:son:Quantizations@master | model | Qwen/Qwen3-8B · 量化 (Total: 127) | master | - |
 | model:modelscope/XingChen-AGI/TeleOCR@master | model | XingChen-AGI/TeleOCR | master | - |

@@ -36,7 +36,7 @@
         "source_api": "modelscope",
         "source_url": null,
         "source_field": "lineage",
-        "retrieved_at": "2026-10-10T15:40:58.225976Z",
+        "retrieved_at": "2026-10-13T15:39:09.402968Z",
         "status": "ok",
         "raw_value": {
           "LineAgeType": "Quantizations",
