@@ -93,7 +93,6 @@ jobs:
           fi
 
       - name: Scan current project and create t1 BOM
-        id: scan
         env:
           MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
           PYTHONUTF8: '1'
@@ -105,19 +104,17 @@ jobs:
             --project "$GITHUB_WORKSPACE" \
             --output outputs/watch_report.md
 
-          BOM_PATH="$(find .license-watch-tool/outputs -type f -name bom.json | head -n 1)"
+          BOM_PATH="$(find .license-watch-tool/outputs -type f -name bom.json -printf '%T@ %p\n' | sort -nr | head -n 1 | cut -d' ' -f2-)"
           if [ -z "$BOM_PATH" ]; then
-            echo "found=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::项目扫描未生成 bom.json。请检查项目路径、ModelScope 模型标识和 MODELSCOPE_API_KEY；本次跳过 diff 和风险检测。"
-            exit 0
+            echo "::error::项目扫描未生成 bom.json。请检查项目路径、ModelScope 模型标识和 MODELSCOPE_API_KEY。"
+            exit 1
           fi
 
-          echo "found=true" >> "$GITHUB_OUTPUT"
           cp "$BOM_PATH" latest_bom.json
           echo "已将最新 BOM 复制为 latest_bom.json：$BOM_PATH"
 
       - name: Create first-run baseline report
-        if: steps.scan.outputs.found == 'true' && steps.previous-snapshot.outputs.found != 'true'
+        if: steps.previous-snapshot.outputs.found != 'true'
         shell: bash
         run: |
           mkdir -p outputs
@@ -131,7 +128,7 @@ jobs:
             > outputs/diff_report.md
 
       - name: Compare previous and latest BOM
-        if: steps.scan.outputs.found == 'true' && steps.previous-snapshot.outputs.found == 'true'
+        if: steps.previous-snapshot.outputs.found == 'true'
         env:
           PYTHONUTF8: '1'
           PYTHONIOENCODING: utf-8
@@ -143,14 +140,13 @@ jobs:
             --after latest_bom.json \
             --output outputs/diff_report.md
 
-          if ! grep -q '对比区间' outputs/diff_report.md; then
+          if ! grep -q '^> 对比区间：' outputs/diff_report.md; then
             echo "::error::diff_report.md 缺少「对比区间」说明行。"
             exit 1
           fi
 
       - name: Detect confirmed license risk
         id: risk-check
-        if: steps.scan.outputs.found == 'true'
         shell: bash
         run: |
           # 只检查正文风险记录，排除报告末尾固定说明表中的 RISK_CONFIRMED，避免误报。
@@ -163,14 +159,14 @@ jobs:
           echo "未检测到 RISK_CONFIRMED，许可证风险检查通过。"
 
       - name: Stage latest BOM for cache
-        if: success() && steps.scan.outputs.found == 'true'
+        if: success()
         shell: bash
         run: |
           mkdir -p .license-watch-cache
           cp latest_bom.json .license-watch-cache/latest_bom.json
 
       - name: Save latest BOM snapshot
-        if: success() && steps.scan.outputs.found == 'true'
+        if: success()
         uses: actions/cache/save@v4
         with:
           path: .license-watch-cache/latest_bom.json
