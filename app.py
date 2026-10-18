@@ -134,5 +134,5 @@ else:  # 时间对比
                 p1 = Path(tmp) / "t1_bom.json"
                 p0.write_bytes(f0.getvalue())
                 p1.write_bytes(f1.getvalue())
-            with st.spinner("正在对比血缘变化并生成传播图…"):
-                run_diff(p0, p1)
+                with st.spinner("正在对比血缘变化并生成传播图…"):
+                    run_diff(p0, p1)
