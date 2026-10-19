@@ -149,6 +149,7 @@ activemq-data/
 
 # Environments
 .env
+.env.*
 .envrc
 .venv
 env/
@@ -234,6 +235,7 @@ node_modules/
 
 # 本地运行产物
 outputs/
+out/
 
 # 隔离安装的第三方测试依赖
 work/task4_deps/
@@ -259,6 +261,9 @@ work/fetch_real_projects*.py
 
 # 其他临时 JSON
 work/*.json
+
+# 大型扫描产物（可由 scan_cross_ecosystem.py 重新生成）
+data/cross_ecosystem_candidates.json
 
 # 工作空间清理追加规则
 work/*
