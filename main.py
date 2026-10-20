@@ -52,9 +52,6 @@ CHANGE_TYPE_ZH = {
     "evidence_downgrade": "证据等级下降",
 }
 
-HF_MODEL_TYPES = {"machine-learning-model", "model"}
-HF_LINEAGE_EDGE_TYPES = {"derived_from", "trained_on"}
-HF_PURL_PREFIX = "pkg:huggingface/"
 MODELSCOPE_PURL_PREFIX = "pkg:modelscope/"
 
 # 判定中文标签（与 risk_evaluator 保持一致，含绿灯 SAFE）
@@ -775,14 +772,14 @@ def _probe_modelscope(model: str) -> bool | None:
     return detail is not None
 
 
-def _run_hf_model(args: argparse.Namespace, model: str, root: Path) -> None:
-    """HF 回退逻辑已隔离：本工具不再支持 Hugging Face 旧链路。
+# Deprecated: Only for legacy platform compatibility.
+def _run_legacy_fallback(args: argparse.Namespace, model: str, root: Path) -> None:
+    """拦截旧平台回退请求，确保失败时不会产生假绿结果。
 
-    必须抛错而不是静默 return：静默返回会让调用方（含 GitHub Action）
-    以 0 退出码"成功"，但实际没有产出任何报告，形成假绿。
+    本工具只支持 ModelScope；调用方必须收到明确错误，而不是被静默忽略。
     """
     raise RuntimeError(
-        f"模型 {model} 无法在 ModelScope 检索；本工具已移除 HF 回退逻辑。"
+        f"模型 {model} 无法在 ModelScope 检索；本工具已移除旧平台回退逻辑。"
         "请改用 ModelScope 上的模型名，例如 Qwen/Qwen2.5-0.5B-Instruct。"
     )
 
@@ -917,10 +914,10 @@ def run_model(args: argparse.Namespace) -> None:
     if is_modelscope is True:
         _run_modelscope_model(args, model, root)
     elif is_modelscope is False:
-        _run_hf_model(args, model, root)
+        _run_legacy_fallback(args, model, root)
     else:
         print("提示：ModelScope 探测因网络异常失败。", file=sys.stderr)
-        _run_hf_model(args, model, root)
+        _run_legacy_fallback(args, model, root)
 
 
 def _render_modelscope_report(
