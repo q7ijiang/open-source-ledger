@@ -2,23 +2,23 @@
   "events": [
     {
       "event_id": "evt-20261011-001",
-      "seed": "model:huggingface/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590",
+      "seed": "model:modelscope/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590",
       "change_type": "license_changed",
       "before": {
-        "canonical_id": "model:huggingface/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590",
-        "entity_key": "model:huggingface/meta-llama/Llama-2-7b",
+        "canonical_id": "model:modelscope/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590",
+        "entity_key": "model:modelscope/meta-llama/Llama-2-7b",
         "license": "Apache-2.0",
-        "purls": ["pkg:huggingface/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590"],
+        "purls": ["pkg:modelscope/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590"],
         "snapshot_id": "t0",
         "merge_status": "KEPT_SEPARATE",
         "reason_code": "LICENSE_ALIGNED",
         "rule_version": "merge-policy-v2"
       },
       "after": {
-        "canonical_id": "model:huggingface/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590",
-        "entity_key": "model:huggingface/meta-llama/Llama-2-7b",
+        "canonical_id": "model:modelscope/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590",
+        "entity_key": "model:modelscope/meta-llama/Llama-2-7b",
         "license": "Llama-2-Community",
-        "purls": ["pkg:huggingface/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590"],
+        "purls": ["pkg:modelscope/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590"],
         "snapshot_id": "t1",
         "merge_status": "KEPT_SEPARATE",
         "reason_code": "LICENSE_CHANGED",
@@ -26,15 +26,15 @@
       },
       "path": [
         {
-          "source": "model:huggingface/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590",
-          "target": "model:huggingface/student-org/llama2-finetune-demo@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+          "source": "model:modelscope/meta-llama/Llama-2-7b@f5db02db724555f92da89c216ac04704f23d4590",
+          "target": "model:modelscope/student-org/llama2-finetune-demo@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
           "edge_type": "derived_from",
           "evidence_level": "B",
           "source_field": "pedigree.ancestors"
         },
         {
-          "source": "model:huggingface/student-org/llama2-finetune-demo@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
-          "target": "model:huggingface/student-org/llama2-chat-demo@e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4",
+          "source": "model:modelscope/student-org/llama2-finetune-demo@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+          "target": "model:modelscope/student-org/llama2-chat-demo@e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4",
           "edge_type": "derived_from",
           "evidence_level": "B",
           "source_field": "pedigree.ancestors"
@@ -45,23 +45,23 @@
     },
     {
       "event_id": "evt-20261011-002",
-      "seed": "dataset:huggingface/student-org/instruction-dataset@v1",
+      "seed": "dataset:modelscope/student-org/instruction-dataset@v1",
       "change_type": "license_changed",
       "before": {
-        "canonical_id": "dataset:huggingface/student-org/instruction-dataset@v1",
-        "entity_key": "dataset:huggingface/student-org/instruction-dataset",
+        "canonical_id": "dataset:modelscope/student-org/instruction-dataset@v1",
+        "entity_key": "dataset:modelscope/student-org/instruction-dataset",
         "license": "CC-BY-4.0",
-        "purls": ["pkg:huggingface/student-org/instruction-dataset@v1"],
+        "purls": ["pkg:modelscope/student-org/instruction-dataset@v1"],
         "snapshot_id": "t0",
         "merge_status": "KEPT_SEPARATE",
         "reason_code": "LICENSE_ALIGNED",
         "rule_version": "merge-policy-v2"
       },
       "after": {
-        "canonical_id": "dataset:huggingface/student-org/instruction-dataset@v1",
-        "entity_key": "dataset:huggingface/student-org/instruction-dataset",
+        "canonical_id": "dataset:modelscope/student-org/instruction-dataset@v1",
+        "entity_key": "dataset:modelscope/student-org/instruction-dataset",
         "license": "CC-BY-NC-4.0",
-        "purls": ["pkg:huggingface/student-org/instruction-dataset@v1"],
+        "purls": ["pkg:modelscope/student-org/instruction-dataset@v1"],
         "snapshot_id": "t1",
         "merge_status": "KEPT_SEPARATE",
         "reason_code": "LICENSE_CHANGED",
@@ -69,8 +69,8 @@
       },
       "path": [
         {
-          "source": "dataset:huggingface/student-org/instruction-dataset@v1",
-          "target": "model:huggingface/student-org/llama2-finetune-demo@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+          "source": "dataset:modelscope/student-org/instruction-dataset@v1",
+          "target": "model:modelscope/student-org/llama2-finetune-demo@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
           "edge_type": "trained_on",
           "evidence_level": "B",
           "source_field": "modelCard.modelParameters.datasets"
@@ -81,23 +81,23 @@
     },
     {
       "event_id": "evt-20261011-003",
-      "seed": "model:huggingface/student-org/llama2-chat-demo@main",
+      "seed": "model:modelscope/student-org/llama2-chat-demo@main",
       "change_type": "version_upgraded",
       "before": {
-        "canonical_id": "model:huggingface/student-org/llama2-chat-demo@main",
-        "entity_key": "model:huggingface/student-org/llama2-chat-demo",
+        "canonical_id": "model:modelscope/student-org/llama2-chat-demo@main",
+        "entity_key": "model:modelscope/student-org/llama2-chat-demo",
         "license": "Llama-2-Community",
-        "purls": ["pkg:huggingface/student-org/llama2-chat-demo@main"],
+        "purls": ["pkg:modelscope/student-org/llama2-chat-demo@main"],
         "snapshot_id": "t0",
         "merge_status": "MERGED",
         "reason_code": "PURL_COORDINATE_EXACT",
         "rule_version": "merge-policy-v2"
       },
       "after": {
-        "canonical_id": "model:huggingface/student-org/llama2-chat-demo@e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4",
-        "entity_key": "model:huggingface/student-org/llama2-chat-demo",
+        "canonical_id": "model:modelscope/student-org/llama2-chat-demo@e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4",
+        "entity_key": "model:modelscope/student-org/llama2-chat-demo",
         "license": "Llama-2-Community",
-        "purls": ["pkg:huggingface/student-org/llama2-chat-demo@e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4"],
+        "purls": ["pkg:modelscope/student-org/llama2-chat-demo@e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4"],
         "snapshot_id": "t1",
         "merge_status": "MERGED",
         "reason_code": "PURL_COORDINATE_EXACT",
@@ -111,7 +111,7 @@
   "path_certificates": [
     {
       "certificate_id": "cert-001",
-      "affected": "model:huggingface/student-org/llama2-chat-demo@e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4",
+      "affected": "model:modelscope/student-org/llama2-chat-demo@e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4",
       "change_type": "license_changed",
       "hop_count": 2,
       "weakest_evidence": "B",
@@ -122,7 +122,7 @@
     },
     {
       "certificate_id": "cert-002",
-      "affected": "model:huggingface/student-org/llama2-finetune-demo@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+      "affected": "model:modelscope/student-org/llama2-finetune-demo@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
       "change_type": "license_changed",
       "hop_count": 1,
       "weakest_evidence": "A",
@@ -133,7 +133,7 @@
     },
     {
       "certificate_id": "cert-003",
-      "affected": "model:huggingface/student-org/llama2-chat-demo@e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4",
+      "affected": "model:modelscope/student-org/llama2-chat-demo@e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4",
       "change_type": "ancestor_removed",
       "hop_count": 0,
       "weakest_evidence": "C",

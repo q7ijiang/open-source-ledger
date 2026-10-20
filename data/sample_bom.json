@@ -5788,7 +5788,7 @@
       "group": "ai",
       "name": "bert-base-uncased",
       "version": "main",
-      "purl": "pkg:huggingface/bert-base-uncased@main",
+      "purl": "pkg:modelscope/bert-base-uncased@main",
       "type": "machine-learning-model",
       "licenses": [
         {
@@ -5896,7 +5896,7 @@
       "group": "ai",
       "name": "bert-base-uncased",
       "version": "main",
-      "purl": "pkg:huggingface/bert-base-uncased@main",
+      "purl": "pkg:modelscope/bert-base-uncased@main",
       "type": "machine-learning-model",
       "licenses": [
         {
