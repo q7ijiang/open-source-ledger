@@ -30,7 +30,7 @@ DECISION_LABEL = {
     "SAFE": "安全（绿灯）",
     "UNDETERMINED": "待确认（灰）",
 }
-ECOSYSTEM_LABEL = {"modelscope": "ModelScope", "huggingface": "HuggingFace"}
+ECOSYSTEM_LABEL = {"modelscope": "ModelScope"}
 
 TPL = """<!DOCTYPE html>
 <html lang="zh-CN">
