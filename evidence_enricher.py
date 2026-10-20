@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""为资产补充 PyPI、npm 和 Hugging Face 远程证据。
+"""为资产补充 PyPI、npm 和 ModelScope 远程证据。
 
 输入为 entity_resolver.py 的 assets_deduplicated.json，也兼容 bom_adapter.py
 直接生成的 assets.json。脚本遵循以下降级策略：
@@ -38,7 +38,7 @@ BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_INPUT_PATH = BASE_DIR / "outputs" / "assets_deduplicated.json"
 DEFAULT_OUTPUT_PATH = BASE_DIR / "outputs" / "assets_enriched.json"
 REQUEST_TIMEOUT_SECONDS = 3.0
-SUPPORTED_PURL_TYPES = {"pypi", "npm", "huggingface", "modelscope"}
+SUPPORTED_PURL_TYPES = {"pypi", "npm", "modelscope"}
 
 
 def load_assets(path: Path) -> list[dict[str, Any]]:
@@ -143,8 +143,7 @@ def parse_purl(purl: str) -> dict[str, str] | None:
         encoded_name = quote(package_name, safe="/")
         source_url = f"https://www.modelscope.cn/api/v1/models/{encoded_name}"
     else:
-        encoded_name = quote(package_name, safe="/")
-        source_url = f"https://huggingface.co/api/models/{encoded_name}"
+        return None
 
     return {
         "source_api": purl_type,
@@ -234,28 +233,6 @@ def extract_npm_license(
     return "license", license_value, "missing"
 
 
-def extract_huggingface_license(
-    payload: dict[str, Any],
-) -> tuple[str, Any, str]:
-    """提取 Hugging Face cardData.license 或 tags 中的许可证。"""
-
-    card_data = payload.get("cardData")
-    if isinstance(card_data, dict):
-        license_value = card_data.get("license")
-        if is_meaningful_value(license_value):
-            return "cardData.license", license_value, "ok"
-
-    for tag in as_list(payload.get("tags")):
-        text = clean_text(tag)
-        if text and text.lower().startswith("license:"):
-            return "tags", text.split(":", 1)[1], "ok"
-
-    license_value = payload.get("license")
-    if is_meaningful_value(license_value):
-        return "license", license_value, "ok"
-    return "cardData.license", license_value, "missing"
-
-
 def extract_modelscope_license(
     payload: dict[str, Any],
 ) -> tuple[str, Any, str]:
@@ -285,7 +262,7 @@ def extract_license(
         return extract_npm_license(payload, version)
     if source_api == "modelscope":
         return extract_modelscope_license(payload)
-    return extract_huggingface_license(payload)
+    raise ValueError(f"不支持的证据来源：{source_api}")
 
 
 def request_json(

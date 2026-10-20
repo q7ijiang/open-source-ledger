@@ -18,7 +18,7 @@
 | 输入 | 来源 | 说明 |
 |---|---|---|
 | `sample_bom.json` | cdxgen 扫描 `test-project/` 生成 | CycloneDX 格式的原始 BOM |
-| `test-project/` | 我们自己构造的模拟项目 | 包含 Python 包、npm 包、HF 模型三类资产 |
+| `test-project/` | 我们自己构造的模拟项目 | 包含 Python 包、npm 包、ModelScope 模型三类资产 |
 
 ## 输出
 
@@ -40,7 +40,7 @@
 创建 `test-project/`，包含：
 - `requirements.txt`：requests、flask
 - `package.json`：express
-- `model_usage.py`：`AutoModel.from_pretrained("bert-base-uncased")`
+- `model_usage.py`：声明 `Qwen/Qwen2.5-0.5B-Instruct` 等 ModelScope 模型标识
 
 ### 步骤 2：用 cdxgen 扫描
 
@@ -51,9 +51,9 @@ cdxgen -t python -t npm -t ai --evidence --no-install-deps --json-pretty -o samp
 ### 步骤 3：手动补全模型信息
 
 cdxgen 从源码短别名扫描模型时，license、version、purl 不完整。手动补全为：
-- purl: `pkg:huggingface/bert-base-uncased@main`
+- purl: `pkg:modelscope/Qwen/Qwen2.5-0.5B-Instruct@master`
 - license: `Apache-2.0`
-- version: `main`
+- version: `master`
 
 ### 步骤 4：写 `bom_adapter.py` 解析
 
@@ -63,7 +63,7 @@ cdxgen 从源码短别名扫描模型时，license、version、purl 不完整。
 
 `assets.json` 包含 72 条资产：
 - 70 条 `package`（Python 包 + npm 包）
-- 2 条 `model`（bert-base-uncased 的两个 purl 变体）
+- 2 条 `model`（Qwen2.5-0.5B-Instruct 的两个 purl 变体）
 
 每条资产的格式：
 
@@ -93,13 +93,13 @@ cdxgen 从源码短别名扫描模型时，license、version、purl 不完整。
 
 | 问题 | 影响 | 交给哪个模块解决 |
 |---|---|---|
-| `bert-base-uncased` 出现两次（pypi 和 npm 各一次） | 同一个模型重复，清单会有两条 | 模块 2：跨生态实体对齐 |
+| `Qwen2.5-0.5B-Instruct` 出现两次（pypi 和 npm 各一次） | 同一个模型重复，清单会有两条 | 模块 2：跨生态实体对齐 |
 | `evidence_chain` 只有本地文件位置，没有远程 URL | 证据链不完整，无法直接点回原文 | 模块 3：证据链补全 |
-| 模型资产的 license、version 需手动补全 | 不自动，依赖人工 | 后续考虑从 HF API 自动补全 |
+| 模型资产的 license、version 需手动补全 | 不自动，依赖人工 | 后续考虑从 ModelScope API 自动补全 |
 
 ## 如何验证
 
-1. 打开 `assets.json`，搜索 `bert-base-uncased`，确认出现两次。
+1. 打开 `assets.json`，搜索 `Qwen2.5-0.5B-Instruct`，确认出现两次。
 2. 检查每条资产是否包含 `canonical_id`、`asset_type`、`name`、`version`、`purls`、`license`、`evidence_chain`、`snapshot_id`。
 3. 检查 `requests`、`flask`、`express` 是否都在列表中。
 4. 重新运行 `bom_adapter.py`，输出应一致。
@@ -116,5 +116,5 @@ cdxgen 从源码短别名扫描模型时，license、version、purl 不完整。
 ## 给队友的话
 
 - B：`assets.json` 里的 `license` 字段可以直接用，但需要结合你的 `license_db.py` 判断风险方向。
-- C：`assets.json` 可以直接作为中文清单生成的数据源，但注意 `bert-base-uncased` 目前有重复，等模块 2 完成后用 `assets_deduplicated.json`。
+- C：`assets.json` 可以直接作为中文清单生成的数据源，但注意 `Qwen2.5-0.5B-Instruct` 目前有重复，等模块 2 完成后用 `assets_deduplicated.json`。
 ```

@@ -23,12 +23,12 @@
   },
   "components": [
     {
-      "bom-ref": "cdxgen:ai:model:hf:meta-llama/Llama-2-7b",
+      "bom-ref": "cdxgen:ai:model:modelscope:meta-llama/Llama-2-7b",
       "type": "machine-learning-model",
       "group": "meta-llama",
       "name": "Llama-2-7b",
       "version": "8d08c96",
-      "purl": "pkg:huggingface/meta-llama/Llama-2-7b@8d08c96",
+      "purl": "pkg:modelscope/meta-llama/Llama-2-7b@8d08c96",
       "licenses": [
         {
           "license": {
@@ -39,7 +39,7 @@
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://huggingface.co/meta-llama/Llama-2-7b"
+          "url": "https://www.modelscope.cn/models/meta-llama/Llama-2-7b"
         }
       ],
       "modelCard": {
@@ -55,8 +55,8 @@
         { "name": "cdx:ai:kind", "value": "model" },
         { "name": "cdx:ai:modelFamily", "value": "llama" },
         { "name": "cdx:ai:runtime", "value": "transformers" },
-        { "name": "cdx:ai:provider", "value": "huggingface" },
-        { "name": "cdx:ai:source", "value": "huggingface-api" },
+        { "name": "cdx:ai:provider", "value": "modelscope" },
+        { "name": "cdx:ai:source", "value": "modelscope-api" },
         { "name": "cdx:ai:confidence", "value": "high" }
       ],
       "evidence": {
@@ -64,12 +64,12 @@
           {
             "field": "purl",
             "confidence": 0.8,
-            "concludedValue": "pkg:huggingface/meta-llama/Llama-2-7b@8d08c96",
+            "concludedValue": "pkg:modelscope/meta-llama/Llama-2-7b@8d08c96",
             "methods": [
               {
                 "technique": "other",
                 "confidence": 0.8,
-                "value": "https://huggingface.co/api/models/meta-llama/Llama-2-7b"
+                "value": "https://www.modelscope.cn/api/v1/models/meta-llama/Llama-2-7b"
               }
             ]
           }
@@ -77,12 +77,12 @@
       }
     },
     {
-      "bom-ref": "cdxgen:ai:model:hf:student-org/llama2-finetune-demo",
+      "bom-ref": "cdxgen:ai:model:modelscope:student-org/llama2-finetune-demo",
       "type": "machine-learning-model",
       "group": "student-org",
       "name": "llama2-finetune-demo",
       "version": "a1b2c3d4",
-      "purl": "pkg:huggingface/student-org/llama2-finetune-demo@a1b2c3d4",
+      "purl": "pkg:modelscope/student-org/llama2-finetune-demo@a1b2c3d4",
       "licenses": [
         {
           "license": {
@@ -93,14 +93,14 @@
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://huggingface.co/student-org/llama2-finetune-demo"
+          "url": "https://www.modelscope.cn/models/student-org/llama2-finetune-demo"
         }
       ],
       "modelCard": {
         "modelParameters": {
           "datasets": [
             {
-              "ref": "pkg:huggingface/student-org/instruction-dataset@v1"
+              "ref": "pkg:modelscope/student-org/instruction-dataset@v1"
             }
           ]
         }
@@ -108,18 +108,18 @@
       "pedigree": {
         "ancestors": [
           {
-            "purl": "pkg:huggingface/meta-llama/Llama-2-7b@8d08c96",
+            "purl": "pkg:modelscope/meta-llama/Llama-2-7b@8d08c96",
             "evidence_level": "A"
           }
         ],
-        "notes": "Hugging Face relation: finetune"
+        "notes": "ModelScope relation: finetune"
       },
       "properties": [
         { "name": "cdx:ai:kind", "value": "model" },
         { "name": "cdx:ai:modelFamily", "value": "llama" },
         { "name": "cdx:ai:runtime", "value": "transformers" },
-        { "name": "cdx:ai:provider", "value": "huggingface" },
-        { "name": "cdx:ai:source", "value": "huggingface-api" },
+        { "name": "cdx:ai:provider", "value": "modelscope" },
+        { "name": "cdx:ai:source", "value": "modelscope-api" },
         { "name": "cdx:ai:confidence", "value": "medium" }
       ],
       "evidence": {
@@ -127,12 +127,12 @@
           {
             "field": "purl",
             "confidence": 0.7,
-            "concludedValue": "pkg:huggingface/student-org/llama2-finetune-demo@a1b2c3d4",
+            "concludedValue": "pkg:modelscope/student-org/llama2-finetune-demo@a1b2c3d4",
             "methods": [
               {
                 "technique": "other",
                 "confidence": 0.7,
-                "value": "https://huggingface.co/api/models/student-org/llama2-finetune-demo"
+                "value": "https://www.modelscope.cn/api/v1/models/student-org/llama2-finetune-demo"
               }
             ]
           }
@@ -140,12 +140,12 @@
       }
     },
     {
-      "bom-ref": "cdxgen:ai:model:hf:student-org/llama2-chat-demo",
+      "bom-ref": "cdxgen:ai:model:modelscope:student-org/llama2-chat-demo",
       "type": "machine-learning-model",
       "group": "student-org",
       "name": "llama2-chat-demo",
       "version": "e5f6a7b8",
-      "purl": "pkg:huggingface/student-org/llama2-chat-demo@e5f6a7b8",
+      "purl": "pkg:modelscope/student-org/llama2-chat-demo@e5f6a7b8",
       "licenses": [
         {
           "license": {
@@ -156,7 +156,7 @@
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://huggingface.co/student-org/llama2-chat-demo"
+          "url": "https://www.modelscope.cn/models/student-org/llama2-chat-demo"
         }
       ],
       "modelCard": {
@@ -167,18 +167,18 @@
       "pedigree": {
         "ancestors": [
           {
-            "purl": "pkg:huggingface/student-org/llama2-finetune-demo@a1b2c3d4",
+            "purl": "pkg:modelscope/student-org/llama2-finetune-demo@a1b2c3d4",
             "evidence_level": "B"
           }
         ],
-        "notes": "Hugging Face relation: finetune"
+        "notes": "ModelScope relation: finetune"
       },
       "properties": [
         { "name": "cdx:ai:kind", "value": "model" },
         { "name": "cdx:ai:modelFamily", "value": "llama" },
         { "name": "cdx:ai:runtime", "value": "transformers" },
-        { "name": "cdx:ai:provider", "value": "huggingface" },
-        { "name": "cdx:ai:source", "value": "huggingface-api" },
+        { "name": "cdx:ai:provider", "value": "modelscope" },
+        { "name": "cdx:ai:source", "value": "modelscope-api" },
         { "name": "cdx:ai:confidence", "value": "medium" }
       ],
       "evidence": {
@@ -186,12 +186,12 @@
           {
             "field": "purl",
             "confidence": 0.7,
-            "concludedValue": "pkg:huggingface/student-org/llama2-chat-demo@e5f6a7b8",
+            "concludedValue": "pkg:modelscope/student-org/llama2-chat-demo@e5f6a7b8",
             "methods": [
               {
                 "technique": "other",
                 "confidence": 0.7,
-                "value": "https://huggingface.co/api/models/student-org/llama2-chat-demo"
+                "value": "https://www.modelscope.cn/api/v1/models/student-org/llama2-chat-demo"
               }
             ]
           }
@@ -199,12 +199,12 @@
       }
     },
     {
-      "bom-ref": "cdxgen:ai:model:hf:student-org/quantized-demo",
+      "bom-ref": "cdxgen:ai:model:modelscope:student-org/quantized-demo",
       "type": "machine-learning-model",
       "group": "student-org",
       "name": "quantized-demo",
       "version": "f7a1b2c3",
-      "purl": "pkg:huggingface/student-org/quantized-demo@f7a1b2c3",
+      "purl": "pkg:modelscope/student-org/quantized-demo@f7a1b2c3",
       "licenses": [
         {
           "license": {
@@ -215,7 +215,7 @@
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://huggingface.co/student-org/quantized-demo"
+          "url": "https://www.modelscope.cn/models/student-org/quantized-demo"
         }
       ],
       "modelCard": {
@@ -226,7 +226,7 @@
       "pedigree": {
         "ancestors": [
           {
-            "purl": "pkg:huggingface/student-org/llama2-chat-demo@e5f6a7b8",
+            "purl": "pkg:modelscope/student-org/llama2-chat-demo@e5f6a7b8",
             "evidence_level": "C",
             "source": "lineage_backfill"
           }
@@ -237,8 +237,8 @@
         { "name": "cdx:ai:kind", "value": "model" },
         { "name": "cdx:ai:modelFamily", "value": "llama" },
         { "name": "cdx:ai:runtime", "value": "transformers" },
-        { "name": "cdx:ai:provider", "value": "huggingface" },
-        { "name": "cdx:ai:source", "value": "huggingface-api" },
+        { "name": "cdx:ai:provider", "value": "modelscope" },
+        { "name": "cdx:ai:source", "value": "modelscope-api" },
         { "name": "cdx:ai:confidence", "value": "low" }
       ],
       "evidence": {
@@ -246,12 +246,12 @@
           {
             "field": "purl",
             "confidence": 0.5,
-            "concludedValue": "pkg:huggingface/student-org/quantized-demo@f7a1b2c3",
+            "concludedValue": "pkg:modelscope/student-org/quantized-demo@f7a1b2c3",
             "methods": [
               {
                 "technique": "other",
                 "confidence": 0.5,
-                "value": "https://huggingface.co/api/models/student-org/quantized-demo"
+                "value": "https://www.modelscope.cn/api/v1/models/student-org/quantized-demo"
               }
             ]
           }
@@ -259,12 +259,12 @@
       }
     },
     {
-      "bom-ref": "cdxgen:ai:dataset:hf:student-org/instruction-dataset",
+      "bom-ref": "cdxgen:ai:dataset:modelscope:student-org/instruction-dataset",
       "type": "dataset",
       "group": "student-org",
       "name": "instruction-dataset",
       "version": "v1",
-      "purl": "pkg:huggingface/student-org/instruction-dataset@v1",
+      "purl": "pkg:modelscope/student-org/instruction-dataset@v1",
       "licenses": [
         {
           "license": {
@@ -275,25 +275,25 @@
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://huggingface.co/datasets/student-org/instruction-dataset"
+          "url": "https://www.modelscope.cn/datasets/student-org/instruction-dataset"
         }
       ],
       "properties": [
         { "name": "cdx:ai:kind", "value": "dataset" },
-        { "name": "cdx:ai:provider", "value": "huggingface" },
-        { "name": "cdx:ai:source", "value": "huggingface-api" }
+        { "name": "cdx:ai:provider", "value": "modelscope" },
+        { "name": "cdx:ai:source", "value": "modelscope-api" }
       ],
       "evidence": {
         "identity": [
           {
             "field": "purl",
             "confidence": 0.7,
-            "concludedValue": "pkg:huggingface/student-org/instruction-dataset@v1",
+            "concludedValue": "pkg:modelscope/student-org/instruction-dataset@v1",
             "methods": [
               {
                 "technique": "other",
                 "confidence": 0.7,
-                "value": "https://huggingface.co/api/datasets/student-org/instruction-dataset"
+                "value": "https://www.modelscope.cn/api/v1/datasets/student-org/instruction-dataset"
               }
             ]
           }
@@ -389,43 +389,43 @@
     {
       "ref": "pkg:github/student-org/llama2-demo-app@0.1.0",
       "dependsOn": [
-        "pkg:huggingface/student-org/llama2-chat-demo@e5f6a7b8",
+        "pkg:modelscope/student-org/llama2-chat-demo@e5f6a7b8",
         "pkg:pypi/transformers@4.44.2",
         "pkg:pypi/torch@2.3.0",
         "pkg:pypi/accelerate@0.33.0"
       ]
     },
     {
-      "ref": "cdxgen:ai:model:hf:meta-llama/Llama-2-7b",
+      "ref": "cdxgen:ai:model:modelscope:meta-llama/Llama-2-7b",
       "dependsOn": []
     },
     {
-      "ref": "cdxgen:ai:model:hf:student-org/llama2-finetune-demo",
+      "ref": "cdxgen:ai:model:modelscope:student-org/llama2-finetune-demo",
       "dependsOn": [
-        "cdxgen:ai:model:hf:meta-llama/Llama-2-7b",
-        "cdxgen:ai:dataset:hf:student-org/instruction-dataset",
+        "cdxgen:ai:model:modelscope:meta-llama/Llama-2-7b",
+        "cdxgen:ai:dataset:modelscope:student-org/instruction-dataset",
         "pkg:pypi/transformers@4.44.2",
         "pkg:pypi/torch@2.3.0"
       ]
     },
     {
-      "ref": "cdxgen:ai:model:hf:student-org/llama2-chat-demo",
+      "ref": "cdxgen:ai:model:modelscope:student-org/llama2-chat-demo",
       "dependsOn": [
-        "cdxgen:ai:model:hf:student-org/llama2-finetune-demo",
+        "cdxgen:ai:model:modelscope:student-org/llama2-finetune-demo",
         "pkg:pypi/transformers@4.44.2",
         "pkg:pypi/torch@2.3.0"
       ]
     },
     {
-      "ref": "cdxgen:ai:model:hf:student-org/quantized-demo",
+      "ref": "cdxgen:ai:model:modelscope:student-org/quantized-demo",
       "dependsOn": [
-        "cdxgen:ai:model:hf:student-org/llama2-chat-demo",
+        "cdxgen:ai:model:modelscope:student-org/llama2-chat-demo",
         "pkg:pypi/transformers@4.44.2",
         "pkg:pypi/torch@2.3.0"
       ]
     },
     {
-      "ref": "cdxgen:ai:dataset:hf:student-org/instruction-dataset",
+      "ref": "cdxgen:ai:dataset:modelscope:student-org/instruction-dataset",
       "dependsOn": []
     },
     {

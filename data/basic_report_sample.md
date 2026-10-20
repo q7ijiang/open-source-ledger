@@ -16,7 +16,7 @@
 | 资源名称 | 版本 | 许可证 | 风险 | 来源链接 | 证据位置 | 来源生态 |
 |---|---|---|---|---|---|---|
 | bert-base-uncased（bert） | — | 未声明<br>待人工确认｜模型未声明许可证，不得默认猜测（模型卡缺失≠无许可证）<br><small>pkg:npm/ai/bert-base-uncased；pkg:pypi/ai/bert-base-uncased</small> | ⚪ 待确认 | 未提供 URL（本地证据 L1） | model_usage.py#L3 | npm、PyPI |
-| gpt2 | b6c9159e3e8b | Apache-2.0<br>低风险｜宽松许可证<br><small>pkg:huggingface/openai-community/gpt2@b6c9159e3e8b</small> | 🟢 低 | [链接](https://huggingface.co/openai-community/gpt2) | — | HuggingFace |
+| Qwen2.5-0.5B-Instruct | master | Apache-2.0<br>低风险｜宽松许可证<br><small>pkg:modelscope/Qwen/Qwen2.5-0.5B-Instruct@master</small> | 🟢 低 | [链接](https://www.modelscope.cn/models/Qwen/Qwen2.5-0.5B-Instruct) | — | ModelScope |
 | agpl-gateway | 1.3.0 | AGPL-3.0-only<br>高风险｜传染性许可证（AGPL 类）：网络服务方式使用同样触发开源义务<br><small>pkg:pypi/agpl-gateway@1.3.0</small> | 🔴 高 | 未提供 URL（本地证据 L1） | requirements.txt#L8 | PyPI |
 | axios | 1.7.2 | MIT<br>低风险｜宽松许可证<br><small>pkg:npm/axios@1.7.2</small> | 🟢 低 | [链接](https://www.npmjs.com/package/axios/v/1.7.2) | package-lock.json#L45 | npm |
 | legacy-toolkit | 2.1.0 | GPL-3.0-only<br>高风险｜传染性许可证（GPL 类）：分发或修改时需遵守开源义务，可能影响整体分发方式<br><small>pkg:npm/legacy-toolkit@2.1.0</small> | 🔴 高 | [链接](https://www.npmjs.com/package/legacy-toolkit/v/2.1.0) | package-lock.json#L210 | npm |
@@ -25,7 +25,7 @@
 | requests | 2.32.3 | Apache-2.0<br>低风险｜宽松许可证<br><small>pkg:pypi/requests@2.32.3</small> | 🟢 低 | [链接](https://pypi.org/project/requests/2.32.3/)；[链接](https://github.com/psf/requests) | requirements.txt#L1 | PyPI |
 | torch | 2.3.0 | BSD-3-Clause<br>低风险｜宽松许可证<br><small>pkg:pypi/torch@2.3.0</small> | 🟢 低 | [链接](https://pypi.org/project/torch/2.3.0/) | requirements.txt#L5 | PyPI |
 | urllib3 | 2.2.1 | MIT<br>低风险｜宽松许可证<br><small>pkg:pypi/urllib3@2.2.1</small> | 🟢 低 | [链接](https://pypi.org/project/urllib3/2.2.1/) | requirements.txt#L2 | PyPI |
-| webtext | 1.0 | 未声明<br>待人工确认｜未声明许可证，需向提供方核实<br><small>pkg:huggingface/openai-community/webtext@1.0</small> | ⚪ 待确认 | [链接](https://huggingface.co/datasets/openai-community/webtext) | — | HuggingFace |
+| Qwen-Image-2.1-Finetune-Data | v1 | 未声明<br>待人工确认｜未声明许可证，需向提供方核实<br><small>pkg:modelscope/Qwen/Qwen-Image-2.1-Finetune-Data@v1</small> | ⚪ 待确认 | [链接](https://www.modelscope.cn/datasets/Qwen/Qwen-Image-2.1-Finetune-Data) | — | ModelScope |
 
 ## 三、风险说明
 
