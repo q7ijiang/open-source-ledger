@@ -1,0 +1,191 @@
+[
+  {
+    "canonical_id": "model:LLM-Research/Meta-Llama-3.1-8B-Instruct",
+    "entity_key": "model:modelscope/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+    "asset_type": "model",
+    "name": "LLM-Research/Meta-Llama-3.1-8B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/LLM-Research/Meta-Llama-3.1-8B-Instruct@master"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+        "source_field": "Data.LicenseName",
+        "status": "ok",
+        "raw_value": "GPL-3.0"
+      }
+    ],
+    "snapshot_id": "ms-scenario-t1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "tests/fixtures/modelscope/ms-scenario-t1_assets.json"
+  },
+  {
+    "canonical_id": "model:Qwen/Qwen2.5-7B-Instruct",
+    "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "C",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+        "source_field": "Data.LicenseName",
+        "status": "ok",
+        "raw_value": "Apache-2.0"
+      }
+    ],
+    "snapshot_id": "ms-scenario-t1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "tests/fixtures/modelscope/ms-scenario-t1_assets.json"
+  },
+  {
+    "canonical_id": "model:Qwen/Qwen-Image-2.1",
+    "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1",
+    "asset_type": "model",
+    "name": "Qwen/Qwen-Image-2.1",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen-Image-2.1@master"
+    ],
+    "license": "qwen-research",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
+        "source_field": "Data.LicenseName",
+        "status": "ok",
+        "raw_value": "qwen-research"
+      }
+    ],
+    "snapshot_id": "ms-scenario-t1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "tests/fixtures/modelscope/ms-scenario-t1_assets.json"
+  },
+  {
+    "canonical_id": "model:ZhipuAI/glm-4-9b-chat",
+    "entity_key": "model:modelscope/ZhipuAI/glm-4-9b-chat",
+    "asset_type": "model",
+    "name": "ZhipuAI/glm-4-9b-chat",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/ZhipuAI/glm-4-9b-chat@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/ZhipuAI/glm-4-9b-chat",
+        "source_field": "Data.LicenseName",
+        "status": "ok",
+        "raw_value": "Apache-2.0"
+      }
+    ],
+    "snapshot_id": "ms-scenario-t1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "tests/fixtures/modelscope/ms-scenario-t1_assets.json"
+  },
+  {
+    "canonical_id": "model:AI-ModelScope/bge-large-zh-v1.5",
+    "entity_key": "model:modelscope/AI-ModelScope/bge-large-zh-v1.5",
+    "asset_type": "model",
+    "name": "AI-ModelScope/bge-large-zh-v1.5",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/bge-large-zh-v1.5@master"
+    ],
+    "license": "GPL-3.0-only",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/AI-ModelScope/bge-large-zh-v1.5",
+        "source_field": "Data.LicenseName",
+        "status": "ok",
+        "raw_value": "GPL-3.0-only"
+      }
+    ],
+    "snapshot_id": "ms-scenario-t1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "tests/fixtures/modelscope/ms-scenario-t1_assets.json"
+  },
+  {
+    "canonical_id": "model:iic/nlp_structbert_sentiment-classification_chinese-base",
+    "entity_key": "model:modelscope/iic/nlp_structbert_sentiment-classification_chinese-base",
+    "asset_type": "model",
+    "name": "iic/nlp_structbert_sentiment-classification_chinese-base",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/iic/nlp_structbert_sentiment-classification_chinese-base@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/iic/nlp_structbert_sentiment-classification_chinese-base",
+        "source_field": "Data.LicenseName",
+        "status": "ok",
+        "raw_value": "Apache-2.0"
+      }
+    ],
+    "snapshot_id": "ms-scenario-t1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "tests/fixtures/modelscope/ms-scenario-t1_assets.json"
+  },
+  {
+    "canonical_id": "dataset:scenario/qwen-sft-data-v2",
+    "entity_key": "dataset:modelscope/scenario/qwen-sft-data-v2",
+    "asset_type": "dataset",
+    "name": "scenario/qwen-sft-data-v2",
+    "version": "v1",
+    "purls": [
+      "pkg:modelscope/datasets/scenario/qwen-sft-data-v2@v1"
+    ],
+    "license": "MIT",
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "status": "ok",
+        "raw_value": "MIT"
+      }
+    ],
+    "snapshot_id": "ms-scenario-t1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "tests/fixtures/modelscope/ms-scenario-t1_assets.json"
+  }
+]

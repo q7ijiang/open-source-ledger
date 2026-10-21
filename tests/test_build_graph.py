@@ -1,52 +1,61 @@
 # -*- coding: utf-8 -*-
-"""模块 8：血缘图构建回归测试。"""
+"""模块 8：血缘图构建回归测试。
+
+夹具见 tests/fixtures/modelscope/scenario_t1_*.json：
+模型身份与许可证为 ModelScope 真实值，拓扑为构造（含 SCC 环与缺失祖先）。
+"""
 
 import json
 
 import build_graph as bg
-from conftest import FIXTURES
+from conftest import MODELSCOPE_FIXTURES
 
 
 def load(name):
-    return json.loads((FIXTURES / name).read_text(encoding="utf-8"))
+    return json.loads((MODELSCOPE_FIXTURES / name).read_text(encoding="utf-8"))
+
+
+CYCLE_A = "model:AI-ModelScope/bge-large-zh-v1.5"
+CYCLE_B = "model:iic/nlp_structbert_sentiment-classification_chinese-base"
+FINETUNED = "model:Qwen/Qwen2.5-7B-Instruct"
 
 
 def test_build_graph_t1():
-    """t1 快照：8 个节点（7 资产 + Qwen 由边自动创建）+ 7 条边。"""
-    assets = load("deep_t1_assets.json")
-    edges = load("deep_t1_edges.json")
+    """t1 快照：8 个节点（7 资产 + Qwen2.5-7B 由边自动创建）+ 7 条边。"""
+    assets = load("scenario_t1_assets.json")
+    edges = load("scenario_t1_edges.json")
     graph = bg.build_graph(assets, edges)
     assert graph.number_of_nodes() == 8
     assert graph.number_of_edges() == 7
     # 边类型覆盖
     types = {data["edge_type"] for _, _, data in graph.edges(data=True)}
     assert {"derived_from", "trained_on", "depends_on"} <= types
-    # Qwen 由边自动创建且无元数据 -> 缺失祖先场景
+    # 基模由边自动创建且无元数据 -> 缺失祖先场景
     assert graph.nodes["model:Qwen/Qwen2.5-7B"].get("asset_type") is None
 
 
 def test_parallel_edges_preserved():
     """同一对节点间并行边（MultiDiGraph）必须保留。"""
-    assets = load("deep_t1_assets.json")
-    edges = load("deep_t1_edges.json")
+    assets = load("scenario_t1_assets.json")
+    edges = load("scenario_t1_edges.json")
     graph = bg.build_graph(assets, edges)
-    # lib-x 与 example-parser 互相 depends_on：两条边都要保留
-    assert graph.number_of_edges("package:pypi/example-parser", "package:pypi/lib-x") == 1
-    assert graph.number_of_edges("package:pypi/lib-x", "package:pypi/example-parser") == 1
+    # cycle_a 与 cycle_b 互相 depends_on：两条方向相反的边都要保留
+    assert graph.number_of_edges(CYCLE_A, CYCLE_B) == 1
+    assert graph.number_of_edges(CYCLE_B, CYCLE_A) == 1
     assert graph.number_of_edges() == 7
 
 
 def test_scc_compression_detects_cycle():
-    """lib-x 与 example-parser 的相互依赖应被识别为一个 SCC 环。"""
-    assets = load("deep_t1_assets.json")
-    edges = load("deep_t1_edges.json")
+    """cycle_a 与 cycle_b 的相互依赖应被识别为一个 SCC 环。"""
+    assets = load("scenario_t1_assets.json")
+    edges = load("scenario_t1_edges.json")
     graph = bg.build_graph(assets, edges)
     canonical_to_scc, compressed = bg.compress_scc(graph)
 
-    cycle_scc = canonical_to_scc["package:pypi/example-parser"]
-    assert canonical_to_scc["package:pypi/lib-x"] == cycle_scc
+    cycle_scc = canonical_to_scc[CYCLE_A]
+    assert canonical_to_scc[CYCLE_B] == cycle_scc
     members = compressed.nodes[cycle_scc]["members"]
-    assert set(members) == {"package:pypi/example-parser", "package:pypi/lib-x"}
+    assert set(members) == {CYCLE_A, CYCLE_B}
     assert compressed.nodes[cycle_scc]["size"] == 2
 
     # 压缩图节点数 = SCC 数
@@ -55,23 +64,23 @@ def test_scc_compression_detects_cycle():
 
 def test_scc_weakest_aggregation():
     """压缩边证据按 weakest link 聚合。"""
-    assets = load("deep_t1_assets.json")
-    edges = load("deep_t1_edges.json")
+    assets = load("scenario_t1_assets.json")
+    edges = load("scenario_t1_edges.json")
     graph = bg.build_graph(assets, edges)
     canonical_to_scc, compressed = bg.compress_scc(graph)
 
-    scc_parser = canonical_to_scc["package:pypi/example-parser"]
-    scc_finetuned = canonical_to_scc["model:my-org/finetuned-model"]
-    if compressed.has_edge(scc_finetuned, scc_parser):
-        data = compressed.edges[scc_finetuned, scc_parser]
+    scc_cycle_a = canonical_to_scc[CYCLE_A]
+    scc_finetuned = canonical_to_scc[FINETUNED]
+    if compressed.has_edge(scc_finetuned, scc_cycle_a):
+        data = compressed.edges[scc_finetuned, scc_cycle_a]
         assert data["evidence_level"] == "B"
         assert data["count"] >= 1
 
 
 def test_graph_to_dict_schema():
     """输出 JSON 字段符合模块 8 结构约定。"""
-    assets = load("deep_t1_assets.json")
-    edges = load("deep_t1_edges.json")
+    assets = load("scenario_t1_assets.json")
+    edges = load("scenario_t1_edges.json")
     graph = bg.build_graph(assets, edges)
     canonical_to_scc, compressed = bg.compress_scc(graph)
     result = bg.graph_to_dict(graph, canonical_to_scc, compressed)
