@@ -10,6 +10,14 @@ modelscope/
 ├── detail_*.json              ModelScope 模型详情 API 原始快照（Detail）
 ├── files_*.json               ModelScope 模型文件列表 API 原始快照（Repo Files）
 ├── lineage_*.json             ModelScope 模型血缘 API 原始快照（Lineage）
+├── diff/                      --diff 时间对比验证数据
+│   ├── diff_events.json       变更事件（delta 引擎输出）
+│   └── diff_certificates.json 路径证书（传播引擎输出）
+├── model_exports/             --model/--project 标准导出与判定验证数据
+│   ├── Qwen__Qwen-Image-2.1/{bom,graph}.json
+│   ├── Qwen__Qwen2.5-7B-Instruct/{bom,graph}.json
+│   ├── XingChen-AGI__TeleOCR/{bom,graph}.json
+│   └── multi_model_project/{bom,graph}.json
 ├── ms_viz/                    渲染层可视化数据
 │   ├── viz_data.json          构造数据版血缘图数据（Qwen-Image-2.1 聚合降维）
 │   ├── viz_real_data.json     真实数据版血缘图数据（14 节点 / 11 边）
@@ -28,6 +36,9 @@ modelscope/
 |---|---|---|
 | `lineage_Qwen__Qwen-Image-2.1.json` | ModelScope lineage 接口返回 SonModels（Adapters/Finetunes/Quantizations 聚合计数） | `work/extract_modelscope_lineage.py` |
 | `detail_*.json` / `files_*.json` | 模型详情/文件列表字段映射（licenseName、License=other 等） | `modelscope_adapter.py` 解析 |
+| `diff/diff_events.json` + `diff_certificates.json` | --diff 全链路：变更事件 + 传播证书（C2 场景：事件 2 / 传播后 8 / 证书 6） | `main.py --diff --before --after` |
+| `model_exports/*/bom.json` | 标准 CycloneDX 1.7 导出（含 metadata.timestamp / pedigree.ancestors / decision） | `bom_adapter.py` / `main.py --model/--project` |
+| `model_exports/*/graph.json` | 建图判定结果（RISK_CONFIRMED/POTENTIAL/SAFE/UNDETERMINED） | `main.py --model/--project` 渲染层取 decision 着色 |
 | `ms_viz/viz_data.json` | 渲染层森林分层布局 + 风险传播红线 + 形状图例 | `outputs/modelscope_validation/build_viz_html.py` |
 | `ms_viz/viz_real_data.json` | 真实数据血缘图（14 节点 / 11 边，主模型黄灯） | `outputs/modelscope_validation/gen_viz_real.py` |
 | `project_extract/graph.json` | --project 全链路建图与整体判定（UNDETERMINED/POTENTIAL） | `main.py --project` |
