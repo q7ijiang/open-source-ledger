@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-VIZ = ROOT / "outputs" / "modelscope_validation" / "ms_viz" / "viz_data.json"
+VIZ = ROOT / "tests" / "fixtures" / "modelscope" / "ms_viz" / "viz_data.json"
 TPL = Path(__file__).resolve().with_name("ms_risk_lineage_template.html")
 OUT = ROOT / "outputs" / "modelscope_validation" / "ms_risk_lineage.html"
 

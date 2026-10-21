@@ -21,7 +21,7 @@ except Exception:
 
 T0 = ROOT / "data" / "test_scenarios" / "ms_t0_bom.json"
 T1 = ROOT / "data" / "test_scenarios" / "ms_t1_bom.json"
-OUT = ROOT / "outputs" / "modelscope_validation" / "ms_viz"
+OUT = ROOT / "tests" / "fixtures" / "modelscope" / "ms_viz"
 
 
 def load_snapshot(path: Path, sid: str):

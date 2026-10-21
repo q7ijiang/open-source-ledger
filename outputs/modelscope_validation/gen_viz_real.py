@@ -7,8 +7,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-ASSETS = ROOT / "outputs" / "modelscope_validation" / "project_extract" / "assets.json"
-EDGES = ROOT / "outputs" / "modelscope_validation" / "project_extract" / "edges.json"
+ASSETS = ROOT / "tests" / "fixtures" / "modelscope" / "project_extract" / "assets.json"
+EDGES = ROOT / "tests" / "fixtures" / "modelscope" / "project_extract" / "edges.json"
 TPL = Path(__file__).resolve().with_name("ms_risk_lineage_template.html")
 OUT = ROOT / "outputs" / "modelscope_validation" / "ms_risk_lineage_real.html"
 
@@ -74,7 +74,7 @@ html = html.replace("来源：ModelScope（魔搭社区）· 开源账本 C 模�
 OUT.write_text(html, encoding="utf-8")
 
 # 同时落盘数据供校验
-(ROOT / "outputs" / "modelscope_validation" / "ms_viz" / "viz_real_data.json").write_text(
+(ROOT / "tests" / "fixtures" / "modelscope" / "ms_viz" / "viz_real_data.json").write_text(
     json.dumps(viz, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 agg = sum(1 for n in nodes if n.get("aggregate"))
