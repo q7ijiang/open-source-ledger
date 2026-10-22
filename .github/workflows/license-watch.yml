@@ -51,14 +51,17 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Validate ModelScope API key
+      - name: Validate ModelScope API key (optional)
         env:
           MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
         shell: bash
         run: |
           if [ -z "${MODELSCOPE_API_KEY:-}" ]; then
-            echo "::error::未配置 MODELSCOPE_API_KEY。请在 Settings -> Secrets and variables -> Actions 中添加仓库 Secret。"
-            exit 1
+            echo "::warning::未配置 MODELSCOPE_API_KEY。将匿名访问 ModelScope 公开 API："
+            echo "  公共模型可正常扫描；需授权的私有模型 / 高频请求可能受限。"
+            echo "  如需完整能力，请在 Settings -> Secrets and variables -> Actions 添加仓库 Secret。"
+          else
+            echo "已配置 MODELSCOPE_API_KEY，启用完整访问能力。"
           fi
 
       - name: Install Python dependencies
