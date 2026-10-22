@@ -1,0 +1,146 @@
+{
+  "events": [
+    {
+      "event_id": "evt-20261011-001",
+      "seed": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+      "change_type": "license_changed",
+      "before": {
+        "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+        "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1",
+        "license": "Apache-2.0",
+        "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1@master"],
+        "snapshot_id": "t0",
+        "merge_status": "KEPT_SEPARATE",
+        "reason_code": "LICENSE_ALIGNED",
+        "rule_version": "merge-policy-v2"
+      },
+      "after": {
+        "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+        "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1",
+        "license": "qwen-research",
+        "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1@master"],
+        "snapshot_id": "t1",
+        "merge_status": "KEPT_SEPARATE",
+        "reason_code": "LICENSE_CHANGED",
+        "rule_version": "merge-policy-v2"
+      },
+      "path": [
+        {
+          "source": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+          "target": "model:modelscope/student-org/Qwen-Image-2.1-finetune-demo@a1b2c3d4",
+          "edge_type": "derived_from",
+          "evidence_level": "B",
+          "source_field": "pedigree.ancestors"
+        },
+        {
+          "source": "model:modelscope/student-org/Qwen-Image-2.1-finetune-demo@a1b2c3d4",
+          "target": "model:modelscope/student-org/Qwen-Image-2.1-chat-demo@e5f6a7b8",
+          "edge_type": "derived_from",
+          "evidence_level": "B",
+          "source_field": "pedigree.ancestors"
+        }
+      ],
+      "evidence_level": "B",
+      "decision": "RISK_POTENTIAL"
+    },
+    {
+      "event_id": "evt-20261011-002",
+      "seed": "dataset:modelscope/student-org/Qwen-instruction-dataset@v1",
+      "change_type": "license_changed",
+      "before": {
+        "canonical_id": "dataset:modelscope/student-org/Qwen-instruction-dataset@v1",
+        "entity_key": "dataset:modelscope/student-org/Qwen-instruction-dataset",
+        "license": "CC-BY-4.0",
+        "purls": ["pkg:modelscope/student-org/Qwen-instruction-dataset@v1"],
+        "snapshot_id": "t0",
+        "merge_status": "KEPT_SEPARATE",
+        "reason_code": "LICENSE_ALIGNED",
+        "rule_version": "merge-policy-v2"
+      },
+      "after": {
+        "canonical_id": "dataset:modelscope/student-org/Qwen-instruction-dataset@v1",
+        "entity_key": "dataset:modelscope/student-org/Qwen-instruction-dataset",
+        "license": "CC-BY-NC-4.0",
+        "purls": ["pkg:modelscope/student-org/Qwen-instruction-dataset@v1"],
+        "snapshot_id": "t1",
+        "merge_status": "KEPT_SEPARATE",
+        "reason_code": "LICENSE_CHANGED",
+        "rule_version": "merge-policy-v2"
+      },
+      "path": [
+        {
+          "source": "dataset:modelscope/student-org/Qwen-instruction-dataset@v1",
+          "target": "model:modelscope/student-org/Qwen-Image-2.1-finetune-demo@a1b2c3d4",
+          "edge_type": "trained_on",
+          "evidence_level": "B",
+          "source_field": "modelCard.modelParameters.datasets"
+        }
+      ],
+      "evidence_level": "B",
+      "decision": "RISK_POTENTIAL"
+    },
+    {
+      "event_id": "evt-20261011-003",
+      "seed": "model:modelscope/student-org/Qwen-Image-2.1-chat-demo@main",
+      "change_type": "version_upgraded",
+      "before": {
+        "canonical_id": "model:modelscope/student-org/Qwen-Image-2.1-chat-demo@main",
+        "entity_key": "model:modelscope/student-org/Qwen-Image-2.1-chat-demo",
+        "license": "qwen-research",
+        "purls": ["pkg:modelscope/student-org/Qwen-Image-2.1-chat-demo@main"],
+        "snapshot_id": "t0",
+        "merge_status": "MERGED",
+        "reason_code": "PURL_COORDINATE_EXACT",
+        "rule_version": "merge-policy-v2"
+      },
+      "after": {
+        "canonical_id": "model:modelscope/student-org/Qwen-Image-2.1-chat-demo@e5f6a7b8",
+        "entity_key": "model:modelscope/student-org/Qwen-Image-2.1-chat-demo",
+        "license": "qwen-research",
+        "purls": ["pkg:modelscope/student-org/Qwen-Image-2.1-chat-demo@e5f6a7b8"],
+        "snapshot_id": "t1",
+        "merge_status": "MERGED",
+        "reason_code": "PURL_COORDINATE_EXACT",
+        "rule_version": "merge-policy-v2"
+      },
+      "path": [],
+      "evidence_level": "B",
+      "decision": "UNDETERMINED"
+    }
+  ],
+  "path_certificates": [
+    {
+      "certificate_id": "cert-001",
+      "affected": "model:modelscope/student-org/Qwen-Image-2.1-chat-demo@e5f6a7b8",
+      "change_type": "license_changed",
+      "hop_count": 2,
+      "weakest_evidence": "B",
+      "decision": "RISK_POTENTIAL",
+      "termination": "reached_leaf",
+      "missing_ancestor": false,
+      "path_fingerprint": "a1b2...e5f6"
+    },
+    {
+      "certificate_id": "cert-002",
+      "affected": "model:modelscope/student-org/Qwen-Image-2.1-finetune-demo@a1b2c3d4",
+      "change_type": "license_changed",
+      "hop_count": 1,
+      "weakest_evidence": "A",
+      "decision": "RISK_CONFIRMED",
+      "termination": "direct_edge",
+      "missing_ancestor": false,
+      "path_fingerprint": "c3d4...a9b0"
+    },
+    {
+      "certificate_id": "cert-003",
+      "affected": "model:modelscope/student-org/Qwen-Image-2.1-chat-demo@e5f6a7b8",
+      "change_type": "ancestor_removed",
+      "hop_count": 0,
+      "weakest_evidence": "C",
+      "decision": "UNDETERMINED",
+      "termination": "missing_ancestor",
+      "missing_ancestor": true,
+      "path_fingerprint": "e5f6...d3e4"
+    }
+  ]
+}

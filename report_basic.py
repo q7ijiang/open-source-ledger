@@ -15,8 +15,7 @@ v2 变更（对齐组长 main.py 集成要求）：
        snapshot_id / source_file。
 
 v3 变更（响应组长 10-07 ModelScope 转向要求）：
-    1. 数据源标注：自动检测 ModelScope / Hugging Face / 混合生态，
-       报告头部标明「来源：ModelScope（魔搭社区）」等字样；
+    1. 数据源标注：自动识别 ModelScope 标注，未标注时输出未知来源；
     2. P/D/P 判定结论：新增判定区块（🟢 安全 / 🟡 潜在风险 / 🔴 风险），
        依据 license_db 评估结果输出「绿灯出表、红灯出图」提示；
     3. 渲染语境：血缘边数等统计不再写死 HF 字样，兼容 ModelScope 聚合节点。
@@ -91,7 +90,7 @@ PDP_LIGHT = {"SAFE": "🟢 安全", "RISK_POTENTIAL": "🟡 潜在风险", "RISK
 
 
 def detect_source(assets: list[dict[str, Any]]) -> str:
-    """检测数据源生态：ModelScope / Hugging Face / 混合 / 未知。
+    """检测数据源生态：ModelScope / 未知。
 
     依据：资产 purls 与 evidence_chain 中的 source_url / source_api / source_field。
     """
@@ -101,8 +100,6 @@ def detect_source(assets: list[dict[str, Any]]) -> str:
             text = str(purl).lower()
             if "modelscope" in text:
                 hits.add("ModelScope")
-            elif "huggingface" in text:
-                hits.add("Hugging Face")
         for entry in asset.get("evidence_chain", []):
             if not isinstance(entry, dict):
                 continue
@@ -112,8 +109,6 @@ def detect_source(assets: list[dict[str, Any]]) -> str:
             ).lower()
             if "modelscope" in text:
                 hits.add("ModelScope")
-            elif "huggingface" in text:
-                hits.add("Hugging Face")
     if not hits:
         return "未知（本地 BOM / 未标注生态）"
     return " / ".join(sorted(hits))

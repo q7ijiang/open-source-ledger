@@ -88,12 +88,12 @@ def test_t0_and_t1_share_same_graph_shape():
     assert len(before["edges"]) == len(after["edges"])
 
 
-def test_hf_fallback_fails_loudly():
-    """HF 回退已移除：必须抛错，不能静默返回 0 退出码（否则 Action 假绿）。"""
+def test_legacy_fallback_fails_loudly():
+    """旧平台回退已移除：必须抛错，不能静默返回 0 退出码（否则 Action 假绿）。"""
     import pytest
 
     with pytest.raises(RuntimeError):
-        m._run_hf_model(object(), "TheBloke/Qwen2.5-0.5B-Instruct-GGUF", REPO_ROOT)
+        m._run_legacy_fallback(object(), "legacy/unknown-model", REPO_ROOT)
 
 
 def test_unknown_model_exits_nonzero(monkeypatch):

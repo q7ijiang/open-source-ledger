@@ -74,6 +74,21 @@ def test_export_bom_has_standard_fields_and_timestamp(tmp_path: Path) -> None:
     assert datetime.fromisoformat(bom["metadata"]["timestamp"])
 
 
+def test_export_bom_timestamp_has_local_timezone_offset(tmp_path: Path) -> None:
+    assets_path = tmp_path / "assets.json"
+    edges_path = tmp_path / "edges.json"
+    output_path = tmp_path / "bom.json"
+    _write_json(assets_path, [])
+    _write_json(edges_path, [])
+
+    export_bom.export_bom(assets_path, edges_path, output_path)
+
+    bom = json.loads(output_path.read_text(encoding="utf-8"))
+    timestamp = datetime.fromisoformat(bom["metadata"]["timestamp"])
+    assert timestamp.tzinfo is not None
+    assert timestamp.utcoffset() == datetime.now().astimezone().utcoffset()
+
+
 def test_export_bom_maps_ancestors_licenses_and_dependencies(
     tmp_path: Path,
 ) -> None:
