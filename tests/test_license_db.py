@@ -135,7 +135,7 @@ def test_real_data_license_coverage():
     import json
     from pathlib import Path
 
-    assets = json.loads(Path("data/assets_real_final.json").read_text(encoding="utf-8"))
+    assets = json.loads(Path("tests/fixtures/modelscope/assets_real_final.json").read_text(encoding="utf-8"))
     evaluated = [a for a in assets if (a.get("license") or "").strip()]
     assert len(evaluated) > 50
     covered = [a for a in evaluated if db.get_rule(a["license"]) is not None]

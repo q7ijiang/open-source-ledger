@@ -19,6 +19,7 @@ modelscope/
 │   ├── XingChen-AGI__TeleOCR/{bom,graph}.json
 │   ├── multi_model_project/{bom,graph}.json
 │   └── test_project/bom.json  --project 扫描输入 BOM（Qwen2.5-7B-Instruct）
+├── assets_real_final.json   MSU SBOM 基准真实资产快照（102 条，license 覆盖率验证）
 ├── ms_viz/                    渲染层可视化数据
 │   ├── viz_data.json          构造数据版血缘图数据（Qwen-Image-2.1 聚合降维）
 │   ├── viz_real_data.json     真实数据版血缘图数据（14 节点 / 11 边）
