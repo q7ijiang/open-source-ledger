@@ -30,6 +30,12 @@ DECISION_LABEL = {
     "SAFE": "安全（绿灯）",
     "UNDETERMINED": "待确认（灰）",
 }
+DECISION_RANK = {
+    "UNDETERMINED": 0,
+    "SAFE": 1,
+    "RISK_POTENTIAL": 2,
+    "RISK_CONFIRMED": 3,
+}
 CHANGE_LABEL = {
     "license_changed": "许可证变更",
     "version_changed": "版本变更",
@@ -109,6 +115,7 @@ function buildChart(elId, nodes, edges, title) {
   const data = nodes.map(n => {
     const j = decisionOf(n.decision);
     const agg = isAgg(n);
+    const sourceNote = n.decision_source === "diff_propagation" ? "（diff 传播）" : "";
     return {
       id: n.id, name: n.name || n.id,
       x: n.x, y: n.y,
@@ -116,7 +123,7 @@ function buildChart(elId, nodes, edges, title) {
       symbolSize: agg ? 24 : 34,
       itemStyle: { color: j.color, borderColor: j.color === "#d3d7de" ? "#bbb" : j.color, borderWidth: 1.5, borderRadius: agg ? 5 : 0 },
       label: { show: true, formatter: () => (agg ? ((n.name || "").split(" · ").pop() || n.name) : (n.name || n.id)), fontSize: 10, color: "#333", position: n.lp || "bottom" },
-      tooltip: { formatter: () => `<b>${n.name}</b><br/>版本：${n.version || "—"}<br/>许可证：${n.license || "未声明"}<br/>判定：${j.label}` },
+      tooltip: { formatter: () => `<b>${n.name}</b><br/>版本：${n.version || "—"}<br/>许可证：${n.license || "未声明"}<br/>判定：${j.label}${sourceNote}` },
       _raw: n
     };
   });
@@ -214,6 +221,61 @@ def forest_layout(nodes, edges):
                 nodeById[kid]["lp"] = "bottom"
 
 
+def _decision_rank(decision: str | None) -> int:
+    return DECISION_RANK.get(decision or "", -1)
+
+
+def _collect_event_decisions(
+    events: list[dict], certificates: list[dict]
+) -> dict[str, str]:
+    """收集每个种子/路径节点最强的 diff 传播判定。"""
+
+    decisions: dict[str, str] = {}
+
+    def add(node_id: str | None, decision: str | None) -> None:
+        if not node_id or not decision:
+            return
+        current = decisions.get(node_id)
+        if current is None or _decision_rank(decision) > _decision_rank(current):
+            decisions[node_id] = decision
+
+    for event in events:
+        decision = event.get("decision")
+        add(event.get("seed"), decision)
+        add(event.get("source"), decision)
+        add(event.get("target"), decision)
+        for step in event.get("path") or []:
+            add(step.get("source"), decision)
+            add(step.get("target"), decision)
+
+    for certificate in certificates:
+        decision = certificate.get("decision")
+        add(certificate.get("seed"), decision)
+        add(certificate.get("affected"), decision)
+
+    return decisions
+
+
+def apply_event_decisions(
+    nodes_t0: list[dict],
+    nodes_t1: list[dict],
+    events: list[dict],
+    certificates: list[dict],
+) -> None:
+    """把传播判定叠加到节点，且不覆盖更强或更明确的既有判定。"""
+
+    event_decisions = _collect_event_decisions(events, certificates)
+    for nodes in (nodes_t0, nodes_t1):
+        for node in nodes:
+            node_id = node.get("id") or node.get("canonical_id") or node.get("entity_key")
+            event_decision = event_decisions.get(node_id)
+            if not event_decision:
+                continue
+            if _decision_rank(event_decision) > _decision_rank(node.get("decision")):
+                node["decision"] = event_decision
+                node["decision_source"] = "diff_propagation"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="开源账本 --diff 时间轴风险传播图渲染器")
     parser.add_argument("--before", required=True, type=Path, help="t0 BOM（CycloneDX，含 pedigree.ancestors）")
@@ -238,6 +300,12 @@ def main() -> None:
     nodes_t1, edges_t1 = list(after["assets"]), list(after["edges"])
     for n in nodes_t0 + nodes_t1:
         n["id"] = n.get("id") or n.get("canonical_id") or n.get("entity_key")
+    apply_event_decisions(
+        nodes_t0,
+        nodes_t1,
+        propagated["events"],
+        certs,
+    )
     forest_layout(nodes_t0, edges_t0)
     forest_layout(nodes_t1, edges_t1)
 
@@ -266,7 +334,7 @@ def main() -> None:
     local_echarts = args.output.parent / "echarts.min.js"
     candidates = [
         Path(__file__).resolve().parent / "echarts.min.js",
-        Path(__file__).resolve().parent.parent / "outputs" / "modelscope_validation" / "echarts.min.js",
+        Path(__file__).resolve().parent / "outputs" / "modelscope_validation" / "echarts.min.js",
     ]
     echarts_src = "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
     for cand in candidates:
