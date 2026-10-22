@@ -41,7 +41,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: q7ijiang/open-source-ledger
-          ref: main
+          # PR 阶段直接使用 PR 分支的工具代码（含 --project/--diff 能力，无需等合并）；
+          # schedule / workflow_dispatch 等非 PR 场景回退到 main 分支。
+          ref: ${{ github.event.pull_request.head.ref || 'main' }}
           path: .license-watch-tool
 
       - name: Set up Python 3.10
