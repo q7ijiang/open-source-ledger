@@ -17,7 +17,8 @@ modelscope/
 │   ├── Qwen__Qwen-Image-2.1/{bom,graph}.json
 │   ├── Qwen__Qwen2.5-7B-Instruct/{bom,graph}.json
 │   ├── XingChen-AGI__TeleOCR/{bom,graph}.json
-│   └── multi_model_project/{bom,graph}.json
+│   ├── multi_model_project/{bom,graph}.json
+│   └── test_project/bom.json  --project 扫描输入 BOM（Qwen2.5-7B-Instruct）
 ├── ms_viz/                    渲染层可视化数据
 │   ├── viz_data.json          构造数据版血缘图数据（Qwen-Image-2.1 聚合降维）
 │   ├── viz_real_data.json     真实数据版血缘图数据（14 节点 / 11 边）
@@ -39,6 +40,7 @@ modelscope/
 | `diff/diff_events.json` + `diff_certificates.json` | --diff 全链路：变更事件 + 传播证书（C2 场景：事件 2 / 传播后 8 / 证书 6） | `main.py --diff --before --after` |
 | `model_exports/*/bom.json` | 标准 CycloneDX 1.7 导出（含 metadata.timestamp / pedigree.ancestors / decision） | `bom_adapter.py` / `main.py --model/--project` |
 | `model_exports/*/graph.json` | 建图判定结果（RISK_CONFIRMED/POTENTIAL/SAFE/UNDETERMINED） | `main.py --model/--project` 渲染层取 decision 着色 |
+| `model_exports/test_project/bom.json` | --project 扫描输入 BOM（modelscope 组件类型/Qwen namespace） | `main.py --project test_project` |
 | `ms_viz/viz_data.json` | 渲染层森林分层布局 + 风险传播红线 + 形状图例 | `outputs/modelscope_validation/build_viz_html.py` |
 | `ms_viz/viz_real_data.json` | 真实数据血缘图（14 节点 / 11 边，主模型黄灯） | `outputs/modelscope_validation/gen_viz_real.py` |
 | `project_extract/graph.json` | --project 全链路建图与整体判定（UNDETERMINED/POTENTIAL） | `main.py --project` |
