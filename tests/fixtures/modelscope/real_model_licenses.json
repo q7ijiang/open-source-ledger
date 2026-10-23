@@ -1,0 +1,585 @@
+[
+  {
+    "canonical_id": "model:modelscope/AI-ModelScope/Qwen2.5-7B-Instruct@master",
+    "asset_type": "model",
+    "name": "AI-ModelScope/Qwen2.5-7B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/Qwen2.5-7B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/AI-ModelScope/bert-base-uncased@master",
+    "asset_type": "model",
+    "name": "AI-ModelScope/bert-base-uncased",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/bert-base-uncased@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/AI-ModelScope/bge-large-zh-v1.5@master",
+    "asset_type": "model",
+    "name": "AI-ModelScope/bge-large-zh-v1.5",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/bge-large-zh-v1.5@master"
+    ],
+    "license": "MIT",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/AI-ModelScope/bge-reranker-v2-m3@master",
+    "asset_type": "model",
+    "name": "AI-ModelScope/bge-reranker-v2-m3",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/bge-reranker-v2-m3@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/AI-ModelScope/falcon-7b-instruct@master",
+    "asset_type": "model",
+    "name": "AI-ModelScope/falcon-7b-instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/falcon-7b-instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/AI-ModelScope/gemma-2b@master",
+    "asset_type": "model",
+    "name": "AI-ModelScope/gemma-2b",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/gemma-2b@master"
+    ],
+    "license": "gemma",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/AI-ModelScope/m3e-base@master",
+    "asset_type": "model",
+    "name": "AI-ModelScope/m3e-base",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/m3e-base@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/AI-ModelScope/phi-2@master",
+    "asset_type": "model",
+    "name": "AI-ModelScope/phi-2",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/phi-2@master"
+    ],
+    "license": "MIT",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/AI-ModelScope/stable-diffusion-v1-5@master",
+    "asset_type": "model",
+    "name": "AI-ModelScope/stable-diffusion-v1-5",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/stable-diffusion-v1-5@master"
+    ],
+    "license": "creativeml-openrail-m",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/AI-ModelScope/whisper-large-v3@master",
+    "asset_type": "model",
+    "name": "AI-ModelScope/whisper-large-v3",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/AI-ModelScope/whisper-large-v3@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/LLM-Research/Meta-Llama-3-70B-Instruct@master",
+    "asset_type": "model",
+    "name": "LLM-Research/Meta-Llama-3-70B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/LLM-Research/Meta-Llama-3-70B-Instruct@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/LLM-Research/Meta-Llama-3-8B-Instruct@master",
+    "asset_type": "model",
+    "name": "LLM-Research/Meta-Llama-3-8B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/LLM-Research/Meta-Llama-3-8B-Instruct@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/LLM-Research/Meta-Llama-3.1-8B-Instruct@master",
+    "asset_type": "model",
+    "name": "LLM-Research/Meta-Llama-3.1-8B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/LLM-Research/Meta-Llama-3.1-8B-Instruct@master"
+    ],
+    "license": "llama3.1",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/LLM-Research/Meta-Llama-3.1-8B@master",
+    "asset_type": "model",
+    "name": "LLM-Research/Meta-Llama-3.1-8B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/LLM-Research/Meta-Llama-3.1-8B@master"
+    ],
+    "license": "llama3.1",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen-Audio-Chat@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen-Audio-Chat",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen-Audio-Chat@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen-Image-2.1",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen-Image-2.1@master"
+    ],
+    "license": "qwen-research",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen1.5-7B-Chat@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen1.5-7B-Chat",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen1.5-7B-Chat@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2-VL-7B-Instruct@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2-VL-7B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2-VL-7B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2-VL-7B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2-VL-7B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2-VL-7B@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-0.5B-Instruct@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-0.5B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-0.5B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-0.5B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-0.5B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-0.5B@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-1.5B-Instruct@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-1.5B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-1.5B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-1.5B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-1.5B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-1.5B@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-32B-Instruct@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-32B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-32B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-32B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-32B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-32B@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-72B-Instruct@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-72B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-72B-Instruct@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-72B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-72B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-72B@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-7B@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-Coder-7B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-Coder-7B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-Coder-7B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-Coder-7B@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-Omni-7B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-Omni-7B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-Omni-7B@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-VL-7B-Instruct@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-VL-7B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen3-0.6B-Base@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen3-0.6B-Base",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen3-0.6B-Base@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen3-0.6B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen3-0.6B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen3-0.6B@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen3-8B-Base@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen3-8B-Base",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen3-8B-Base@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Qwen/Qwen3-8B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen3-8B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen3-8B@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/Shanghai_AI_Laboratory/internlm-xcomposer2-7b@master",
+    "asset_type": "model",
+    "name": "Shanghai_AI_Laboratory/internlm-xcomposer2-7b",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Shanghai_AI_Laboratory/internlm-xcomposer2-7b@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/Shanghai_AI_Laboratory/internlm2-chat-7b@master",
+    "asset_type": "model",
+    "name": "Shanghai_AI_Laboratory/internlm2-chat-7b",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Shanghai_AI_Laboratory/internlm2-chat-7b@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/ZhipuAI/chatglm3-6b@master",
+    "asset_type": "model",
+    "name": "ZhipuAI/chatglm3-6b",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/ZhipuAI/chatglm3-6b@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/ZhipuAI/glm-4-9b-chat@master",
+    "asset_type": "model",
+    "name": "ZhipuAI/glm-4-9b-chat",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/ZhipuAI/glm-4-9b-chat@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/ZhipuAI/glm-4v-9b@master",
+    "asset_type": "model",
+    "name": "ZhipuAI/glm-4v-9b",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/ZhipuAI/glm-4v-9b@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/baichuan-inc/Baichuan2-13B-Chat@master",
+    "asset_type": "model",
+    "name": "baichuan-inc/Baichuan2-13B-Chat",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/baichuan-inc/Baichuan2-13B-Chat@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/baichuan-inc/Baichuan2-7B-Chat@master",
+    "asset_type": "model",
+    "name": "baichuan-inc/Baichuan2-7B-Chat",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/baichuan-inc/Baichuan2-7B-Chat@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B@master",
+    "asset_type": "model",
+    "name": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B@master"
+    ],
+    "license": "MIT",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/deepseek-ai/DeepSeek-V2-Lite-Chat@master",
+    "asset_type": "model",
+    "name": "deepseek-ai/DeepSeek-V2-Lite-Chat",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/deepseek-ai/DeepSeek-V2-Lite-Chat@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/deepseek-ai/deepseek-coder-6.7b-instruct@master",
+    "asset_type": "model",
+    "name": "deepseek-ai/deepseek-coder-6.7b-instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/deepseek-ai/deepseek-coder-6.7b-instruct@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/deepseek-ai/deepseek-llm-67b-chat@master",
+    "asset_type": "model",
+    "name": "deepseek-ai/deepseek-llm-67b-chat",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/deepseek-ai/deepseek-llm-67b-chat@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/deepseek-ai/deepseek-llm-7b-chat@master",
+    "asset_type": "model",
+    "name": "deepseek-ai/deepseek-llm-7b-chat",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/deepseek-ai/deepseek-llm-7b-chat@master"
+    ],
+    "license": null,
+    "license_evidence_level": null
+  },
+  {
+    "canonical_id": "model:modelscope/iic/nlp_bert_backbone_base_std@master",
+    "asset_type": "model",
+    "name": "iic/nlp_bert_backbone_base_std",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/iic/nlp_bert_backbone_base_std@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/iic/nlp_csanmt_translation_en2zh@master",
+    "asset_type": "model",
+    "name": "iic/nlp_csanmt_translation_en2zh",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/iic/nlp_csanmt_translation_en2zh@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/iic/nlp_structbert_backbone_base_std@master",
+    "asset_type": "model",
+    "name": "iic/nlp_structbert_backbone_base_std",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/iic/nlp_structbert_backbone_base_std@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  },
+  {
+    "canonical_id": "model:modelscope/iic/nlp_structbert_sentiment-classification_chinese-base@master",
+    "asset_type": "model",
+    "name": "iic/nlp_structbert_sentiment-classification_chinese-base",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/iic/nlp_structbert_sentiment-classification_chinese-base@master"
+    ],
+    "license": "Apache-2.0",
+    "license_evidence_level": "A"
+  }
+]

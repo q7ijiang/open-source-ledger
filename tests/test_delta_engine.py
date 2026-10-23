@@ -12,19 +12,19 @@
 import json
 
 import delta_engine as de
-from conftest import FIXTURES
+from conftest import MODELSCOPE_FIXTURES
 
 
 def load(name):
-    return json.loads((FIXTURES / name).read_text(encoding="utf-8"))
+    return json.loads((MODELSCOPE_FIXTURES / name).read_text(encoding="utf-8"))
 
 
 def run_delta():
     return de.detect_delta(
-        load("deep_t0_assets.json"),
-        load("deep_t1_assets.json"),
-        load("deep_t0_edges.json"),
-        load("deep_t1_edges.json"),
+        load("scenario_t0_assets.json"),
+        load("scenario_t1_assets.json"),
+        load("scenario_t0_edges.json"),
+        load("scenario_t1_edges.json"),
     )
 
 
@@ -53,15 +53,15 @@ def test_six_change_types_covered():
 
 
 def test_license_changed_events():
-    """许可证变更事件：Llama-2-7b（llama2→GPL-3.0）与 example-parser（MIT→GPL-3.0-only）。"""
+    """许可证变更事件：Llama-3.1-8B（llama3.1→GPL-3.0）与 bge-large-zh（MIT→GPL-3.0-only）。"""
     by_type = index_events(run_delta())
     changed = by_type["license_changed"]
     seeds = {event["seed"] for event in changed}
-    assert "model:meta-llama/Llama-2-7b" in seeds
-    assert "package:pypi/example-parser" in seeds
+    assert "model:LLM-Research/Meta-Llama-3.1-8B-Instruct" in seeds
+    assert "model:AI-ModelScope/bge-large-zh-v1.5" in seeds
 
-    llama = next(e for e in changed if e["seed"] == "model:meta-llama/Llama-2-7b")
-    assert llama["before"]["license"] == "llama2"
+    llama = next(e for e in changed if e["seed"] == "model:LLM-Research/Meta-Llama-3.1-8B-Instruct")
+    assert llama["before"]["license"] == "llama3.1"
     assert llama["after"]["license"] == "GPL-3.0"
     assert llama["evidence_level"] == "A"
     assert llama["decision"] == "RISK_CONFIRMED"
@@ -74,17 +74,17 @@ def test_license_changed_events():
 
 
 def test_evidence_downgrade_event():
-    """finetuned-model 的许可证证据由 A 降到 C。"""
+    """Qwen2.5-7B-Instruct 的许可证证据由 A 降到 C。"""
     by_type = index_events(run_delta())
     downgrades = [e for e in by_type["evidence_downgrade"]
-                  if e["seed"] == "model:my-org/finetuned-model"]
+                  if e["seed"] == "model:Qwen/Qwen2.5-7B-Instruct"]
     assert len(downgrades) == 1
     assert downgrades[0]["evidence_level"] == "C"
     assert downgrades[0]["decision"] == "UNDETERMINED"
 
 
 def test_ancestor_added_missing_ancestor_undetermined():
-    """serving-model 新增祖先 Qwen2.5-7B（未出现在 BOM）-> seed=edge.target、UNDETERMINED。"""
+    """Qwen-Image-2.1 新增祖先 Qwen2.5-7B（未出现在 BOM）-> seed=edge.target、UNDETERMINED。"""
     by_type = index_events(run_delta())
     added = [e for e in by_type["ancestor_added"]
              if e["seed"] == "model:Qwen/Qwen2.5-7B"]
@@ -97,9 +97,9 @@ def test_dataset_added_and_removed():
     """数据集边新增（new-training-data）与移除（training-data），seed 指向边 target。"""
     by_type = index_events(run_delta())
     added = [e for e in by_type["dataset_added"]
-             if e["seed"] == "dataset:my-org/new-training-data"]
+             if e["seed"] == "dataset:scenario/qwen-sft-data-v2"]
     removed = [e for e in by_type["dataset_removed"]
-               if e["seed"] == "dataset:my-org/training-data"]
+               if e["seed"] == "dataset:scenario/qwen-sft-data-v1"]
     assert len(added) == 1 and added[0]["evidence_level"] == "C"
     assert added[0]["decision"] == "UNDETERMINED"
     assert len(removed) == 1 and removed[0]["evidence_level"] == "B"
@@ -107,10 +107,10 @@ def test_dataset_added_and_removed():
 
 
 def test_ancestor_removed_event():
-    """serving-model 移除旧祖先 old-model -> seed=edge.target、B 级证据。"""
+    """Qwen-Image-2.1 移除旧祖先 old-model -> seed=edge.target、B 级证据。"""
     by_type = index_events(run_delta())
     removed = [e for e in by_type["ancestor_removed"]
-               if e["seed"] == "model:legacy/old-model"]
+               if e["seed"] == "model:ZhipuAI/glm-4-9b-chat"]
     assert len(removed) == 1
     assert removed[0]["evidence_level"] == "B"
     assert removed[0]["decision"] == "RISK_POTENTIAL"
@@ -129,10 +129,10 @@ def test_event_schema_conformance():
 def test_no_change_produces_no_events():
     """相同快照对比不产生任何事件。"""
     events = de.detect_delta(
-        load("deep_t0_assets.json"),
-        load("deep_t0_assets.json"),
-        load("deep_t0_edges.json"),
-        load("deep_t0_edges.json"),
+        load("scenario_t0_assets.json"),
+        load("scenario_t0_assets.json"),
+        load("scenario_t0_edges.json"),
+        load("scenario_t0_edges.json"),
     )
     assert events == []
 

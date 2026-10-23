@@ -1,0 +1,58 @@
+[
+  {
+    "source": "model:Qwen/Qwen2.5-7B-Instruct",
+    "target": "model:LLM-Research/Meta-Llama-3.1-8B-Instruct",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "model_card.base_model",
+    "snapshot_id": "ms-scenario-t0"
+  },
+  {
+    "source": "model:Qwen/Qwen-Image-2.1",
+    "target": "model:Qwen/Qwen2.5-7B-Instruct",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "model_card.base_model",
+    "snapshot_id": "ms-scenario-t0"
+  },
+  {
+    "source": "model:Qwen/Qwen-Image-2.1",
+    "target": "model:ZhipuAI/glm-4-9b-chat",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "model_card.base_model",
+    "snapshot_id": "ms-scenario-t0"
+  },
+  {
+    "source": "model:Qwen/Qwen2.5-7B-Instruct",
+    "target": "dataset:scenario/qwen-sft-data-v1",
+    "edge_type": "trained_on",
+    "evidence_level": "B",
+    "source_field": "model_card.training_data",
+    "snapshot_id": "ms-scenario-t0"
+  },
+  {
+    "source": "model:Qwen/Qwen2.5-7B-Instruct",
+    "target": "model:AI-ModelScope/bge-large-zh-v1.5",
+    "edge_type": "depends_on",
+    "evidence_level": "B",
+    "source_field": "requirements.txt",
+    "snapshot_id": "ms-scenario-t0"
+  },
+  {
+    "source": "model:AI-ModelScope/bge-large-zh-v1.5",
+    "target": "model:iic/nlp_structbert_sentiment-classification_chinese-base",
+    "edge_type": "depends_on",
+    "evidence_level": "B",
+    "source_field": "requirements.txt",
+    "snapshot_id": "ms-scenario-t0"
+  },
+  {
+    "source": "model:iic/nlp_structbert_sentiment-classification_chinese-base",
+    "target": "model:AI-ModelScope/bge-large-zh-v1.5",
+    "edge_type": "depends_on",
+    "evidence_level": "B",
+    "source_field": "requirements.txt",
+    "snapshot_id": "ms-scenario-t0"
+  }
+]

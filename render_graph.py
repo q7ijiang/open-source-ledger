@@ -252,7 +252,10 @@ def main() -> None:
     echarts_src = "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
     for cand in src_candidates:
         if cand.exists():
-            shutil.copy(cand, local_echarts)
+            # --output 落在仓库根时，cand 与 local_echarts 是同一个文件，
+            # 直接 copy 会抛 shutil.SameFileError，这里先判同文件再复制。
+            if cand.resolve() != local_echarts.resolve():
+                shutil.copy(cand, local_echarts)
             echarts_src = "./echarts.min.js"
             break
     html = html.replace("{{ECHARTS_SRC}}", echarts_src)
