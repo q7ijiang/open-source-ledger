@@ -3,7 +3,15 @@
   "specVersion": "1.7",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-13T23:39:15.846844"
+    "timestamp": "2026-10-15T00:00:00+08:00",
+    "component": {
+      "bom-ref": "pkg:github/student-org/multi-model-app@1.2.0",
+      "type": "application",
+      "name": "multi-model-app",
+      "version": "1.2.0",
+      "purl": "pkg:github/student-org/multi-model-app@1.2.0",
+      "description": "项目级 t0 快照（基线）：Qwen2.5-7B / Qwen3-8B Apache-2.0，TeleOCR 未声明许可证"
+    }
   },
   "components": [
     {
@@ -67,11 +75,11 @@
         },
         {
           "name": "open-source-ledger:decision",
-          "value": "UNDETERMINED"
+          "value": "SAFE"
         },
         {
           "name": "open-source-ledger:decision_zh",
-          "value": "待确认（灰）"
+          "value": "安全（绿）"
         },
         {
           "name": "open-source-ledger:aggregate",
@@ -84,6 +92,10 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
         }
       ],
       "pedigree": {
@@ -110,11 +122,11 @@
         },
         {
           "name": "open-source-ledger:decision",
-          "value": "UNDETERMINED"
+          "value": "SAFE"
         },
         {
           "name": "open-source-ledger:decision_zh",
-          "value": "待确认（灰）"
+          "value": "安全（绿）"
         },
         {
           "name": "open-source-ledger:aggregate",
@@ -127,6 +139,10 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
         }
       ],
       "pedigree": {
@@ -153,11 +169,11 @@
         },
         {
           "name": "open-source-ledger:decision",
-          "value": "UNDETERMINED"
+          "value": "SAFE"
         },
         {
           "name": "open-source-ledger:decision_zh",
-          "value": "待确认（灰）"
+          "value": "安全（绿）"
         },
         {
           "name": "open-source-ledger:aggregate",
@@ -170,6 +186,10 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
         }
       ],
       "pedigree": {
@@ -196,11 +216,11 @@
         },
         {
           "name": "open-source-ledger:decision",
-          "value": "UNDETERMINED"
+          "value": "SAFE"
         },
         {
           "name": "open-source-ledger:decision_zh",
-          "value": "待确认（灰）"
+          "value": "安全（绿）"
         },
         {
           "name": "open-source-ledger:aggregate",
@@ -213,6 +233,10 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
         }
       ],
       "pedigree": {
@@ -287,11 +311,11 @@
         },
         {
           "name": "open-source-ledger:decision",
-          "value": "UNDETERMINED"
+          "value": "SAFE"
         },
         {
           "name": "open-source-ledger:decision_zh",
-          "value": "待确认（灰）"
+          "value": "安全（绿）"
         },
         {
           "name": "open-source-ledger:aggregate",
@@ -304,6 +328,10 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
         }
       ],
       "pedigree": {
@@ -330,11 +358,11 @@
         },
         {
           "name": "open-source-ledger:decision",
-          "value": "UNDETERMINED"
+          "value": "SAFE"
         },
         {
           "name": "open-source-ledger:decision_zh",
-          "value": "待确认（灰）"
+          "value": "安全（绿）"
         },
         {
           "name": "open-source-ledger:aggregate",
@@ -347,6 +375,10 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
         }
       ],
       "pedigree": {
@@ -373,11 +405,11 @@
         },
         {
           "name": "open-source-ledger:decision",
-          "value": "UNDETERMINED"
+          "value": "SAFE"
         },
         {
           "name": "open-source-ledger:decision_zh",
-          "value": "待确认（灰）"
+          "value": "安全（绿）"
         },
         {
           "name": "open-source-ledger:aggregate",
@@ -390,6 +422,10 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
         }
       ],
       "pedigree": {
@@ -416,11 +452,11 @@
         },
         {
           "name": "open-source-ledger:decision",
-          "value": "UNDETERMINED"
+          "value": "SAFE"
         },
         {
           "name": "open-source-ledger:decision_zh",
-          "value": "待确认（灰）"
+          "value": "安全（绿）"
         },
         {
           "name": "open-source-ledger:aggregate",
@@ -433,6 +469,10 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
         }
       ],
       "pedigree": {

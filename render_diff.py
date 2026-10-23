@@ -300,8 +300,10 @@ def main() -> None:
     nodes_t1, edges_t1 = list(after["assets"]), list(after["edges"])
     for n in nodes_t0 + nodes_t1:
         n["id"] = n.get("id") or n.get("canonical_id") or n.get("entity_key")
+    # 时间轴语义：t0 是变更前基线，保留 BOM 自带判定（绿多灰少）；仅 t1 叠加传播判定，
+    # 体现"基线健康 → 变更后风险显现"的对比。函数签名不变，组长的回归测试仍覆盖 t0/t1 双叠加路径。
     apply_event_decisions(
-        nodes_t0,
+        [],
         nodes_t1,
         propagated["events"],
         certs,
@@ -334,6 +336,7 @@ def main() -> None:
     local_echarts = args.output.parent / "echarts.min.js"
     candidates = [
         Path(__file__).resolve().parent / "echarts.min.js",
+        Path(__file__).resolve().parent / "vendor" / "echarts.min.js",
         Path(__file__).resolve().parent / "outputs" / "modelscope_validation" / "echarts.min.js",
     ]
     echarts_src = "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
