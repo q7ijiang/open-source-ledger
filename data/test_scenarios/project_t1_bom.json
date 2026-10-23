@@ -1,0 +1,576 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-15T00:00:00+08:00",
+    "component": {
+      "bom-ref": "pkg:github/student-org/multi-model-app@1.2.0",
+      "type": "application",
+      "name": "multi-model-app",
+      "version": "1.2.0",
+      "purl": "pkg:github/student-org/multi-model-app@1.2.0",
+      "description": "项目级 t1 快照：Qwen3-8B 许可证从 Apache-2.0 变更为 qwen-research（模拟模型供应商许可证收紧）"
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen2.5-7B-Instruct",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+              "source_field": "Data.License",
+              "retrieved_at": "2026-10-13T15:39:13.175733Z",
+              "status": "ok",
+              "raw_value": "apache-2.0"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "SAFE"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "安全（绿）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Adapters@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen2.5-7B-Instruct · 适配 (Total: 27)",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Adapters@master",
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:aggregate",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:count",
+          "value": "27"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+            "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+            "evidence_level": "B",
+            "source_field": "lineage.SonModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Finetunes@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen2.5-7B-Instruct · 微调 (Total: 1744)",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Finetunes@master",
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:aggregate",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:count",
+          "value": "1744"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+            "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+            "evidence_level": "B",
+            "source_field": "lineage.SonModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Merges@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen2.5-7B-Instruct · 合并 (Total: 16)",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Merges@master",
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:aggregate",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:count",
+          "value": "16"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+            "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+            "evidence_level": "B",
+            "source_field": "lineage.SonModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Quantizations@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen2.5-7B-Instruct · 量化 (Total: 50)",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Quantizations@master",
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:aggregate",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:count",
+          "value": "50"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+            "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+            "evidence_level": "B",
+            "source_field": "lineage.SonModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B@master",
+      "licenses": [
+        {
+          "license": {
+            "name": "qwen-research",
+            "id": "qwen-research",
+            "url": "https://modelscope.cn/models/Qwen/Qwen3-8B/LICENSE",
+            "properties": [
+              {
+                "name": "cdx:license:category",
+                "value": "ai_restricted"
+              },
+              {
+                "name": "cdx:license:foss",
+                "value": "false"
+              }
+            ]
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "3"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_POTENTIAL"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "潜在风险（黄灯）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:son:Adapters@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 适配 (Total: 20)",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:son:Adapters@master",
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:aggregate",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:count",
+          "value": "20"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen3-8B@master",
+            "purl": "pkg:modelscope/Qwen/Qwen3-8B@master",
+            "evidence_level": "B",
+            "source_field": "lineage.SonModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:son:Finetunes@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 微调 (Total: 552)",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:son:Finetunes@master",
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:aggregate",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:count",
+          "value": "552"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen3-8B@master",
+            "purl": "pkg:modelscope/Qwen/Qwen3-8B@master",
+            "evidence_level": "B",
+            "source_field": "lineage.SonModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:son:Merges@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 合并 (Total: 14)",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:son:Merges@master",
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:aggregate",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:count",
+          "value": "14"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen3-8B@master",
+            "purl": "pkg:modelscope/Qwen/Qwen3-8B@master",
+            "evidence_level": "B",
+            "source_field": "lineage.SonModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:son:Quantizations@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 量化 (Total: 127)",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:son:Quantizations@master",
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:aggregate",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:count",
+          "value": "127"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen3-8B@master",
+            "purl": "pkg:modelscope/Qwen/Qwen3-8B@master",
+            "evidence_level": "B",
+            "source_field": "lineage.SonModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/XingChen-AGI/TeleOCR@master",
+      "type": "machine-learning-model",
+      "name": "XingChen-AGI/TeleOCR",
+      "version": "master",
+      "purl": "pkg:modelscope/XingChen-AGI/TeleOCR@master",
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-XingChen-AGI__TeleOCR"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/XingChen-AGI/TeleOCR"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/XingChen-AGI/TeleOCR:son:Quantizations@master",
+      "type": "machine-learning-model",
+      "name": "XingChen-AGI/TeleOCR · 量化 (Total: 7)",
+      "version": "master",
+      "purl": "pkg:modelscope/XingChen-AGI/TeleOCR:son:Quantizations@master",
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-XingChen-AGI__TeleOCR"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:aggregate",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:count",
+          "value": "7"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/XingChen-AGI/TeleOCR"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/XingChen-AGI/TeleOCR@master",
+            "purl": "pkg:modelscope/XingChen-AGI/TeleOCR@master",
+            "evidence_level": "B",
+            "source_field": "lineage.SonModels"
+          }
+        ]
+      }
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Adapters@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Finetunes@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Merges@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Quantizations@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen3-8B@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen3-8B:son:Adapters@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen3-8B:son:Finetunes@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen3-8B:son:Merges@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen3-8B:son:Quantizations@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/XingChen-AGI/TeleOCR@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/XingChen-AGI/TeleOCR:son:Quantizations@master",
+      "dependsOn": []
+    }
+  ]
+}

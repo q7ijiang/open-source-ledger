@@ -266,6 +266,27 @@ def extract_component_hashes(component: dict[str, Any]) -> list[dict[str, str]]:
         if algorithm and digest:
             hashes.append({"algorithm": algorithm, "value": digest})
     return hashes
+
+
+LEDGER_PROPERTY_PREFIX = "open-source-ledger:"
+
+
+def extract_ledger_properties(component: dict[str, Any]) -> dict[str, str]:
+    """提取开源账本写入 CycloneDX properties 的扩展字段。"""
+
+    properties: dict[str, str] = {}
+    for raw_property in as_list(component.get("properties")):
+        if not isinstance(raw_property, dict):
+            continue
+        name = clean_text(raw_property.get("name")) or ""
+        if not name.startswith(LEDGER_PROPERTY_PREFIX):
+            continue
+        value = clean_text(raw_property.get("value"))
+        if value is not None:
+            properties[name[len(LEDGER_PROPERTY_PREFIX) :]] = value
+    return properties
+
+
 def is_location_property(property_name: str) -> bool:
     """判断组件属性名是否表示文件或层内出现位置。"""
 
@@ -468,6 +489,7 @@ def convert_component(
         purls=purls,
     )
     licenses = extract_licenses(component)
+    ledger_properties = extract_ledger_properties(component)
     # 保留四元组，便于审计和极端冲突时生成稳定后缀。
     identity_values = [
         {
@@ -480,7 +502,7 @@ def convert_component(
         }
         for identity in identities
     ]
-    return {
+    asset = {
         "entity_key": entity_key,
         "canonical_id": canonical_id,
         "asset_type": asset_type,
@@ -494,6 +516,18 @@ def convert_component(
         "snapshot_id": snapshot_id,
         "source_file": source_file,
     }
+    for field_name in ("decision", "decision_zh"):
+        if field_name in ledger_properties:
+            asset[field_name] = ledger_properties[field_name]
+
+    risk_level = ledger_properties.get("risk_level")
+    if risk_level is not None:
+        try:
+            asset["risk_level"] = int(risk_level)
+        except ValueError:
+            asset["risk_level"] = risk_level
+
+    return asset
 
 
 def convert_bom(

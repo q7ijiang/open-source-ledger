@@ -7,8 +7,9 @@ inputs:
     required: false
     default: '.'
   api_key:
-    description: ModelScope API Key，应从 GitHub Secrets 传入
-    required: true
+    description: ModelScope API Key，可选；公开模型可留空，私有模型或频率限制场景建议从 GitHub Secrets 传入
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -30,15 +31,16 @@ runs:
       with:
         python-version: '3.10'
 
-    - name: Validate ModelScope API key
+    - name: Check ModelScope API key (optional)
       if: steps.fork-guard.outputs.skip != 'true'
       env:
         MODELSCOPE_API_KEY: ${{ inputs.api_key }}
       shell: bash
       run: |
         if [ -z "${MODELSCOPE_API_KEY:-}" ]; then
-          echo "::error::未配置 MODELSCOPE_API_KEY。请在 Settings -> Secrets and variables -> Actions 中添加仓库 Secret。"
-          exit 1
+          echo "::warning::未配置 MODELSCOPE_API_KEY，将尝试以匿名方式访问 ModelScope 公开模型。"
+        else
+          echo "已检测到 MODELSCOPE_API_KEY，将使用认证请求。"
         fi
 
     - name: Install Python dependencies
@@ -106,7 +108,7 @@ runs:
         BOM_PATH="$(find "$ACTION_PATH/outputs" -type f -name bom.json | head -n 1)"
         if [ -z "$BOM_PATH" ]; then
           echo "found=false" >> "$GITHUB_OUTPUT"
-          echo "::warning::项目扫描未生成 bom.json。请检查 project_path、ModelScope 模型标识和 api_key；本次跳过 diff 和风险检测。"
+          echo "::warning::项目扫描未生成 bom.json。请检查 project_path、ModelScope 模型标识，或确认模型是否为公开模型；私有模型需配置 api_key。本次跳过 diff 和风险检测。"
           exit 0
         fi
 

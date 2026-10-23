@@ -14,6 +14,7 @@
 """
 import argparse
 import json
+import shutil
 from pathlib import Path
 
 # 判定 → 颜色 / 中文标签（接口约定 v0.3 四级）
@@ -36,7 +37,7 @@ TPL = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8"/>
 <title>{{TITLE}} — 开源账本风险血缘图</title>
-<script>{{ECHARTS_INLINE}}</script>
+<script src="{{ECHARTS_SRC}}"></script>
 <style>
   body { font-family: "Microsoft YaHei", Arial, sans-serif; margin: 0; background: #f7f9fc; color: #333; }
   .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #fff; border-bottom: 1px solid #e2e8f0; }
@@ -242,13 +243,19 @@ def main() -> None:
     html = html.replace("{{DECISION_LABEL_JSON}}", json.dumps(DECISION_LABEL, ensure_ascii=False))
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    # ECharts 完全自包含：内联 vendor/echarts.min.js，零 CDN / 零外部文件依赖（断网可开）
-    vendor_echarts = Path(__file__).resolve().parent / "vendor" / "echarts.min.js"
-    if not vendor_echarts.exists():
-        print("错误：缺少 vendor/echarts.min.js（请先下载 ECharts 5.5 完整版放入 vendor/），无法生成自包含 HTML")
-        return 1
-    echarts_js = vendor_echarts.read_text(encoding="utf-8")
-    html = html.replace("{{ECHARTS_INLINE}}", echarts_js)
+    # ECharts：优先本地文件（复制到输出同目录，保证离线可开），缺失回退 CDN
+    local_echarts = args.output.parent / "echarts.min.js"
+    src_candidates = [
+        Path(__file__).resolve().parent / "echarts.min.js",
+        Path(__file__).resolve().parent / "outputs" / "modelscope_validation" / "echarts.min.js",
+    ]
+    echarts_src = "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
+    for cand in src_candidates:
+        if cand.exists():
+            shutil.copy(cand, local_echarts)
+            echarts_src = "./echarts.min.js"
+            break
+    html = html.replace("{{ECHARTS_SRC}}", echarts_src)
 
     args.output.write_text(html, encoding="utf-8")
     print("已生成：%s（节点 %d / 边 %d，整体判定 %s）" % (args.output, len(nodes), len(edges), overall))
