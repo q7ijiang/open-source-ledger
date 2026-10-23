@@ -527,6 +527,32 @@ def convert_component(
         except ValueError:
             asset["risk_level"] = risk_level
 
+    # 聚合域结构透传：聚合节点保持中性（不再预填 SAFE/POTENTIAL），只带统计属性。
+    # coverage_status=AGGREGATE_ONLY / count / expanded_count / remaining_count /
+    # known_risk_counts（JSON 字符串或对象）。渲染层据此做"中性底 + 风险描边徽标"。
+    if ledger_properties.get("aggregate") is not None:
+        asset["aggregate"] = ledger_properties.get("aggregate") in ("True", "true", "1")
+    for field_name in ("coverage_status", "count", "expanded_count", "remaining_count"):
+        if field_name in ledger_properties:
+            value = ledger_properties[field_name]
+            if field_name in ("count", "expanded_count", "remaining_count"):
+                try:
+                    value = int(value)
+                except (TypeError, ValueError):
+                    pass
+            asset[field_name] = value
+    krc = ledger_properties.get("known_risk_counts")
+    if krc:
+        if isinstance(krc, str):
+            try:
+                krc = json.loads(krc)
+            except (TypeError, ValueError):
+                pass
+        if isinstance(krc, dict):
+            asset["known_risk_counts"] = {
+                k: int(v) for k, v in krc.items() if k in ("red", "yellow", "gray")
+            }
+
     return asset
 
 

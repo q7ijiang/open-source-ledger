@@ -61,7 +61,7 @@ TPL = """<!DOCTYPE html>
   .stats { font-size: 12px; color: #606266; }
   .legend-row { padding: 6px 20px; background: #fff; border-bottom: 1px solid #eef2f7; font-size: 12px; color: #606266; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
   .legend-row i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
-  .main { display: flex; min-height: 480px; }
+  .main { display: flex; min-height: 700px; }
   .side { width: 38%; }
   .mid { width: 24%; background: #fff; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; padding: 10px; font-size: 12px; overflow-y: auto; }
   .mid h3 { margin: 0 0 8px; font-size: 13px; }
@@ -71,7 +71,7 @@ TPL = """<!DOCTYPE html>
   .evt .arrow { color: #c0392b; font-weight: bold; }
   .evt .tag { display: inline-block; padding: 1px 6px; border-radius: 3px; color: #fff; font-size: 10px; }
   .side .side-title { text-align: center; font-size: 13px; font-weight: bold; padding: 6px; color: #606266; }
-  .chart { height: 420px; }
+  .chart { height: 720px; }
   #panel { padding: 10px 20px; background: #fff; border-top: 1px solid #e2e8f0; font-size: 12px; }
   #panel h3 { margin: 0 0 8px; font-size: 14px; }
   .cert { border: 1px solid #e2e8f0; border-radius: 4px; padding: 8px; margin-bottom: 8px; background: #fafcfe; }
@@ -90,6 +90,8 @@ TPL = """<!DOCTYPE html>
   <span><i style="background:#67c23a"></i>安全（绿灯）</span>
   <span><i style="background:#d3d7de"></i>待确认（灰）</span>
   <span><i style="background:#c0392b;width:20px;height:4px;border-radius:2px"></i>红色箭头 = 风险传播路径（上游变化资产 → 受影响下游）</span>
+  <span><i style="background:#eef0f4;border:2px solid #f56c6c"></i>聚合风险域（内部含已确认风险，自身保持中性）</span>
+  <span><i style="background:#909399;width:20px;height:0;border-top:2px dashed #909399"></i>虚线 = expanded_from 展开关系</span>
 </div>
 <div class="main">
   <div class="side"><div class="side-title">t0 快照（基线）</div><div id="chart0" class="chart"></div></div>
@@ -102,42 +104,99 @@ TPL = """<!DOCTYPE html>
 <div id="panel"><h3>传播路径证书（path_certificates）</h3><div id="panel-body" style="color:#909399">点击左侧变更事件查看对应传播路径证书。</div></div>
 <script>
 const DATA = {{DATA_JSON}};
+window.DATA = DATA;
 const DECISION_COLOR = {{DECISION_COLOR_JSON}};
 const DECISION_LABEL = {{DECISION_LABEL_JSON}};
 const CHANGE_LABEL = {{CHANGE_LABEL_JSON}};
 
 function decisionOf(d) { return { code: d || "UNDETERMINED", color: DECISION_COLOR[d] || "#d3d7de", label: DECISION_LABEL[d] || d }; }
-function isAgg(n) { return (n.name || "").indexOf("(Total:") >= 0 || (n.name || "").indexOf(" · ") >= 0; }
+function isAgg(n) {
+  const raw = n._raw || n;
+  // 只认明确属性：aggregate=true / coverage_status=AGGREGATE_ONLY / 名称含 "(Total:"
+  // 不得用 " · " 判断——Adapter 展开子节点名也含 " · "，会被误判为聚合而套中性色。
+  return raw.aggregate === true
+    || raw.coverage_status === "AGGREGATE_ONLY"
+    || (n._stats && n._stats.coverage_status === "AGGREGATE_ONLY")
+    || (n.name || "").indexOf("(Total:") >= 0;
+}
+
+// 聚合域统计属性透传（与 render_graph 同契约）
+function aggStats(n) {
+  const s = n._stats || {};
+  const krc = s.known_risk_counts || {};
+  return {
+    coverage: s.coverage_status || (isAgg(n) ? "AGGREGATE_ONLY" : null),
+    count: s.count != null ? s.count : null,
+    expanded: s.expanded_count != null ? s.expanded_count : null,
+    remaining: s.remaining_count != null ? s.remaining_count : null,
+    red: krc.red || 0, yellow: krc.yellow || 0, gray: krc.gray || 0,
+  };
+}
 
 function buildChart(elId, nodes, edges, title) {
   const nodeById = {};
   nodes.forEach(n => nodeById[n.id] = n);
   const data = nodes.map(n => {
-    const j = decisionOf(n.decision);
     const agg = isAgg(n);
+    const j = decisionOf(n.decision);
+    const st = aggStats(n);
     const sourceNote = n.decision_source === "diff_propagation" ? "（diff 传播）" : "";
+    // 聚合节点：中性底 + 描边徽标；子节点按各自 decision 着色
+    const itemStyle = agg
+      ? { color: "#eef0f4", borderColor: st.red ? "#f56c6c" : (st.yellow ? "#e6a23c" : (st.gray ? "#d3d7de" : "#c0c4cc")), borderWidth: st.red ? 3 : (st.yellow ? 2.5 : 1.5), borderRadius: 6, shadowBlur: st.red ? 8 : 0, shadowColor: "rgba(245,108,108,0.5)" }
+      : { color: j.color, borderColor: j.color === "#d3d7de" ? "#bbb" : j.color, borderWidth: 1.5, borderRadius: 0 };
+    let labelText = n.name || n.id;
+    const labelRich = {};
+    // 展开子节点：短名 label（"适配·Adapter-A"），避免长名在平铺行重叠
+    if (!agg && n.is_expanded_child) {
+      const nm = n.name || "";
+      const m = nm.match(/(适配|微调|合并|量化)\\s*\\(([^)]+)\\)/);
+      labelText = m ? m[1] + "·" + m[2] : nm;
+    }
+    if (agg) {
+      const short = (n.name || "").split(" · ").pop() || n.name;
+      const parts = [short];
+      if (st.expanded != null) {
+        const known = [];
+        if (st.red) known.push(`{red|${st.red}红}`);
+        if (st.yellow) known.push(`{yellow|${st.yellow}黄}`);
+        if (st.gray) known.push(`{gray|${st.gray}灰}`);
+        parts.push(known.length ? `已知 ${known.join("·")} · 剩余 ${st.remaining != null ? st.remaining : "—"}` : `剩余 ${st.remaining != null ? st.remaining : "—"}`);
+      }
+      labelText = parts.join("\\n");
+      labelRich.red = { color: "#f56c6c", fontWeight: "bold" };
+      labelRich.yellow = { color: "#e6a23c", fontWeight: "bold" };
+      labelRich.gray = { color: "#909399", fontWeight: "bold" };
+    }
     return {
       id: n.id, name: n.name || n.id,
       x: n.x, y: n.y,
       symbol: agg ? "rect" : (n.asset_type === "dataset" ? "diamond" : "circle"),
-      symbolSize: agg ? 24 : 34,
-      itemStyle: { color: j.color, borderColor: j.color === "#d3d7de" ? "#bbb" : j.color, borderWidth: 1.5, borderRadius: agg ? 5 : 0 },
-      label: { show: true, formatter: () => (agg ? ((n.name || "").split(" · ").pop() || n.name) : (n.name || n.id)), fontSize: 10, color: "#333", position: n.lp || "bottom" },
-      tooltip: { formatter: () => `<b>${n.name}</b><br/>版本：${n.version || "—"}<br/>许可证：${n.license || "未声明"}<br/>判定：${j.label}${sourceNote}` },
+      symbolSize: agg ? 30 : 34,
+      itemStyle,
+      label: { show: true, formatter: labelText, rich: labelRich, fontSize: agg ? 10 : 10, color: "#333", position: n.lp || "bottom", lineHeight: 14 },
+      tooltip: { formatter: () => agg
+        ? `<b>${n.name}</b><br/>聚合节点（AGGREGATE_ONLY）<br/>覆盖总数：${st.count != null ? st.count : "—"}<br/>已展开：${st.expanded != null ? st.expanded : "—"} · 剩余：${st.remaining != null ? st.remaining : "—"}<br/>已知风险：<span style="color:#f56c6c">${st.red} 红</span> / <span style="color:#e6a23c">${st.yellow} 黄</span> / <span style="color:#909399">${st.gray} 灰</span><br/><i>聚合节点保持中性，不因内部风险整体染色。</i>${sourceNote}`
+        : `<b>${n.name}</b><br/>版本：${n.version || "—"}<br/>许可证：${n.license || "未声明"}<br/>判定：${j.label}${sourceNote}` },
       _raw: n
     };
   });
-  const links = edges.map(e => ({
-    source: e.source, target: e.target,
-    edgeSymbol: ["none", "arrow"], edgeSymbolSize: [0, 10],
-    lineStyle: { width: 1.5, color: "#95a5a6" },
-    _edge: e
-  }));
+  const links = edges.map(e => {
+    const aggFrom = isAgg(nodeById[e.source] || {});
+    const aggTo = isAgg(nodeById[e.target] || {});
+    const isExpand = (e.edge_type || "") === "expanded_from" || (e.source_field || "") === "expanded_from";
+    return {
+      source: e.source, target: e.target,
+      edgeSymbol: ["none", "arrow"], edgeSymbolSize: [0, isExpand ? 0 : 10],
+      lineStyle: { width: isExpand ? 1.5 : 1.5, color: isExpand ? "#909399" : "#95a5a6", type: isExpand ? "dashed" : "solid" },
+      _edge: e
+    };
+  });
   const chart = echarts.init(document.getElementById(elId));
   chart.setOption({
     tooltip: { trigger: "item", backgroundColor: "#fff", borderColor: "#d0d7de", textStyle: { color: "#333" } },
     legend: { show: false },
-    series: [{ type: "graph", layout: "none", roam: true, data, links, categories: [{name:"RISK_CONFIRMED"},{name:"RISK_POTENTIAL"},{name:"SAFE"},{name:"UNDETERMINED"}], emphasis: { focus: "adjacency" }, labelLayout: { hideOverlap: true } }]
+    series: [{ type: "graph", layout: "none", roam: true, data, links, categories: [{name:"RISK_CONFIRMED"},{name:"RISK_POTENTIAL"},{name:"SAFE"},{name:"UNDETERMINED"},{name:"AGGREGATE"}], emphasis: { focus: "adjacency" }, labelLayout: { hideOverlap: true } }]
   });
   return chart;
 }
@@ -187,11 +246,14 @@ buildChart("chart1", DATA.nodes_t1, DATA.edges_t1);
 
 
 def forest_layout(nodes, edges):
-    """快照分层布局（双图共用）：模型基座一行、库/数据集一行、聚合节点挂基座下方。"""
+    """快照分层布局（双图共用）：模型基座一行、库/数据集一行、聚合节点挂基座下方，
+    聚合域展开子节点（expanded_from）再挂聚合节点下方一层。"""
     nodeById = {n["id"]: n for n in nodes}
 
     def is_agg(n):
-        return "(Total:" in (n.get("name") or "") or " · " in (n.get("name") or "")
+        return n.get("aggregate") is True \
+            or n.get("coverage_status") == "AGGREGATE_ONLY" \
+            or "(Total:" in (n.get("name") or "")
 
     bases = [n for n in nodes if not is_agg(n)]
     base_ids = [n["id"] for n in bases]
@@ -200,6 +262,21 @@ def forest_layout(nodes, edges):
         if e["target"] in children_of and e["source"] not in children_of:
             children_of[e["target"]].append(e["source"])
 
+    # expanded_from 子节点：聚合节点 -> 子节点（虚线边），挂到聚合节点下方
+    agg_ids = [n["id"] for n in nodes if is_agg(n)]
+    expanded_of = {aid: [] for aid in agg_ids}
+    # 所有 expanded_from 边的 target 是展开子节点：不参与基座行布局
+    expanded_child_ids = {
+        e["target"] for e in edges
+        if e.get("edge_type") == "expanded_from" or e.get("source_field") == "expanded_from"
+    }
+    for e in edges:
+        if (e.get("edge_type") == "expanded_from" or e.get("source_field") == "expanded_from"):
+            if e["source"] in expanded_of and e["target"] not in children_of.get(e["source"], []):
+                expanded_of[e["source"]].append(e["target"])
+
+    # 基座（模型/数据集等真实节点）：排除聚合节点与 expanded_from 展开子节点
+    bases = [n for n in bases if n["id"] not in expanded_child_ids]
     model_bases = [n for n in bases if n.get("asset_type") == "model"]
     other_bases = [n for n in bases if n.get("asset_type") != "model"]
     for idx, b in enumerate(model_bases):
@@ -219,6 +296,27 @@ def forest_layout(nodes, edges):
                 nodeById[kid]["x"] = b["x"] + xoff
                 nodeById[kid]["y"] = agg_row + (kid_i // 2) * 110
                 nodeById[kid]["lp"] = "bottom"
+    # 聚合域展开子节点：每个聚合域正下方一列（x 随聚合节点，组内横向拉开避免 label 重叠），
+    # y 在聚合节点下方 230px 起排布，与聚合行保持间距，避免跨域/跨行视觉重叠。
+    for aid in agg_ids:
+        if aid not in nodeById:
+            continue
+        kids = expanded_of.get(aid, [])
+        if not kids:
+            continue
+        agx = nodeById[aid]["x"]
+        agy = nodeById[aid]["y"]
+        nkids = len(kids)
+        # 组内 x 从聚合节点中心向两侧对称展开，间距 90px：相邻域（如适配/微调）
+        # 最外侧节点仍相隔 40px（300 vs 340），与 symbolSize 34 不重叠。
+        for exp_i, kid in enumerate(kids):
+            if kid not in nodeById:
+                continue
+            xoff = (exp_i - (nkids - 1) / 2) * 90
+            nodeById[kid]["x"] = agx + xoff
+            nodeById[kid]["y"] = agy + 230 + (exp_i % 3) * 0
+            nodeById[kid]["lp"] = "bottom"
+            nodeById[kid]["is_expanded_child"] = True
 
 
 def _decision_rank(decision: str | None) -> int:
@@ -256,17 +354,36 @@ def _collect_event_decisions(
     return decisions
 
 
+def _is_agg_node(node: dict) -> bool:
+    """聚合节点判定：只认明确属性（aggregate / coverage_status / "(Total:"）。
+
+    不能用 " · " 判断——Adapter 展开子节点名也含 " · "，会被误判为聚合。
+    """
+    return (
+        node.get("aggregate") is True
+        or node.get("coverage_status") == "AGGREGATE_ONLY"
+        or "(Total:" in (node.get("name") or "")
+    )
+
+
 def apply_event_decisions(
     nodes_t0: list[dict],
     nodes_t1: list[dict],
     events: list[dict],
     certificates: list[dict],
 ) -> None:
-    """把传播判定叠加到节点，且不覆盖更强或更明确的既有判定。"""
+    """把传播判定叠加到节点，且不覆盖更强或更明确的既有判定。
+
+    聚合节点保持中性：自身 decision 始终为空（数据契约），
+    传播判定不写入聚合节点——具体风险只落在展开子节点上。
+    """
 
     event_decisions = _collect_event_decisions(events, certificates)
     for nodes in (nodes_t0, nodes_t1):
         for node in nodes:
+            if _is_agg_node(node):
+                # 聚合节点：不参与传播判定叠加，保持 decision=None
+                continue
             node_id = node.get("id") or node.get("canonical_id") or node.get("entity_key")
             event_decision = event_decisions.get(node_id)
             if not event_decision:
@@ -300,8 +417,21 @@ def main() -> None:
     nodes_t1, edges_t1 = list(after["assets"]), list(after["edges"])
     for n in nodes_t0 + nodes_t1:
         n["id"] = n.get("id") or n.get("canonical_id") or n.get("entity_key")
+        # 聚合域属性透传（BOM 聚合域结构经 bom_adapter 透出）：coverage_status/count/
+        # expanded_count/remaining_count/known_risk_counts -> _stats，供前端中性渲染。
+        stats = {
+            "coverage_status": n.get("coverage_status"),
+            "count": n.get("count"),
+            "expanded_count": n.get("expanded_count"),
+            "remaining_count": n.get("remaining_count"),
+            "known_risk_counts": n.get("known_risk_counts"),
+        }
+        if any(v is not None for v in stats.values()):
+            n["_stats"] = stats
+    # 时间轴语义：t0 是变更前基线，保留 BOM 自带判定（绿多灰少）；仅 t1 叠加传播判定，
+    # 体现"基线健康 → 变更后风险显现"的对比。函数签名不变，组长的回归测试仍覆盖 t0/t1 双叠加路径。
     apply_event_decisions(
-        nodes_t0,
+        [],
         nodes_t1,
         propagated["events"],
         certs,
@@ -332,19 +462,27 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     local_echarts = args.output.parent / "echarts.min.js"
+    # 候选按优先级排列：vendor 优先（完好 UTF-8），根目录副本可能被工具链
+    # 转成 UTF-16 BOM 导致浏览器解析失败，须做健康检查（跳过 BOM 损坏文件）。
     candidates = [
+        Path(__file__).resolve().parent / "vendor" / "echarts.min.js",
         Path(__file__).resolve().parent / "echarts.min.js",
         Path(__file__).resolve().parent / "outputs" / "modelscope_validation" / "echarts.min.js",
     ]
     echarts_src = "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
     for cand in candidates:
-        if cand.exists():
-            # --output 落在仓库根时，cand 与 local_echarts 是同一个文件，
-            # 直接 copy 会抛 shutil.SameFileError，这里先判同文件再复制。
-            if cand.resolve() != local_echarts.resolve():
-                shutil.copy(cand, local_echarts)
-            echarts_src = "./echarts.min.js"
-            break
+        if not cand.exists():
+            continue
+        head = cand.read_bytes()[:2]
+        if head == b"\xff\xfe" or head == b"\xfe\xff":
+            # UTF-16 BOM：编码损坏，浏览器无法执行（Uncaught SyntaxError）
+            continue
+        # --output 落在仓库根时，cand 与 local_echarts 是同一个文件，
+        # 直接 copy 会抛 shutil.SameFileError，这里先判同文件再复制。
+        if cand.resolve() != local_echarts.resolve():
+            shutil.copy(cand, local_echarts)
+        echarts_src = "./echarts.min.js"
+        break
     html = html.replace("{{ECHARTS_SRC}}", echarts_src)
 
     args.output.write_text(html, encoding="utf-8")

@@ -70,7 +70,9 @@ TPL = """<!DOCTYPE html>
   <span><i style="background:#67c23a"></i>安全（绿灯）</span>
   <span><i style="background:#d3d7de"></i>待确认（灰）</span>
   <span><i class="line" style="background:#c0392b"></i>红线箭头 = 风险传播（风险源 → 衍生体）</span>
+  <span><i class="line" style="background:#95a5a6;border-top:2px dashed #95a5a6"></i>虚线 = expanded_from 展开关系</span>
   <span>节点形状：○ 真实模型 · □ 聚合节点 · ◆ 数据集</span>
+  <span><i style="background:#eef0f4;border:2px solid #f56c6c"></i>聚合风险域（内部含已确认风险）</span>
 </div>
 <div class="main">
   <div id="chart"></div>
@@ -90,23 +92,73 @@ function decisionOf(n) {
   const d = n.decision || "UNDETERMINED";
   return { code: d, color: DECISION_COLOR[d] || "#d3d7de", label: DECISION_LABEL[d] || d };
 }
-function isAgg(n) { return (n.name || "").indexOf("(Total:") >= 0 || (n.name || "").indexOf(" · ") >= 0; }
+function isAgg(n) {
+  const raw = n._raw || n;
+  // 只认明确属性：aggregate=true / coverage_status=AGGREGATE_ONLY / 名称含 "(Total:"
+  // 不得用 " · " 判断——Adapter 展开子节点名也含 " · "，会被误判为聚合而套中性色。
+  return raw.aggregate === true
+    || raw.coverage_status === "AGGREGATE_ONLY"
+    || (n._stats && n._stats.coverage_status === "AGGREGATE_ONLY")
+    || (n.name || "").indexOf("(Total:") >= 0;
+}
+
+// 聚合域统计属性：coverage_status=AGGREGATE_ONLY + count/expanded_count/remaining_count/known_risk_counts
+function aggStats(n) {
+  const s = n._stats || {};
+  const krc = s.known_risk_counts || {};
+  return {
+    coverage: s.coverage_status || (isAgg(n) ? "AGGREGATE_ONLY" : null),
+    count: s.count != null ? s.count : (isAgg(n) ? (n.name || "").match(/Total:\\s*([0-9]+)/) : null),
+    expanded: s.expanded_count != null ? s.expanded_count : null,
+    remaining: s.remaining_count != null ? s.remaining_count : null,
+    red: krc.red || 0, yellow: krc.yellow || 0, gray: krc.gray || 0,
+  };
+}
+
+// 聚合节点保持中性：不因内部风险整体染红/黄；仅通过描边/徽标提示域内风险。
+// 子节点（expanded_from 指向聚合）按各自真实 decision 着色。
+function nodeVisual(n) {
+  const agg = isAgg(n);
+  if (!agg) return decisionOf(n);
+  const st = aggStats(n);
+  const hasRed = st.red > 0, hasYellow = st.yellow > 0;
+  const border = hasRed ? "#f56c6c" : (hasYellow ? "#e6a23c" : (st.gray > 0 ? "#d3d7de" : "#c0c4cc"));
+  const width = hasRed ? 3 : (hasYellow ? 2.5 : 1.5);
+  return { code: "AGGREGATE", color: "#eef0f4", label: "聚合域（未完全展开）", border, width };
+}
 
 const nodeById = {};
 DATA.nodes.forEach(n => nodeById[n.id] = n);
 
 const nodes = DATA.nodes.map(n => {
-  const j = decisionOf(n);
   const agg = isAgg(n);
+  const j = nodeVisual(n);
+  const st = aggStats(n);
+  // 聚合节点 label：名称 + 统计徽标（已知红黄灰 / 剩余未展开）
+  let labelText = n.name || n.id;
+  if (agg) {
+    const short = (n.name || "").split(" · ").pop() || n.name;
+    const parts = [short];
+    if (st.expanded != null) {
+      const known = [];
+      if (st.red) known.push(`<span style="color:#f56c6c">${st.red}红</span>`);
+      if (st.yellow) known.push(`<span style="color:#e6a23c">${st.yellow}黄</span>`);
+      if (st.gray) known.push(`<span style="color:#909399">${st.gray}灰</span>`);
+      parts.push(known.length ? `已知 ${known.join("·")} · 剩余 ${st.remaining != null ? st.remaining : "—"}` : `剩余 ${st.remaining != null ? st.remaining : "—"}`);
+    }
+    labelText = parts.join("\\n");
+  }
   return {
     id: n.id, name: n.name || n.id, value: n.version || "",
     x: n.x, y: n.y,
     symbol: agg ? "rect" : (n.asset_type === "dataset" ? "diamond" : "circle"),
-    symbolSize: agg ? 26 : (n.asset_type === "dataset" ? 28 : 38),
-    itemStyle: { color: j.color, borderColor: j.color === "#d3d7de" ? "#bbb" : j.color, borderWidth: 1.5, borderRadius: agg ? 5 : 0 },
-    category: j.code,
-    label: { show: true, formatter: () => (agg ? ((n.name || "").split(" · ").pop() || n.name) : (n.name || n.id)), fontSize: 11, color: "#333", position: n.lp || "bottom" },
-    tooltip: { formatter: () => `<b>${n.name}</b><br/>类型：${n.asset_type}${agg ? "（聚合节点）" : ""}<br/>版本：${n.version || "—"}<br/>许可证：${n.license || "未声明"}<br/>判定：${j.label}` },
+    symbolSize: agg ? 30 : (n.asset_type === "dataset" ? 28 : 38),
+    itemStyle: { color: j.color, borderColor: agg ? j.border : (j.color === "#d3d7de" ? "#bbb" : j.color), borderWidth: agg ? j.width : 1.5, borderRadius: agg ? 6 : 0, shadowBlur: agg && st.red ? 8 : 0, shadowColor: "rgba(245,108,108,0.5)" },
+    category: agg ? "AGGREGATE" : j.code,
+    label: { show: true, formatter: labelText, fontSize: agg ? 11 : 11, color: "#333", position: n.lp || "bottom", lineHeight: 15 },
+    tooltip: { formatter: () => agg
+      ? `<b>${n.name}</b><br/>类型：聚合节点（AGGREGATE_ONLY）<br/>覆盖总数：${st.count != null ? st.count : "—"}<br/>已展开：${st.expanded != null ? st.expanded : "—"} · 剩余未展开：${st.remaining != null ? st.remaining : "—"}<br/>已知风险：<span style="color:#f56c6c">${st.red} 红</span> / <span style="color:#e6a23c">${st.yellow} 黄</span> / <span style="color:#909399">${st.gray} 灰</span><br/><i>聚合节点自身保持中性，不因内部风险整体染色；具体风险落在展开子节点。</i>`
+      : `<b>${n.name}</b><br/>类型：${n.asset_type}${agg ? "（聚合节点）" : ""}<br/>版本：${n.version || "—"}<br/>许可证：${n.license || "未声明"}<br/>判定：${j.label}` },
     _raw: n
   };
 });
@@ -115,13 +167,19 @@ const nodeRiskById = {};
 DATA.nodes.forEach(n => nodeRiskById[n.id] = decisionOf(n).code);
 
 const edges = DATA.edges.map(e => {
-  const risky = ["RISK_CONFIRMED", "RISK_POTENTIAL"].includes(nodeRiskById[e.source]) || ["RISK_CONFIRMED", "RISK_POTENTIAL"].includes(nodeRiskById[e.target]);
+  const aggFrom = isAgg(nodeById[e.source] || {});
+  const aggTo = isAgg(nodeById[e.target] || {});
+  const isExpand = (e.edge_type || "") === "expanded_from" || (e.source_field || "") === "expanded_from";
+  // 风险边判定：排除聚合节点自身（聚合节点不因内部风险整体变红，边不因聚合节点染红）
+  const srcRisky = !aggFrom && ["RISK_CONFIRMED", "RISK_POTENTIAL"].includes(nodeRiskById[e.source]);
+  const tgtRisky = !aggTo && ["RISK_CONFIRMED", "RISK_POTENTIAL"].includes(nodeRiskById[e.target]);
+  const risky = srcRisky || tgtRisky;
   return {
     source: e.source, target: e.target,
     edgeSymbol: ["none", "arrow"],
-    edgeSymbolSize: [0, 11],
-    label: { show: true, formatter: e.edge_type || "", fontSize: 10, color: risky ? "#c0392b" : "#7f8c8d", position: "middle" },
-    lineStyle: { width: risky ? 4 : 2, color: risky ? "#c0392b" : "#95a5a6", type: "solid", curveness: 0 },
+    edgeSymbolSize: [0, isExpand ? 0 : 11],
+    label: { show: !isExpand, formatter: isExpand ? "expanded_from" : (e.edge_type || ""), fontSize: 10, color: risky ? "#c0392b" : (isExpand ? "#909399" : "#7f8c8d"), position: "middle" },
+    lineStyle: { width: risky ? 4 : (isExpand ? 2 : 2), color: risky ? "#c0392b" : (isExpand ? "#909399" : "#95a5a6"), type: isExpand ? "dashed" : "solid", curveness: 0 },
     _edge: e
   };
 });
@@ -134,7 +192,7 @@ chart.setOption({
   series: [{
     type: "graph", layout: "none", roam: true, draggable: true,
     data: nodes, links: edges,
-    categories: [{ name: "RISK_CONFIRMED" }, { name: "RISK_POTENTIAL" }, { name: "SAFE" }, { name: "UNDETERMINED" }],
+    categories: [{ name: "RISK_CONFIRMED" }, { name: "RISK_POTENTIAL" }, { name: "SAFE" }, { name: "UNDETERMINED" }, { name: "AGGREGATE" }],
     emphasis: { focus: "adjacency", label: { show: true, fontSize: 14, fontWeight: "bold", color: "#111" } },
     labelLayout: { hideOverlap: true }
   }]
@@ -142,18 +200,24 @@ chart.setOption({
 
 function renderNodeDetail(raw) {
   const j = decisionOf(raw);
+  const agg = isAgg(raw);
+  const st = aggStats(raw);
   const evs = (raw.evidence_chain || []).map(e =>
     `<div class="ev"><b>证据 ${e.evidence_level || "—"}</b> · ${e.source_api || ""}<br/>字段：${e.source_field || "—"}<br/><a href="${e.source_url || "#"}" target="_blank">${e.source_url || "—"}</a></div>`).join("") || "<div>无证据链</div>";
   document.getElementById("panel-body").innerHTML =
     `<div class="kv"><b>名称</b> ${raw.name || raw.canonical_id}</div>` +
     `<div class="kv"><b>canonical_id</b> ${raw.canonical_id || "—"}</div>` +
-    `<div class="kv"><b>类型</b> ${raw.asset_type || "—"}</div>` +
-    `<div class="kv"><b>版本</b> ${raw.version || "—"}</div>` +
-    `<div class="kv"><b>许可证</b> ${raw.license || "未声明"}</div>` +
-    `<div class="kv"><b>判定</b> ${j.label}</div>` +
-    `<div class="kv"><b>merge_status</b> ${raw.merge_status || "—"}</div>` +
-    `<div class="kv"><b>reason_code</b> ${raw.reason_code || "—"}</div>` +
-    `<h3 style="margin-top:10px">证据链</h3>` + evs;
+    `<div class="kv"><b>类型</b> ${agg ? "聚合节点（AGGREGATE_ONLY）" : (raw.asset_type || "—")}</div>` +
+    (agg ? `<div class="kv"><b>覆盖总数</b> ${st.count != null ? st.count : "—"}</div>` +
+      `<div class="kv"><b>已展开</b> ${st.expanded != null ? st.expanded : "—"} · <b>剩余未展开</b> ${st.remaining != null ? st.remaining : "—"}</div>` +
+      `<div class="kv"><b>已知风险</b> <span style="color:#f56c6c">${st.red} 红</span> / <span style="color:#e6a23c">${st.yellow} 黄</span> / <span style="color:#909399">${st.gray} 灰</span></div>` +
+      `<div class="kv"><b>聚合判定</b> 中性（不整体染色）</div>`
+      : `<div class="kv"><b>版本</b> ${raw.version || "—"}</div>` +
+        `<div class="kv"><b>许可证</b> ${raw.license || "未声明"}</div>` +
+        `<div class="kv"><b>判定</b> ${j.label}</div>` +
+        `<div class="kv"><b>merge_status</b> ${raw.merge_status || "—"}</div>` +
+        `<div class="kv"><b>reason_code</b> ${raw.reason_code || "—"}</div>` +
+        `<h3 style="margin-top:10px">证据链</h3>` + evs);
 }
 function renderEdgeDetail(e) {
   document.getElementById("panel-body").innerHTML =
@@ -171,9 +235,14 @@ chart.on("click", p => {
 
 const tbody = document.querySelector("#compliance tbody");
 DATA.nodes.forEach(n => {
+  const agg = isAgg(n);
   const j = decisionOf(n);
+  const st = aggStats(n);
+  const cell = agg
+    ? `<span class="dot" style="background:#eef0f4;border:2px solid ${st.red ? "#f56c6c" : (st.yellow ? "#e6a23c" : "#c0c4cc")}"></span>聚合域 · 已知 ${st.red}红/${st.yellow}黄/${st.gray}灰 · 剩余 ${st.remaining != null ? st.remaining : "—"}`
+    : `<span class="dot" style="background:${j.color}"></span>${j.label}`;
   const tr = document.createElement("tr");
-  tr.innerHTML = `<td>${n.name || n.canonical_id}</td><td>${n.version || "—"}</td><td>${n.license || "未声明"}</td><td><span class="dot" style="background:${j.color}"></span>${j.label}</td>`;
+  tr.innerHTML = `<td>${n.name || n.canonical_id}</td><td>${n.version || "—"}</td><td>${n.license || "未声明"}</td><td>${cell}</td>`;
   tbody.appendChild(tr);
 });
 </script>
@@ -186,6 +255,12 @@ def forest_layout(nodes, edges):
     """森林分层布局：基座模型在上（一行），聚合/衍生节点在下（两行两列展开）。"""
     nodeById = {n["id"]: n for n in nodes}
     base_nodes = [n for n in nodes if not is_agg(n)]
+    # expanded_from 展开子节点不参与基座行布局（与 render_diff 同契约）
+    expanded_child_ids = {
+        e["target"] for e in edges
+        if e.get("edge_type") == "expanded_from" or e.get("source_field") == "expanded_from"
+    }
+    base_nodes = [n for n in base_nodes if n["id"] not in expanded_child_ids]
     base_ids = [n["id"] for n in base_nodes]
     children_of = {bid: [] for bid in base_ids}
     for e in edges:
@@ -207,7 +282,9 @@ def forest_layout(nodes, edges):
 
 
 def is_agg(n):
-    return "(Total:" in (n.get("name") or "") or " · " in (n.get("name") or "")
+    return n.get("aggregate") is True \
+        or n.get("coverage_status") == "AGGREGATE_ONLY" \
+        or "(Total:" in (n.get("name") or "")
 
 
 def main() -> None:
@@ -227,6 +304,20 @@ def main() -> None:
 
     forest_layout(nodes, edges)
 
+    # 聚合域属性透传：graph.json 节点可能带 coverage_status/count/expanded_count/
+    # remaining_count/known_risk_counts（BOM 聚合域结构经 bom_adapter 透出）。
+    # 统一挂到 n["_stats"]，供前端聚合节点中性渲染 + 统计徽标使用。
+    for n in nodes:
+        stats = {
+            "coverage_status": n.get("coverage_status"),
+            "count": n.get("count"),
+            "expanded_count": n.get("expanded_count"),
+            "remaining_count": n.get("remaining_count"),
+            "known_risk_counts": n.get("known_risk_counts"),
+        }
+        if any(v is not None for v in stats.values()):
+            n["_stats"] = stats
+
     data = {
         "nodes": nodes,
         "edges": edges,
@@ -243,21 +334,29 @@ def main() -> None:
     html = html.replace("{{DECISION_LABEL_JSON}}", json.dumps(DECISION_LABEL, ensure_ascii=False))
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    # ECharts：优先本地文件（复制到输出同目录，保证离线可开），缺失回退 CDN
+    # ECharts：优先本地文件（复制到输出同目录，保证离线可开），缺失回退 CDN。
+    # vendor 优先：根目录副本可能被工具链转成 UTF-16 BOM 导致浏览器解析失败，
+    # 须做健康检查（跳过 BOM 损坏文件）。
     local_echarts = args.output.parent / "echarts.min.js"
     src_candidates = [
+        Path(__file__).resolve().parent / "vendor" / "echarts.min.js",
         Path(__file__).resolve().parent / "echarts.min.js",
         Path(__file__).resolve().parent / "outputs" / "modelscope_validation" / "echarts.min.js",
     ]
     echarts_src = "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
     for cand in src_candidates:
-        if cand.exists():
-            # --output 落在仓库根时，cand 与 local_echarts 是同一个文件，
-            # 直接 copy 会抛 shutil.SameFileError，这里先判同文件再复制。
-            if cand.resolve() != local_echarts.resolve():
-                shutil.copy(cand, local_echarts)
-            echarts_src = "./echarts.min.js"
-            break
+        if not cand.exists():
+            continue
+        head = cand.read_bytes()[:2]
+        if head == b"\xff\xfe" or head == b"\xfe\xff":
+            # UTF-16 BOM：编码损坏，浏览器无法执行（Uncaught SyntaxError）
+            continue
+        # --output 落在仓库根时，cand 与 local_echarts 是同一个文件，
+        # 直接 copy 会抛 shutil.SameFileError，这里先判同文件再复制。
+        if cand.resolve() != local_echarts.resolve():
+            shutil.copy(cand, local_echarts)
+        echarts_src = "./echarts.min.js"
+        break
     html = html.replace("{{ECHARTS_SRC}}", echarts_src)
 
     args.output.write_text(html, encoding="utf-8")

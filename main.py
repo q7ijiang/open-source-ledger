@@ -329,6 +329,49 @@ def _extract_bom_lineage_edges(
                     "snapshot_id": snapshot_id,
                 }
             )
+
+    # 聚合域展开关系：子节点通过 open-source-ledger:expanded_from 声明归属聚合节点，
+    # 产出 edge_type=expanded_from 边（聚合节点 -> 子节点）。该边只用于渲染层展示
+    # "聚合风险域已展开哪些具体模型"，不参与 Delta/传播判定。
+    import bom_adapter as _bom_adapter
+
+    bom_ref_to_id: dict[str, str] = {}
+    for asset in merged:
+        # 聚合节点资产不带 bom_ref 字段，其 canonical_id 与 BOM 组件 bom-ref 一致；
+        # 子节点 expanded_from 指向的正是该 bom-ref，故用 canonical_id 兜底。
+        bid = asset.get("bom_ref") or asset.get("ref")
+        if bid:
+            bom_ref_to_id.setdefault(str(bid), str(asset.get("canonical_id") or asset.get("entity_key") or ""))
+        cid = asset.get("canonical_id")
+        if cid:
+            bom_ref_to_id.setdefault(str(cid), str(cid))
+    for component in components:
+        if not isinstance(component, dict):
+            continue
+        source_id = _primary_asset_id(component, purl_to_canonical)
+        if not source_id:
+            continue
+        ledger = _bom_adapter.extract_ledger_properties(component)
+        expand_ref = ledger.get("expanded_from")
+        if not expand_ref:
+            continue
+        target_id = bom_ref_to_id.get(str(expand_ref).strip())
+        if not target_id:
+            continue
+        signature = (target_id, source_id, "expanded_from")
+        if signature in seen:
+            continue
+        seen.add(signature)
+        edges.append(
+            {
+                "source": target_id,
+                "target": source_id,
+                "edge_type": "expanded_from",
+                "evidence_level": "C",
+                "source_field": "expanded_from",
+                "snapshot_id": snapshot_id,
+            }
+        )
     return merged, edges
 
 

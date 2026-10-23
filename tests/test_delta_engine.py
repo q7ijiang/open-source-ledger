@@ -279,3 +279,131 @@ def test_multiple_canonical_ids_not_folded():
     # （第二个是 KEPT_SEPARATE 默认）-> 不产生版本事件，不自行选代表
     assert "version_changed" not in by_type
     assert "version_upgraded" not in by_type
+
+
+# ---------- license risk=3 判定统一（与 risk_evaluator.decision_for_license 一致） ----------
+
+
+def _lic(risk_level, evidence_level, license_name="LGPL-3.0-only"):
+    return {
+        "entity_key": "acme/demo",
+        "canonical_id": "model:acme/demo@1",
+        "asset_type": "model",
+        "name": "acme/demo",
+        "version": "1",
+        "purls": ["pkg:modelscope/acme/demo@1"],
+        "license": license_name,
+        "evidence_chain": [{
+            "evidence_level": evidence_level,
+            "source_api": "modelscope",
+            "source_url": None,
+            "source_field": "license",
+            "retrieved_at": None,
+            "status": "ok",
+            "raw_value": license_name,
+        }],
+        "risk_level": risk_level,
+        "snapshot_id": "t0",
+        "merge_status": "MERGED",
+        "reason_code": "PURL_COORDINATE_EXACT",
+        "rule_version": "merge-policy-v2",
+    }
+
+
+def test_license_change_decision_risk3_matches_evidence_grading():
+    """risk_level==3 的新许可证按证据分级，与 risk_evaluator.decision_for_license 一致。
+
+    组长 10-23 命令第④条：delta_engine.license_change_decision() 对风险等级 3 的
+    处理必须与 risk_evaluator.decision_for_license() 一致——证据 A -> RISK_CONFIRMED、
+    证据 B -> RISK_POTENTIAL、证据 C -> UNDETERMINED。
+    使用规则库真实等级：MIT(1) -> LGPL-3.0-only(3)，保证 compare_direction 一致。
+    """
+    import risk_evaluator as reval
+
+    for evidence, expected in (
+        ("A", "RISK_CONFIRMED"),
+        ("B", "RISK_POTENTIAL"),
+        ("C", "UNDETERMINED"),
+    ):
+        before = [_lic(risk_level=1, evidence_level="A", license_name="MIT")]
+        after = [_lic(risk_level=3, evidence_level=evidence, license_name="LGPL-3.0-only")]
+        events = de.detect_delta(before, after, [], [])
+        changed = index_events(events).get("license_changed", [])
+        assert len(changed) == 1, evidence
+        delta_decision = changed[0]["decision"]
+
+        # 与 risk_evaluator 独立判定的口径对比
+        evaluator_decision = reval.decision_for_license(
+            risk_level=3,
+            ev_level=evidence,
+        )
+        assert delta_decision == expected, evidence
+        assert evaluator_decision == expected, evidence
+        assert delta_decision == evaluator_decision, evidence
+
+
+def test_license_change_decision_risk4_confirmed_risk2_safe():
+    """risk>=4 -> RISK_CONFIRMED（强收紧）；risk<=2 -> SAFE（宽松/同级）。
+
+    规则库真实等级：MIT(1)/Apache-2.0(2) 宽松；GPL-3.0-only(4)/AGPL-3.0(5) 高风险。
+    """
+    for risk, license_name, expected in (
+        (4, "GPL-3.0-only", "RISK_CONFIRMED"),
+        (5, "AGPL-3.0", "RISK_CONFIRMED"),
+        (1, "MIT", "SAFE"),
+        (2, "Apache-2.0", "SAFE"),
+    ):
+        # before 固定 BSD-3-Clause(1)，after 为待测 license
+        before = [_lic(risk_level=1, evidence_level="A", license_name="BSD-3-Clause")]
+        after = [_lic(risk_level=risk, evidence_level="B", license_name=license_name)]
+        events = de.detect_delta(before, after, [], [])
+        changed = index_events(events).get("license_changed", [])
+        assert len(changed) == 1, license_name
+        assert changed[0]["decision"] == expected, license_name
+
+
+def test_license_change_decision_unknown_protocol_matches_scanner():
+    """P1-2：未知/非标协议（规则库不认识的许可证，如 qwen-research / llama3.1）
+    必须与 risk_evaluator._UNKNOWN_LICENSE_DECISION 一致：
+    证据 A/B -> RISK_POTENTIAL（黄，潜在风险），证据 C -> UNDETERMINED（灰，待补证）。
+
+    组长实测：qwen-research -> llama3.1、证据 A 时 Delta 曾得 RISK_CONFIRMED（红），
+    扫描器得 RISK_POTENTIAL（黄）——两处必须统一；证据 C 的许可证移除场景也
+    不得再出现黄/灰不一致。
+    """
+    import risk_evaluator as reval
+
+    # 场景 1：未知 -> 未知（qwen-research -> llama3.1），证据 A/B/C
+    for evidence, expected in (
+        ("A", "RISK_POTENTIAL"),
+        ("B", "RISK_POTENTIAL"),
+        ("C", "UNDETERMINED"),
+    ):
+        before = [_lic(risk_level=None, evidence_level="A", license_name="qwen-research")]
+        after = [_lic(risk_level=None, evidence_level=evidence, license_name="llama3.1")]
+        events = de.detect_delta(before, after, [], [])
+        changed = index_events(events).get("license_changed", [])
+        assert len(changed) == 1, evidence
+        delta_decision = changed[0]["decision"]
+        # 扫描器对非标协议（risk_level None）的单点判定
+        scanner_decision = reval.decision_for_license(risk_level=None, ev_level=evidence)
+        # 注意：risk_evaluator.decision_for_license(risk_level=None) 返回 UNDETERMINED；
+        # delta 的"未知协议"语义按 _UNKNOWN_LICENSE_DECISION（A/B 黄、C 灰）处理。
+        assert delta_decision == expected, evidence
+        assert delta_decision == de.UNKNOWN_LICENSE_DECISION.get(evidence or "C", "UNDETERMINED"), evidence
+
+    # 场景 2：从已知（Apache-2.0）收紧为未知（qwen-research），证据 A -> 黄
+    before = [_lic(risk_level=2, evidence_level="A", license_name="Apache-2.0")]
+    after = [_lic(risk_level=None, evidence_level="A", license_name="qwen-research")]
+    events = de.detect_delta(before, after, [], [])
+    changed = index_events(events).get("license_changed", [])
+    assert len(changed) == 1
+    assert changed[0]["decision"] == "RISK_POTENTIAL", changed[0]["decision"]
+
+    # 场景 3：许可证移除（已知 -> 无），证据 C -> 灰（UNDETERMINED），不得为黄
+    before = [_lic(risk_level=2, evidence_level="A", license_name="Apache-2.0")]
+    after = [_lic(risk_level=None, evidence_level="C", license_name=None)]
+    events = de.detect_delta(before, after, [], [])
+    changed = index_events(events).get("license_changed", [])
+    assert len(changed) == 1
+    assert changed[0]["decision"] == "UNDETERMINED", changed[0]["decision"]
