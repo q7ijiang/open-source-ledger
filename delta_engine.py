@@ -223,6 +223,33 @@ def decision_for(evidence_level: str | None) -> str:
     return DECISION_BY_EVIDENCE.get(evidence_level or "C", "UNDETERMINED")
 
 
+def license_change_decision(evidence, direction, conflict) -> str:
+    """许可证变更综合判定（证据等级 ≠ 风险严重度，必须结合变更方向与冲突）。
+
+    规则（以新许可证的风险等级为主体，证据等级只在无方向信息时兜底）：
+    - 确认的继承冲突 -> RISK_CONFIRMED（如 GPL 传染 vs 下游禁止附加限制）
+    - 新许可证风险等级 >= 4（强 copyleft / 高风险 AI 受限）-> RISK_CONFIRMED
+      （覆盖 llama2→GPL-3.0、MIT→GPL-3.0-only 等真正的高风险收紧）
+    - 新许可证风险等级 3 -> RISK_POTENTIAL（中等风险收紧）
+    - 新许可证风险等级 <= 2 -> SAFE（放宽/同级宽松，如 GPL→Apache-2.0）
+    - 新许可证未知（不在规则库，如 qwen-research）：
+      从已知变未知（许可证移除）-> RISK_POTENTIAL（潜在风险，不是确认高风险）；
+      其余回退证据等级判定。
+    """
+    if conflict.get("conflict"):
+        return "RISK_CONFIRMED"
+    new_level = (direction.get("new") or {}).get("risk_level")
+    if new_level is not None:
+        if new_level >= 4:
+            return "RISK_CONFIRMED"
+        if new_level >= 3:
+            return "RISK_POTENTIAL"
+        return "SAFE"
+    if (direction.get("direction") or "") == "许可证移除":
+        return "RISK_POTENTIAL"
+    return decision_for(evidence)
+
+
 def weaker_evidence(*levels: str | None) -> str:
     """取多个证据等级中最弱（保守）的一档；全缺为 C。"""
     present = [lv for lv in levels if lv]
@@ -301,6 +328,7 @@ def detect_delta(
                 best_evidence(new_asset, ("license",)),
             )
             conflict = check_license_conflict(new_license, old_license)
+            direction = compare_direction(old_license, new_license)
             event = {
                 "event_id": next(gen),
                 "seed": canonical_id,
@@ -309,8 +337,8 @@ def detect_delta(
                 "after": state_of(new_asset),
                 "path": [],
                 "evidence_level": evidence,
-                "decision": decision_for(evidence),
-                "direction": compare_direction(old_license, new_license),
+                "decision": license_change_decision(evidence, direction, conflict),
+                "direction": direction,
                 "conflict_detected": conflict["conflict"],
                 "conflict_type": conflict["type"],
                 "conflict_detail": conflict["detail"],
