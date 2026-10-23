@@ -2,7 +2,9 @@
 
 本指南面向希望在自己的 GitHub 仓库中定时检查 ModelScope 模型许可证风险的团队。该自动化流程不会把 BOM 快照提交到用户仓库，BOM 通过 GitHub Actions Cache 保存，报告通过 Artifact 上传。
 
-## 一、配置 MODELSCOPE_API_KEY
+## 一、配置 MODELSCOPE_API_KEY（可选，推荐）
+
+扫描公开 ModelScope 模型时不需要配置 Key，工具会使用匿名请求。私有模型、受限模型或遇到 API 频率限制时，建议配置自己的 `MODELSCOPE_API_KEY`。本地运行可以把 Key 放进未提交的 `.env`；GitHub Actions 则应使用仓库 Secret，而不是提交 `.env` 文件。
 
 1. 打开用户仓库的 GitHub 页面。
 2. 进入 `Settings` -> `Secrets and variables` -> `Actions`。
@@ -68,6 +70,8 @@ jobs:
           api_key: ${{ secrets.MODELSCOPE_API_KEY }}
 ```
 
+如果只扫描公开模型，可以省略 `api_key` 参数；需要访问私有模型或受限模型时，再通过 GitHub Secrets 传入。
+
 如果希望保存 Action 生成的上传报告，可以在调用后追加 `actions/upload-artifact@v4`，上传 `outputs/diff_report.md` 和 `outputs/watch_report.md`。
 
 ## 四、修改 cron 扫描频率
@@ -124,11 +128,11 @@ GitHub Actions 的 `cron` 使用 UTC，不是本地时区。默认配置是：
 
 ## 七、常见问题排查
 
-### 1. API Key 未配置
+### 1. 未配置 API Key
 
-现象：`Validate ModelScope API key` 步骤失败，日志提示未配置 `MODELSCOPE_API_KEY`。
+现象：日志提示未配置 `MODELSCOPE_API_KEY`，但 Job 仍会继续执行。
 
-处理：进入仓库 `Settings` -> `Secrets and variables` -> `Actions`，添加名为 `MODELSCOPE_API_KEY` 的 Repository Secret。
+处理：公开模型可以继续匿名扫描；如果模型是私有模型，或 API 返回鉴权/频率限制错误，请进入仓库 `Settings` -> `Secrets and variables` -> `Actions`，添加名为 `MODELSCOPE_API_KEY` 的 Repository Secret。
 
 ### 2. Fork PR 被跳过
 

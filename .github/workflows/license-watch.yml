@@ -1,7 +1,8 @@
 # ModelScope License Risk Watch
 #
 # 这个 workflow 面向最终使用本工具的用户仓库，不是 open-source-ledger 开发仓库。
-# 用户需要在 GitHub 仓库的 Settings -> Secrets and variables -> Actions 中配置 MODELSCOPE_API_KEY。
+# 公开模型无需 MODELSCOPE_API_KEY；私有模型或遇到 API 频率限制时，
+# 可在 GitHub 仓库的 Settings -> Secrets and variables -> Actions 中配置该 Secret。
 # 默认 cron 为每周一 02:00 UTC，用户可按自己的扫描频率自行修改。
 # 首次运行时缓存中没有历史 BOM，因此会跳过 diff，只建立基线快照。
 
@@ -49,14 +50,15 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Validate ModelScope API key
+      - name: Check ModelScope API key (optional)
         env:
           MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
         shell: bash
         run: |
           if [ -z "${MODELSCOPE_API_KEY:-}" ]; then
-            echo "::error::未配置 MODELSCOPE_API_KEY。请在 Settings -> Secrets and variables -> Actions 中添加仓库 Secret。"
-            exit 1
+            echo "::warning::未配置 MODELSCOPE_API_KEY，将尝试以匿名方式访问 ModelScope 公开模型。"
+          else
+            echo "已检测到 MODELSCOPE_API_KEY，将使用认证请求。"
           fi
 
       - name: Install Python dependencies
@@ -106,7 +108,7 @@ jobs:
 
           BOM_PATH="$(find .license-watch-tool/outputs -type f -name bom.json -printf '%T@ %p\n' | sort -nr | head -n 1 | cut -d' ' -f2-)"
           if [ -z "$BOM_PATH" ]; then
-            echo "::error::项目扫描未生成 bom.json。请检查项目路径、ModelScope 模型标识和 MODELSCOPE_API_KEY。"
+            echo "::error::项目扫描未生成 bom.json。请检查项目路径、ModelScope 模型标识，或确认模型是否为公开模型；私有模型需配置 MODELSCOPE_API_KEY。"
             exit 1
           fi
 

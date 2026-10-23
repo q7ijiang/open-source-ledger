@@ -247,7 +247,7 @@ def main() -> None:
     local_echarts = args.output.parent / "echarts.min.js"
     src_candidates = [
         Path(__file__).resolve().parent / "echarts.min.js",
-        Path(__file__).resolve().parent.parent / "outputs" / "modelscope_validation" / "echarts.min.js",
+        Path(__file__).resolve().parent / "outputs" / "modelscope_validation" / "echarts.min.js",
     ]
     echarts_src = "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
     for cand in src_candidates:
