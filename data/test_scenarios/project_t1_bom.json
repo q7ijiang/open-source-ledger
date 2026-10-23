@@ -282,18 +282,6 @@
           "value": "modelscope-Qwen__Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "3"
-        },
-        {
-          "name": "open-source-ledger:decision",
-          "value": "RISK_POTENTIAL"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "潜在风险（黄灯）"
-        },
-        {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
         }
@@ -311,14 +299,6 @@
           "value": "modelscope-Qwen__Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "RISK_POTENTIAL"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "潜在风险（黄灯）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -329,10 +309,6 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
-        },
-        {
-          "name": "open-source-ledger:risk_level",
-          "value": "3"
         }
       ],
       "pedigree": {
@@ -358,14 +334,6 @@
           "value": "modelscope-Qwen__Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "RISK_POTENTIAL"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "潜在风险（黄灯）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -376,10 +344,6 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
-        },
-        {
-          "name": "open-source-ledger:risk_level",
-          "value": "3"
         }
       ],
       "pedigree": {
@@ -405,14 +369,6 @@
           "value": "modelscope-Qwen__Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "RISK_POTENTIAL"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "潜在风险（黄灯）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -423,10 +379,6 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
-        },
-        {
-          "name": "open-source-ledger:risk_level",
-          "value": "3"
         }
       ],
       "pedigree": {
@@ -452,14 +404,6 @@
           "value": "modelscope-Qwen__Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "RISK_POTENTIAL"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "潜在风险（黄灯）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -470,10 +414,6 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
-        },
-        {
-          "name": "open-source-ledger:risk_level",
-          "value": "3"
         }
       ],
       "pedigree": {
