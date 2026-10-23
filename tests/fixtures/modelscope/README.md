@@ -23,14 +23,21 @@
 
 ## 场景夹具覆盖什么
 
-### 六个模型（身份与许可证均为真实值）
+### 六个模型（身份真实；许可证以 API 原值为准，其中 legacy 无可用许可证）
+
+> **2026-10-23 更正（响应 PR #15 review）**：`ZhipuAI/glm-4-9b-chat` 的 t0 许可证原先记为
+> `Apache-2.0`（来源字段 `Data.LicenseName`），但同目录 `real_model_licenses.json` 里该模型是
+> `null`，且复查 ModelScope API 返回 `Data.License = "other"`、`Data.LicenseName = ""`。
+> `modelscope_adapter.license_name_of()` 把 `other` 视为通用占位值过滤（见 `_GENERIC_LICENSE_VALUES`），
+> 因此管线对它的真实输出就是**无许可证、无证据链**——夹具已改为 `license: null` + `evidence_chain: []`，
+> 不再声明为"API 直接返回的 A 级 Apache-2.0"。无历史归档响应可证明曾为 Apache-2.0，故不保留旧值。
 
 | 角色 | 模型 | 真实许可证 | t1 许可证 | 说明 |
 |---|---|---|---|---|
 | seed | `LLM-Research/Meta-Llama-3.1-8B-Instruct` | `llama3.1` | `GPL-3.0` | **构造变更点**：触发 `license_changed` |
 | finetuned | `Qwen/Qwen2.5-7B-Instruct` | `Apache-2.0` | `Apache-2.0` | 证据等级 A → C，触发 `evidence_downgrade` |
 | serving | `Qwen/Qwen-Image-2.1` | `qwen-research` | `qwen-research` | 距 seed 两跳，验证多跳传播 |
-| legacy | `ZhipuAI/glm-4-9b-chat` | `Apache-2.0` | `Apache-2.0` | t1 移除其祖先边，触发 `ancestor_removed` |
+| legacy | `ZhipuAI/glm-4-9b-chat` | `null`（API 仅返回 `other`） | `null` | t1 移除其祖先边，触发 `ancestor_removed`；许可证不可用，见上方更正 |
 | cycle_a | `AI-ModelScope/bge-large-zh-v1.5` | `MIT` | `GPL-3.0-only` | **构造变更点**：同时参与 SCC 环 |
 | cycle_b | `iic/nlp_structbert_sentiment-classification_chinese-base` | `Apache-2.0` | `Apache-2.0` | 与 cycle_a 互指，形成 2 节点 SCC |
 | （仅边） | `Qwen/Qwen2.5-7B` | — | — | 只在 t1 的边里出现 → 缺失祖先场景 |
@@ -65,7 +72,7 @@ t0/t1 均为 **7 个资产 / 7 条边**；t1 建图后为 **8 个节点**（基�
 | 内容 | 是否真实 |
 |---|---|
 | 6 个模型的 namespace / name / purl | ✅ 真实，取自 ModelScope |
-| 各模型 t0 许可证 | ✅ 真实，取自 ModelScope API 的 `Data.LicenseName` |
+| 各模型 t0 许可证 | ✅ 真实，取自 ModelScope API 的 `Data.LicenseName`；**唯一例外**是 legacy（`glm-4-9b-chat`），API 只返回 `other`，夹具据实记为 `null` |
 | 两处 t1 许可证变更（`llama3.1→GPL-3.0`、`MIT→GPL-3.0-only`） | ❌ **构造**，ModelScope 上并未发生 |
 | 模型之间的依赖关系、SCC 环 | ❌ 构造（真实血缘中不存在环） |
 | 数据集 ID（`scenario/...`） | ❌ 构造占位，未在 API 核实 |

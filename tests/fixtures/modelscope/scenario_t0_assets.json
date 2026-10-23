@@ -89,17 +89,8 @@
     "purls": [
       "pkg:modelscope/ZhipuAI/glm-4-9b-chat@master"
     ],
-    "license": "Apache-2.0",
-    "evidence_chain": [
-      {
-        "evidence_level": "A",
-        "source_api": "modelscope",
-        "source_url": "https://www.modelscope.cn/api/v1/models/ZhipuAI/glm-4-9b-chat",
-        "source_field": "Data.LicenseName",
-        "status": "ok",
-        "raw_value": "Apache-2.0"
-      }
-    ],
+    "license": null,
+    "evidence_chain": [],
     "snapshot_id": "ms-scenario-t0",
     "merge_status": "KEPT_SEPARATE",
     "reason_code": "NO_MERGE_CANDIDATE",
