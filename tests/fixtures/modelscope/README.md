@@ -1,63 +1,115 @@
-# tests/fixtures/modelscope —— ModelScope 测试数据
+# ModelScope 验证数据（tests/fixtures/modelscope）
 
-> 用途：供测试与回归使用的 **ModelScope 真实 API 快照与中间产物**（不是验证报告）。
-> 从 `outputs/modelscope_validation/` 迁移而来（2026-10-21），保证清仓库时测试数据不丢失、可离线复现。
+本目录存放**验证模块正确性的数据**。分两类：
 
-## 目录结构
+- **场景夹具**（`scenario_*`）：覆盖模块 8/9/10 的边界情形（SCC 环、缺失祖先、8 类变更事件）；
+- **真实快照**（`real_model_licenses.json`）：ModelScope 官方 API 实抓的许可证数据，用于验证模块 4 的识别率。
 
-```
-modelscope/
-├── detail_*.json              ModelScope 模型详情 API 原始快照（Detail）
-├── files_*.json               ModelScope 模型文件列表 API 原始快照（Repo Files）
-├── lineage_*.json             ModelScope 模型血缘 API 原始快照（Lineage）
-├── diff/                      --diff 时间对比验证数据
-│   ├── diff_events.json       变更事件（delta 引擎输出）
-│   └── diff_certificates.json 路径证书（传播引擎输出）
-├── model_exports/             --model/--project 标准导出与判定验证数据
-│   ├── Qwen__Qwen-Image-2.1/{bom,graph}.json
-│   ├── Qwen__Qwen2.5-7B-Instruct/{bom,graph}.json
-│   ├── XingChen-AGI__TeleOCR/{bom,graph}.json
-│   ├── multi_model_project/{bom,graph}.json
-│   └── test_project/bom.json  --project 扫描输入 BOM（Qwen2.5-7B-Instruct）
-├── assets_real_final.json   MSU SBOM 基准真实资产快照（102 条，license 覆盖率验证）
-├── ms_viz/                    渲染层可视化数据
-│   ├── viz_data.json          构造数据版血缘图数据（Qwen-Image-2.1 聚合降维）
-│   ├── viz_real_data.json     真实数据版血缘图数据（14 节点 / 11 边）
-│   ├── graph_t1.json          t1 快照的图结构（--diff 时间对比用）
-│   ├── events.json            diff 变更事件
-│   └── certificates.json      路径证书（--diff 传播用）
-└── project_extract/           --project 真实项目抽取产物
-    ├── assets.json            资产清单（含聚合节点 count）
-    ├── edges.json             血缘边
-    └── graph.json             建图结果（整体判定）
-```
+> 约定：`out/` 与 `outputs/` 已被 `.gitignore` 忽略，**任何"用于验证模块正确性/准确度"的数据都必须放在本目录**，不要留在 `out/`、`outputs/` 里。
 
-## 各文件验证点
+---
 
-| 文件 | 验证内容 | 对应测试/脚本 |
+## 文件清单
+
+| 文件 | 用途 | 数据来源 | 使用方 |
+|---|---|---|---|
+| `scenario_t0_assets.json` | 场景夹具 t0 快照：6 个模型 + 1 个数据集 | 身份真实、拓扑构造 | `test_build_graph` / `test_delta_engine` / `test_propagation_engine` |
+| `scenario_t0_edges.json` | 场景夹具 t0 血缘边（7 条） | 构造 | 同上 |
+| `scenario_t1_assets.json` | 场景夹具 t1 快照：6 个模型 + 1 个数据集（训练集换成 v2） | 身份真实、拓扑构造 | 同上 |
+| `scenario_t1_edges.json` | 场景夹具 t1 血缘边（7 条，新增基模祖先、移除 legacy 祖先） | 构造 | 同上 |
+| `real_model_licenses.json` | 53 个真实 ModelScope 模型的许可证快照 | **ModelScope API 实抓**（2026-10-10） | `test_license_db.py::test_real_data_license_coverage` |
+
+---
+
+## 场景夹具覆盖什么
+
+### 六个模型（身份真实；许可证以 API 原值为准，其中 legacy 无可用许可证）
+
+> **2026-10-23 更正（响应 PR #15 review）**：`ZhipuAI/glm-4-9b-chat` 的 t0 许可证原先记为
+> `Apache-2.0`（来源字段 `Data.LicenseName`），但同目录 `real_model_licenses.json` 里该模型是
+> `null`，且复查 ModelScope API 返回 `Data.License = "other"`、`Data.LicenseName = ""`。
+> `modelscope_adapter.license_name_of()` 把 `other` 视为通用占位值过滤（见 `_GENERIC_LICENSE_VALUES`），
+> 因此管线对它的真实输出就是**无许可证、无证据链**——夹具已改为 `license: null` + `evidence_chain: []`，
+> 不再声明为"API 直接返回的 A 级 Apache-2.0"。无历史归档响应可证明曾为 Apache-2.0，故不保留旧值。
+
+| 角色 | 模型 | 真实许可证 | t1 许可证 | 说明 |
+|---|---|---|---|---|
+| seed | `LLM-Research/Meta-Llama-3.1-8B-Instruct` | `llama3.1` | `GPL-3.0` | **构造变更点**：触发 `license_changed` |
+| finetuned | `Qwen/Qwen2.5-7B-Instruct` | `Apache-2.0` | `Apache-2.0` | 证据等级 A → C，触发 `evidence_downgrade` |
+| serving | `Qwen/Qwen-Image-2.1` | `qwen-research` | `qwen-research` | 距 seed 两跳，验证多跳传播 |
+| legacy | `ZhipuAI/glm-4-9b-chat` | `null`（API 仅返回 `other`） | `null` | t1 移除其祖先边，触发 `ancestor_removed`；许可证不可用，见上方更正 |
+| cycle_a | `AI-ModelScope/bge-large-zh-v1.5` | `MIT` | `GPL-3.0-only` | **构造变更点**：同时参与 SCC 环 |
+| cycle_b | `iic/nlp_structbert_sentiment-classification_chinese-base` | `Apache-2.0` | `Apache-2.0` | 与 cycle_a 互指，形成 2 节点 SCC |
+| （仅边） | `Qwen/Qwen2.5-7B` | — | — | 只在 t1 的边里出现 → 缺失祖先场景 |
+
+### 六类变更事件（t0 → t1）
+
+| 事件 | 种子 | 断言要点 |
 |---|---|---|
-| `lineage_Qwen__Qwen-Image-2.1.json` | ModelScope lineage 接口返回 SonModels（Adapters/Finetunes/Quantizations 聚合计数） | `work/extract_modelscope_lineage.py` |
-| `detail_*.json` / `files_*.json` | 模型详情/文件列表字段映射（licenseName、License=other 等） | `modelscope_adapter.py` 解析 |
-| `diff/diff_events.json` + `diff_certificates.json` | --diff 全链路：变更事件 + 传播证书（C2 场景：事件 2 / 传播后 8 / 证书 6） | `main.py --diff --before --after` |
-| `model_exports/*/bom.json` | 标准 CycloneDX 1.7 导出（含 metadata.timestamp / pedigree.ancestors / decision） | `bom_adapter.py` / `main.py --model/--project` |
-| `model_exports/*/graph.json` | 建图判定结果（RISK_CONFIRMED/POTENTIAL/SAFE/UNDETERMINED） | `main.py --model/--project` 渲染层取 decision 着色 |
-| `model_exports/test_project/bom.json` | --project 扫描输入 BOM（modelscope 组件类型/Qwen namespace） | `main.py --project test_project` |
-| `ms_viz/viz_data.json` | 渲染层森林分层布局 + 风险传播红线 + 形状图例 | `outputs/modelscope_validation/build_viz_html.py` |
-| `ms_viz/viz_real_data.json` | 真实数据血缘图（14 节点 / 11 边，主模型黄灯） | `outputs/modelscope_validation/gen_viz_real.py` |
-| `project_extract/graph.json` | --project 全链路建图与整体判定（UNDETERMINED/POTENTIAL） | `main.py --project` |
-| `ms_viz/events.json` + `certificates.json` | --diff 变更事件 2 / 传播后 8 / 路径证书 6 | `tests/test_diff_*` |
+| `license_changed` | seed、cycle_a | 种子证据 A → `RISK_CONFIRMED`；带 `compare_direction` 方向判定 |
+| `evidence_downgrade` | finetuned | A → C → `UNDETERMINED` |
+| `ancestor_added` | `Qwen/Qwen2.5-7B` | 资产不在 BOM → 证据 C → `UNDETERMINED` |
+| `ancestor_removed` | legacy | 边证据 B → `RISK_POTENTIAL` |
+| `dataset_added` | `scenario/qwen-sft-data-v2` | 边证据 C → `UNDETERMINED` |
+| `dataset_removed` | `scenario/qwen-sft-data-v1` | 边证据 B → `RISK_POTENTIAL` |
 
-## 使用方式
+### 拓扑（构造，用于边界覆盖）
 
-测试代码统一通过 `tests/conftest.py` 的 `FIXTURES` 定位：
-
-```python
-from conftest import FIXTURES
-p = FIXTURES / "modelscope" / "lineage_Qwen__Qwen-Image-2.1.json"
+```
+seed ←─ derived_from(A) ─ finetuned ─ trained_on(B/C) → dataset v1/v2
+                              ↑ derived_from(B)
+                            serving ─ derived_from(B) → legacy
+                              └── derived_from(B) → Qwen/Qwen2.5-7B （仅 t1，缺失祖先）
+finetuned ─ depends_on(B) → cycle_a ⇄ cycle_b  （SCC 环）
 ```
 
-## 注意事项
+t0/t1 均为 **7 个资产 / 7 条边**；t1 建图后为 **8 个节点**（基模由边自动创建）。
 
-- 这些是 **2026-10 期间 ModelScope API 的真实返回快照**，作为离线测试基准；若 ModelScope 字段演进，需重新跑 `test_modelscope.py`（根目录）刷新快照。
-- 聚合节点 count 属实时漂移数据，测试只断言结构/判定，不断言具体 count 数值。
-- 原始 HTML/PNG 渲染产物保留在 `outputs/modelscope_validation/`，此处只存数据。
+---
+
+## 真实性边界（重要，避免误读）
+
+| 内容 | 是否真实 |
+|---|---|
+| 6 个模型的 namespace / name / purl | ✅ 真实，取自 ModelScope |
+| 各模型 t0 许可证 | ✅ 真实，取自 ModelScope API 的 `Data.LicenseName`；**唯一例外**是 legacy（`glm-4-9b-chat`），API 只返回 `other`，夹具据实记为 `null` |
+| 两处 t1 许可证变更（`llama3.1→GPL-3.0`、`MIT→GPL-3.0-only`） | ❌ **构造**，ModelScope 上并未发生 |
+| 模型之间的依赖关系、SCC 环 | ❌ 构造（真实血缘中不存在环） |
+| 数据集 ID（`scenario/...`） | ❌ 构造占位，未在 API 核实 |
+| 证据等级（A/B/C）的赋法 | ❌ 按测试需要指定，不代表真实证据来源 |
+
+**为什么要构造**：模块 8/9/10 的关键分支（SCC 成环、缺失祖先、证据降级、数据集增删）在真实 ModelScope 数据里**不会同时出现**，无法用真实快照覆盖；因此保留真实身份、构造拓扑，是这类边界测试的常规做法。
+
+---
+
+## `real_model_licenses.json` 说明
+
+- 53 个真实模型（8 个命名空间），按 `canonical_id` 排序
+- 字段：`canonical_id` / `asset_type` / `name` / `version` / `purls` / `license` / `license_evidence_level`
+- **34 个有许可证字段，19 个 API 未返回**（保留空值，用于验证"不臆断"策略）
+- 许可证分布：`Apache-2.0` 26、`MIT` 3、`llama3.1` 2、`qwen-research` 1、`creativeml-openrail-m` 1、`gemma` 1
+- 覆盖验证结论（见 `test_license_db.py`）：
+  - 已识别 30/34（≈88%）：Apache-2.0、MIT、gemma（经别名映射到 `Gemma-Terms-of-Use`）
+  - 未识别的 3 种、4 条：`llama3.1`、`qwen-research`、`creativeml-openrail-m`
+  - 这是**已知边界**（报告 5.7 节"非标协议覆盖边界"），不是回归失败
+
+### 如何重新抓取
+
+```powershell
+# 1) 抓真实语料（需联网；ModelScope API 免 key）
+python <workspace>\crawl_project_corpus.py --out outputs/project_validation/corpus `
+       --max-models 200 --max-depth 3 --seeds-file <workspace>\seeds_expanded.json
+
+# 2) 从语料抽取本文件（只保留真实模型，剔除聚合计数节点）
+python <workspace>\gen_ms_fixtures.py
+```
+
+> 抓取脚本是任务期的一次性工具，未入库；数据本身已在库内，日常测试不联网。
+
+---
+
+## 维护约定
+
+1. **改夹具必须同步改测试断言**：三个测试文件硬编码了上述 `canonical_id`。
+2. **新增真实数据请优先扩充 `real_model_licenses.json`**，而不是塞进场景夹具。
+3. **不要把测试产物（`out/`、`outputs/`）提交入库**；需要留档的验证数据放本目录并在此登记。
