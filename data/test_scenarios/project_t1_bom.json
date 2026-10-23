@@ -617,6 +617,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "高风险（红灯）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -654,6 +662,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "潜在风险（黄灯）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -684,6 +700,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -721,6 +745,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "高风险（红灯）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -758,6 +790,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "潜在风险（黄灯）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -788,6 +828,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -825,6 +873,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "高风险（红灯）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -862,6 +918,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "潜在风险（黄灯）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -892,6 +956,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -929,6 +1001,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "高风险（红灯）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -966,6 +1046,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "潜在风险（黄灯）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     },
@@ -996,6 +1084,14 @@
         {
           "name": "open-source-ledger:decision_zh",
           "value": "待确认（灰）"
+        },
+        {
+          "name": "open-source-ledger:is_fixture",
+          "value": "true"
+        },
+        {
+          "name": "open-source-ledger:fixture_note",
+          "value": "演示构造夹具（非真实 ModelScope 模型）：仅用于展示聚合域展开与风险子节点着色，模型身份/PURL/来源 URL 均为演示构造，不作为真实合规结论依据。"
         }
       ]
     }

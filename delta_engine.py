@@ -54,6 +54,14 @@ DECISION_BY_EVIDENCE = {
     "C": "UNDETERMINED",
 }
 
+# 非标/未知协议（有协议文本但规则库不认识，如 qwen-research）：按证据等级降级。
+# 与 risk_evaluator._UNKNOWN_LICENSE_DECISION 保持一致（扫描器单点判定同口径）。
+UNKNOWN_LICENSE_DECISION = {
+    "A": "RISK_POTENTIAL",
+    "B": "RISK_POTENTIAL",
+    "C": "UNDETERMINED",
+}
+
 # 血缘边类型（见 build_graph.EDGE_TYPES）
 LINEAGE_EDGE_TYPES = {"derived_from", "trained_on", "depends_on"}
 
@@ -242,9 +250,11 @@ def license_change_decision(evidence, direction, conflict) -> str:
     - 新许可证风险等级 3（弱 copyleft / AI 受限中等风险）-> 按证据等级分级，
       与 risk_evaluator.decision_for_license 一致：证据 A -> RISK_CONFIRMED、
       证据 B -> RISK_POTENTIAL、证据 C -> UNDETERMINED
-    - 新许可证未知（不在规则库，如 qwen-research）：
-      从已知变未知（许可证移除）-> RISK_POTENTIAL（潜在风险，不是确认高风险）；
-      其余回退证据等级判定。
+    - 新许可证未知（不在规则库，如 qwen-research / llama3.1）：
+      按 risk_evaluator._UNKNOWN_LICENSE_DECISION 处理：证据 A/B -> RISK_POTENTIAL
+      （潜在风险，不是确认高风险）、证据 C -> UNDETERMINED（待补证）。
+      这同时覆盖"从已知变未知"（许可证移除/收紧为未知协议）与"未知到未知"两类，
+      与扫描器对非标协议的单点判定保持一致，不再回退普通证据映射。
     """
     if conflict.get("conflict"):
         return "RISK_CONFIRMED"
@@ -256,9 +266,8 @@ def license_change_decision(evidence, direction, conflict) -> str:
             return "SAFE"
         # risk_level == 3：与 risk_evaluator 一致按证据分级
         return decision_for(evidence)
-    if (direction.get("direction") or "") == "许可证移除":
-        return "RISK_POTENTIAL"
-    return decision_for(evidence)
+    # 新许可证未知（非标/未收录协议，或从已知变为未知）：统一走非标协议规则
+    return UNKNOWN_LICENSE_DECISION.get(evidence or "C", "UNDETERMINED")
 
 
 def weaker_evidence(*levels: str | None) -> str:

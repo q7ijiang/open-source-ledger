@@ -92,7 +92,15 @@ function decisionOf(n) {
   const d = n.decision || "UNDETERMINED";
   return { code: d, color: DECISION_COLOR[d] || "#d3d7de", label: DECISION_LABEL[d] || d };
 }
-function isAgg(n) { return (n.name || "").indexOf("(Total:") >= 0 || (n.name || "").indexOf(" · ") >= 0; }
+function isAgg(n) {
+  const raw = n._raw || n;
+  // 只认明确属性：aggregate=true / coverage_status=AGGREGATE_ONLY / 名称含 "(Total:"
+  // 不得用 " · " 判断——Adapter 展开子节点名也含 " · "，会被误判为聚合而套中性色。
+  return raw.aggregate === true
+    || raw.coverage_status === "AGGREGATE_ONLY"
+    || (n._stats && n._stats.coverage_status === "AGGREGATE_ONLY")
+    || (n.name || "").indexOf("(Total:") >= 0;
+}
 
 // 聚合域统计属性：coverage_status=AGGREGATE_ONLY + count/expanded_count/remaining_count/known_risk_counts
 function aggStats(n) {
@@ -247,6 +255,12 @@ def forest_layout(nodes, edges):
     """森林分层布局：基座模型在上（一行），聚合/衍生节点在下（两行两列展开）。"""
     nodeById = {n["id"]: n for n in nodes}
     base_nodes = [n for n in nodes if not is_agg(n)]
+    # expanded_from 展开子节点不参与基座行布局（与 render_diff 同契约）
+    expanded_child_ids = {
+        e["target"] for e in edges
+        if e.get("edge_type") == "expanded_from" or e.get("source_field") == "expanded_from"
+    }
+    base_nodes = [n for n in base_nodes if n["id"] not in expanded_child_ids]
     base_ids = [n["id"] for n in base_nodes]
     children_of = {bid: [] for bid in base_ids}
     for e in edges:
@@ -268,7 +282,9 @@ def forest_layout(nodes, edges):
 
 
 def is_agg(n):
-    return "(Total:" in (n.get("name") or "") or " · " in (n.get("name") or "")
+    return n.get("aggregate") is True \
+        or n.get("coverage_status") == "AGGREGATE_ONLY" \
+        or "(Total:" in (n.get("name") or "")
 
 
 def main() -> None:

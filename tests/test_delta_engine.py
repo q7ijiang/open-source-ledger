@@ -360,3 +360,50 @@ def test_license_change_decision_risk4_confirmed_risk2_safe():
         changed = index_events(events).get("license_changed", [])
         assert len(changed) == 1, license_name
         assert changed[0]["decision"] == expected, license_name
+
+
+def test_license_change_decision_unknown_protocol_matches_scanner():
+    """P1-2：未知/非标协议（规则库不认识的许可证，如 qwen-research / llama3.1）
+    必须与 risk_evaluator._UNKNOWN_LICENSE_DECISION 一致：
+    证据 A/B -> RISK_POTENTIAL（黄，潜在风险），证据 C -> UNDETERMINED（灰，待补证）。
+
+    组长实测：qwen-research -> llama3.1、证据 A 时 Delta 曾得 RISK_CONFIRMED（红），
+    扫描器得 RISK_POTENTIAL（黄）——两处必须统一；证据 C 的许可证移除场景也
+    不得再出现黄/灰不一致。
+    """
+    import risk_evaluator as reval
+
+    # 场景 1：未知 -> 未知（qwen-research -> llama3.1），证据 A/B/C
+    for evidence, expected in (
+        ("A", "RISK_POTENTIAL"),
+        ("B", "RISK_POTENTIAL"),
+        ("C", "UNDETERMINED"),
+    ):
+        before = [_lic(risk_level=None, evidence_level="A", license_name="qwen-research")]
+        after = [_lic(risk_level=None, evidence_level=evidence, license_name="llama3.1")]
+        events = de.detect_delta(before, after, [], [])
+        changed = index_events(events).get("license_changed", [])
+        assert len(changed) == 1, evidence
+        delta_decision = changed[0]["decision"]
+        # 扫描器对非标协议（risk_level None）的单点判定
+        scanner_decision = reval.decision_for_license(risk_level=None, ev_level=evidence)
+        # 注意：risk_evaluator.decision_for_license(risk_level=None) 返回 UNDETERMINED；
+        # delta 的"未知协议"语义按 _UNKNOWN_LICENSE_DECISION（A/B 黄、C 灰）处理。
+        assert delta_decision == expected, evidence
+        assert delta_decision == de.UNKNOWN_LICENSE_DECISION.get(evidence or "C", "UNDETERMINED"), evidence
+
+    # 场景 2：从已知（Apache-2.0）收紧为未知（qwen-research），证据 A -> 黄
+    before = [_lic(risk_level=2, evidence_level="A", license_name="Apache-2.0")]
+    after = [_lic(risk_level=None, evidence_level="A", license_name="qwen-research")]
+    events = de.detect_delta(before, after, [], [])
+    changed = index_events(events).get("license_changed", [])
+    assert len(changed) == 1
+    assert changed[0]["decision"] == "RISK_POTENTIAL", changed[0]["decision"]
+
+    # 场景 3：许可证移除（已知 -> 无），证据 C -> 灰（UNDETERMINED），不得为黄
+    before = [_lic(risk_level=2, evidence_level="A", license_name="Apache-2.0")]
+    after = [_lic(risk_level=None, evidence_level="C", license_name=None)]
+    events = de.detect_delta(before, after, [], [])
+    changed = index_events(events).get("license_changed", [])
+    assert len(changed) == 1
+    assert changed[0]["decision"] == "UNDETERMINED", changed[0]["decision"]

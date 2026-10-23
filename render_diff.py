@@ -104,12 +104,21 @@ TPL = """<!DOCTYPE html>
 <div id="panel"><h3>传播路径证书（path_certificates）</h3><div id="panel-body" style="color:#909399">点击左侧变更事件查看对应传播路径证书。</div></div>
 <script>
 const DATA = {{DATA_JSON}};
+window.DATA = DATA;
 const DECISION_COLOR = {{DECISION_COLOR_JSON}};
 const DECISION_LABEL = {{DECISION_LABEL_JSON}};
 const CHANGE_LABEL = {{CHANGE_LABEL_JSON}};
 
 function decisionOf(d) { return { code: d || "UNDETERMINED", color: DECISION_COLOR[d] || "#d3d7de", label: DECISION_LABEL[d] || d }; }
-function isAgg(n) { return (n.name || "").indexOf("(Total:") >= 0 || (n.name || "").indexOf(" · ") >= 0; }
+function isAgg(n) {
+  const raw = n._raw || n;
+  // 只认明确属性：aggregate=true / coverage_status=AGGREGATE_ONLY / 名称含 "(Total:"
+  // 不得用 " · " 判断——Adapter 展开子节点名也含 " · "，会被误判为聚合而套中性色。
+  return raw.aggregate === true
+    || raw.coverage_status === "AGGREGATE_ONLY"
+    || (n._stats && n._stats.coverage_status === "AGGREGATE_ONLY")
+    || (n.name || "").indexOf("(Total:") >= 0;
+}
 
 // 聚合域统计属性透传（与 render_graph 同契约）
 function aggStats(n) {
@@ -242,7 +251,9 @@ def forest_layout(nodes, edges):
     nodeById = {n["id"]: n for n in nodes}
 
     def is_agg(n):
-        return "(Total:" in (n.get("name") or "") or " · " in (n.get("name") or "")
+        return n.get("aggregate") is True \
+            or n.get("coverage_status") == "AGGREGATE_ONLY" \
+            or "(Total:" in (n.get("name") or "")
 
     bases = [n for n in nodes if not is_agg(n)]
     base_ids = [n["id"] for n in bases]
@@ -254,11 +265,18 @@ def forest_layout(nodes, edges):
     # expanded_from 子节点：聚合节点 -> 子节点（虚线边），挂到聚合节点下方
     agg_ids = [n["id"] for n in nodes if is_agg(n)]
     expanded_of = {aid: [] for aid in agg_ids}
+    # 所有 expanded_from 边的 target 是展开子节点：不参与基座行布局
+    expanded_child_ids = {
+        e["target"] for e in edges
+        if e.get("edge_type") == "expanded_from" or e.get("source_field") == "expanded_from"
+    }
     for e in edges:
         if (e.get("edge_type") == "expanded_from" or e.get("source_field") == "expanded_from"):
             if e["source"] in expanded_of and e["target"] not in children_of.get(e["source"], []):
                 expanded_of[e["source"]].append(e["target"])
 
+    # 基座（模型/数据集等真实节点）：排除聚合节点与 expanded_from 展开子节点
+    bases = [n for n in bases if n["id"] not in expanded_child_ids]
     model_bases = [n for n in bases if n.get("asset_type") == "model"]
     other_bases = [n for n in bases if n.get("asset_type") != "model"]
     for idx, b in enumerate(model_bases):
@@ -278,10 +296,8 @@ def forest_layout(nodes, edges):
                 nodeById[kid]["x"] = b["x"] + xoff
                 nodeById[kid]["y"] = agg_row + (kid_i // 2) * 110
                 nodeById[kid]["lp"] = "bottom"
-    # 聚合域展开子节点：所有展开子节点横向平铺在聚合下方一行，
-    # x 从左侧起每 90px 一个（避开聚合节点列），y 固定在 expand_base，
-    # 聚合域展开子节点：每个聚合域正下方一列（x 随聚合节点，组内横向小错开），
-    # y 在聚合节点下方 200px 起纵向排布，避免跨域重叠，也保持图整体紧凑。
+    # 聚合域展开子节点：每个聚合域正下方一列（x 随聚合节点，组内横向拉开避免 label 重叠），
+    # y 在聚合节点下方 230px 起排布，与聚合行保持间距，避免跨域/跨行视觉重叠。
     for aid in agg_ids:
         if aid not in nodeById:
             continue
@@ -290,11 +306,15 @@ def forest_layout(nodes, edges):
             continue
         agx = nodeById[aid]["x"]
         agy = nodeById[aid]["y"]
+        nkids = len(kids)
+        # 组内 x 从聚合节点中心向两侧对称展开，间距 90px：相邻域（如适配/微调）
+        # 最外侧节点仍相隔 40px（300 vs 340），与 symbolSize 34 不重叠。
         for exp_i, kid in enumerate(kids):
             if kid not in nodeById:
                 continue
-            nodeById[kid]["x"] = agx + (exp_i - 1) * 80
-            nodeById[kid]["y"] = agy + 200 + (exp_i % 3) * 0
+            xoff = (exp_i - (nkids - 1) / 2) * 90
+            nodeById[kid]["x"] = agx + xoff
+            nodeById[kid]["y"] = agy + 230 + (exp_i % 3) * 0
             nodeById[kid]["lp"] = "bottom"
             nodeById[kid]["is_expanded_child"] = True
 
@@ -334,17 +354,36 @@ def _collect_event_decisions(
     return decisions
 
 
+def _is_agg_node(node: dict) -> bool:
+    """聚合节点判定：只认明确属性（aggregate / coverage_status / "(Total:"）。
+
+    不能用 " · " 判断——Adapter 展开子节点名也含 " · "，会被误判为聚合。
+    """
+    return (
+        node.get("aggregate") is True
+        or node.get("coverage_status") == "AGGREGATE_ONLY"
+        or "(Total:" in (node.get("name") or "")
+    )
+
+
 def apply_event_decisions(
     nodes_t0: list[dict],
     nodes_t1: list[dict],
     events: list[dict],
     certificates: list[dict],
 ) -> None:
-    """把传播判定叠加到节点，且不覆盖更强或更明确的既有判定。"""
+    """把传播判定叠加到节点，且不覆盖更强或更明确的既有判定。
+
+    聚合节点保持中性：自身 decision 始终为空（数据契约），
+    传播判定不写入聚合节点——具体风险只落在展开子节点上。
+    """
 
     event_decisions = _collect_event_decisions(events, certificates)
     for nodes in (nodes_t0, nodes_t1):
         for node in nodes:
+            if _is_agg_node(node):
+                # 聚合节点：不参与传播判定叠加，保持 decision=None
+                continue
             node_id = node.get("id") or node.get("canonical_id") or node.get("entity_key")
             event_decision = event_decisions.get(node_id)
             if not event_decision:
