@@ -279,3 +279,84 @@ def test_multiple_canonical_ids_not_folded():
     # （第二个是 KEPT_SEPARATE 默认）-> 不产生版本事件，不自行选代表
     assert "version_changed" not in by_type
     assert "version_upgraded" not in by_type
+
+
+# ---------- license risk=3 判定统一（与 risk_evaluator.decision_for_license 一致） ----------
+
+
+def _lic(risk_level, evidence_level, license_name="LGPL-3.0-only"):
+    return {
+        "entity_key": "acme/demo",
+        "canonical_id": "model:acme/demo@1",
+        "asset_type": "model",
+        "name": "acme/demo",
+        "version": "1",
+        "purls": ["pkg:modelscope/acme/demo@1"],
+        "license": license_name,
+        "evidence_chain": [{
+            "evidence_level": evidence_level,
+            "source_api": "modelscope",
+            "source_url": None,
+            "source_field": "license",
+            "retrieved_at": None,
+            "status": "ok",
+            "raw_value": license_name,
+        }],
+        "risk_level": risk_level,
+        "snapshot_id": "t0",
+        "merge_status": "MERGED",
+        "reason_code": "PURL_COORDINATE_EXACT",
+        "rule_version": "merge-policy-v2",
+    }
+
+
+def test_license_change_decision_risk3_matches_evidence_grading():
+    """risk_level==3 的新许可证按证据分级，与 risk_evaluator.decision_for_license 一致。
+
+    组长 10-23 命令第④条：delta_engine.license_change_decision() 对风险等级 3 的
+    处理必须与 risk_evaluator.decision_for_license() 一致——证据 A -> RISK_CONFIRMED、
+    证据 B -> RISK_POTENTIAL、证据 C -> UNDETERMINED。
+    使用规则库真实等级：MIT(1) -> LGPL-3.0-only(3)，保证 compare_direction 一致。
+    """
+    import risk_evaluator as reval
+
+    for evidence, expected in (
+        ("A", "RISK_CONFIRMED"),
+        ("B", "RISK_POTENTIAL"),
+        ("C", "UNDETERMINED"),
+    ):
+        before = [_lic(risk_level=1, evidence_level="A", license_name="MIT")]
+        after = [_lic(risk_level=3, evidence_level=evidence, license_name="LGPL-3.0-only")]
+        events = de.detect_delta(before, after, [], [])
+        changed = index_events(events).get("license_changed", [])
+        assert len(changed) == 1, evidence
+        delta_decision = changed[0]["decision"]
+
+        # 与 risk_evaluator 独立判定的口径对比
+        evaluator_decision = reval.decision_for_license(
+            risk_level=3,
+            ev_level=evidence,
+        )
+        assert delta_decision == expected, evidence
+        assert evaluator_decision == expected, evidence
+        assert delta_decision == evaluator_decision, evidence
+
+
+def test_license_change_decision_risk4_confirmed_risk2_safe():
+    """risk>=4 -> RISK_CONFIRMED（强收紧）；risk<=2 -> SAFE（宽松/同级）。
+
+    规则库真实等级：MIT(1)/Apache-2.0(2) 宽松；GPL-3.0-only(4)/AGPL-3.0(5) 高风险。
+    """
+    for risk, license_name, expected in (
+        (4, "GPL-3.0-only", "RISK_CONFIRMED"),
+        (5, "AGPL-3.0", "RISK_CONFIRMED"),
+        (1, "MIT", "SAFE"),
+        (2, "Apache-2.0", "SAFE"),
+    ):
+        # before 固定 BSD-3-Clause(1)，after 为待测 license
+        before = [_lic(risk_level=1, evidence_level="A", license_name="BSD-3-Clause")]
+        after = [_lic(risk_level=risk, evidence_level="B", license_name=license_name)]
+        events = de.detect_delta(before, after, [], [])
+        changed = index_events(events).get("license_changed", [])
+        assert len(changed) == 1, license_name
+        assert changed[0]["decision"] == expected, license_name

@@ -74,14 +74,6 @@
           "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -94,8 +86,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "27"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -121,14 +125,6 @@
           "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -141,8 +137,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "1744"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -168,14 +176,6 @@
           "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -188,8 +188,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "16"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -215,14 +227,6 @@
           "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -235,8 +239,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "50"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -310,14 +326,6 @@
           "value": "modelscope-Qwen__Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -330,8 +338,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "20"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -357,14 +377,6 @@
           "value": "modelscope-Qwen__Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -377,8 +389,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "552"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -404,14 +428,6 @@
           "value": "modelscope-Qwen__Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -424,8 +440,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "14"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -451,14 +479,6 @@
           "value": "modelscope-Qwen__Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -471,8 +491,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "127"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -523,14 +555,6 @@
           "value": "modelscope-XingChen-AGI__TeleOCR"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "UNDETERMINED"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "待确认（灰）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -541,6 +565,22 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/XingChen-AGI/TeleOCR"
+        },
+        {
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "7"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {

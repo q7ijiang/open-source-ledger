@@ -74,14 +74,6 @@
           "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -94,8 +86,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "27"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -121,14 +125,6 @@
           "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -141,8 +137,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "1744"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -168,14 +176,6 @@
           "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -188,8 +188,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "16"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -215,14 +227,6 @@
           "value": "modelscope-Qwen__Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "SAFE"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "安全（绿）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -235,8 +239,20 @@
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
         },
         {
-          "name": "open-source-ledger:risk_level",
-          "value": "2"
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "50"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -309,6 +325,22 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "3"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "17"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":1,\"yellow\":1,\"gray\":1}"
         }
       ],
       "pedigree": {
@@ -344,6 +376,22 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "3"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "549"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":1,\"yellow\":1,\"gray\":1}"
         }
       ],
       "pedigree": {
@@ -379,6 +427,22 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "3"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "11"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":1,\"yellow\":1,\"gray\":1}"
         }
       ],
       "pedigree": {
@@ -414,6 +478,22 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "3"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "124"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":1,\"yellow\":1,\"gray\":1}"
         }
       ],
       "pedigree": {
@@ -464,14 +544,6 @@
           "value": "modelscope-XingChen-AGI__TeleOCR"
         },
         {
-          "name": "open-source-ledger:decision",
-          "value": "UNDETERMINED"
-        },
-        {
-          "name": "open-source-ledger:decision_zh",
-          "value": "待确认（灰）"
-        },
-        {
           "name": "open-source-ledger:aggregate",
           "value": "True"
         },
@@ -482,6 +554,22 @@
         {
           "name": "open-source-ledger:source_file",
           "value": "https://www.modelscope.cn/api/v1/models/XingChen-AGI/TeleOCR"
+        },
+        {
+          "name": "open-source-ledger:coverage_status",
+          "value": "AGGREGATE_ONLY"
+        },
+        {
+          "name": "open-source-ledger:expanded_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:remaining_count",
+          "value": "7"
+        },
+        {
+          "name": "open-source-ledger:known_risk_counts",
+          "value": "{\"red\":0,\"yellow\":0,\"gray\":0}"
         }
       ],
       "pedigree": {
@@ -494,6 +582,422 @@
           }
         ]
       }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:适配:Adapter-A@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 适配 (Adapter-A)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:适配:Adapter-A@master",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "GPL-3.0"
+          },
+          "evidence_level": "A"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Adapters@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_CONFIRMED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "高风险（红灯）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:适配:Adapter-B@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 适配 (Adapter-B)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:适配:Adapter-B@master",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "qwen-research"
+          },
+          "evidence_level": "A"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Adapters@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_POTENTIAL"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "潜在风险（黄灯）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:适配:Adapter-C@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 适配 (Adapter-C)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:适配:Adapter-C@master",
+      "version": "1.0.0",
+      "licenses": [],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Adapters@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:微调:Adapter-A@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 微调 (Adapter-A)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:微调:Adapter-A@master",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "GPL-3.0"
+          },
+          "evidence_level": "A"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Finetunes@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_CONFIRMED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "高风险（红灯）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:微调:Adapter-B@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 微调 (Adapter-B)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:微调:Adapter-B@master",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "qwen-research"
+          },
+          "evidence_level": "A"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Finetunes@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_POTENTIAL"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "潜在风险（黄灯）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:微调:Adapter-C@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 微调 (Adapter-C)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:微调:Adapter-C@master",
+      "version": "1.0.0",
+      "licenses": [],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Finetunes@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:合并:Adapter-A@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 合并 (Adapter-A)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:合并:Adapter-A@master",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "GPL-3.0"
+          },
+          "evidence_level": "A"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Merges@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_CONFIRMED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "高风险（红灯）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:合并:Adapter-B@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 合并 (Adapter-B)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:合并:Adapter-B@master",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "qwen-research"
+          },
+          "evidence_level": "A"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Merges@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_POTENTIAL"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "潜在风险（黄灯）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:合并:Adapter-C@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 合并 (Adapter-C)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:合并:Adapter-C@master",
+      "version": "1.0.0",
+      "licenses": [],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Merges@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:量化:Adapter-A@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 量化 (Adapter-A)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:量化:Adapter-A@master",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "GPL-3.0"
+          },
+          "evidence_level": "A"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Quantizations@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_CONFIRMED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "高风险（红灯）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:量化:Adapter-B@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 量化 (Adapter-B)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:量化:Adapter-B@master",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "qwen-research"
+          },
+          "evidence_level": "A"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Quantizations@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_POTENTIAL"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "潜在风险（黄灯）"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen3-8B:量化:Adapter-C@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen3-8B · 量化 (Adapter-C)",
+      "purl": "pkg:modelscope/Qwen/Qwen3-8B:量化:Adapter-C@master",
+      "version": "1.0.0",
+      "licenses": [],
+      "properties": [
+        {
+          "name": "open-source-ledger:expanded_from",
+          "value": "model:modelscope/Qwen/Qwen3-8B:son:Quantizations@master"
+        },
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "UNDETERMINED"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "待确认（灰）"
+        }
+      ]
     }
   ],
   "dependencies": [

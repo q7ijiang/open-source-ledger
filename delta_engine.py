@@ -215,7 +215,15 @@ def edge_signature(edge: dict) -> tuple:
 
 
 def edge_set(edges: list[dict]) -> set:
-    return {edge_signature(edge) for edge in edges if edge.get("source") and edge.get("target")}
+    """血缘边集合（排除聚合域展示边 expanded_from：它只用于渲染层
+    "聚合风险域已展开哪些具体模型"，不是真实血缘变更，不应触发 Delta 事件）。"""
+    return {
+        edge_signature(edge)
+        for edge in edges
+        if edge.get("source")
+        and edge.get("target")
+        and edge.get("edge_type") != "expanded_from"
+    }
 
 
 def decision_for(evidence_level: str | None) -> str:
@@ -226,12 +234,14 @@ def decision_for(evidence_level: str | None) -> str:
 def license_change_decision(evidence, direction, conflict) -> str:
     """许可证变更综合判定（证据等级 ≠ 风险严重度，必须结合变更方向与冲突）。
 
-    规则（以新许可证的风险等级为主体，证据等级只在无方向信息时兜底）：
+    规则（与 risk_evaluator.decision_for_license 统一口径）：
     - 确认的继承冲突 -> RISK_CONFIRMED（如 GPL 传染 vs 下游禁止附加限制）
     - 新许可证风险等级 >= 4（强 copyleft / 高风险 AI 受限）-> RISK_CONFIRMED
       （覆盖 llama2→GPL-3.0、MIT→GPL-3.0-only 等真正的高风险收紧）
-    - 新许可证风险等级 3 -> RISK_POTENTIAL（中等风险收紧）
-    - 新许可证风险等级 <= 2 -> SAFE（放宽/同级宽松，如 GPL→Apache-2.0）
+    - 新许可证风险等级 <= 2（宽松）-> SAFE（放宽/同级宽松，如 GPL→Apache-2.0）
+    - 新许可证风险等级 3（弱 copyleft / AI 受限中等风险）-> 按证据等级分级，
+      与 risk_evaluator.decision_for_license 一致：证据 A -> RISK_CONFIRMED、
+      证据 B -> RISK_POTENTIAL、证据 C -> UNDETERMINED
     - 新许可证未知（不在规则库，如 qwen-research）：
       从已知变未知（许可证移除）-> RISK_POTENTIAL（潜在风险，不是确认高风险）；
       其余回退证据等级判定。
@@ -242,9 +252,10 @@ def license_change_decision(evidence, direction, conflict) -> str:
     if new_level is not None:
         if new_level >= 4:
             return "RISK_CONFIRMED"
-        if new_level >= 3:
-            return "RISK_POTENTIAL"
-        return "SAFE"
+        if new_level <= 2:
+            return "SAFE"
+        # risk_level == 3：与 risk_evaluator 一致按证据分级
+        return decision_for(evidence)
     if (direction.get("direction") or "") == "许可证移除":
         return "RISK_POTENTIAL"
     return decision_for(evidence)
@@ -409,7 +420,9 @@ def detect_delta(
     edge_by_signature = {
         edge_signature(edge): edge
         for edge in before_edges + after_edges
-        if edge.get("source") and edge.get("target")
+        if edge.get("source")
+        and edge.get("target")
+        and edge.get("edge_type") != "expanded_from"
     }
 
     for signature in sorted(after_sig - before_sig):
