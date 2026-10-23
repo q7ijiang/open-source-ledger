@@ -100,7 +100,7 @@ function aggStats(n) {
   const krc = s.known_risk_counts || {};
   return {
     coverage: s.coverage_status || (isAgg(n) ? "AGGREGATE_ONLY" : null),
-    count: s.count != null ? s.count : (isAgg(n) ? (n.name || "").match(/Total:\s*([0-9]+)/) : null),
+    count: s.count != null ? s.count : (isAgg(n) ? (n.name || "").match(/Total:\\s*([0-9]+)/) : null),
     expanded: s.expanded_count != null ? s.expanded_count : null,
     remaining: s.remaining_count != null ? s.remaining_count : null,
     red: krc.red || 0, yellow: krc.yellow || 0, gray: krc.gray || 0,
