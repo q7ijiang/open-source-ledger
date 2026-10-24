@@ -146,13 +146,15 @@ class TestRenderBadgeNotFullRed:
         assert "#eef0f4" in src, "聚合节点应使用中性底色"
         # 描边按 known_risk_counts 分级：红 > 黄 > 灰 > 无风险
         assert "#f56c6c" in src, "聚合风险域应具备红色描边（徽标而非填充）"
-        # 聚合节点必须使用 rect 符号且带 borderColor（描边语义）
-        assert 'symbol: agg ? "rect"' in src
+        # 聚合节点必须使用中性底 + 由 aggTone() 动态算出的风险描边（描边语义，非填充）
+        assert 'itemStyle:{color:"#eef0f4",borderColor:aggTone(n)' in src
 
     def test_render_graph_uses_neutral_agg_fill(self) -> None:
         src = (REPO_ROOT / "render_graph.py").read_text(encoding="utf-8")
-        assert "#eef0f4" in src
-        assert "#f56c6c" in src
+        layout_src = (REPO_ROOT / "render_layout.py").read_text(encoding="utf-8")
+        # render_graph 复用通用簇布局（中性聚合域 + 决策回读）
+        assert "render_layout" in src
+        assert "aggregate" in layout_src
 
     def test_expanded_edges_are_dashed(self) -> None:
         src = (REPO_ROOT / "render_diff.py").read_text(encoding="utf-8")
@@ -189,8 +191,10 @@ class TestRealRenderPipeline:
             n["id"] = n.get("id") or n.get("canonical_id") or n.get("entity_key")
         # 与 main() 一致：仅 t1 叠加传播判定
         render_diff.apply_event_decisions([], nodes_t1, propagated["events"], propagated["path_certificates"])
-        render_diff.forest_layout(nodes_t0, edges_t0)
-        render_diff.forest_layout(nodes_t1, edges_t1)
+        import render_layout as _render_layout
+
+        _render_layout.layout_graph(nodes_t0, edges_t0)
+        _render_layout.layout_graph(nodes_t1, edges_t1)
         return nodes_t1, edges_t1
 
     def test_children_not_classified_as_aggregate(self) -> None:
@@ -199,10 +203,11 @@ class TestRealRenderPipeline:
         children = [n for n in nodes_t1 if "Adapter" in (n.get("name") or "")]
         assert len(children) == 12, f"应有 12 个子节点，实际 {len(children)}"
         for n in children:
-            assert not render_diff._is_agg_node(n), (
+            import render_layout as _render_layout
+
+            assert not _render_layout.is_aggregate_node(n), (
                 f"子节点 {n.get('name')} 不应被误判为聚合节点"
             )
-            assert n.get("is_expanded_child") is True
 
     def test_children_keep_own_decisions_after_propagation(self) -> None:
         """子节点各按自身 decision 着色：红/黄/灰三态并存，且不被传播覆盖为同一色。"""

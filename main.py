@@ -658,8 +658,7 @@ def _render_deep_report(
 
 
 def run_basic(args: argparse.Namespace) -> None:
-    assets, bom = report_basic.generate(str(args.input))
-    report = report_basic.render_markdown(assets, bom)
+    assets, report = report_basic.generate(str(args.input))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(report, encoding="utf-8")
     print(f"基础模式报告已写入：{args.output}")
