@@ -78,6 +78,28 @@ tools\cdxgen\cdxgen.cmd -t python -t npm -t ai --evidence --no-install-deps --js
 > 深度模式（时间化血缘风险传播）：
 > `python main.py --mode deep --before t0_bom.json --after t1_bom.json --output reports/deep_report.md`
 
+> 对比模式（BOM 前后差异 + 传播证书报告）：
+> `python main.py --diff --before t0_bom.json --after t1_bom.json --output reports/diff_report.md`
+
+### 演示夹具与 demo 模式
+
+BOM 里可能出现标了 `open-source-ledger:is_fixture=true`（或 `display_only=true`）的**演示夹具**——
+例如 `Qwen/Qwen3-8B · 适配 (Adapter-A)` 这类构造出来的下游子模型，用来验证「聚合域展开后子节点
+按各自 decision 独立着色」和「子节点许可证变化能进入 Delta」两条链路。
+
+- **生产模式（默认）**：夹具从 Delta、风险传播与统计中排除，报告与图上都不会出现；
+  CLI 会打印一行 `已排除 N 个演示夹具`。
+- **演示模式**：加 `--include-fixtures`，夹具保留并参与差异（答辩/录屏用）。
+
+```
+python main.py     --diff --before t0.json --after t1.json --output diff.md  --include-fixtures
+python render_diff.py --before t0.json --after t1.json --output diff.html    --include-fixtures
+```
+
+夹具只认资产自身的显式标记，**不根据 `expanded_from` 推导**——"是否展开"不等于"是否夹具"，
+否则真实子模型的许可证变化会被静默吞掉。Streamlit 演示页（`streamlit run app.py`）的时间对比
+模式里有对应的「包含演示夹具」勾选项。
+
 ### 模块化命令（深度部分，B 交付）
 
 深度链路为「图构建 → Delta 检测 → 风险传播」，可直接逐模块运行：

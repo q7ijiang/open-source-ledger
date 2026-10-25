@@ -553,7 +553,24 @@ def convert_component(
                 k: int(v) for k, v in krc.items() if k in ("red", "yellow", "gray")
             }
 
+    # 演示夹具标记透传：解析阶段必须把 display_only / is_fixture 带到资产对象上，
+    # 否则 render_diff_operational 的过滤条件读不到字段，真实 BOM 输入时
+    # "排除演示夹具" 会静默失效。两个字段只做布尔归一，不做任何推导。
+    for flag_name in ("is_fixture", "display_only"):
+        if flag_name in ledger_properties:
+            asset[flag_name] = _as_bool(ledger_properties[flag_name])
+    if ledger_properties.get("expanded_from"):
+        asset["expanded_from"] = str(ledger_properties["expanded_from"])
+
     return asset
+
+
+def _as_bool(value: Any) -> bool:
+    """把 BOM property 里的字符串布尔值归一成 bool。"""
+
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().lower() in ("true", "1", "yes")
 
 
 def convert_bom(

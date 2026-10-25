@@ -84,13 +84,14 @@ def run_project(project: str) -> None:
     _show_report(report)
 
 
-def run_diff(before_path: Path, after_path: Path) -> None:
+def run_diff(before_path: Path, after_path: Path, include_fixtures: bool = False) -> None:
+    flag = ["--include-fixtures"] if include_fixtures else []
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
         report = tmp_dir / "diff_report.md"
         diff_html = tmp_dir / "diff_lineage.html"
-        _run(["main.py", "--diff", "--before", str(before_path), "--after", str(after_path), "--output", str(report)])
-        _run(["render_diff.py", "--before", str(before_path), "--after", str(after_path), "--output", str(diff_html)])
+        _run(["main.py", "--diff", "--before", str(before_path), "--after", str(after_path), "--output", str(report), *flag])
+        _run(["render_diff.py", "--before", str(before_path), "--after", str(after_path), "--output", str(diff_html), *flag])
         st.subheader("时间轴风险传播图（t0 → t1）")
         _embed_html(diff_html, height=520)
         st.subheader("中文审计报告")
@@ -132,6 +133,12 @@ elif mode == "项目":
 
 else:  # 时间对比
     st.info("上传两个 CycloneDX BOM 文件（需含 pedigree.ancestors 固化的血缘边）")
+    include_fixtures = st.checkbox(
+        "包含演示夹具（demo 模式）",
+        value=False,
+        help="演示夹具是标了 is_fixture / display_only 的构造资产。默认按生产模式排除，"
+        "不参与 Delta、风险传播与统计；勾选后保留并参与差异（用于答辩演示）。",
+    )
     f0 = st.file_uploader("t0 BOM（基线）", type=["json"], key="t0")
     f1 = st.file_uploader("t1 BOM（当前）", type=["json"], key="t1")
     if st.button("开始对比", type="primary"):
@@ -144,4 +151,4 @@ else:  # 时间对比
                 p0.write_bytes(f0.getvalue())
                 p1.write_bytes(f1.getvalue())
                 with st.spinner("正在对比血缘变化并生成传播图…"):
-                    run_diff(p0, p1)
+                    run_diff(p0, p1, include_fixtures)

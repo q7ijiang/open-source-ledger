@@ -34,7 +34,9 @@ def _is_display_only(node: dict) -> bool:
 
 
 def operational_snapshot(
-    nodes: list[dict], edges: list[dict]
+    nodes: list[dict],
+    edges: list[dict],
+    include_fixtures: bool = False,
 ) -> tuple[list[dict], list[dict]]:
     """Return the subset used for Delta and propagation.
 
@@ -47,6 +49,9 @@ def operational_snapshot(
     A node is removed only when the asset itself is explicitly flagged
     ``display_only`` / ``is_fixture``, and only while it carries no real lineage
     edge — otherwise removing it would resurrect exactly that empty node.
+
+    ``include_fixtures=True`` is the demo switch: keep the flagged fixtures in
+    Delta and propagation, matching what the rendered page shows.
     """
 
     lineage_edges = [edge for edge in edges if not _is_expansion_edge(edge)]
@@ -56,6 +61,8 @@ def operational_snapshot(
         for field in ("source", "target")
         if edge.get(field)
     }
+    if include_fixtures:
+        return list(nodes), lineage_edges
     operational_nodes = [
         node
         for node in nodes

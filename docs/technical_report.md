@@ -491,7 +491,24 @@ Propagate 阶段以快照差异为种子，沿血缘图反向寻找受影响资�
 
 图 4-7 说明：t0/t1 两个页签各自可展开聚合域，中间事件列表与下方证书共同支持时间化复核。
 
-#### 4.4.4 Streamlit 三模式交互界面
+#### 4.4.4 演示夹具与 demo 模式：让「数据从哪来」可核对
+
+ModelScope 的血缘接口只返回下游**聚合计数**，不返回具名下游模型身份。为了让「子节点按自身 decision 独立着色」「子节点许可证变化能进入 Delta」这两条能力可被观察，仓库在测试场景 BOM 中构造了 12 个具名下游节点（如 `Qwen/Qwen3-8B · 适配 (Adapter-A)`），并统一打上 `open-source-ledger:is_fixture=true`（部分标注 `display_only=true`）以及 `open-source-ledger:expanded_from` 指向其所属聚合域。
+
+这些节点不是真实下游模型，因此工程上按「演示夹具」处理，而不是当成扫描结果：
+
+| 维度 | 生产模式（默认） | demo 模式（`--include-fixtures`） |
+|---|---|---|
+| Delta 检测 | 排除夹具，只看真实资产变更 | 保留夹具，参与差异 |
+| 风险传播与统计 | 排除夹具 | 参与传播，进入统计 |
+| 渲染 | 页签标注真实规模（如 t1：12 节点/9 边） | 展开态可见 Adapter-A/B/C（t1：24 节点/21 边） |
+| Streamlit | 「包含演示夹具」复选框默认不勾 | 勾选后透传该开关 |
+
+判定依据只认 BOM 里**显式声明**的两个标记，不按 `expanded_from` 反推——因为真实血缘里也可能出现 `expanded_from` 之外的关系名，反推会把真实资产误判成夹具。开关在 `main.py`、`render_diff.py`、`report_basic.py`、`app.py` 四处一致透传，`bom_adapter.py` 负责把这两个标记与 `expanded_from` 从 BOM 的 `properties` 透传到资产对象，缺失时按 `False` 处理。
+
+这样处理的效果是：演示时能看到「聚合域 + 具名子节点」的完整故事，生产时同一份代码不会把构造数据混进真实结论，答辩时也能直接回答「这些节点是怎么来的」。
+
+#### 4.4.5 Streamlit 三模式交互界面
 
 `app.py` 提供三种模式：
 
@@ -507,7 +524,7 @@ Streamlit 不重写数据管道逻辑，只通过子进程调用现有入口。�
 
 图 4-8 说明：单模型、项目和时间对比共用同一套后端能力。
 
-#### 4.4.5 GitHub Action：定时扫描与风险阻断
+#### 4.4.6 GitHub Action：定时扫描与风险阻断
 
 Action 以 Composite Action 和用户工作流两种方式提供，相关平台机制依据 GitHub Actions 官方文档实现[10]。标准流程如下：
 
@@ -597,6 +614,7 @@ Action 以 Composite Action 和用户工作流两种方式提供，相关平台�
 | BOM 导出 | 时间戳、ancestors、properties | 导出后可再次 Diff |
 | Diff 与渲染 | 区间、决策着色、离线资源 | 输出可阅读、可断网打开 |
 | GitHub Action | 首次基线、风险阻断、缓存推进 | 风险存在时阻断，失败时不推进基线 |
+| 夹具与 demo | `is_fixture`/`display_only` 透传、生产与 demo 两种快照 | 生产结论不混入构造数据 |
 
 ### 5.3 单元与集成测试结果
 

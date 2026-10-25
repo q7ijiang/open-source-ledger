@@ -655,18 +655,25 @@ def main() -> None:
     parser.add_argument("--after", required=True, type=Path, help="t1 BOM")
     parser.add_argument("--output", required=True, type=Path, help="输出 HTML 路径")
     parser.add_argument("--title", default=None, help="页面标题（默认自动）")
+    parser.add_argument(
+        "--include-fixtures",
+        action="store_true",
+        help="演示模式：保留 is_fixture / display_only 标记的演示夹具。"
+        "默认按生产模式处理，把夹具从 Delta 与风险传播中排除。",
+    )
     args = parser.parse_args()
 
     from main import _build_snapshot
 
-    before = _build_snapshot(args.before, "t0")
-    after = _build_snapshot(args.after, "t1")
+    include_fixtures = bool(getattr(args, "include_fixtures", False))
+    before = _build_snapshot(args.before, "t0", include_fixtures=include_fixtures)
+    after = _build_snapshot(args.after, "t1", include_fixtures=include_fixtures)
 
     operational_before_nodes, operational_before_edges = operational_snapshot(
-        before["assets"], before["edges"]
+        before["assets"], before["edges"], include_fixtures=include_fixtures
     )
     operational_after_nodes, operational_after_edges = operational_snapshot(
-        after["assets"], after["edges"]
+        after["assets"], after["edges"], include_fixtures=include_fixtures
     )
 
     graph_before = build_graph.build_graph(
