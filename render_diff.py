@@ -205,9 +205,16 @@ function decisionShort(code) {
 function childFill(code) {
   return {RISK_CONFIRMED:"#fff2f0",RISK_POTENTIAL:"#fff8e8",SAFE:"#f0f9eb",UNDETERMINED:"#f6f7f9"}[code || "UNDETERMINED"] || "#f6f7f9";
 }
-const expandedDomains = new Set();
+// 展开状态按快照隔离：在 t0 展开聚合域不应把 t1 的同一聚合域一起展开。
+const expandedBySnapshot = {t0:new Set(), t1:new Set()};
+function expandedSet(snapshot) {
+  const key = snapshot === "t0" ? "t0" : "t1";
+  if (!expandedBySnapshot[key]) expandedBySnapshot[key] = new Set();
+  return expandedBySnapshot[key];
+}
 
-function buildChart(elId, nodes, edges, layout) {
+function buildChart(elId, nodes, edges, layout, snapshot) {
+  const expandedDomains = expandedSet(snapshot);
   const nodeById = {};
   nodes.forEach(n => nodeById[n.id] = n);
   const childrenByAggregate = {};
@@ -407,8 +414,13 @@ DATA.events.forEach(ev => {
   const j = decisionOf(ev.decision);
   const d = document.createElement("div");
   d.className = "evt";
+  const fromName = shortName(ev.display_source || ev.source || ev.seed);
+  const toName = shortName(ev.display_target || ev.target || ev.seed);
+  const route = (fromName === toName)
+    ? escapeHtml(fromName)
+    : `${escapeHtml(fromName)} <span class="arrow">→</span> ${escapeHtml(toName)}`;
   d.innerHTML = `<span class="tag" style="background:${j.color}">${escapeHtml(CHANGE_LABEL[ev.change_type] || ev.change_type)}</span>` +
-    `<div style="margin-top:4px">${escapeHtml(shortName(ev.source || ev.seed))} <span class="arrow">→</span> ${escapeHtml(shortName(ev.target || ev.seed))}</div>` +
+    `<div style="margin-top:4px">${route}</div>` +
     `<div style="color:#7b8799;margin-top:2px">判定：${j.label} · 证据 ${escapeHtml(ev.evidence_level || "—")}</div>`;
   d.onclick = () => renderCerts(ev.event_id, ev.seed);
   evtDiv.appendChild(d);
@@ -420,14 +432,15 @@ let activeSnapshot = "t1";
 function createSnapshotChart(snapshot) {
   if (charts[snapshot]) return charts[snapshot];
   const suffix = snapshot === "t1" ? "t1" : "t0";
-  const chart = buildChart(`chart${suffix.slice(1)}`, DATA[`nodes_${suffix}`], DATA[`edges_${suffix}`], DATA[`layout_${suffix}`]);
+  const chart = buildChart(`chart${suffix.slice(1)}`, DATA[`nodes_${suffix}`], DATA[`edges_${suffix}`], DATA[`layout_${suffix}`], suffix);
   chart.on("click", p => {
     if (p.dataType === "node") {
       const raw = p.data._raw;
       renderNodeDetail(raw, snapshot);
       if (isAgg(raw) && Number(p.data._childCount || 0) > 0) {
-        if (expandedDomains.has(raw.id)) expandedDomains.delete(raw.id);
-        else expandedDomains.add(raw.id);
+        const expanded = expandedSet(snapshot);
+        if (expanded.has(raw.id)) expanded.delete(raw.id);
+        else expanded.add(raw.id);
         chart._refreshExpansion();
       }
       setTimeout(() => chart.dispatchAction({type:"downplay", seriesIndex:0}), 0);
@@ -496,7 +509,7 @@ if (!riskMap.size) {
       const sourceNodes = preferred === "t1" ? DATA.nodes_t1 : DATA.nodes_t0;
       const index = sourceNodes.findIndex(node => node.id === n.id);
       if (isExpandedChild(n) && n.render_parent_id) {
-        expandedDomains.add(n.render_parent_id);
+        expandedSet(preferred).add(n.render_parent_id);
         chart._refreshExpansion();
       }
       chart.dispatchAction({type:"downplay", seriesIndex:0});
@@ -576,6 +589,40 @@ def apply_event_decisions(
             node["decision_source"] = "diff_propagation"
 
 
+def annotate_event_endpoints(
+    events: list[dict], certificates: list[dict]
+) -> list[dict]:
+    """为事件列表补上真正要显示的起止资产。
+
+    传播生成的事件只带 ``seed`` 与 ``path``，没有 ``source`` / ``target``，
+    直接回退到 ``seed`` 会让中栏五条记录全部显示成"种子 → 种子"。受影响下游
+    资产在对应路径证书的 ``affected`` 上；没有证书时取 ``path[0].source``
+    （路径方向是 受影响资产 → … → 上游变化资产）。
+    """
+
+    affected_by_event: dict[str, str] = {}
+    for certificate in certificates:
+        event_id = certificate.get("event_id")
+        affected = certificate.get("affected")
+        if event_id and affected and event_id not in affected_by_event:
+            affected_by_event[event_id] = affected
+
+    for event in events:
+        target = affected_by_event.get(event.get("event_id") or "")
+        if not target:
+            path = event.get("path") or []
+            if path:
+                target = path[0].get("source")
+        event["display_source"] = event.get("source") or event.get("seed")
+        event["display_target"] = (
+            target
+            or event.get("target")
+            or event.get("source")
+            or event.get("seed")
+        )
+    return events
+
+
 def _copy_echarts(output_dir: Path) -> str:
     local_echarts = output_dir / "echarts.min.js"
     candidates = [
@@ -648,6 +695,7 @@ def main() -> None:
             or node.get("name")
         )
     apply_event_decisions(nodes_t0, nodes_t1, propagated["events"], certs)
+    annotate_event_endpoints(propagated["events"], certs)
     layout_t0 = layout_graph(nodes_t0, edges_t0, canvas_width=680)
     layout_t1 = layout_graph(nodes_t1, edges_t1, canvas_width=680)
 

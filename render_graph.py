@@ -150,32 +150,50 @@ function decisionShort(code) {
 function childFill(code) {
   return {RISK_CONFIRMED:"#fff2f0",RISK_POTENTIAL:"#fff8e8",SAFE:"#f0f9eb",UNDETERMINED:"#f6f7f9"}[code || "UNDETERMINED"] || "#f6f7f9";
 }
+const NL = String.fromCharCode(10);
 
 const nodeById = {};
 DATA.nodes.forEach(n => nodeById[n.id] = n);
 
-const nodes = DATA.nodes.map(n => {
+// 聚合域默认折叠，点击卡片展开/收起（与 Diff 页行为一致）
+const expandedDomains = new Set();
+const childrenByAggregate = {};
+DATA.edges.forEach(e => {
+  if (e.edge_type !== "expanded_from") return;
+  const aggregateId = isAggregate(nodeById[e.source] || {}) ? e.source : e.target;
+  if (!childrenByAggregate[aggregateId]) childrenByAggregate[aggregateId] = [];
+  childrenByAggregate[aggregateId].push(e);
+});
+
+function buildNodes() {
+  return DATA.nodes.map(n => {
   const agg = isAggregate(n);
   const j = decisionOf(n.decision);
   if (n.render_role === "expanded_child") {
     const label = n.render_card?.label || n.name || n.id;
+    const visible = expandedDomains.has(n.render_parent_id);
     return {
       id:n.id,
       name:label,
       x:n.x,
       y:n.y,
       symbol:"rect",
-      symbolSize:[n.render_card?.width || 72, n.render_card?.height || 38],
-      itemStyle:{color:childFill(n.decision),borderColor:j.color,borderWidth:2,borderRadius:6},
-      label:{show:true,position:"inside",formatter:() => `{name|${label}}\n{state|${decisionShort(n.decision)}}`,rich:{name:{fontSize:10,fontWeight:"bold",color:"#253044",lineHeight:15},state:{fontSize:8,color:j.color,lineHeight:13}}},
-      tooltip:{formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>类型：展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${/Adapter-[ABC]/.test(n.name || "") ? "<br/>构造测试夹具，不代表真实下游模型" : ""}`},
+      symbolSize:visible ? [n.render_card?.width || 72, n.render_card?.height || 38] : [0, 0],
+      itemStyle:{color:childFill(n.decision),borderColor:j.color,borderWidth:2,borderRadius:6,opacity:visible ? 1 : 0},
+      label:{show:visible,position:"inside",formatter:() => `{name|${label}}\n{state|${decisionShort(n.decision)}}`,rich:{name:{fontSize:10,fontWeight:"bold",color:"#253044",lineHeight:15},state:{fontSize:8,color:j.color,lineHeight:13}}},
+      tooltip:{show:visible,formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>类型：展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${/Adapter-[ABC]/.test(n.name || "") ? "<br/>构造测试夹具，不代表真实下游模型" : ""}`},
       _raw:n,
-      z:5
+      _childParent:n.render_parent_id,
+      silent:!visible,
+      z:visible ? 5 : 0
     };
   }
   if (agg) {
     const total = aggregateCount(n);
     const counts = aggregateCounts(n);
+    const childCount = (childrenByAggregate[n.id] || []).length;
+    const expanded = childCount > 0 && expandedDomains.has(n.id);
+    const action = childCount ? `点击${expanded ? "收起" : "展开"} ${childCount} 个模型` : "聚合范围";
     return {
       id: n.id,
       name: aggregateLabel(n),
@@ -187,14 +205,17 @@ const nodes = DATA.nodes.map(n => {
       label: {
         show:true,
         position:"inside",
-        formatter: () => `{title|${aggregateLabel(n)}}\\n{meta|下游 ${total} · 红${counts.red} 黄${counts.yellow} 灰${counts.gray}}`,
+        formatter: () => `{title|${aggregateLabel(n)}}\\n{meta|下游 ${total} · 红${counts.red} 黄${counts.yellow} 灰${counts.gray}}${NL}{action|${action}}`,
         rich: {
-          title:{fontSize:13,fontWeight:"bold",color:"#253044",lineHeight:21},
-          meta:{fontSize:10,color:"#64748b",lineHeight:17}
+          title:{fontSize:13,fontWeight:"bold",color:"#253044",lineHeight:20},
+          meta:{fontSize:10,color:"#64748b",lineHeight:16},
+          action:{fontSize:9,color:childCount ? "#2d6da3" : "#94a3b8",lineHeight:14}
         }
       },
       tooltip: {formatter: () => `<b>${escapeHtml(aggregateLabel(n))}</b><br/>类型：聚合风险域<br/>下游总量：${total}<br/>已知：红 ${counts.red} / 黄 ${counts.yellow} / 灰 ${counts.gray}<br/>具体模型身份以数据源返回为准`},
       _raw:n,
+      _childCount:childCount,
+      cursor:childCount ? "pointer" : "default",
       z:2
     };
   }
@@ -211,11 +232,16 @@ const nodes = DATA.nodes.map(n => {
     _raw:n,
     z:4
   };
-});
+  });
+}
 
-const links = DATA.edges.map(e => {
+function buildLinks() {
+  return DATA.edges.map(e => {
   const source = nodeById[e.source] || {};
   const target = nodeById[e.target] || {};
+  const expansion = e.edge_type === "expanded_from";
+  const aggregateId = expansion ? (isAggregate(source) ? e.source : e.target) : null;
+  if (aggregateId && !expandedDomains.has(aggregateId)) return null;
   const membership = isAggregate(source) || isAggregate(target);
   const risky = !membership && (
     ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(source.decision) ||
@@ -235,7 +261,8 @@ const links = DATA.edges.map(e => {
     },
     _edge:e
   };
-});
+  }).filter(Boolean);
+}
 
 const clusterGraphics = DATA.layout.clusters.map(c => ({
   type:"group",
@@ -252,21 +279,24 @@ const clusterGraphics = DATA.layout.clusters.map(c => ({
 
 const chart = echarts.init(document.getElementById("chart"));
 window.__chart = chart;
-chart.setOption({
-  tooltip:{trigger:"item",backgroundColor:"#fff",borderColor:"#d0d7de",textStyle:{color:"#334155",fontSize:12}},
-  legend:{show:false},
-  graphic:clusterGraphics,
-  series:[{
-    type:"graph",
-    layout:"none",
-    roam:false,
-    draggable:false,
-    data:nodes,
-    links:links,
-    emphasis:{focus:"adjacency",lineStyle:{width:5}},
-    labelLayout:{hideOverlap:true}
-  }]
-});
+function refresh() {
+  chart.setOption({
+    tooltip:{trigger:"item",backgroundColor:"#fff",borderColor:"#d0d7de",textStyle:{color:"#334155",fontSize:12}},
+    legend:{show:false},
+    graphic:clusterGraphics,
+    series:[{
+      type:"graph",
+      layout:"none",
+      roam:false,
+      draggable:false,
+      data:buildNodes(),
+      links:buildLinks(),
+      emphasis:{focus:"adjacency",lineStyle:{width:5}},
+      labelLayout:{hideOverlap:true}
+    }]
+  }, true);
+}
+refresh();
 window.addEventListener("resize", () => chart.resize());
 
 function renderNodeDetail(raw) {
@@ -308,8 +338,18 @@ function renderEdgeDetail(edge) {
 }
 
 chart.on("click", p => {
-  if (p.dataType === "node") renderNodeDetail(p.data._raw);
-  else if (p.dataType === "edge") renderEdgeDetail(p.data._edge);
+  if (p.dataType === "node") {
+    const raw = p.data._raw;
+    renderNodeDetail(raw);
+    if (isAggregate(raw) && Number(p.data._childCount || 0) > 0) {
+      if (expandedDomains.has(raw.id)) expandedDomains.delete(raw.id);
+      else expandedDomains.add(raw.id);
+      refresh();
+    }
+    setTimeout(() => chart.dispatchAction({type:"downplay", seriesIndex:0}), 0);
+  } else if (p.dataType === "edge") {
+    renderEdgeDetail(p.data._edge);
+  }
 });
 
 const riskGrid = document.getElementById("risk-grid");
