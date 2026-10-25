@@ -127,6 +127,10 @@ function isAggregate(n) {
       (n.canonical_id || n.entity_key || "").includes(":parent:")) return true;
   return (n.name || "").includes("(Total:") && !(n.purls || []).length;
 }
+function isFixtureNode(n) {
+  // 只认显式声明：名称长得像夹具的真实模型不该被标成构造夹具。
+  return !!n && (n.is_fixture === true || n.display_only === true);
+}
 function aggregateCount(n) {
   if (Number.isInteger(n.count)) return n.count;
   const match = String(n.name || "").match(/\\(Total:\\s*(\\d+)\\)/i);
@@ -181,7 +185,7 @@ function buildNodes() {
       symbolSize:visible ? [n.render_card?.width || 72, n.render_card?.height || 38] : [0, 0],
       itemStyle:{color:childFill(n.decision),borderColor:j.color,borderWidth:2,borderRadius:6,opacity:visible ? 1 : 0},
       label:{show:visible,position:"inside",formatter:() => `{name|${label}}\n{state|${decisionShort(n.decision)}}`,rich:{name:{fontSize:10,fontWeight:"bold",color:"#253044",lineHeight:15},state:{fontSize:8,color:j.color,lineHeight:13}}},
-      tooltip:{show:visible,formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>类型：展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${/Adapter-[ABC]/.test(n.name || "") ? "<br/>构造测试夹具，不代表真实下游模型" : ""}`},
+      tooltip:{show:visible,formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>类型：展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${isFixtureNode(n) ? "<br/>构造测试夹具，不代表真实下游模型" : ""}`},
       _raw:n,
       _childParent:n.render_parent_id,
       silent:!visible,
@@ -273,7 +277,7 @@ const clusterGraphics = DATA.layout.clusters.map(c => ({
   children:[
     {type:"rect", shape:{x:0,y:0,width:c.width,height:c.height,r:14}, style:{fill:"#fbfcfe",stroke:"#dfe7f1",lineWidth:1}},
     {type:"text", style:{x:16,y:22,text:c.title,fill:"#253044",font:"bold 13px Microsoft YaHei"}},
-    {type:"text", style:{x:16,y:41,text:`风险域 ${c.aggregate_count} 个 · 展开 ${c.expanded_count || 0}`,fill:"#7b8799",font:"11px Microsoft YaHei"}}
+    {type:"text", style:{x:16,y:41,text:`风险域 ${c.aggregate_count} 个${c.expanded_count ? ` · 展开 ${c.expanded_count}` : " · 聚合范围"}`,fill:"#7b8799",font:"11px Microsoft YaHei"}}
   ]
 }));
 

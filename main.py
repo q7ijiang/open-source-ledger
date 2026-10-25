@@ -468,6 +468,81 @@ def is_fixture_asset(asset: dict[str, Any]) -> bool:
     return any(asset.get(flag) is True for flag in FIXTURE_FLAGS)
 
 
+def _is_aggregate_asset(asset: dict[str, Any]) -> bool:
+    """资产是否为聚合风险域节点（中性展示用，不是具体模型）。"""
+
+    if asset.get("aggregate") is True:
+        return True
+    return str(asset.get("coverage_status") or "").upper() == "AGGREGATE_ONLY"
+
+
+def _expansion_children(edges: list[dict[str, Any]]) -> dict[str, list[str]]:
+    """聚合节点 -> 子节点 id 列表（只认 expanded_from 展开边）。"""
+
+    children: dict[str, list[str]] = {}
+    for edge in edges:
+        if not (
+            edge.get("edge_type") == "expanded_from"
+            or edge.get("source_field") == "expanded_from"
+        ):
+            continue
+        source = str(edge.get("source") or "")
+        target = str(edge.get("target") or "")
+        if source and target:
+            children.setdefault(source, []).append(target)
+    return children
+
+
+def _reset_aggregate_fixture_stats(
+    assets: list[dict[str, Any]],
+    edges: list[dict[str, Any]],
+    removed_ids: set[str],
+    children_before: dict[str, list[str]],
+) -> None:
+    """生产模式下清掉聚合域里由夹具贡献的统计。
+
+    ``expanded_count`` / ``remaining_count`` / ``known_risk_counts`` 是
+    "展开过哪些具名下游"的元数据。子节点被当作演示夹具移除后，这些计数若原样
+    保留，页面上仍会显示「展开 3 个」「红 1 黄 1 灰 1」，等于把构造数据当成了
+    真实统计。这里按保留下来的真实子节点重算；一个真实子节点都不剩时归零，
+    ``remaining_count`` 回到 ``count``（下游总量本身来自平台，是真实数据）。
+
+    只处理"确实有夹具子节点被移除"的聚合域：本来就没有展开边、计数直接来自
+    BOM 的聚合节点不受影响。
+    """
+
+    by_id = {_asset_identity(asset): asset for asset in assets}
+    children_now = _expansion_children(edges)
+    for aggregate_id, asset in by_id.items():
+        if not _is_aggregate_asset(asset):
+            continue
+        removed = [
+            child for child in children_before.get(aggregate_id, [])
+            if child in removed_ids
+        ]
+        if not removed:
+            continue
+        kept_children = children_now.get(aggregate_id, [])
+        total = asset.get("count")
+        try:
+            total = int(total) if total is not None else None
+        except (TypeError, ValueError):
+            total = None
+        asset["expanded_count"] = len(kept_children)
+        if total is not None:
+            asset["remaining_count"] = max(total - len(kept_children), 0)
+        counts = {"red": 0, "yellow": 0, "gray": 0}
+        for child_id in kept_children:
+            decision = str((by_id.get(child_id) or {}).get("decision") or "")
+            if decision == "RISK_CONFIRMED":
+                counts["red"] += 1
+            elif decision == "RISK_POTENTIAL":
+                counts["yellow"] += 1
+            elif decision == "UNDETERMINED":
+                counts["gray"] += 1
+        asset["known_risk_counts"] = counts
+
+
 def exclude_fixture_assets(
     assets: list[dict[str, Any]],
     edges: list[dict[str, Any]],
@@ -476,12 +551,16 @@ def exclude_fixture_assets(
 
     只看资产自身的显式标记，不根据 ``expanded_from`` 推导——"是否展开"不等于
     "是否夹具"，否则真实子模型的许可证变化会被静默吞掉。
+
+    移除夹具后还会重置受影响聚合域的展开统计，否则页面上仍会显示夹具贡献的
+    「展开 N 个」「红/黄/灰」计数，与"生产模式不混入夹具统计"自相矛盾。
     """
 
     fixture_ids = {_asset_identity(asset) for asset in assets if is_fixture_asset(asset)}
     fixture_ids.discard("")
     if not fixture_ids:
         return assets, edges, 0
+    children_before = _expansion_children(edges)
     kept_assets = [asset for asset in assets if _asset_identity(asset) not in fixture_ids]
     kept_edges = [
         edge
@@ -489,6 +568,7 @@ def exclude_fixture_assets(
         if str(edge.get("source")) not in fixture_ids
         and str(edge.get("target")) not in fixture_ids
     ]
+    _reset_aggregate_fixture_stats(kept_assets, kept_edges, fixture_ids, children_before)
     return kept_assets, kept_edges, len(fixture_ids)
 
 
@@ -720,7 +800,8 @@ def _report_excluded_fixtures(*snapshots: dict[str, Any]) -> None:
     total = sum(int(snapshot.get("excluded_fixtures") or 0) for snapshot in snapshots)
     if total:
         print(
-            f"已排除 {total} 个演示夹具（is_fixture / display_only）；"
+            f"已排除 {total} 个演示夹具（is_fixture / display_only），"
+            "并同步重置受影响聚合域的展开统计；"
             "演示时可加 --include-fixtures 保留并参与差异。"
         )
 

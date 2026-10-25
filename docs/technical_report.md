@@ -489,11 +489,11 @@ Propagate 阶段以快照差异为种子，沿血缘图反向寻找受影响资�
 
 ![图 4-7 t0 到 t1 的时间轴传播图](figures/fig4-7.png)
 
-图 4-7 说明：t0/t1 两个页签各自可展开聚合域，中间事件列表与下方证书共同支持时间化复核。
+图 4-7 说明：t0/t1 两个页签各自可展开聚合域，中间事件列表与下方证书共同支持时间化复核。本图为 **demo 模式（`--include-fixtures`）** 截图：聚合域里展开的 Adapter-A/B/C 是显式标注 `is_fixture=true` 的演示夹具，生产模式默认不显示它们。
 
 #### 4.4.4 演示夹具与 demo 模式：让「数据从哪来」可核对
 
-ModelScope 的血缘接口只返回下游**聚合计数**，不返回具名下游模型身份。为了让「子节点按自身 decision 独立着色」「子节点许可证变化能进入 Delta」这两条能力可被观察，仓库在测试场景 BOM 中构造了 12 个具名下游节点（如 `Qwen/Qwen3-8B · 适配 (Adapter-A)`），并统一打上 `open-source-ledger:is_fixture=true`（部分标注 `display_only=true`）以及 `open-source-ledger:expanded_from` 指向其所属聚合域。
+ModelScope 的血缘接口只返回下游**聚合计数**，不返回具名下游模型身份。为了让「子节点按自身 decision 独立着色」「子节点许可证变化能进入 Delta」这两条能力可被观察，仓库在测试场景 BOM 中构造了 12 个具名下游节点（如 `Qwen/Qwen3-8B · 适配 (Adapter-A)`），并统一打上 `open-source-ledger:is_fixture=true`（当前 12 个夹具节点全部使用 `is_fixture`，`display_only` 为同一套判定的备用标记，测试场景中未使用）以及 `open-source-ledger:expanded_from` 指向其所属聚合域。
 
 这些节点不是真实下游模型，因此工程上按「演示夹具」处理，而不是当成扫描结果：
 

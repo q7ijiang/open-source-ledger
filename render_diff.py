@@ -182,6 +182,10 @@ function isAgg(n) {
       (n.canonical_id || n.entity_key || "").includes(":parent:")) return true;
   return (n.name || "").includes("(Total:") && !(n.purls || []).length;
 }
+function isFixtureNode(n) {
+  // 只认显式声明：名称长得像夹具的真实模型不该被标成构造夹具。
+  return !!n && (n.is_fixture === true || n.display_only === true);
+}
 function aggTotal(n) {
   if (Number.isInteger(n.count)) return n.count;
   const match = String(n.name || "").match(/\\(Total:\\s*(\\d+)\\)/i);
@@ -246,7 +250,7 @@ function buildChart(elId, nodes, edges, layout, snapshot) {
           formatter:() => `{name|${label}}\n{state|${decisionShort(n.decision)}}`,
           rich:{name:{fontSize:9,fontWeight:"bold",color:"#253044",lineHeight:14},state:{fontSize:8,color:j.color,lineHeight:13}}
         },
-        tooltip:{show:visible,formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${sourceNote}${/Adapter-[ABC]/.test(n.name || "") ? "<br/>构造测试夹具，不代表真实下游模型" : ""}`},
+        tooltip:{show:visible,formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${sourceNote}${isFixtureNode(n) ? "<br/>构造测试夹具，不代表真实下游模型" : ""}`},
         _raw:n,
         _childParent:n.render_parent_id,
         silent:!visible,
@@ -327,7 +331,7 @@ function buildChart(elId, nodes, edges, layout, snapshot) {
     children:[
       {type:"rect",shape:{x:0,y:0,width:c.width,height:c.height,r:14},style:{fill:"#fbfcfe",stroke:"#dfe7f1",lineWidth:1}},
       {type:"text",style:{x:14,y:20,text:c.title,fill:"#253044",font:"bold 12px Microsoft YaHei"}},
-      {type:"text",style:{x:14,y:38,text:`风险域 ${c.aggregate_count} 个 · 点击风险域展开`,fill:"#7b8799",font:"10px Microsoft YaHei"}}
+      {type:"text",style:{x:14,y:38,text:`风险域 ${c.aggregate_count} 个${c.expanded_count ? " · 点击风险域展开" : " · 聚合范围"}`,fill:"#7b8799",font:"10px Microsoft YaHei"}}
     ]
   }));
   const chart = echarts.init(document.getElementById(elId));
@@ -379,7 +383,7 @@ function renderNodeDetail(raw, snapshot) {
   const agg = isAgg(raw);
   const j = decisionOf(raw.decision);
   const counts = raw.render_risk_counts || raw.known_risk_counts || {red:0,yellow:0,gray:0};
-  const fixture = /Adapter-[ABC]/.test(raw.name || "");
+  const fixture = isFixtureNode(raw);
   let html = `<div class="kv"><b>快照</b> ${escapeHtml(snapshot || raw.snapshot_id || "—")}</div>` +
     `<div class="kv"><b>名称</b> ${escapeHtml(raw.name || raw.canonical_id || raw.id)}</div>` +
     `<div class="kv"><b>节点类型</b> ${agg ? "聚合风险域（非具体模型）" : escapeHtml(raw.asset_type || "—")}</div>` +
@@ -500,7 +504,7 @@ if (!riskMap.size) {
     button.style.borderLeftColor = j.color;
     button.innerHTML = `<div class="name">${escapeHtml(n.name || n.canonical_id)}</div>` +
       `<div class="meta">${j.label} · 许可证 ${escapeHtml(n.license || "未声明")} · 快照 ${item.snapshots.join("/")}</div>` +
-      `${/Adapter-[ABC]/.test(n.name || "") ? `<div class="fixture-note">构造测试夹具，不代表真实下游模型</div>` : ""}`;
+      `${isFixtureNode(n) ? `<div class="fixture-note">构造测试夹具，不代表真实下游模型</div>` : ""}`;
     button.onclick = () => {
       renderNodeDetail(n, item.snapshots.join("/"));
       const preferred = item.snapshots.includes("t1") ? "t1" : "t0";

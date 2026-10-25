@@ -146,3 +146,140 @@ def test_basic_report_can_exclude_fixtures() -> None:
     _, demo_md = report_basic.generate(str(T1), include_fixtures=True)
     assert "Adapter-A" not in prod_md
     assert "Adapter-A" in demo_md
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+@pytest.mark.skipif(not _test_files_present(), reason="缺少 project_t0/t1 夹具")
+class TestAggregateFixtureStats:
+    """P1：生产模式不能残留夹具贡献的聚合域统计。"""
+
+    def _aggregates(self, snapshot: dict) -> list[dict]:
+        return [a for a in snapshot["assets"] if main_module._is_aggregate_asset(a)]
+
+    def test_production_snapshot_resets_aggregate_stats(self) -> None:
+        snapshot = main_module._build_snapshot(T1, "t1", include_fixtures=False)
+        aggregates = self._aggregates(snapshot)
+        assert len(aggregates) == 9
+        for aggregate in aggregates:
+            assert aggregate.get("expanded_count") == 0, aggregate.get("name")
+            assert aggregate.get("known_risk_counts") == {
+                "red": 0,
+                "yellow": 0,
+                "gray": 0,
+            }, aggregate.get("name")
+            # 下游总量来自平台，是真实数据，必须保留
+            assert aggregate.get("remaining_count") == aggregate.get("count")
+
+    def test_demo_snapshot_keeps_aggregate_stats(self) -> None:
+        snapshot = main_module._build_snapshot(T1, "t1", include_fixtures=True)
+        target = [
+            a
+            for a in self._aggregates(snapshot)
+            if "Qwen3-8B" in str(a.get("name")) and "适配" in str(a.get("name"))
+        ]
+        assert target, "夹具里应当有 Qwen3-8B 适配聚合域"
+        aggregate = target[0]
+        assert aggregate.get("expanded_count") == 3
+        assert aggregate.get("known_risk_counts") == {"red": 1, "yellow": 1, "gray": 1}
+        assert aggregate.get("remaining_count") == 20 - 3
+
+    def test_real_children_are_recounted_not_zeroed(self) -> None:
+        """夹具移除后若还剩真实子节点，统计要按真实子节点重算。"""
+
+        assets = [
+            {
+                "id": "agg",
+                "name": "Qwen/Qwen3-8B · 适配 (Total: 20)",
+                "aggregate": True,
+                "coverage_status": "AGGREGATE_ONLY",
+                "count": 20,
+                "expanded_count": 3,
+                "remaining_count": 17,
+                "known_risk_counts": {"red": 1, "yellow": 1, "gray": 1},
+            },
+            {"id": "real-child", "name": "真实下游", "decision": "RISK_POTENTIAL"},
+            {"id": "fx-child", "name": "构造夹具", "is_fixture": True, "decision": "RISK_CONFIRMED"},
+        ]
+        edges = [
+            {"source": "agg", "target": "real-child", "edge_type": "expanded_from"},
+            {"source": "agg", "target": "fx-child", "edge_type": "expanded_from"},
+        ]
+        kept_assets, kept_edges, removed = main_module.exclude_fixture_assets(assets, edges)
+        assert removed == 1
+        assert [e["target"] for e in kept_edges] == ["real-child"]
+        aggregate = kept_assets[0]
+        assert aggregate["expanded_count"] == 1
+        assert aggregate["remaining_count"] == 19
+        assert aggregate["known_risk_counts"] == {"red": 0, "yellow": 1, "gray": 0}
+
+    def test_aggregate_without_expansion_edges_is_untouched(self) -> None:
+        """计数直接来自 BOM、没有展开边的聚合域，不因本次过滤被清零。"""
+
+        assets = [
+            {
+                "id": "agg-only-count",
+                "name": "Qwen/Qwen2.5-7B-Instruct · 微调 (Total: 1744)",
+                "aggregate": True,
+                "count": 1744,
+                "expanded_count": 0,
+                "remaining_count": 1744,
+                "known_risk_counts": {"red": 0, "yellow": 0, "gray": 0},
+            },
+            {"id": "fx", "name": "构造夹具", "is_fixture": True},
+        ]
+        kept_assets, _, removed = main_module.exclude_fixture_assets(assets, [])
+        assert removed == 1
+        assert kept_assets[0]["known_risk_counts"] == {"red": 0, "yellow": 0, "gray": 0}
+        assert kept_assets[0]["count"] == 1744
+
+
+@pytest.mark.skipif(not _test_files_present(), reason="缺少 project_t0/t1 夹具")
+class TestProductionHtmlEndToEnd:
+    """P1 端到端：生产 HTML 里不能再出现夹具统计，demo 里必须还在。"""
+
+    def _render(self, tmp_path: Path, include_fixtures: bool) -> str:
+        import subprocess
+        import sys
+
+        output = tmp_path / ("demo.html" if include_fixtures else "prod.html")
+        command = [
+            sys.executable,
+            str(REPO_ROOT / "render_diff.py"),
+            "--before",
+            str(T0),
+            "--after",
+            str(T1),
+            "--output",
+            str(output),
+        ]
+        if include_fixtures:
+            command.append("--include-fixtures")
+        subprocess.run(command, cwd=str(REPO_ROOT), check=True, capture_output=True)
+        return output.read_text(encoding="utf-8")
+
+    def test_production_html_has_no_fixture_stats(self, tmp_path: Path) -> None:
+        html = self._render(tmp_path, include_fixtures=False)
+        assert "Adapter-A" not in html, "生产 HTML 不应出现夹具节点"
+        assert '"expanded_count": 3' not in html, "聚合域不应残留「展开 3 个」"
+        assert '"red": 1' not in html, "聚合域不应残留「红 1」"
+        assert '"known_risk_counts": {"red": 1' not in html
+
+    def test_demo_html_keeps_fixture_stats(self, tmp_path: Path) -> None:
+        html = self._render(tmp_path, include_fixtures=True)
+        assert "Adapter-A" in html
+        assert '"expanded_count": 3' in html
+        assert '"red": 1' in html
+        assert '"is_fixture": true' in html
+
+
+class TestFixtureBadgeUsesExplicitFlag:
+    """P2：来源标注只看显式字段，不再按名称正则猜。"""
+
+    def test_no_name_based_fixture_regex(self) -> None:
+        for name in ("render_diff.py", "render_graph.py"):
+            source = (REPO_ROOT / name).read_text(encoding="utf-8")
+            assert "/Adapter-[ABC]/" not in source, f"{name} 仍按名称判夹具"
+            assert "isFixtureNode(" in source
+            assert "n.is_fixture === true || n.display_only === true" in source
