@@ -1,0 +1,4494 @@
+[
+  {
+    "canonical_id": "package:ubuntu",
+    "asset_type": "package",
+    "name": "ubuntu",
+    "version": "22.04",
+    "purls": [],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:adduser",
+    "asset_type": "package",
+    "name": "adduser",
+    "version": "3.118ubuntu5",
+    "purls": [
+      "pkg:deb/ubuntu/adduser@3.118ubuntu5?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:apt",
+    "asset_type": "package",
+    "name": "apt",
+    "version": "2.4.11",
+    "purls": [
+      "pkg:deb/ubuntu/apt@2.4.11?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:base-files",
+    "asset_type": "package",
+    "name": "base-files",
+    "version": "12ubuntu4.4",
+    "purls": [
+      "pkg:deb/ubuntu/base-files@12ubuntu4.4?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:base-passwd",
+    "asset_type": "package",
+    "name": "base-passwd",
+    "version": "3.5.52build1",
+    "purls": [
+      "pkg:deb/ubuntu/base-passwd@3.5.52build1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; public-domain",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:bash",
+    "asset_type": "package",
+    "name": "bash",
+    "version": "5.1-6ubuntu1",
+    "purls": [
+      "pkg:deb/ubuntu/bash@5.1-6ubuntu1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:bsdutils",
+    "asset_type": "package",
+    "name": "bsdutils",
+    "version": "1:2.37.2-4ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/bsdutils@2.37.2-4ubuntu3?arch=amd64&distro=ubuntu-22.04&epoch=1"
+    ],
+    "license": "GPL-2.0; GPL-3.0; public-domain; BSD-4-Clause; MIT; BSD-2-Clause; BSD-3-Clause; LGPL-2.0; LGPL-2.1; LGPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-4-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:coreutils",
+    "asset_type": "package",
+    "name": "coreutils",
+    "version": "8.32-4.1ubuntu1",
+    "purls": [
+      "pkg:deb/ubuntu/coreutils@8.32-4.1ubuntu1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:dash",
+    "asset_type": "package",
+    "name": "dash",
+    "version": "0.5.11+git20210903+057cd650a4ed-3build1",
+    "purls": [
+      "pkg:deb/ubuntu/dash@0.5.11%2Bgit20210903%2B057cd650a4ed-3build1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "BSD-3-Clause; FSFULLR; FSFUL; Expat; GPL-2.0; public-domain",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"FSFULLR\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"FSFUL\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Expat\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:debconf",
+    "asset_type": "package",
+    "name": "debconf",
+    "version": "1.5.79ubuntu1",
+    "purls": [
+      "pkg:deb/ubuntu/debconf@1.5.79ubuntu1?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "BSD-2-Clause",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:debianutils",
+    "asset_type": "package",
+    "name": "debianutils",
+    "version": "5.5-1ubuntu2",
+    "purls": [
+      "pkg:deb/ubuntu/debianutils@5.5-1ubuntu2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:diffutils",
+    "asset_type": "package",
+    "name": "diffutils",
+    "version": "1:3.8-0ubuntu2",
+    "purls": [
+      "pkg:deb/ubuntu/diffutils@3.8-0ubuntu2?arch=amd64&distro=ubuntu-22.04&epoch=1"
+    ],
+    "license": "GPL-3.0; GFDL",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:dpkg",
+    "asset_type": "package",
+    "name": "dpkg",
+    "version": "1.21.1ubuntu2.2",
+    "purls": [
+      "pkg:deb/ubuntu/dpkg@1.21.1ubuntu2.2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; BSD-2-Clause; public-domain-s-s-d; public-domain-md5",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain-s-s-d\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain-md5\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:e2fsprogs",
+    "asset_type": "package",
+    "name": "e2fsprogs",
+    "version": "1.46.5-2ubuntu1.1",
+    "purls": [
+      "pkg:deb/ubuntu/e2fsprogs@1.46.5-2ubuntu1.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; LGPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:findutils",
+    "asset_type": "package",
+    "name": "findutils",
+    "version": "4.8.0-1ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/findutils@4.8.0-1ubuntu3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0; GFDL-1.3",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL-1.3\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:gcc-12-base",
+    "asset_type": "package",
+    "name": "gcc-12-base",
+    "version": "12.3.0-1ubuntu1~22.04",
+    "purls": [
+      "pkg:deb/ubuntu/gcc-12-base@12.3.0-1ubuntu1~22.04?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0; GFDL-1.2; GPL-2.0; Artistic; LGPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL-1.2\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Artistic\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:gpgv",
+    "asset_type": "package",
+    "name": "gpgv",
+    "version": "2.2.27-3ubuntu2.1",
+    "purls": [
+      "pkg:deb/ubuntu/gpgv@2.2.27-3ubuntu2.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0; permissive; LGPL-2.1; Expat; BSD-3-Clause; LGPL-3.0; RFC-Reference; TinySCHEME; CC0-1.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"permissive\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Expat\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"RFC-Reference\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"TinySCHEME\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"CC0-1.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:grep",
+    "asset_type": "package",
+    "name": "grep",
+    "version": "3.7-1build1",
+    "purls": [
+      "pkg:deb/ubuntu/grep@3.7-1build1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:gzip",
+    "asset_type": "package",
+    "name": "gzip",
+    "version": "1.10-4ubuntu4.1",
+    "purls": [
+      "pkg:deb/ubuntu/gzip@1.10-4ubuntu4.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0; GFDL-1.3+-no-invariant; FSF-manpages; GFDL-3",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL-1.3+-no-invariant\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"FSF-manpages\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL-3\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:hostname",
+    "asset_type": "package",
+    "name": "hostname",
+    "version": "3.23ubuntu2",
+    "purls": [
+      "pkg:deb/ubuntu/hostname@3.23ubuntu2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:init-system-helpers",
+    "asset_type": "package",
+    "name": "init-system-helpers",
+    "version": "1.62",
+    "purls": [
+      "pkg:deb/ubuntu/init-system-helpers@1.62?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "BSD-3-Clause; GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libacl1",
+    "asset_type": "package",
+    "name": "libacl1",
+    "version": "2.3.1-1",
+    "purls": [
+      "pkg:deb/ubuntu/libacl1@2.3.1-1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; LGPL-2.0; LGPL-2.1",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libapt-pkg6.0",
+    "asset_type": "package",
+    "name": "libapt-pkg6.0",
+    "version": "2.4.11",
+    "purls": [
+      "pkg:deb/ubuntu/libapt-pkg6.0@2.4.11?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libattr1",
+    "asset_type": "package",
+    "name": "libattr1",
+    "version": "1:2.5.1-1build1",
+    "purls": [
+      "pkg:deb/ubuntu/libattr1@2.5.1-1build1?arch=amd64&distro=ubuntu-22.04&epoch=1"
+    ],
+    "license": "GPL-2.0; LGPL-2.0; LGPL-2.1",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libaudit-common",
+    "asset_type": "package",
+    "name": "libaudit-common",
+    "version": "1:3.0.7-1build1",
+    "purls": [
+      "pkg:deb/ubuntu/libaudit-common@3.0.7-1build1?arch=all&distro=ubuntu-22.04&epoch=1"
+    ],
+    "license": "GPL-2.0; LGPL-2.1; GPL-1.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-1.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libaudit1",
+    "asset_type": "package",
+    "name": "libaudit1",
+    "version": "1:3.0.7-1build1",
+    "purls": [
+      "pkg:deb/ubuntu/libaudit1@3.0.7-1build1?arch=amd64&distro=ubuntu-22.04&epoch=1"
+    ],
+    "license": "GPL-2.0; LGPL-2.1; GPL-1.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-1.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libblkid1",
+    "asset_type": "package",
+    "name": "libblkid1",
+    "version": "2.37.2-4ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/libblkid1@2.37.2-4ubuntu3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; GPL-3.0; public-domain; BSD-4-Clause; MIT; BSD-2-Clause; BSD-3-Clause; LGPL-2.0; LGPL-2.1; LGPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-4-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libbz2-1.0",
+    "asset_type": "package",
+    "name": "libbz2-1.0",
+    "version": "1.0.8-5build1",
+    "purls": [
+      "pkg:deb/ubuntu/libbz2-1.0@1.0.8-5build1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "BSD-variant; GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-variant\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libc-bin",
+    "asset_type": "package",
+    "name": "libc-bin",
+    "version": "2.35-0ubuntu3.6",
+    "purls": [
+      "pkg:deb/ubuntu/libc-bin@2.35-0ubuntu3.6?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-2.1; GPL-2.0; GFDL-1.3",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL-1.3\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libc6",
+    "asset_type": "package",
+    "name": "libc6",
+    "version": "2.35-0ubuntu3.6",
+    "purls": [
+      "pkg:deb/ubuntu/libc6@2.35-0ubuntu3.6?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-2.1; GPL-2.0; GFDL-1.3",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL-1.3\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libcap-ng0",
+    "asset_type": "package",
+    "name": "libcap-ng0",
+    "version": "0.7.9-2.2build3",
+    "purls": [
+      "pkg:deb/ubuntu/libcap-ng0@0.7.9-2.2build3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-2.1; GPL-2.0; GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libcap2",
+    "asset_type": "package",
+    "name": "libcap2",
+    "version": "1:2.44-1ubuntu0.22.04.1",
+    "purls": [
+      "pkg:deb/ubuntu/libcap2@2.44-1ubuntu0.22.04.1?arch=amd64&distro=ubuntu-22.04&epoch=1"
+    ],
+    "license": "BSD-3-Clause; GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libcom-err2",
+    "asset_type": "package",
+    "name": "libcom-err2",
+    "version": "1.46.5-2ubuntu1.1",
+    "purls": [
+      "pkg:deb/ubuntu/libcom-err2@1.46.5-2ubuntu1.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libcrypt1",
+    "asset_type": "package",
+    "name": "libcrypt1",
+    "version": "1:4.4.27-1",
+    "purls": [
+      "pkg:deb/ubuntu/libcrypt1@4.4.27-1?arch=amd64&distro=ubuntu-22.04&epoch=1"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libdb5.3",
+    "asset_type": "package",
+    "name": "libdb5.3",
+    "version": "5.3.28+dfsg1-0.8ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/libdb5.3@5.3.28%2Bdfsg1-0.8ubuntu3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libdebconfclient0",
+    "asset_type": "package",
+    "name": "libdebconfclient0",
+    "version": "0.261ubuntu1",
+    "purls": [
+      "pkg:deb/ubuntu/libdebconfclient0@0.261ubuntu1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libext2fs2",
+    "asset_type": "package",
+    "name": "libext2fs2",
+    "version": "1.46.5-2ubuntu1.1",
+    "purls": [
+      "pkg:deb/ubuntu/libext2fs2@1.46.5-2ubuntu1.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; LGPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libffi8",
+    "asset_type": "package",
+    "name": "libffi8",
+    "version": "3.4.2-4",
+    "purls": [
+      "pkg:deb/ubuntu/libffi8@3.4.2-4?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libgcc-s1",
+    "asset_type": "package",
+    "name": "libgcc-s1",
+    "version": "12.3.0-1ubuntu1~22.04",
+    "purls": [
+      "pkg:deb/ubuntu/libgcc-s1@12.3.0-1ubuntu1~22.04?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libgcrypt20",
+    "asset_type": "package",
+    "name": "libgcrypt20",
+    "version": "1.9.4-3ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/libgcrypt20@1.9.4-3ubuntu3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-3.0; GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libgmp10",
+    "asset_type": "package",
+    "name": "libgmp10",
+    "version": "2:6.2.1+dfsg-3ubuntu1",
+    "purls": [
+      "pkg:deb/ubuntu/libgmp10@6.2.1%2Bdfsg-3ubuntu1?arch=amd64&distro=ubuntu-22.04&epoch=2"
+    ],
+    "license": "LGPL-3.0; GPL-2.0; GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libgnutls30",
+    "asset_type": "package",
+    "name": "libgnutls30",
+    "version": "3.7.3-4ubuntu1.3",
+    "purls": [
+      "pkg:deb/ubuntu/libgnutls30@3.7.3-4ubuntu1.3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-3.0; GPL-3.0; GFDL-1.3; CC0; Expat; Apache-2.0; LGPLv3+; GPL-2.0; LGPL-2.1; BSD-3-Clause",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL-1.3\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"CC0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Expat\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Apache-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPLv3+\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libgpg-error0",
+    "asset_type": "package",
+    "name": "libgpg-error0",
+    "version": "1.43-3",
+    "purls": [
+      "pkg:deb/ubuntu/libgpg-error0@1.43-3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-2.1; BSD-3-Clause; g10-permissive; GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"g10-permissive\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libgssapi-krb5-2",
+    "asset_type": "package",
+    "name": "libgssapi-krb5-2",
+    "version": "1.19.2-2ubuntu0.3",
+    "purls": [
+      "pkg:deb/ubuntu/libgssapi-krb5-2@1.19.2-2ubuntu0.3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libhogweed6",
+    "asset_type": "package",
+    "name": "libhogweed6",
+    "version": "3.7.3-1build2",
+    "purls": [
+      "pkg:deb/ubuntu/libhogweed6@3.7.3-1build2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-3.0; GPL-2.0; LGPL-2.0; Expat; GPL-3.0; GPL-3.0-with-autoconf-exception; public-domain; GAP",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Expat\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0-with-autoconf-exception\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GAP\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libidn2-0",
+    "asset_type": "package",
+    "name": "libidn2-0",
+    "version": "2.3.2-2build1",
+    "purls": [
+      "pkg:deb/ubuntu/libidn2-0@2.3.2-2build1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0; LGPL-3.0; GPL-2.0; Unicode",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Unicode\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libk5crypto3",
+    "asset_type": "package",
+    "name": "libk5crypto3",
+    "version": "1.19.2-2ubuntu0.3",
+    "purls": [
+      "pkg:deb/ubuntu/libk5crypto3@1.19.2-2ubuntu0.3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libkeyutils1",
+    "asset_type": "package",
+    "name": "libkeyutils1",
+    "version": "1.6.1-2ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/libkeyutils1@1.6.1-2ubuntu3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; LGPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libkrb5-3",
+    "asset_type": "package",
+    "name": "libkrb5-3",
+    "version": "1.19.2-2ubuntu0.3",
+    "purls": [
+      "pkg:deb/ubuntu/libkrb5-3@1.19.2-2ubuntu0.3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libkrb5support0",
+    "asset_type": "package",
+    "name": "libkrb5support0",
+    "version": "1.19.2-2ubuntu0.3",
+    "purls": [
+      "pkg:deb/ubuntu/libkrb5support0@1.19.2-2ubuntu0.3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:liblz4-1",
+    "asset_type": "package",
+    "name": "liblz4-1",
+    "version": "1.9.3-2build2",
+    "purls": [
+      "pkg:deb/ubuntu/liblz4-1@1.9.3-2build2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "BSD-2-Clause; GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:liblzma5",
+    "asset_type": "package",
+    "name": "liblzma5",
+    "version": "5.2.5-2ubuntu1",
+    "purls": [
+      "pkg:deb/ubuntu/liblzma5@5.2.5-2ubuntu1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "PD; probably-PD; GPL-2.0; LGPL-2.1; permissive-fsf; Autoconf; permissive-nowarranty; none; config-h; LGPL-2.0; noderivs; PD-debian; GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"PD\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"probably-PD\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"permissive-fsf\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Autoconf\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"permissive-nowarranty\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"none\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"config-h\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"noderivs\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"PD-debian\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libmount1",
+    "asset_type": "package",
+    "name": "libmount1",
+    "version": "2.37.2-4ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/libmount1@2.37.2-4ubuntu3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; GPL-3.0; public-domain; BSD-4-Clause; MIT; BSD-2-Clause; BSD-3-Clause; LGPL-2.0; LGPL-2.1; LGPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-4-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libncurses6",
+    "asset_type": "package",
+    "name": "libncurses6",
+    "version": "6.3-2ubuntu0.1",
+    "purls": [
+      "pkg:deb/ubuntu/libncurses6@6.3-2ubuntu0.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libncursesw6",
+    "asset_type": "package",
+    "name": "libncursesw6",
+    "version": "6.3-2ubuntu0.1",
+    "purls": [
+      "pkg:deb/ubuntu/libncursesw6@6.3-2ubuntu0.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libnettle8",
+    "asset_type": "package",
+    "name": "libnettle8",
+    "version": "3.7.3-1build2",
+    "purls": [
+      "pkg:deb/ubuntu/libnettle8@3.7.3-1build2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-3.0; GPL-2.0; LGPL-2.0; Expat; GPL-3.0; GPL-3.0-with-autoconf-exception; public-domain; GAP",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Expat\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0-with-autoconf-exception\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GAP\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libnsl2",
+    "asset_type": "package",
+    "name": "libnsl2",
+    "version": "1.3.0-2build2",
+    "purls": [
+      "pkg:deb/ubuntu/libnsl2@1.3.0-2build2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-2.1; BSD-3-Clause; permissive-fsf; permissive-makefile-in; permissive-autoconf-m4-no-warranty; GPL-3+-autoconf-exception; permissive-configure; GPL-2+-autoconf-exception; MIT; GPL-2+-libtool-exception; permissive-autoconf-m4; GPL-2.0; GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"permissive-fsf\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"permissive-makefile-in\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"permissive-autoconf-m4-no-warranty\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3+-autoconf-exception\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"permissive-configure\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2+-autoconf-exception\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2+-libtool-exception\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"permissive-autoconf-m4\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libp11-kit0",
+    "asset_type": "package",
+    "name": "libp11-kit0",
+    "version": "0.24.0-6build1",
+    "purls": [
+      "pkg:deb/ubuntu/libp11-kit0@0.24.0-6build1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "BSD-3-Clause; permissive-like-automake-output; ISC; ISC+IBM; LGPL-2.1; Apache-2.0; same-as-rest-of-p11kit",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"permissive-like-automake-output\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"ISC\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"ISC+IBM\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Apache-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"same-as-rest-of-p11kit\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libpam-modules-bin",
+    "asset_type": "package",
+    "name": "libpam-modules-bin",
+    "version": "1.4.0-11ubuntu2.3",
+    "purls": [
+      "pkg:deb/ubuntu/libpam-modules-bin@1.4.0-11ubuntu2.3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libpam-modules",
+    "asset_type": "package",
+    "name": "libpam-modules",
+    "version": "1.4.0-11ubuntu2.3",
+    "purls": [
+      "pkg:deb/ubuntu/libpam-modules@1.4.0-11ubuntu2.3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libpam-runtime",
+    "asset_type": "package",
+    "name": "libpam-runtime",
+    "version": "1.4.0-11ubuntu2.3",
+    "purls": [
+      "pkg:deb/ubuntu/libpam-runtime@1.4.0-11ubuntu2.3?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libpam0g",
+    "asset_type": "package",
+    "name": "libpam0g",
+    "version": "1.4.0-11ubuntu2.3",
+    "purls": [
+      "pkg:deb/ubuntu/libpam0g@1.4.0-11ubuntu2.3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libpcre2-8-0",
+    "asset_type": "package",
+    "name": "libpcre2-8-0",
+    "version": "10.39-3ubuntu0.1",
+    "purls": [
+      "pkg:deb/ubuntu/libpcre2-8-0@10.39-3ubuntu0.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libpcre3",
+    "asset_type": "package",
+    "name": "libpcre3",
+    "version": "2:8.39-13ubuntu0.22.04.1",
+    "purls": [
+      "pkg:deb/ubuntu/libpcre3@8.39-13ubuntu0.22.04.1?arch=amd64&distro=ubuntu-22.04&epoch=2"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libprocps8",
+    "asset_type": "package",
+    "name": "libprocps8",
+    "version": "2:3.3.17-6ubuntu2.1",
+    "purls": [
+      "pkg:deb/ubuntu/libprocps8@3.3.17-6ubuntu2.1?arch=amd64&distro=ubuntu-22.04&epoch=2"
+    ],
+    "license": "LGPL-2.1; LGPL-2.0; GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libseccomp2",
+    "asset_type": "package",
+    "name": "libseccomp2",
+    "version": "2.5.3-2ubuntu2",
+    "purls": [
+      "pkg:deb/ubuntu/libseccomp2@2.5.3-2ubuntu2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-2.1",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libselinux1",
+    "asset_type": "package",
+    "name": "libselinux1",
+    "version": "3.3-1build2",
+    "purls": [
+      "pkg:deb/ubuntu/libselinux1@3.3-1build2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-2.1; GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libsemanage-common",
+    "asset_type": "package",
+    "name": "libsemanage-common",
+    "version": "3.3-1build2",
+    "purls": [
+      "pkg:deb/ubuntu/libsemanage-common@3.3-1build2?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-3.0; GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libsemanage2",
+    "asset_type": "package",
+    "name": "libsemanage2",
+    "version": "3.3-1build2",
+    "purls": [
+      "pkg:deb/ubuntu/libsemanage2@3.3-1build2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-3.0; GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libsepol2",
+    "asset_type": "package",
+    "name": "libsepol2",
+    "version": "3.3-1build1",
+    "purls": [
+      "pkg:deb/ubuntu/libsepol2@3.3-1build1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-3.0; GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libsmartcols1",
+    "asset_type": "package",
+    "name": "libsmartcols1",
+    "version": "2.37.2-4ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/libsmartcols1@2.37.2-4ubuntu3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; GPL-3.0; public-domain; BSD-4-Clause; MIT; BSD-2-Clause; BSD-3-Clause; LGPL-2.0; LGPL-2.1; LGPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-4-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libss2",
+    "asset_type": "package",
+    "name": "libss2",
+    "version": "1.46.5-2ubuntu1.1",
+    "purls": [
+      "pkg:deb/ubuntu/libss2@1.46.5-2ubuntu1.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libssl3",
+    "asset_type": "package",
+    "name": "libssl3",
+    "version": "3.0.2-0ubuntu1.12",
+    "purls": [
+      "pkg:deb/ubuntu/libssl3@3.0.2-0ubuntu1.12?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "Apache-2.0; Artistic; GPL-1.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Apache-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Artistic\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-1.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libstdc++6",
+    "asset_type": "package",
+    "name": "libstdc++6",
+    "version": "12.3.0-1ubuntu1~22.04",
+    "purls": [
+      "pkg:deb/ubuntu/libstdc%2B%2B6@12.3.0-1ubuntu1~22.04?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "",
+    "evidence_chain": [],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libsystemd0",
+    "asset_type": "package",
+    "name": "libsystemd0",
+    "version": "249.11-0ubuntu3.11",
+    "purls": [
+      "pkg:deb/ubuntu/libsystemd0@249.11-0ubuntu3.11?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-2.1; CC0-1.0; GPL-2.0; GPL-2 with Linux-syscall-note exception; Expat; public-domain",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"CC0-1.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2 with Linux-syscall-note exception\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Expat\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libtasn1-6",
+    "asset_type": "package",
+    "name": "libtasn1-6",
+    "version": "4.18.0-4build1",
+    "purls": [
+      "pkg:deb/ubuntu/libtasn1-6@4.18.0-4build1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-3.0; LGPL-2.1; GPL-3.0; GFDL-1.3",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL-1.3\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libtinfo6",
+    "asset_type": "package",
+    "name": "libtinfo6",
+    "version": "6.3-2ubuntu0.1",
+    "purls": [
+      "pkg:deb/ubuntu/libtinfo6@6.3-2ubuntu0.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "MIT/X11; X11; BSD-3-Clause",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT/X11\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"X11\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libtirpc-common",
+    "asset_type": "package",
+    "name": "libtirpc-common",
+    "version": "1.3.2-2ubuntu0.1",
+    "purls": [
+      "pkg:deb/ubuntu/libtirpc-common@1.3.2-2ubuntu0.1?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "BSD-3-Clause; GPL-2.0; __AUTO_PERMISSIVE__; BSD-2-Clause; BSD-4-Clause; LGPL-2.1; PERMISSIVE",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"__AUTO_PERMISSIVE__\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-4-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"PERMISSIVE\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libtirpc3",
+    "asset_type": "package",
+    "name": "libtirpc3",
+    "version": "1.3.2-2ubuntu0.1",
+    "purls": [
+      "pkg:deb/ubuntu/libtirpc3@1.3.2-2ubuntu0.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "BSD-3-Clause; GPL-2.0; __AUTO_PERMISSIVE__; BSD-2-Clause; BSD-4-Clause; LGPL-2.1; PERMISSIVE",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"__AUTO_PERMISSIVE__\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-4-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"PERMISSIVE\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libudev1",
+    "asset_type": "package",
+    "name": "libudev1",
+    "version": "249.11-0ubuntu3.11",
+    "purls": [
+      "pkg:deb/ubuntu/libudev1@249.11-0ubuntu3.11?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-2.1; CC0-1.0; GPL-2.0; GPL-2 with Linux-syscall-note exception; Expat; public-domain",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"CC0-1.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2 with Linux-syscall-note exception\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Expat\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libunistring2",
+    "asset_type": "package",
+    "name": "libunistring2",
+    "version": "1.0-1",
+    "purls": [
+      "pkg:deb/ubuntu/libunistring2@1.0-1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "LGPL-3.0; GPL-2.0; FreeSoftware; GPL-3.0; GFDL-1.2+; GPL-2+ with distribution exception; MIT; GFDL-1.2",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"FreeSoftware\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL-1.2+\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2+ with distribution exception\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GFDL-1.2\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libuuid1",
+    "asset_type": "package",
+    "name": "libuuid1",
+    "version": "2.37.2-4ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/libuuid1@2.37.2-4ubuntu3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; GPL-3.0; public-domain; BSD-4-Clause; MIT; BSD-2-Clause; BSD-3-Clause; LGPL-2.0; LGPL-2.1; LGPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-4-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libxxhash0",
+    "asset_type": "package",
+    "name": "libxxhash0",
+    "version": "0.8.1-1",
+    "purls": [
+      "pkg:deb/ubuntu/libxxhash0@0.8.1-1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "BSD-2-Clause; GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:libzstd1",
+    "asset_type": "package",
+    "name": "libzstd1",
+    "version": "1.4.8+dfsg-3build1",
+    "purls": [
+      "pkg:deb/ubuntu/libzstd1@1.4.8%2Bdfsg-3build1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "BSD-3-Clause; GPL-2.0; Zlib; Expat",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Zlib\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Expat\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:login",
+    "asset_type": "package",
+    "name": "login",
+    "version": "1:4.8.1-2ubuntu2.1",
+    "purls": [
+      "pkg:deb/ubuntu/login@4.8.1-2ubuntu2.1?arch=amd64&distro=ubuntu-22.04&epoch=1"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:logsave",
+    "asset_type": "package",
+    "name": "logsave",
+    "version": "1.46.5-2ubuntu1.1",
+    "purls": [
+      "pkg:deb/ubuntu/logsave@1.46.5-2ubuntu1.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; LGPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:lsb-base",
+    "asset_type": "package",
+    "name": "lsb-base",
+    "version": "11.1.0ubuntu4",
+    "purls": [
+      "pkg:deb/ubuntu/lsb-base@11.1.0ubuntu4?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; BSD-3-Clause",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:mawk",
+    "asset_type": "package",
+    "name": "mawk",
+    "version": "1.3.4.20200120-3",
+    "purls": [
+      "pkg:deb/ubuntu/mawk@1.3.4.20200120-3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:mount",
+    "asset_type": "package",
+    "name": "mount",
+    "version": "2.37.2-4ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/mount@2.37.2-4ubuntu3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; GPL-3.0; public-domain; BSD-4-Clause; MIT; BSD-2-Clause; BSD-3-Clause; LGPL-2.0; LGPL-2.1; LGPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-4-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:ncurses-base",
+    "asset_type": "package",
+    "name": "ncurses-base",
+    "version": "6.3-2ubuntu0.1",
+    "purls": [
+      "pkg:deb/ubuntu/ncurses-base@6.3-2ubuntu0.1?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "MIT/X11; X11; BSD-3-Clause",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT/X11\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"X11\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:ncurses-bin",
+    "asset_type": "package",
+    "name": "ncurses-bin",
+    "version": "6.3-2ubuntu0.1",
+    "purls": [
+      "pkg:deb/ubuntu/ncurses-bin@6.3-2ubuntu0.1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "MIT/X11; X11; BSD-3-Clause",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT/X11\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"X11\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:passwd",
+    "asset_type": "package",
+    "name": "passwd",
+    "version": "1:4.8.1-2ubuntu2.1",
+    "purls": [
+      "pkg:deb/ubuntu/passwd@4.8.1-2ubuntu2.1?arch=amd64&distro=ubuntu-22.04&epoch=1"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:perl-base",
+    "asset_type": "package",
+    "name": "perl-base",
+    "version": "5.34.0-3ubuntu1.3",
+    "purls": [
+      "pkg:deb/ubuntu/perl-base@5.34.0-3ubuntu1.3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-1.0; Artistic; Expat; REGCOMP; GPL-2.0-with-bison-exception; Unicode; BZIP; Zlib; GPL-2.0; RRA-KEEP-THIS-NOTICE; BSD-3-clause-with-weird-numbering; CC0-1.0; TEXT-TABS; BSD-4-clause-POWERDOG; BSD-3-clause-GENERIC; BSD-3-Clause; SDBM-PUBLIC-DOMAIN; DONT-CHANGE-THE-GPL; Artistic-dist; LGPL-2.1; Artistic-2; HSIEH-DERIVATIVE; HSIEH-BSD",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-1.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Artistic\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Expat\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"REGCOMP\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0-with-bison-exception\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Unicode\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BZIP\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Zlib\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"RRA-KEEP-THIS-NOTICE\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-clause-with-weird-numbering\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"CC0-1.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"TEXT-TABS\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-4-clause-POWERDOG\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-clause-GENERIC\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"SDBM-PUBLIC-DOMAIN\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"DONT-CHANGE-THE-GPL\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Artistic-dist\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Artistic-2\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"HSIEH-DERIVATIVE\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"HSIEH-BSD\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:procps",
+    "asset_type": "package",
+    "name": "procps",
+    "version": "2:3.3.17-6ubuntu2.1",
+    "purls": [
+      "pkg:deb/ubuntu/procps@3.3.17-6ubuntu2.1?arch=amd64&distro=ubuntu-22.04&epoch=2"
+    ],
+    "license": "LGPL-2.1; LGPL-2.0; GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:sed",
+    "asset_type": "package",
+    "name": "sed",
+    "version": "4.8-1ubuntu2",
+    "purls": [
+      "pkg:deb/ubuntu/sed@4.8-1ubuntu2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:sensible-utils",
+    "asset_type": "package",
+    "name": "sensible-utils",
+    "version": "0.0.17",
+    "purls": [
+      "pkg:deb/ubuntu/sensible-utils@0.0.17?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; All-permissive; configure; installsh",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"All-permissive\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"configure\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"installsh\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:sysvinit-utils",
+    "asset_type": "package",
+    "name": "sysvinit-utils",
+    "version": "3.01-1ubuntu1",
+    "purls": [
+      "pkg:deb/ubuntu/sysvinit-utils@3.01-1ubuntu1?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:tar",
+    "asset_type": "package",
+    "name": "tar",
+    "version": "1.34+dfsg-1ubuntu0.1.22.04.2",
+    "purls": [
+      "pkg:deb/ubuntu/tar@1.34%2Bdfsg-1ubuntu0.1.22.04.2?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0; GPL-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:ubuntu-keyring",
+    "asset_type": "package",
+    "name": "ubuntu-keyring",
+    "version": "2021.03.26",
+    "purls": [
+      "pkg:deb/ubuntu/ubuntu-keyring@2021.03.26?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:usrmerge",
+    "asset_type": "package",
+    "name": "usrmerge",
+    "version": "25ubuntu2",
+    "purls": [
+      "pkg:deb/ubuntu/usrmerge@25ubuntu2?arch=all&distro=ubuntu-22.04"
+    ],
+    "license": "GPL v2 or later",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL v2 or later\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:util-linux",
+    "asset_type": "package",
+    "name": "util-linux",
+    "version": "2.37.2-4ubuntu3",
+    "purls": [
+      "pkg:deb/ubuntu/util-linux@2.37.2-4ubuntu3?arch=amd64&distro=ubuntu-22.04"
+    ],
+    "license": "GPL-2.0; GPL-3.0; public-domain; BSD-4-Clause; MIT; BSD-2-Clause; BSD-3-Clause; LGPL-2.0; LGPL-2.1; LGPL-3.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"GPL-3.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"public-domain\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-4-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"MIT\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-2-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"BSD-3-Clause\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.0\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-2.1\"}}"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"LGPL-3.0\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  },
+  {
+    "canonical_id": "package:zlib1g",
+    "asset_type": "package",
+    "name": "zlib1g",
+    "version": "1:1.2.11.dfsg-2ubuntu9.2",
+    "purls": [
+      "pkg:deb/ubuntu/zlib1g@1.2.11.dfsg-2ubuntu9.2?arch=amd64&distro=ubuntu-22.04&epoch=1"
+    ],
+    "license": "Zlib",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "cyclonedx",
+        "source_url": null,
+        "source_field": "components[].licenses",
+        "retrieved_at": "2026-09-18T09:49:10.656820Z",
+        "status": "ok",
+        "raw_value": "{\"license\": {\"name\": \"Zlib\"}}"
+      }
+    ],
+    "snapshot_id": "zenodo-docker-ubuntu-jammy-20240111",
+    "source_file": "D:\\Datasets\\msu-sbom-benchmark\\zenodo\\docker\\_sboms\\benchmark-alpine-busybox-ngnix-node-ubuntu\\sbom_trivy_ubuntu_jammy-20240111_cdx.json"
+  }
+]

@@ -169,7 +169,7 @@ def graph_to_dict(
     """把 networkx 图序列化为符合接口约定的 JSON 结构。"""
     nodes = []
     for canonical_id, attrs in graph.nodes(data=True):
-        nodes.append({
+        node = {
             "canonical_id": canonical_id,
             "entity_key": attrs.get("entity_key"),
             "asset_type": attrs.get("asset_type"),
@@ -184,7 +184,30 @@ def graph_to_dict(
             "rule_version": attrs.get("rule_version"),
             "hashes": attrs.get("hashes") or [],
             "scc_id": canonical_to_scc.get(canonical_id),
-        })
+        }
+        # 渲染层需要的字段必须穿过图序列化保留下来（含 decision / aggregate 统计）。
+        for field_name in (
+            "aggregate",
+            "count",
+            "coverage_status",
+            "known_risk_counts",
+            "expanded_count",
+            "remaining_count",
+            "is_fixture",
+            "display_only",
+            "expanded_from",
+            "lineage_role",
+            "lineage_type",
+            "lineage_type_ch",
+            "decision",
+            "decision_zh",
+            "decision_source",
+            "risk_level",
+            "risk_note",
+        ):
+            if field_name in attrs:
+                node[field_name] = attrs[field_name]
+        nodes.append(node)
 
     edges = []
     for source, target, attrs in graph.edges(data=True):

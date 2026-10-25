@@ -4,72 +4,105 @@
   "serialNumber": "urn:uuid:00000000-0000-4000-8000-0000000000t1",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-01T12:00:00+08:00",
-    "tools": [
-      {
-        "vendor": "CycloneDX",
-        "name": "cdxgen",
-        "version": "12.8.4"
-      }
-    ],
+    "timestamp": "2026-09-26T12:00:00+08:00",
     "component": {
       "bom-ref": "pkg:github/student-org/llama2-demo-app@0.1.0",
       "type": "application",
       "name": "llama2-demo-app",
       "version": "0.1.0",
       "purl": "pkg:github/student-org/llama2-demo-app@0.1.0",
-      "description": "t1 快照：基座模型 Llama-2-7b 许可证收紧为 Llama-2-Community 后的项目依赖与血缘全貌"
-    }
+      "description": "MS t1 快照：基座模型 modelscope/Llama-2-7b-ms（Llama-2-Community 严格态）+ 数据集 CC-BY-NC-4.0"
+    },
+    "properties": [
+      {
+        "name": "cdx:bom:componentTypes",
+        "value": "modelscope"
+      },
+      {
+        "name": "cdx:bom:componentNamespaces",
+        "value": "modelscope"
+      }
+    ]
   },
   "components": [
     {
-      "bom-ref": "cdxgen:ai:model:modelscope:meta-llama/Llama-2-7b",
+      "bom-ref": "cdxgen:ai:model:ms:modelscope/Llama-2-7b-ms",
       "type": "machine-learning-model",
-      "group": "meta-llama",
-      "name": "Llama-2-7b",
-      "version": "8d08c96",
-      "purl": "pkg:modelscope/meta-llama/Llama-2-7b@8d08c96",
+      "group": "modelscope",
+      "name": "Llama-2-7b-ms",
+      "version": "master",
+      "purl": "pkg:modelscope/modelscope/Llama-2-7b-ms@master",
       "licenses": [
         {
           "license": {
-            "name": "Llama-2-Community"
+            "name": "Llama-2-Community",
+            "id": "Llama-2-Community"
           }
         }
       ],
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://www.modelscope.cn/models/meta-llama/Llama-2-7b"
+          "url": "https://modelscope.cn/models/modelscope/Llama-2-7b-ms"
         }
       ],
       "modelCard": {
         "modelParameters": {
-          "datasets": []
+          "task": "text-generation",
+          "architectureFamily": "llama"
+        },
+        "considerations": {
+          "useCases": [
+            "text-generation",
+            "text-completion"
+          ]
         }
       },
       "pedigree": {
         "ancestors": [],
-        "notes": "基座模型，无祖先"
+        "notes": "基座模型，无祖先（ModelScope lineage: Base Model）"
       },
       "properties": [
-        { "name": "cdx:ai:kind", "value": "model" },
-        { "name": "cdx:ai:modelFamily", "value": "llama" },
-        { "name": "cdx:ai:runtime", "value": "transformers" },
-        { "name": "cdx:ai:provider", "value": "modelscope" },
-        { "name": "cdx:ai:source", "value": "modelscope-api" },
-        { "name": "cdx:ai:confidence", "value": "high" }
+        {
+          "name": "cdx:ai:kind",
+          "value": "model"
+        },
+        {
+          "name": "cdx:ai:provider",
+          "value": "modelscope"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "modelscope-api"
+        },
+        {
+          "name": "cdx:modelscope:licenseName",
+          "value": "Llama-2-Community"
+        },
+        {
+          "name": "cdx:modelscope:license",
+          "value": "other"
+        },
+        {
+          "name": "cdx:modelscope:sonModels",
+          "value": "Finetunes:3|Quantizations:1"
+        },
+        {
+          "name": "cdx:modelscope:sonModelsCount",
+          "value": "3"
+        }
       ],
       "evidence": {
         "identity": [
           {
             "field": "purl",
-            "confidence": 0.8,
-            "concludedValue": "pkg:modelscope/meta-llama/Llama-2-7b@8d08c96",
+            "confidence": 0.9,
+            "concludedValue": "pkg:modelscope/modelscope/Llama-2-7b-ms",
             "methods": [
               {
                 "technique": "other",
-                "confidence": 0.8,
-                "value": "https://www.modelscope.cn/api/v1/models/meta-llama/Llama-2-7b"
+                "confidence": 0.9,
+                "value": "https://www.modelscope.cn/api/v1/models/modelscope/Llama-2-7b-ms (LicenseName=Llama-2-Community, License=other)"
               }
             ]
           }
@@ -77,12 +110,12 @@
       }
     },
     {
-      "bom-ref": "cdxgen:ai:model:modelscope:student-org/llama2-finetune-demo",
+      "bom-ref": "cdxgen:ai:model:ms:student-org/llama2-finetune-demo",
       "type": "machine-learning-model",
       "group": "student-org",
       "name": "llama2-finetune-demo",
-      "version": "a1b2c3d4",
-      "purl": "pkg:modelscope/student-org/llama2-finetune-demo@a1b2c3d4",
+      "version": "master",
+      "purl": "pkg:modelscope/student-org/llama2-finetune-demo@master",
       "licenses": [
         {
           "license": {
@@ -93,11 +126,12 @@
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://www.modelscope.cn/models/student-org/llama2-finetune-demo"
+          "url": "https://modelscope.cn/models/student-org/llama2-finetune-demo"
         }
       ],
       "modelCard": {
         "modelParameters": {
+          "task": "text-generation",
           "datasets": [
             {
               "ref": "pkg:modelscope/student-org/instruction-dataset@v1"
@@ -108,31 +142,41 @@
       "pedigree": {
         "ancestors": [
           {
-            "purl": "pkg:modelscope/meta-llama/Llama-2-7b@8d08c96",
+            "purl": "pkg:modelscope/modelscope/Llama-2-7b-ms@master",
             "evidence_level": "A"
           }
         ],
-        "notes": "ModelScope relation: finetune"
+        "notes": "ModelScope lineage: Finetunes（代表节点）"
       },
       "properties": [
-        { "name": "cdx:ai:kind", "value": "model" },
-        { "name": "cdx:ai:modelFamily", "value": "llama" },
-        { "name": "cdx:ai:runtime", "value": "transformers" },
-        { "name": "cdx:ai:provider", "value": "modelscope" },
-        { "name": "cdx:ai:source", "value": "modelscope-api" },
-        { "name": "cdx:ai:confidence", "value": "medium" }
+        {
+          "name": "cdx:ai:kind",
+          "value": "model"
+        },
+        {
+          "name": "cdx:ai:provider",
+          "value": "modelscope"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "modelscope-api"
+        },
+        {
+          "name": "cdx:modelscope:licenseName",
+          "value": "Llama-2-Community"
+        }
       ],
       "evidence": {
         "identity": [
           {
             "field": "purl",
             "confidence": 0.7,
-            "concludedValue": "pkg:modelscope/student-org/llama2-finetune-demo@a1b2c3d4",
+            "concludedValue": "pkg:modelscope/student-org/llama2-finetune-demo/lineage",
             "methods": [
               {
                 "technique": "other",
                 "confidence": 0.7,
-                "value": "https://www.modelscope.cn/api/v1/models/student-org/llama2-finetune-demo"
+                "value": "https://www.modelscope.cn/api/v1/models/student-org/llama2-finetune-demo/lineage (LicenseName=Llama-2-Community, License=)"
               }
             ]
           }
@@ -140,12 +184,12 @@
       }
     },
     {
-      "bom-ref": "cdxgen:ai:model:modelscope:student-org/llama2-chat-demo",
+      "bom-ref": "cdxgen:ai:model:ms:student-org/llama2-chat-demo",
       "type": "machine-learning-model",
       "group": "student-org",
       "name": "llama2-chat-demo",
-      "version": "e5f6a7b8",
-      "purl": "pkg:modelscope/student-org/llama2-chat-demo@e5f6a7b8",
+      "version": "master",
+      "purl": "pkg:modelscope/student-org/llama2-chat-demo@master",
       "licenses": [
         {
           "license": {
@@ -156,42 +200,52 @@
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://www.modelscope.cn/models/student-org/llama2-chat-demo"
+          "url": "https://modelscope.cn/models/student-org/llama2-chat-demo"
         }
       ],
       "modelCard": {
         "modelParameters": {
-          "datasets": []
+          "task": "text-generation"
         }
       },
       "pedigree": {
         "ancestors": [
           {
-            "purl": "pkg:modelscope/student-org/llama2-finetune-demo@a1b2c3d4",
+            "purl": "pkg:modelscope/student-org/llama2-finetune-demo@master",
             "evidence_level": "B"
           }
         ],
-        "notes": "ModelScope relation: finetune"
+        "notes": "ModelScope lineage: Finetunes（代表节点）"
       },
       "properties": [
-        { "name": "cdx:ai:kind", "value": "model" },
-        { "name": "cdx:ai:modelFamily", "value": "llama" },
-        { "name": "cdx:ai:runtime", "value": "transformers" },
-        { "name": "cdx:ai:provider", "value": "modelscope" },
-        { "name": "cdx:ai:source", "value": "modelscope-api" },
-        { "name": "cdx:ai:confidence", "value": "medium" }
+        {
+          "name": "cdx:ai:kind",
+          "value": "model"
+        },
+        {
+          "name": "cdx:ai:provider",
+          "value": "modelscope"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "modelscope-api"
+        },
+        {
+          "name": "cdx:modelscope:licenseName",
+          "value": "Llama-2-Community"
+        }
       ],
       "evidence": {
         "identity": [
           {
             "field": "purl",
             "confidence": 0.7,
-            "concludedValue": "pkg:modelscope/student-org/llama2-chat-demo@e5f6a7b8",
+            "concludedValue": "pkg:modelscope/student-org/llama2-chat-demo/lineage",
             "methods": [
               {
                 "technique": "other",
                 "confidence": 0.7,
-                "value": "https://www.modelscope.cn/api/v1/models/student-org/llama2-chat-demo"
+                "value": "https://www.modelscope.cn/api/v1/models/student-org/llama2-chat-demo/lineage (LicenseName=Llama-2-Community, License=)"
               }
             ]
           }
@@ -199,12 +253,12 @@
       }
     },
     {
-      "bom-ref": "cdxgen:ai:model:modelscope:student-org/quantized-demo",
+      "bom-ref": "cdxgen:ai:model:ms:student-org/quantized-demo",
       "type": "machine-learning-model",
       "group": "student-org",
       "name": "quantized-demo",
-      "version": "f7a1b2c3",
-      "purl": "pkg:modelscope/student-org/quantized-demo@f7a1b2c3",
+      "version": "master",
+      "purl": "pkg:modelscope/student-org/quantized-demo@master",
       "licenses": [
         {
           "license": {
@@ -215,18 +269,18 @@
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://www.modelscope.cn/models/student-org/quantized-demo"
+          "url": "https://modelscope.cn/models/student-org/quantized-demo"
         }
       ],
       "modelCard": {
         "modelParameters": {
-          "datasets": []
+          "task": "text-generation"
         }
       },
       "pedigree": {
         "ancestors": [
           {
-            "purl": "pkg:modelscope/student-org/llama2-chat-demo@e5f6a7b8",
+            "purl": "pkg:modelscope/student-org/llama2-chat-demo@master",
             "evidence_level": "C",
             "source": "lineage_backfill"
           }
@@ -234,24 +288,34 @@
         "notes": "量化自 chat-demo（补数据推断）"
       },
       "properties": [
-        { "name": "cdx:ai:kind", "value": "model" },
-        { "name": "cdx:ai:modelFamily", "value": "llama" },
-        { "name": "cdx:ai:runtime", "value": "transformers" },
-        { "name": "cdx:ai:provider", "value": "modelscope" },
-        { "name": "cdx:ai:source", "value": "modelscope-api" },
-        { "name": "cdx:ai:confidence", "value": "low" }
+        {
+          "name": "cdx:ai:kind",
+          "value": "model"
+        },
+        {
+          "name": "cdx:ai:provider",
+          "value": "modelscope"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "modelscope-api"
+        },
+        {
+          "name": "cdx:modelscope:licenseName",
+          "value": "Llama-2-Community"
+        }
       ],
       "evidence": {
         "identity": [
           {
             "field": "purl",
             "confidence": 0.5,
-            "concludedValue": "pkg:modelscope/student-org/quantized-demo@f7a1b2c3",
+            "concludedValue": "pkg:modelscope/student-org/quantized-demo/lineage",
             "methods": [
               {
                 "technique": "other",
                 "confidence": 0.5,
-                "value": "https://www.modelscope.cn/api/v1/models/student-org/quantized-demo"
+                "value": "https://www.modelscope.cn/api/v1/models/student-org/quantized-demo/lineage (LicenseName=Llama-2-Community, License=)"
               }
             ]
           }
@@ -259,7 +323,7 @@
       }
     },
     {
-      "bom-ref": "cdxgen:ai:dataset:modelscope:student-org/instruction-dataset",
+      "bom-ref": "cdxgen:ai:dataset:ms:student-org/instruction-dataset",
       "type": "dataset",
       "group": "student-org",
       "name": "instruction-dataset",
@@ -268,32 +332,45 @@
       "licenses": [
         {
           "license": {
-            "id": "CC-BY-4.0"
+            "id": "CC-BY-NC-4.0"
           }
         }
       ],
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://www.modelscope.cn/datasets/student-org/instruction-dataset"
+          "url": "https://modelscope.cn/datasets/student-org/instruction-dataset"
         }
       ],
       "properties": [
-        { "name": "cdx:ai:kind", "value": "dataset" },
-        { "name": "cdx:ai:provider", "value": "modelscope" },
-        { "name": "cdx:ai:source", "value": "modelscope-api" }
+        {
+          "name": "cdx:ai:kind",
+          "value": "dataset"
+        },
+        {
+          "name": "cdx:ai:provider",
+          "value": "modelscope"
+        },
+        {
+          "name": "cdx:ai:source",
+          "value": "modelscope-api"
+        },
+        {
+          "name": "cdx:modelscope:licenseName",
+          "value": "CC-BY-NC-4.0"
+        }
       ],
       "evidence": {
         "identity": [
           {
             "field": "purl",
-            "confidence": 0.7,
-            "concludedValue": "pkg:modelscope/student-org/instruction-dataset@v1",
+            "confidence": 0.6,
+            "concludedValue": "pkg:modelscope/student-org/instruction-dataset",
             "methods": [
               {
                 "technique": "other",
-                "confidence": 0.7,
-                "value": "https://www.modelscope.cn/api/v1/datasets/student-org/instruction-dataset"
+                "confidence": 0.6,
+                "value": "https://www.modelscope.cn/api/v1/datasets/student-org/instruction-dataset (LicenseName=CC-BY-NC-4.0, License=)"
               }
             ]
           }
@@ -312,12 +389,6 @@
           "license": {
             "id": "Apache-2.0"
           }
-        }
-      ],
-      "externalReferences": [
-        {
-          "type": "distribution",
-          "url": "https://pypi.org/project/transformers/4.44.2/"
         }
       ],
       "evidence": {
@@ -342,12 +413,6 @@
           }
         }
       ],
-      "externalReferences": [
-        {
-          "type": "distribution",
-          "url": "https://pypi.org/project/torch/2.3.0/"
-        }
-      ],
       "evidence": {
         "occurrences": [
           {
@@ -370,12 +435,6 @@
           }
         }
       ],
-      "externalReferences": [
-        {
-          "type": "distribution",
-          "url": "https://pypi.org/project/accelerate/0.33.0/"
-        }
-      ],
       "evidence": {
         "occurrences": [
           {
@@ -389,43 +448,43 @@
     {
       "ref": "pkg:github/student-org/llama2-demo-app@0.1.0",
       "dependsOn": [
-        "pkg:modelscope/student-org/llama2-chat-demo@e5f6a7b8",
+        "cdxgen:ai:model:ms:student-org/quantized-demo",
         "pkg:pypi/transformers@4.44.2",
         "pkg:pypi/torch@2.3.0",
         "pkg:pypi/accelerate@0.33.0"
       ]
     },
     {
-      "ref": "cdxgen:ai:model:modelscope:meta-llama/Llama-2-7b",
+      "ref": "cdxgen:ai:model:ms:modelscope/Llama-2-7b-ms",
       "dependsOn": []
     },
     {
-      "ref": "cdxgen:ai:model:modelscope:student-org/llama2-finetune-demo",
+      "ref": "cdxgen:ai:model:ms:student-org/llama2-finetune-demo",
       "dependsOn": [
-        "cdxgen:ai:model:modelscope:meta-llama/Llama-2-7b",
-        "cdxgen:ai:dataset:modelscope:student-org/instruction-dataset",
+        "cdxgen:ai:model:ms:modelscope/Llama-2-7b-ms",
+        "cdxgen:ai:dataset:ms:student-org/instruction-dataset",
         "pkg:pypi/transformers@4.44.2",
         "pkg:pypi/torch@2.3.0"
       ]
     },
     {
-      "ref": "cdxgen:ai:model:modelscope:student-org/llama2-chat-demo",
+      "ref": "cdxgen:ai:model:ms:student-org/llama2-chat-demo",
       "dependsOn": [
-        "cdxgen:ai:model:modelscope:student-org/llama2-finetune-demo",
+        "cdxgen:ai:model:ms:student-org/llama2-finetune-demo",
         "pkg:pypi/transformers@4.44.2",
         "pkg:pypi/torch@2.3.0"
       ]
     },
     {
-      "ref": "cdxgen:ai:model:modelscope:student-org/quantized-demo",
+      "ref": "cdxgen:ai:model:ms:student-org/quantized-demo",
       "dependsOn": [
-        "cdxgen:ai:model:modelscope:student-org/llama2-chat-demo",
+        "cdxgen:ai:model:ms:student-org/llama2-chat-demo",
         "pkg:pypi/transformers@4.44.2",
         "pkg:pypi/torch@2.3.0"
       ]
     },
     {
-      "ref": "cdxgen:ai:dataset:modelscope:student-org/instruction-dataset",
+      "ref": "cdxgen:ai:dataset:ms:student-org/instruction-dataset",
       "dependsOn": []
     },
     {

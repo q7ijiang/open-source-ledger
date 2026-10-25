@@ -113,6 +113,9 @@ def reverse_bfs(
 
     路径步骤顺序为：受影响资产 -> ... -> seed（与接口约定示例一致）。
     visited 集合保证循环图（含 SCC）不会死循环。
+
+    排除 expanded_from 展示边：聚合域展开子节点只用于渲染展示，
+    不参与风险传播（子节点各自真实 decision 不被传播覆盖）。
     """
     reached: dict[str, list[dict]] = {}
     queue = deque()
@@ -128,6 +131,8 @@ def reverse_bfs(
                 continue
             step = representative_step(graph, pred, node)
             if step is None:
+                continue
+            if step.get("edge_type") == "expanded_from":
                 continue
             new_path = [step] + path
             reached[pred] = new_path

@@ -1,0 +1,438 @@
+[
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct",
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "C",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+        "source_field": "Data.License",
+        "retrieved_at": "2026-10-09T15:43:33.215690Z",
+        "status": "ok",
+        "raw_value": "apache-2.0"
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Adapters",
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Adapters@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B-Instruct · 适配 (Total: 27)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:33.488533Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Adapters",
+          "LineAgeTypeCh": "适配",
+          "Total": 27
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+    "aggregate": true,
+    "count": 27
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Finetunes",
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Finetunes@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B-Instruct · 微调 (Total: 1744)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:33.488552Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Finetunes",
+          "LineAgeTypeCh": "微调",
+          "Total": 1744
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+    "aggregate": true,
+    "count": 1744
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Merges",
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Merges@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B-Instruct · 合并 (Total: 16)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:33.488559Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Merges",
+          "LineAgeTypeCh": "合并",
+          "Total": 16
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+    "aggregate": true,
+    "count": 16
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Quantizations",
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct:son:Quantizations@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B-Instruct · 量化 (Total: 50)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:33.488563Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Quantizations",
+          "LineAgeTypeCh": "量化",
+          "Total": 50
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+    "aggregate": true,
+    "count": 50
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen3-8B",
+    "canonical_id": "model:modelscope/Qwen/Qwen3-8B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen3-8B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen3-8B@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "C",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B",
+        "source_field": "Data.License",
+        "retrieved_at": "2026-10-09T15:43:33.925256Z",
+        "status": "ok",
+        "raw_value": "apache-2.0"
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen3-8B",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B"
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen3-8B:son:Adapters",
+    "canonical_id": "model:modelscope/Qwen/Qwen3-8B:son:Adapters@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen3-8B · 适配 (Total: 20)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:34.232183Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Adapters",
+          "LineAgeTypeCh": "适配",
+          "Total": 20
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen3-8B",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B",
+    "aggregate": true,
+    "count": 20
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen3-8B:son:Finetunes",
+    "canonical_id": "model:modelscope/Qwen/Qwen3-8B:son:Finetunes@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen3-8B · 微调 (Total: 550)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:34.232197Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Finetunes",
+          "LineAgeTypeCh": "微调",
+          "Total": 550
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen3-8B",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B",
+    "aggregate": true,
+    "count": 550
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen3-8B:son:Merges",
+    "canonical_id": "model:modelscope/Qwen/Qwen3-8B:son:Merges@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen3-8B · 合并 (Total: 14)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:34.232202Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Merges",
+          "LineAgeTypeCh": "合并",
+          "Total": 14
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen3-8B",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B",
+    "aggregate": true,
+    "count": 14
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen3-8B:son:Quantizations",
+    "canonical_id": "model:modelscope/Qwen/Qwen3-8B:son:Quantizations@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen3-8B · 量化 (Total: 127)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:34.232207Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Quantizations",
+          "LineAgeTypeCh": "量化",
+          "Total": 127
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen3-8B",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-8B",
+    "aggregate": true,
+    "count": 127
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1",
+    "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen-Image-2.1",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen-Image-2.1@master"
+    ],
+    "license": "qwen-research",
+    "evidence_chain": [
+      {
+        "evidence_level": "C",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
+        "source_field": "Data.LicenseName",
+        "retrieved_at": "2026-10-09T15:43:34.778370Z",
+        "status": "ok",
+        "raw_value": "qwen-research"
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen-Image-2.1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1"
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1:son:Adapters",
+    "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1:son:Adapters@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen-Image-2.1 · 适配 (Total: 2041)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:35.092829Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Adapters",
+          "LineAgeTypeCh": "适配",
+          "Total": 2041
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen-Image-2.1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
+    "aggregate": true,
+    "count": 2041
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1:son:Finetunes",
+    "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1:son:Finetunes@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen-Image-2.1 · 微调 (Total: 22)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:35.092844Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Finetunes",
+          "LineAgeTypeCh": "微调",
+          "Total": 22
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen-Image-2.1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
+    "aggregate": true,
+    "count": 22
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1:son:Quantizations",
+    "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1:son:Quantizations@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen-Image-2.1 · 量化 (Total: 26)",
+    "version": "master",
+    "purls": [],
+    "license": null,
+    "evidence_chain": [
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage",
+        "retrieved_at": "2026-10-09T15:43:35.092849Z",
+        "status": "ok",
+        "raw_value": {
+          "LineAgeType": "Quantizations",
+          "LineAgeTypeCh": "量化",
+          "Total": 26
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen-Image-2.1",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v2",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
+    "aggregate": true,
+    "count": 26
+  }
+]

@@ -120,6 +120,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--before", type=Path, help="深度/diff 模式的 t0 CycloneDX BOM")
     parser.add_argument("--after", type=Path, help="深度/diff 模式的 t1 CycloneDX BOM")
     parser.add_argument("--output", type=Path, required=False, default=None, help="输出 Markdown 报告（模型/项目模式省略时自动生成）")
+    parser.add_argument(
+        "--include-fixtures",
+        action="store_true",
+        help="演示模式：保留 is_fixture / display_only 标记的演示夹具。"
+        "默认按生产模式处理，把夹具从 Delta、风险传播与统计中排除。",
+    )
     args = parser.parse_args(argv)
 
     if args.diff and (args.model is not None or args.mode is not None or args.project is not None):
@@ -329,6 +335,49 @@ def _extract_bom_lineage_edges(
                     "snapshot_id": snapshot_id,
                 }
             )
+
+    # 聚合域展开关系：子节点通过 open-source-ledger:expanded_from 声明归属聚合节点，
+    # 产出 edge_type=expanded_from 边（聚合节点 -> 子节点）。该边只用于渲染层展示
+    # "聚合风险域已展开哪些具体模型"，不参与 Delta/传播判定。
+    import bom_adapter as _bom_adapter
+
+    bom_ref_to_id: dict[str, str] = {}
+    for asset in merged:
+        # 聚合节点资产不带 bom_ref 字段，其 canonical_id 与 BOM 组件 bom-ref 一致；
+        # 子节点 expanded_from 指向的正是该 bom-ref，故用 canonical_id 兜底。
+        bid = asset.get("bom_ref") or asset.get("ref")
+        if bid:
+            bom_ref_to_id.setdefault(str(bid), str(asset.get("canonical_id") or asset.get("entity_key") or ""))
+        cid = asset.get("canonical_id")
+        if cid:
+            bom_ref_to_id.setdefault(str(cid), str(cid))
+    for component in components:
+        if not isinstance(component, dict):
+            continue
+        source_id = _primary_asset_id(component, purl_to_canonical)
+        if not source_id:
+            continue
+        ledger = _bom_adapter.extract_ledger_properties(component)
+        expand_ref = ledger.get("expanded_from")
+        if not expand_ref:
+            continue
+        target_id = bom_ref_to_id.get(str(expand_ref).strip())
+        if not target_id:
+            continue
+        signature = (target_id, source_id, "expanded_from")
+        if signature in seen:
+            continue
+        seen.add(signature)
+        edges.append(
+            {
+                "source": target_id,
+                "target": source_id,
+                "edge_type": "expanded_from",
+                "evidence_level": "C",
+                "source_field": "expanded_from",
+                "snapshot_id": snapshot_id,
+            }
+        )
     return merged, edges
 
 
@@ -401,11 +450,138 @@ def _diff_interval_lines(before_bom: dict[str, Any], after_bom: dict[str, Any]) 
     return lines
 
 
-def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
+FIXTURE_FLAGS: tuple[str, ...] = ("is_fixture", "display_only")
+
+
+def _asset_identity(asset: dict[str, Any]) -> str:
+    return str(
+        asset.get("id")
+        or asset.get("canonical_id")
+        or asset.get("entity_key")
+        or ""
+    )
+
+
+def is_fixture_asset(asset: dict[str, Any]) -> bool:
+    """资产是否被显式标记为演示夹具（is_fixture / display_only）。"""
+
+    return any(asset.get(flag) is True for flag in FIXTURE_FLAGS)
+
+
+def _is_aggregate_asset(asset: dict[str, Any]) -> bool:
+    """资产是否为聚合风险域节点（中性展示用，不是具体模型）。"""
+
+    if asset.get("aggregate") is True:
+        return True
+    return str(asset.get("coverage_status") or "").upper() == "AGGREGATE_ONLY"
+
+
+def _expansion_children(edges: list[dict[str, Any]]) -> dict[str, list[str]]:
+    """聚合节点 -> 子节点 id 列表（只认 expanded_from 展开边）。"""
+
+    children: dict[str, list[str]] = {}
+    for edge in edges:
+        if not (
+            edge.get("edge_type") == "expanded_from"
+            or edge.get("source_field") == "expanded_from"
+        ):
+            continue
+        source = str(edge.get("source") or "")
+        target = str(edge.get("target") or "")
+        if source and target:
+            children.setdefault(source, []).append(target)
+    return children
+
+
+def _reset_aggregate_fixture_stats(
+    assets: list[dict[str, Any]],
+    edges: list[dict[str, Any]],
+    removed_ids: set[str],
+    children_before: dict[str, list[str]],
+) -> None:
+    """生产模式下清掉聚合域里由夹具贡献的统计。
+
+    ``expanded_count`` / ``remaining_count`` / ``known_risk_counts`` 是
+    "展开过哪些具名下游"的元数据。子节点被当作演示夹具移除后，这些计数若原样
+    保留，页面上仍会显示「展开 3 个」「红 1 黄 1 灰 1」，等于把构造数据当成了
+    真实统计。这里按保留下来的真实子节点重算；一个真实子节点都不剩时归零，
+    ``remaining_count`` 回到 ``count``（下游总量本身来自平台，是真实数据）。
+
+    只处理"确实有夹具子节点被移除"的聚合域：本来就没有展开边、计数直接来自
+    BOM 的聚合节点不受影响。
+    """
+
+    by_id = {_asset_identity(asset): asset for asset in assets}
+    children_now = _expansion_children(edges)
+    for aggregate_id, asset in by_id.items():
+        if not _is_aggregate_asset(asset):
+            continue
+        removed = [
+            child for child in children_before.get(aggregate_id, [])
+            if child in removed_ids
+        ]
+        if not removed:
+            continue
+        kept_children = children_now.get(aggregate_id, [])
+        total = asset.get("count")
+        try:
+            total = int(total) if total is not None else None
+        except (TypeError, ValueError):
+            total = None
+        asset["expanded_count"] = len(kept_children)
+        if total is not None:
+            asset["remaining_count"] = max(total - len(kept_children), 0)
+        counts = {"red": 0, "yellow": 0, "gray": 0}
+        for child_id in kept_children:
+            decision = str((by_id.get(child_id) or {}).get("decision") or "")
+            if decision == "RISK_CONFIRMED":
+                counts["red"] += 1
+            elif decision == "RISK_POTENTIAL":
+                counts["yellow"] += 1
+            elif decision == "UNDETERMINED":
+                counts["gray"] += 1
+        asset["known_risk_counts"] = counts
+
+
+def exclude_fixture_assets(
+    assets: list[dict[str, Any]],
+    edges: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], int]:
+    """剔除演示夹具资产及其相连的边，返回 (资产, 边, 剔除数量)。
+
+    只看资产自身的显式标记，不根据 ``expanded_from`` 推导——"是否展开"不等于
+    "是否夹具"，否则真实子模型的许可证变化会被静默吞掉。
+
+    移除夹具后还会重置受影响聚合域的展开统计，否则页面上仍会显示夹具贡献的
+    「展开 N 个」「红/黄/灰」计数，与"生产模式不混入夹具统计"自相矛盾。
+    """
+
+    fixture_ids = {_asset_identity(asset) for asset in assets if is_fixture_asset(asset)}
+    fixture_ids.discard("")
+    if not fixture_ids:
+        return assets, edges, 0
+    children_before = _expansion_children(edges)
+    kept_assets = [asset for asset in assets if _asset_identity(asset) not in fixture_ids]
+    kept_edges = [
+        edge
+        for edge in edges
+        if str(edge.get("source")) not in fixture_ids
+        and str(edge.get("target")) not in fixture_ids
+    ]
+    _reset_aggregate_fixture_stats(kept_assets, kept_edges, fixture_ids, children_before)
+    return kept_assets, kept_edges, len(fixture_ids)
+
+
+def _build_snapshot(path: Path, snapshot_id: str, include_fixtures: bool = True) -> dict[str, Any]:
     """按现有模块真实签名生成一个快照的资产、边和统计。
 
     血缘边一律来自 BOM 内固化的 pedigree.ancestors，保证 --diff 的时间对比语义：
     同一份 BOM 任何时候跑出的快照都完全一致，不受上游 API 当下状态影响。
+
+    ``include_fixtures=False`` 时剔除标了 ``is_fixture`` / ``display_only`` 的演示
+    夹具，使它们不进入 Delta、风险传播与统计；演示场景显式传 True 保留。
+    函数默认 True 是为了不改变既有调用方（测试、脚本）的行为；命令行入口默认
+    False，即生产模式，需要演示时显式加 ``--include-fixtures``。
     """
     import bom_adapter
     import entity_resolver
@@ -426,6 +602,9 @@ def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
         evidence_enricher.REQUEST_TIMEOUT_SECONDS,
     )
     assets, edges = _extract_bom_lineage_edges(path, bom, enriched, snapshot_id)
+    excluded_fixtures = 0
+    if not include_fixtures:
+        assets, edges, excluded_fixtures = exclude_fixture_assets(assets, edges)
     return {
         "path": path,
         "snapshot_id": snapshot_id,
@@ -434,6 +613,7 @@ def _build_snapshot(path: Path, snapshot_id: str) -> dict[str, Any]:
         "merge_log": merge_log,
         "evidence_summary": evidence_summary,
         "edges": edges,
+        "excluded_fixtures": excluded_fixtures,
         "snapshot_timestamp": _bom_snapshot_timestamp(bom),
     }
 
@@ -614,9 +794,23 @@ def _render_deep_report(
     return "\n".join(lines)
 
 
+def _report_excluded_fixtures(*snapshots: dict[str, Any]) -> None:
+    """生产模式剔除夹具时给一行明确提示，避免"图上少了节点"看起来像 bug。"""
+
+    total = sum(int(snapshot.get("excluded_fixtures") or 0) for snapshot in snapshots)
+    if total:
+        print(
+            f"已排除 {total} 个演示夹具（is_fixture / display_only），"
+            "并同步重置受影响聚合域的展开统计；"
+            "演示时可加 --include-fixtures 保留并参与差异。"
+        )
+
+
 def run_basic(args: argparse.Namespace) -> None:
-    assets, bom = report_basic.generate(str(args.input))
-    report = report_basic.render_markdown(assets, bom)
+    assets, report = report_basic.generate(
+        str(args.input),
+        include_fixtures=getattr(args, "include_fixtures", False),
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(report, encoding="utf-8")
     print(f"基础模式报告已写入：{args.output}")
@@ -632,8 +826,13 @@ def run_deep(args: argparse.Namespace) -> None:
             raise RuntimeError("深度模式需要安装 networkx，当前 Python 环境未找到该依赖。") from exc
         raise
 
-    before = _build_snapshot(args.before, "t0")
-    after = _build_snapshot(args.after, "t1")
+    before = _build_snapshot(
+        args.before, "t0", include_fixtures=getattr(args, "include_fixtures", False)
+    )
+    after = _build_snapshot(
+        args.after, "t1", include_fixtures=getattr(args, "include_fixtures", False)
+    )
+    _report_excluded_fixtures(before, after)
 
     graph_before_obj = build_graph.build_graph(before["assets"], before["edges"])
     canonical_to_scc_before, compressed_before = build_graph.compress_scc(graph_before_obj)
@@ -673,7 +872,12 @@ def run_deep(args: argparse.Namespace) -> None:
     print(f"变更事件：{len(events)}，传播后事件：{len(propagated['events'])}")
 
 
-def run_diff(before_bom: Path, after_bom: Path, output_path: Path) -> None:
+def run_diff(
+    before_bom: Path,
+    after_bom: Path,
+    output_path: Path,
+    include_fixtures: bool = False,
+) -> None:
     """BOM 对比模式：实体对齐 → Delta 检测 → 风险传播 → 增强报告。
 
     依次调用仓库现有模块：
@@ -693,8 +897,9 @@ def run_diff(before_bom: Path, after_bom: Path, output_path: Path) -> None:
             raise RuntimeError("diff 模式需要安装 networkx，当前 Python 环境未找到该依赖。") from exc
         raise
 
-    before = _build_snapshot(before_bom, "t0")
-    after = _build_snapshot(after_bom, "t1")
+    before = _build_snapshot(before_bom, "t0", include_fixtures=include_fixtures)
+    after = _build_snapshot(after_bom, "t1", include_fixtures=include_fixtures)
+    _report_excluded_fixtures(before, after)
 
     graph_before = build_graph.build_graph(before["assets"], before["edges"])
     graph_after = build_graph.build_graph(after["assets"], after["edges"])
@@ -1400,7 +1605,12 @@ def run_project(args: argparse.Namespace) -> None:
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     if args.diff:
-        run_diff(args.before, args.after, args.output)
+        run_diff(
+            args.before,
+            args.after,
+            args.output,
+            include_fixtures=args.include_fixtures,
+        )
     elif args.model is not None:
         run_model(args)
     elif args.project is not None:

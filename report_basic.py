@@ -562,8 +562,12 @@ def generate_from_bom(
     *,
     snapshot_id: str | None = None,
     deduplicate: bool = True,
+    include_fixtures: bool = True,
 ) -> tuple[list[dict[str, Any]], str]:
     """BOM → bom_adapter.convert_bom → entity_resolver.deduplicate_assets → 中文清单。
+
+    ``include_fixtures=False`` 时剔除标了 ``is_fixture`` / ``display_only`` 的演示
+    夹具，使它们不进入清单与「待人工确认」等统计。
 
     返回 (去重后资产列表, 渲染好的 Markdown 文本)。
     """
@@ -583,6 +587,13 @@ def generate_from_bom(
         assets, merge_log = deduplicate_assets(raw_assets)
     else:
         assets, merge_log = raw_assets, []
+    if not include_fixtures:
+        fixture_flags = ("is_fixture", "display_only")
+        assets = [
+            asset
+            for asset in assets
+            if not any(asset.get(flag) is True for flag in fixture_flags)
+        ]
     md = render_report(
         assets,
         bom_path=str(path),
@@ -593,9 +604,13 @@ def generate_from_bom(
     return assets, md
 
 
-def generate(bom_path: str) -> tuple[list[dict[str, Any]], str]:
+def generate(
+    bom_path: str,
+    *,
+    include_fixtures: bool = True,
+) -> tuple[list[dict[str, Any]], str]:
     """兼容旧调用：返回 (资产列表, Markdown 文本)。"""
-    return generate_from_bom(bom_path)
+    return generate_from_bom(bom_path, include_fixtures=include_fixtures)
 
 
 # ---------------------------------------------------------------------------

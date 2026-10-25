@@ -1,0 +1,332 @@
+{
+  "Code": 200,
+  "Data": {
+    "AigcAttributes": "{}",
+    "AigcIsTop": 0,
+    "AigcType": "",
+    "AlreadyStar": false,
+    "ApplyMeta": "{}",
+    "ApprovalMode": 1,
+    "ApprovalNotifyEmail": "",
+    "Architectures": null,
+    "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+    "Backbone": [
+      "transformer"
+    ],
+    "BackendSupport": {
+      "architectures": null,
+      "backend_info": {
+        "deploy_task": null,
+        "lmdeploy": null,
+        "lmdeploy_turbomind": null,
+        "ollama": null,
+        "sglang": null,
+        "vllm": null
+      },
+      "model_id": ""
+    },
+    "BaseModel": [],
+    "BaseModelRelation": "",
+    "CardReady": 1,
+    "CardUnreadyReason": "",
+    "CertificationCreateBy": "",
+    "CertificationCreatedTime": -62135596800,
+    "ChineseName": "StructBERT情感分类-中文-通用-base",
+    "CoverHeight": 0,
+    "CoverImages": [],
+    "CoverWidth": 0,
+    "CreatedBy": "nicolasorz",
+    "CreatedTime": 1659546730,
+    "DashSdkParameter": "",
+    "Datasets": {
+      "test": [
+        "DAMO_NLP/yf_dianping",
+        "DAMO_NLP/jd"
+      ]
+    },
+    "DemoAvailable": 1,
+    "DemoUnavailableReason": "",
+    "Description": "StructBERT情感分类-中文-通用-base是基于bdci、dianping、jd binary、waimai-10k四个数据集（11.5w条数据）训练出来的情感分类模型。",
+    "Domain": [
+      "nlp"
+    ],
+    "Downloads": 729297,
+    "ExampleCodeAvailable": 1,
+    "ExampleCodeUnavailableReason": "",
+    "ForbiddenVisibilityUpdate": false,
+    "Frameworks": [
+      "pytorch"
+    ],
+    "FromSite": "maas",
+    "Id": 14,
+    "Integrating": 2,
+    "IntegrationFailureLog": "",
+    "IntegrationFailureReason": "",
+    "IsAccessible": 1,
+    "IsCertification": 1,
+    "IsHot": 0,
+    "IsNewModel": false,
+    "IsOnline": 1,
+    "IsPreTrain": 0,
+    "IsPublished": 1,
+    "IsTop": 0,
+    "Language": [
+      "cn"
+    ],
+    "LastUpdatedTime": 1704712441,
+    "Libraries": [
+      "pytorch"
+    ],
+    "License": "Apache License 2.0",
+    "LicenseLink": "",
+    "LicenseName": "",
+    "Meta": "",
+    "Metrics": [
+      "accuracy"
+    ],
+    "ModelDetail": {},
+    "ModelInfos": {},
+    "ModelRevisions": null,
+    "ModelSource": "USER_UPLOAD",
+    "ModelTools": "",
+    "ModelType": [
+      "sbert"
+    ],
+    "MuseInfo": null,
+    "NEXA": {
+      "Catalogues": null,
+      "ModelCover": "",
+      "ScientificField": "",
+      "Source": "",
+      "SubScientificField": null
+    },
+    "Name": "nlp_structbert_sentiment-classification_chinese-base",
+    "NewVersion": "",
+    "NickName": "",
+    "OfficialTags": null,
+    "OpenAiSwingDeployInfo": {
+      "Order": 0,
+      "Recommend": null,
+      "lmdeploy": {
+        "eas": {
+          "Script": "",
+          "requirements": ""
+        },
+        "ens": {
+          "Script": "",
+          "requirements": ""
+        },
+        "fc": {
+          "Script": "",
+          "requirements": ""
+        },
+        "image_tag": ""
+      },
+      "ollama": {
+        "eas": {
+          "Script": "",
+          "requirements": ""
+        },
+        "ens": {
+          "Script": "",
+          "requirements": ""
+        },
+        "fc": {
+          "Script": "",
+          "requirements": ""
+        },
+        "image_tag": ""
+      },
+      "pipeline": {
+        "eas": {
+          "Script": "",
+          "requirements": ""
+        },
+        "ens": {
+          "Script": "",
+          "requirements": ""
+        },
+        "fc": {
+          "Script": "",
+          "requirements": ""
+        },
+        "image_tag": ""
+      },
+      "vllm": {
+        "eas": {
+          "Script": "",
+          "requirements": ""
+        },
+        "ens": {
+          "Script": "",
+          "requirements": ""
+        },
+        "fc": {
+          "Script": "",
+          "requirements": ""
+        },
+        "image_tag": ""
+      }
+    },
+    "Organization": {
+      "ApplyFailureReason": "",
+      "ApplyReason": "",
+      "Avatar": "https://resouces.modelscope.cn/avatar/86fc4b9c-4548-463c-8cbb-f37f68b87141.png",
+      "CreateCompetition": false,
+      "CreatedBy": "damoadmin",
+      "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"通义实验室(Institute for Intelligent Computing, aka Tongyi Lab) 专注于各领域大模型技术研发与创新应用。实验室研究方向涵盖LLM、多模态理解与生成、视觉AIGC、语音等多个领域。我们并积极推进研究成果的产业化落地。实验室同时积极参与开源社区建设，全方位拥抱开源社区，共同探索AI模型的开源开放。\"]]]]",
+      "DisplayUrl": "",
+      "Email": "",
+      "FromSite": "",
+      "FullName": "通义实验室",
+      "GithubAddress": "",
+      "GmtCreated": "2022-08-03T17:01:55Z",
+      "GmtModified": "2025-11-21T08:30:42Z",
+      "Id": 1,
+      "InitAdminMembers": "",
+      "IsApply": false,
+      "IsCertification": "",
+      "Mobile": "",
+      "Name": "iic",
+      "Path": "",
+      "Roles": null,
+      "StarCnt": 0,
+      "Status": 0,
+      "SubscribeVo": null,
+      "Type": 2
+    },
+    "PaiModelGalleryUrl": null,
+    "PaiSdkParameter": null,
+    "Path": "iic",
+    "ProtectedMode": 2,
+    "ReadMeContent": "\n# StructBERT中文情感分类模型介绍\n\n情感分类任务，通常为输入一段句子或一段话，返回该段话正向/负向的情感极性，在用户评价，观点抽取，意图识别中往往起到重要作用。StructBERT中文情感分类模型是基于bdci、dianping、jd binary、waimai-10k四个数据集（11.5w条数据）训练出来的情感分类模型。由于license权限问题，目前只上传了dianping和jd binary两个数据集。\n\n其他数据集：\n- bdci：https://www.datafountain.cn/competitions/310/datasets\n- waimai-10k：https://github.com/SophonPlus/ChineseNlpCorpus/tree/master/datasets/waimai_10k\n\n\n## 模型描述\n\n模型基于Structbert-base-chinese，在bdci、dianping、jd binary、waimai-10k四个数据集（11.5w条数据）上fine-tune得到。\n\n![模型结构](model.jpg)\n\n## 期望模型使用方式以及适用范围\n\n你可以使用StructBERT中文情感分类模型模型，对通用领域的中文情感分类任务进行推理。\n输入自然语言文本，模型会给出该文本的情感分类标签(0，1)，即（negative， positive）以及相应的概率。\n\n### 如何使用\n在安装完成ModelScope-lib之后即可使用\n\n#### 推理代码范例\n```python\nfrom modelscope.pipelines import pipeline\nfrom modelscope.utils.constant import Tasks\n\nsemantic_cls = pipeline(Tasks.text_classification, 'damo/nlp_structbert_sentiment-classification_chinese-base')\nsemantic_cls(input='启动的时候很大声音，然后就会听到1.2秒的卡察的声音，类似齿轮摩擦的声音')\n```\n\n#### 微调代码范例\n```python\nimport os.path as osp\nfrom modelscope.trainers import build_trainer\nfrom modelscope.msdatasets import MsDataset\nfrom modelscope.utils.hub import read_config\nfrom modelscope.metainfo import Metrics\n\n\nmodel_id = 'damo/nlp_structbert_sentiment-classification_chinese-base'\ndataset_id = 'jd'\n\nWORK_DIR = 'workspace'\n\nmax_epochs = 2\ndef cfg_modify_fn(cfg):\n    cfg.train.max_epochs = max_epochs\n    cfg.train.hooks = [{\n            'type': 'TextLoggerHook',\n            'interval': 100\n        }, {\n            \"type\": \"CheckpointHook\",\n            \"interval\": 1\n        }]\n    cfg.evaluation.metrics = [Metrics.seq_cls_metric]\n    cfg['dataset'] = {\n        'train': {\n            'labels': ['负面', '正面'],\n            'first_sequence': 'sentence',\n            'label': 'label',\n        }\n    }\n    cfg.train.optimizer.lr = 3e-5\n    return cfg\n\n\ntrain_dataset = MsDataset.load(dataset_id, namespace='DAMO_NLP', split='train').to_hf_dataset()\neval_dataset = MsDataset.load(dataset_id, namespace='DAMO_NLP', split='validation').to_hf_dataset()\n# remove useless case\ntrain_dataset = train_dataset.filter(lambda x: x[\"label\"] != None and x[\"sentence\"] != None)\neval_dataset = eval_dataset.filter(lambda x: x[\"label\"] != None and x[\"sentence\"] != None)\n\n# map float to index\ndef map_labels(examples):\n    map_dict = {0: \"负面\", 1: \"正面\"}\n    examples['label'] = map_dict[int(examples['label'])]\n    return examples\n\ntrain_dataset = train_dataset.map(map_labels)\neval_dataset = eval_dataset.map(map_labels)\n\nkwargs = dict(\n    model=model_id,\n    train_dataset=train_dataset,\n    eval_dataset=eval_dataset,\n    work_dir=WORK_DIR,\n    cfg_modify_fn=cfg_modify_fn)\n\n\ntrainer = build_trainer(name='nlp-base-trainer', default_args=kwargs)\n\nprint('===============================================================')\nprint('pre-trained model loaded, training started:')\nprint('===============================================================')\n\ntrainer.train()\n\nprint('===============================================================')\nprint('train success.')\nprint('===============================================================')\n\nfor i in range(max_epochs):\n    eval_results = trainer.evaluate(f'{WORK_DIR}/epoch_{i+1}.pth')\n    print(f'epoch {i} evaluation result:')\n    print(eval_results)\n\n\nprint('===============================================================')\nprint('evaluate success')\nprint('===============================================================')\n```\n\n### 模型局限性以及可能的偏差\n模型训练数据有限，效果可能存在一定偏差。\n\n## 训练数据介绍\n\n1. bdci：CCF汽车行业用户观点主题及情感识别比赛数据集。\n2. dianping：请参考关联数据集DAMO_NLP/yf_dianping\n3. jd binary：请参考关联数据集DAMO_NLP/jd\n4. waimai-10k：某外卖平台收集的用户评价，正向4000条，负向约8000条\n\n数据来源于https://github.com/CLUEbenchmark/CLUEDatasetSearch\n\n\n## 数据评估及结果\n\n| 数据集   | BDCI2018 | Dianping | JD Binary | Waimai-10k |\n| -------- | -------- | -------- | --------- | ---------- |\n| Accuracy | 0.8626    | 0.7869    | 0.9206     | 0.9154      |\n\n\n```bib\n@article{wang2019structbert,\n  title={Structbert: Incorporating language structures into pre-training for deep language understanding},\n  author={Wang, Wei and Bi, Bin and Yan, Ming and Wu, Chen and Bao, Zuyi and Xia, Jiangnan and Peng, Liwei and Si, Luo},\n  journal={arXiv preprint arXiv:1908.04577},\n  year={2019}\n}\n```\n\n",
+    "ReadMeTips": null,
+    "RelatedArxivId": [
+      "1908.04577"
+    ],
+    "RelatedPaper": [],
+    "Revision": "master",
+    "Stars": 213,
+    "StorageSize": 409312996,
+    "Studios": [],
+    "SubVisionFoundation": "",
+    "SupportApiInference": true,
+    "SupportDashDeployment": 0,
+    "SupportDashInference": 0,
+    "SupportDashTraining": 0,
+    "SupportDeployment": 1,
+    "SupportExperience": 1,
+    "SupportFinetuning": 1,
+    "SupportFlexTrain": 0,
+    "SupportInference": "",
+    "SupportPaiModelGallery": null,
+    "SupportPaiSdk": 2,
+    "SupportPivotEval": false,
+    "SwingDeployInfo": null,
+    "Tags": [
+      "transformer",
+      "AliceMind",
+      "Alibaba",
+      "sentiment-analysis",
+      "情感分类",
+      "文本分类"
+    ],
+    "Tasks": [
+      {
+        "ChineseName": "文本分类",
+        "Description": "",
+        "DomainName": "nlp",
+        "Id": 147,
+        "IsExhibition": true,
+        "IsHot": 0,
+        "IsLeaf": true,
+        "IsLoginRequired": false,
+        "IsRetrieval": true,
+        "Level": 1,
+        "Name": "text-classification",
+        "ParentId": -1,
+        "ParentTask": null,
+        "Sorting": 0,
+        "SupportWidgets": false,
+        "TypicalModel": "",
+        "WidgetConfig": "{}",
+        "WidgetValidator": ""
+      },
+      {
+        "ChineseName": "情感分析",
+        "Description": "",
+        "DomainName": "nlp",
+        "Id": 16,
+        "IsExhibition": true,
+        "IsHot": 0,
+        "IsLeaf": true,
+        "IsLoginRequired": false,
+        "IsRetrieval": true,
+        "Level": 1,
+        "Name": "sentiment-classification",
+        "ParentId": -1,
+        "ParentTask": null,
+        "Sorting": 0,
+        "SupportWidgets": true,
+        "TypicalModel": "",
+        "WidgetConfig": "{\"task\": \"sentiment-classification\", \"inputs\": [{\"type\": \"text\", \"validator\": {\"max_words\": 300}, \"displayType\": \"OnlyTextArea\"}], \"output\": {\"displayType\": \"ProbabilityPredict\"}, \"examples\": []}",
+        "WidgetValidator": ""
+      }
+    ],
+    "Tools": [],
+    "TriggerWords": null,
+    "Visibility": 5,
+    "VisionFoundation": "",
+    "_": null,
+    "widgets": [
+      {
+        "enabled": true,
+        "examples": [
+          {
+            "inputs": [
+              {
+                "data": "这件衣服挺好看",
+                "name": "input"
+              }
+            ],
+            "name": "1",
+            "parameters": null,
+            "title": "示例1"
+          },
+          {
+            "inputs": [
+              {
+                "data": "今天天气不错，适合出去游玩",
+                "name": "input"
+              }
+            ],
+            "name": "2",
+            "parameters": null,
+            "title": "示例2"
+          }
+        ],
+        "inferencespec": {
+          "cpu": 2,
+          "gpu": 0,
+          "gpu_memory": 16000,
+          "memory": 4000
+        },
+        "inputs": [
+          {
+            "name": "input",
+            "title": "",
+            "type": "text",
+            "validator": {
+              "max_words": "300"
+            }
+          }
+        ],
+        "parameters": null,
+        "task": "text-classification"
+      }
+    ]
+  },
+  "Message": "success",
+  "RequestId": "0bd5a38d-c305-4b09-9df6-ceb75173fad8",
+  "Success": true
+}

@@ -54,6 +54,14 @@ DECISION_BY_EVIDENCE = {
     "C": "UNDETERMINED",
 }
 
+# 非标/未知协议（有协议文本但规则库不认识，如 qwen-research）：按证据等级降级。
+# 与 risk_evaluator._UNKNOWN_LICENSE_DECISION 保持一致（扫描器单点判定同口径）。
+UNKNOWN_LICENSE_DECISION = {
+    "A": "RISK_POTENTIAL",
+    "B": "RISK_POTENTIAL",
+    "C": "UNDETERMINED",
+}
+
 # 血缘边类型（见 build_graph.EDGE_TYPES）
 LINEAGE_EDGE_TYPES = {"derived_from", "trained_on", "depends_on"}
 
@@ -215,12 +223,51 @@ def edge_signature(edge: dict) -> tuple:
 
 
 def edge_set(edges: list[dict]) -> set:
-    return {edge_signature(edge) for edge in edges if edge.get("source") and edge.get("target")}
+    """血缘边集合（排除聚合域展示边 expanded_from：它只用于渲染层
+    "聚合风险域已展开哪些具体模型"，不是真实血缘变更，不应触发 Delta 事件）。"""
+    return {
+        edge_signature(edge)
+        for edge in edges
+        if edge.get("source")
+        and edge.get("target")
+        and edge.get("edge_type") != "expanded_from"
+    }
 
 
 def decision_for(evidence_level: str | None) -> str:
     """证据等级 -> 三级判定；缺证据一律 UNDETERMINED。"""
     return DECISION_BY_EVIDENCE.get(evidence_level or "C", "UNDETERMINED")
+
+
+def license_change_decision(evidence, direction, conflict) -> str:
+    """许可证变更综合判定（证据等级 ≠ 风险严重度，必须结合变更方向与冲突）。
+
+    规则（与 risk_evaluator.decision_for_license 统一口径）：
+    - 确认的继承冲突 -> RISK_CONFIRMED（如 GPL 传染 vs 下游禁止附加限制）
+    - 新许可证风险等级 >= 4（强 copyleft / 高风险 AI 受限）-> RISK_CONFIRMED
+      （覆盖 llama2→GPL-3.0、MIT→GPL-3.0-only 等真正的高风险收紧）
+    - 新许可证风险等级 <= 2（宽松）-> SAFE（放宽/同级宽松，如 GPL→Apache-2.0）
+    - 新许可证风险等级 3（弱 copyleft / AI 受限中等风险）-> 按证据等级分级，
+      与 risk_evaluator.decision_for_license 一致：证据 A -> RISK_CONFIRMED、
+      证据 B -> RISK_POTENTIAL、证据 C -> UNDETERMINED
+    - 新许可证未知（不在规则库，如 qwen-research / llama3.1）：
+      按 risk_evaluator._UNKNOWN_LICENSE_DECISION 处理：证据 A/B -> RISK_POTENTIAL
+      （潜在风险，不是确认高风险）、证据 C -> UNDETERMINED（待补证）。
+      这同时覆盖"从已知变未知"（许可证移除/收紧为未知协议）与"未知到未知"两类，
+      与扫描器对非标协议的单点判定保持一致，不再回退普通证据映射。
+    """
+    if conflict.get("conflict"):
+        return "RISK_CONFIRMED"
+    new_level = (direction.get("new") or {}).get("risk_level")
+    if new_level is not None:
+        if new_level >= 4:
+            return "RISK_CONFIRMED"
+        if new_level <= 2:
+            return "SAFE"
+        # risk_level == 3：与 risk_evaluator 一致按证据分级
+        return decision_for(evidence)
+    # 新许可证未知（非标/未收录协议，或从已知变为未知）：统一走非标协议规则
+    return UNKNOWN_LICENSE_DECISION.get(evidence or "C", "UNDETERMINED")
 
 
 def weaker_evidence(*levels: str | None) -> str:
@@ -301,6 +348,7 @@ def detect_delta(
                 best_evidence(new_asset, ("license",)),
             )
             conflict = check_license_conflict(new_license, old_license)
+            direction = compare_direction(old_license, new_license)
             event = {
                 "event_id": next(gen),
                 "seed": canonical_id,
@@ -309,8 +357,8 @@ def detect_delta(
                 "after": state_of(new_asset),
                 "path": [],
                 "evidence_level": evidence,
-                "decision": decision_for(evidence),
-                "direction": compare_direction(old_license, new_license),
+                "decision": license_change_decision(evidence, direction, conflict),
+                "direction": direction,
                 "conflict_detected": conflict["conflict"],
                 "conflict_type": conflict["type"],
                 "conflict_detail": conflict["detail"],
@@ -381,7 +429,9 @@ def detect_delta(
     edge_by_signature = {
         edge_signature(edge): edge
         for edge in before_edges + after_edges
-        if edge.get("source") and edge.get("target")
+        if edge.get("source")
+        and edge.get("target")
+        and edge.get("edge_type") != "expanded_from"
     }
 
     for signature in sorted(after_sig - before_sig):
