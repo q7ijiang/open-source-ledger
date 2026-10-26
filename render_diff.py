@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
+import copy
 from collections import Counter
 from pathlib import Path
 
@@ -21,6 +22,7 @@ import delta_engine
 import propagation_engine
 from render_diff_operational import operational_snapshot
 from render_layout import is_aggregate_node, layout_graph
+from ai_layer.schemas import semantic_diff
 
 DECISION_COLOR = {
     "RISK_CONFIRMED": "#f56c6c",
@@ -79,15 +81,42 @@ TPL = """<!DOCTYPE html>
   .stage { min-width:0; overflow:hidden; background:#fff; }
   .stage-title { position:sticky; top:0; z-index:2; font-size:13px; font-weight:700; padding:8px 14px; color:#475569; background:#fff; border-bottom:1px solid #eef2f7; }
   .stage-title span { margin-left:8px; color:#7b8799; font-size:11px; font-weight:400; }
-  .chart-shell { overflow:hidden; }
+  .chart-shell { overflow:auto; }
+  .ai-status-strip { padding:8px 20px; background:#f8fafc; border-bottom:1px solid var(--line); font-size:12px; color:#475569; }
+  .ai-status-strip b { color:#075985; }
+  .report-section { display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; padding:12px 20px; background:#fff; border-top:1px solid var(--line); font-size:12px; }
+  .report-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .download-button { appearance:none; border:1px solid #2f6fed; border-radius:6px; background:#2f6fed; color:#fff; padding:8px 13px; font:700 12px/1.2 "Microsoft YaHei","Segoe UI",Arial,sans-serif; cursor:pointer; }
+  .download-button:disabled { opacity:.5; cursor:not-allowed; }
+  .secondary-button { appearance:none; border:1px solid #2f6fed; border-radius:6px; background:#fff; color:#2f6fed; padding:8px 13px; font:700 12px/1.2 "Microsoft YaHei","Segoe UI",Arial,sans-serif; cursor:pointer; }
+  .secondary-button:disabled { opacity:.5; cursor:not-allowed; }
+  .report-modal[hidden] { display:none; }
+  .report-modal { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(15,23,42,.58); }
+  .report-dialog { width:min(1180px,calc(100vw - 32px)); height:min(86vh,900px); display:flex; flex-direction:column; overflow:hidden; background:#fff; border:1px solid #cbd5e1; border-radius:10px; box-shadow:0 24px 70px rgba(15,23,42,.28); }
+  .report-modal-head { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:12px 16px; border-bottom:1px solid var(--line); background:#f8fafc; }
+  .report-modal-head b { font-size:14px; }
+  .report-modal-head span { color:var(--muted); font-size:11px; }
+  .report-close { appearance:none; border:1px solid #cbd5e1; border-radius:6px; background:#fff; color:#475569; padding:6px 11px; font:700 12px/1.2 "Microsoft YaHei","Segoe UI",Arial,sans-serif; cursor:pointer; }
+  .report-preview { flex:1 1 auto; min-height:0; overflow:auto; overscroll-behavior:contain; margin:0; padding:16px 18px; background:#fbfdff; border:0; white-space:pre-wrap; word-break:break-word; font:12px/1.65 Consolas,"Microsoft YaHei",monospace; outline:none; }
+  .report-preview:focus { box-shadow:inset 0 0 0 2px rgba(47,111,237,.22); }
   .chart-page[hidden] { display:none; }
-  .chart { width:100%; height:{{CHART_HEIGHT}}px; }
+  .chart { width:100%; min-width:1080px; height:{{CHART_HEIGHT}}px; }
   .mid { background:#fff; border-left:1px solid var(--line); padding:10px; font-size:12px; overflow-y:auto; max-height:{{CHART_HEIGHT}}px; }
   .mid h3 { margin:0 0 8px; font-size:13px; }
   .evt { border:1px solid var(--line); border-radius:6px; padding:7px 8px; margin-bottom:8px; cursor:pointer; background:#fafcfe; }
   .evt:hover { border-color:#409eff; }
   .evt .tag { display:inline-block; padding:1px 6px; border-radius:3px; color:#fff; font-size:10px; }
   .evt .arrow { color:#c0392b; font-weight:700; }
+  .ai-diff-block { margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--line); }
+  .ai-diff { border:1px solid #bae6fd; background:#f0f9ff; border-radius:6px; padding:7px 8px; margin-bottom:7px; line-height:1.5; }
+  .ai-diff .route { color:#075985; font-weight:700; }
+  .ai-diff .meta { color:#0369a1; font-size:11px; margin-top:3px; }
+  .ai-box { margin-top:10px; border:1px solid #bae6fd; background:#f0f9ff; border-radius:8px; padding:10px; line-height:1.55; }
+  .ai-box h4 { margin:0 0 7px; color:#075985; font-size:13px; }
+  .ai-claim { border-top:1px solid #dbeafe; padding:7px 0; }
+  .ai-meta { color:#0369a1; font-size:11px; }
+  .ai-quote { margin-top:4px; padding:6px 8px; background:#fff; border-left:3px solid #38bdf8; white-space:pre-wrap; word-break:break-word; }
+  .ai-gap { color:#92400e; margin-top:5px; }
   #panel { padding:12px 20px; background:#fff; border-top:1px solid var(--line); font-size:12px; }
   #panel h3 { margin:0 0 8px; font-size:14px; }
   .cert { border:1px solid var(--line); border-radius:6px; padding:8px; margin-bottom:8px; background:#fafcfe; }
@@ -96,6 +125,18 @@ TPL = """<!DOCTYPE html>
   .kv b { color:#356fa8; }
   .ev { border-top:1px dashed var(--line); padding:7px 0; line-height:1.5; }
   .risk-section { background:#fff; border-top:1px solid var(--line); padding:14px 20px 20px; }
+  .lineage-section { background:#fff; border-top:1px solid var(--line); padding:14px 20px 18px; }
+  .lineage-section h2 { margin:0 0 4px; font-size:15px; }
+  .lineage-section p { margin:0 0 10px; color:var(--muted); font-size:12px; }
+  .lineage-forest { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:9px; }
+  .lineage-root { border:1px solid var(--line); border-radius:7px; background:#fbfdff; padding:9px 11px; min-width:0; }
+  .lineage-root .root-name { font-weight:700; font-size:12px; color:#253044; word-break:break-all; }
+  .lineage-root .root-meta { margin-top:3px; font-size:11px; color:var(--muted); }
+  .lineage-root ul { margin:7px 0 0 17px; padding:0; }
+  .lineage-root li { margin:5px 0; font-size:11px; color:#475569; line-height:1.45; }
+  .lineage-root li .arrow { color:#2f6fed; font-weight:700; margin-right:4px; }
+  .lineage-root li .role { color:#7b8799; }
+  .lineage-empty { color:var(--muted); font-size:12px; }
   .risk-head { display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-bottom:10px; }
   .risk-head h2 { margin:0 0 3px; font-size:15px; }
   .risk-head p { margin:0; color:var(--muted); font-size:12px; }
@@ -124,7 +165,7 @@ TPL = """<!DOCTYPE html>
 </head>
 <body>
 <div class="header">
-  <div><h1>{{TITLE}}</h1><div class="sub">模型簇自适应布局 · 聚合域保持中性 · 点击节点或变更事件查看详情</div></div>
+  <div><h1>{{TITLE}}</h1><div class="sub">t0/t1 固定坐标 · 上游在上 · 箭头指向来源模型 · 点击节点查看证据</div></div>
   <div class="stats">t0：{{N0}} 节点 / {{E0}} 边 · t1：{{N1}} 节点 / {{E1}} 边 · 变更事件 {{NE}} · 路径证书 {{NC}}</div>
 </div>
 <div class="legend-row">
@@ -132,28 +173,38 @@ TPL = """<!DOCTYPE html>
   <span><i style="background:#e6a23c"></i>潜在风险</span>
   <span><i style="background:#67c23a"></i>安全</span>
   <span><i style="background:#d3d7de"></i>待确认</span>
-  <span><i style="background:#eef0f4;border:2px solid #f56c6c"></i>中性聚合域 + 风险描边</span>
-  <span><i class="line" style="background:#c0392b"></i>真实风险传播</span>
-  <span><i class="line" style="background:#aeb8c7"></i>虚线 = 聚合归属，不参与传播</span>
+  <span><i class="line" style="background:#8794a6"></i>实线箭头 = 下游派生自上游</span>
+  <span><i class="line" style="background:#c0392b"></i>红色箭头 = 风险传播路径</span>
+  <span id="legend-aggregate" hidden><i style="background:#eef0f4;border:2px solid #f56c6c"></i>聚合域仅表示范围，不是血缘</span>
 </div>
+<div id="ai-status-strip" class="ai-status-strip">正在读取 AI 语义证据状态…</div>
 <div class="snapshot-tabs" role="tablist" aria-label="快照选择">
   <button type="button" class="snapshot-tab is-active" data-snapshot="t1" role="tab" aria-selected="true">t1 当前<span class="hint">{{N1}} 节点 / {{E1}} 边</span></button>
   <button type="button" class="snapshot-tab" data-snapshot="t0" role="tab" aria-selected="false">t0 基线<span class="hint">{{N0}} 节点 / {{E0}} 边</span></button>
 </div>
 <div class="main">
   <section class="stage">
-    <div class="stage-title">风险血缘图 <span id="stage-hint">聚合域默认折叠，点击风险域展开具体模型</span></div>
+    <div class="stage-title">上游血缘与风险传播图 <span id="stage-hint">越靠上越上游；同一模型在 t0/t1 保持相同坐标</span></div>
     <div class="chart-shell">
       <div id="chart0" class="chart chart-page" role="tabpanel" hidden></div>
       <div id="chart1" class="chart chart-page" role="tabpanel"></div>
     </div>
   </section>
   <aside class="mid">
+    <div class="ai-diff-block">
+      <h3>AI 语义差异（C 级）</h3>
+      <div id="ai-diff-list"></div>
+    </div>
     <h3>变更事件（点击查看传播证书）</h3>
     <div id="evt-list"></div>
   </aside>
 </div>
 <div id="panel"><h3>证据、传播路径与能力边界</h3><div id="panel-body" style="color:#7b8799">点击图中节点或变更事件查看详情。</div></div>
+<section class="lineage-section">
+  <h2>项目模型与上游来源路径</h2>
+  <p>箭头方向是“下游模型 → 上游来源”。这里把 t1 的路径展开成文字，避免只靠连线猜基座关系；风险变化不会改变路径。</p>
+  <div id="lineage-forest" class="lineage-forest"></div>
+</section>
 <section class="risk-section">
   <div class="risk-head">
     <div><h2>已识别的具体风险模型</h2><p>只列具有具体模型身份的节点；聚合域只作为范围显示，不把聚合计数伪装成模型名称。</p></div>
@@ -162,15 +213,82 @@ TPL = """<!DOCTYPE html>
   <div id="risk-grid" class="risk-grid"></div>
   <div id="risk-empty" class="empty" hidden></div>
 </section>
+<section class="report-section">
+  <div><b>Markdown 审计报告</b><div style="color:#64748b;margin-top:3px">报告仍由 main.py 生成，HTML 仅附带原文预览与下载，不替代报告文件。</div></div>
+  <div class="report-actions">
+    <button id="open-report" class="secondary-button" type="button">在大窗口查看报告</button>
+    <button id="download-report" class="download-button" type="button">下载 Markdown 报告</button>
+  </div>
+</section>
+<div id="report-modal" class="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-modal-title" hidden>
+  <div class="report-dialog">
+    <div class="report-modal-head">
+      <div><b id="report-modal-title">Markdown 审计报告</b><br/><span>在报告区域滚动查看；按 Esc 关闭</span></div>
+      <button id="close-report" class="report-close" type="button">关闭</button>
+    </div>
+    <pre id="report-preview" class="report-preview" tabindex="0"></pre>
+  </div>
+</div>
 <script>
 const DATA = {{DATA_JSON}};
 const DECISION_COLOR = {{DECISION_COLOR_JSON}};
 const DECISION_LABEL = {{DECISION_LABEL_JSON}};
 const DECISION_RANK = {{DECISION_RANK_JSON}};
 const CHANGE_LABEL = {{CHANGE_LABEL_JSON}};
+const REPORT_MARKDOWN = {{REPORT_MARKDOWN_JSON}};
 
 function escapeHtml(value) {
   return String(value == null ? "" : value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+function aiAnalysis(n) {
+  return n && n.ai_analysis && n.ai_analysis.analysis_type === "model_profile" ? n.ai_analysis : null;
+}
+function confidenceFactorText(claim) {
+  const labels = {base:"基础",license_file:"LICENSE 文件",readme:"README 文件",structured_file:"结构化文件",exact_quote:"原文精确命中",restriction_wording:"限制措辞",source_sha256:"SHA256",quote_context:"引文长度",uncertain_state:"不确定性",cross_document_support:"跨文档支持"};
+  return Object.entries(claim.confidence_factors || {}).map(([key, value]) => {
+    const number = Number(value);
+    return `${labels[key] || key} ${number >= 0 ? "+" : ""}${number.toFixed(2)}`;
+  }).join(" · ");
+}
+function aiTooltip(n) {
+  const ai = aiAnalysis(n);
+  if (!ai) return "";
+  const first = (ai.claims || [])[0];
+  const summary = first ? `${escapeHtml(first.dimension_zh || first.dimension)}：${escapeHtml(first.state_zh || first.state)}（${escapeHtml(first.confidence)}）` : "无通过原文校验的条款";
+  return `<br/>AI 语义：C级 · ${summary} · 待人工确认`;
+}
+function renderAiDetails(raw) {
+  const ai = aiAnalysis(raw);
+  const project = raw && raw.ai_project_context && raw.ai_project_context.analysis_type === "project_context" ? raw.ai_project_context : null;
+  if (!ai && !project) return "";
+  let html = `<div class="ai-box"><h4>AI 语义证据（C 级，不改变规则判定）</h4>`;
+  if (ai) {
+    if (ai.simulation) html += `<div class="ai-gap"><b>验收模拟</b>：${escapeHtml(ai.simulation_note || "该条款画像用于验收，不代表数据源当前事实")}</div>`;
+    html += `<div class="kv"><b>模型分析状态</b> ${escapeHtml(ai.status || "unknown")}</div>`;
+    if (ai.summary) html += `<div class="kv"><b>摘要</b> ${escapeHtml(ai.summary)}</div>`;
+    (ai.claims || []).forEach(claim => {
+      const evidence = claim.evidence || {};
+      html += `<div class="ai-claim"><div><b>${escapeHtml(claim.dimension_zh || claim.dimension)}</b>：${escapeHtml(claim.state_zh || claim.state)}</div>` +
+        `<div class="ai-meta">置信度 ${escapeHtml(claim.confidence)} · 证据等级 ${escapeHtml(claim.evidence_level || "C")} · ${escapeHtml(claim.human_review || "pending")}</div>` +
+        `<div class="ai-meta">置信度构成：${escapeHtml(confidenceFactorText(claim) || "—")}</div>` +
+        `<div class="ai-quote">${escapeHtml(evidence.quote || "—")}</div>` +
+        `<div class="ai-meta">原文：${escapeHtml(evidence.source_path || "—")} · SHA256 ${escapeHtml(evidence.quote_sha256 || "—")}</div></div>`;
+    });
+    const gaps = ai.gaps || [];
+    if (gaps.length) html += `<div class="ai-gap"><b>证据缺口</b><br/>${gaps.map(g => `${escapeHtml(g.dimension_zh || g.dimension)}：${escapeHtml(g.reason || "证据不足")}`).join("<br/>")}</div>`;
+  }
+  if (project) {
+    if (project.simulation) html += `<div class="ai-gap"><b>验收模拟</b>：${escapeHtml(project.simulation_note || "该项目上下文用于验收展示")}</div>`;
+    html += `<div class="kv"><b>项目使用上下文</b></div>`;
+    (project.uses || []).forEach(item => {
+      const evidence = item.evidence || {};
+      html += `<div class="ai-claim"><div><b>${escapeHtml(item.use_type_zh || item.use_type)}</b>：${escapeHtml(item.statement)}</div>` +
+        `<div class="ai-meta">置信度 ${escapeHtml(item.confidence)} · C · ${escapeHtml(item.human_review || "pending")}</div>` +
+        `<div class="ai-quote">${escapeHtml(evidence.quote || "—")}</div>` +
+        `<div class="ai-meta">项目文件：${escapeHtml(evidence.source_path || "—")}</div></div>`;
+    });
+  }
+  return html + `</div>`;
 }
 function decisionOf(value) {
   const code = value || "UNDETERMINED";
@@ -250,7 +368,7 @@ function buildChart(elId, nodes, edges, layout, snapshot) {
           formatter:() => `{name|${label}}\n{state|${decisionShort(n.decision)}}`,
           rich:{name:{fontSize:9,fontWeight:"bold",color:"#253044",lineHeight:14},state:{fontSize:8,color:j.color,lineHeight:13}}
         },
-        tooltip:{show:visible,formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${sourceNote}${isFixtureNode(n) ? "<br/>构造测试夹具，不代表真实下游模型" : ""}`},
+        tooltip:{show:visible,formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${sourceNote}${isFixtureNode(n) ? "<br/>构造测试夹具，不代表真实下游模型" : ""}${aiTooltip(n)}`},
         _raw:n,
         _childParent:n.render_parent_id,
         silent:!visible,
@@ -284,6 +402,37 @@ function buildChart(elId, nodes, edges, layout, snapshot) {
         z:2
       };
     }
+    const card = n.render_card || {};
+    const role = n.render_role_short || n.render_role_label || (n.lineage_role === "root" ? "项目直接使用" : "上游模型");
+    const aiTag = aiAnalysis(n) ? " · AI" : "";
+    if (card.width) {
+      return {
+        id:n.id,
+        name:n.name || n.id,
+        x:n.x,
+        y:n.y,
+        symbol:"rect",
+        symbolSize:[card.width,card.height],
+        itemStyle:{
+          color:childFill(n.decision),borderColor:j.color,
+          borderWidth:["RISK_CONFIRMED","RISK_POTENTIAL"].includes(n.decision) ? 2.5 : 1.8,
+          borderRadius:8,
+          shadowBlur:["RISK_CONFIRMED","RISK_POTENTIAL"].includes(n.decision) ? 6 : 0,
+          shadowColor:"rgba(15,23,42,.12)"
+        },
+        label:{
+          show:true,position:"inside",
+          formatter:() => `{name|${card.label || n.name || n.id}}\n{role|${role}${aiTag}}`,
+          rich:{
+            name:{fontSize:card.width < 145 ? 8 : 9,fontWeight:"bold",color:"#253044",lineHeight:14,width:card.width - 16,overflow:"truncate"},
+            role:{fontSize:7,color:aiAnalysis(n) ? "#0369a1" : j.color,lineHeight:12}
+          }
+        },
+        tooltip:{formatter:() => `<b>${escapeHtml(n.name || n.id)}</b><br/>角色：${escapeHtml(role)}<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${sourceNote}${aiTooltip(n)}`},
+        _raw:n,
+        z:4
+      };
+    }
     return {
       id:n.id,
       name:n.name || n.id,
@@ -293,7 +442,7 @@ function buildChart(elId, nodes, edges, layout, snapshot) {
       symbolSize:n.asset_type === "dataset" ? 28 : 32,
       itemStyle:{color:j.color,borderColor:j.color === "#d3d7de" ? "#abb4c2" : j.color,borderWidth:1.5},
       label:{show:true,formatter:() => n.name || n.id,fontSize:9,color:"#334155",position:n.lp || "bottom"},
-      tooltip:{formatter:() => `<b>${escapeHtml(n.name || n.id)}</b><br/>版本：${escapeHtml(n.version || "—")}<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${sourceNote}`},
+      tooltip:{formatter:() => `<b>${escapeHtml(n.name || n.id)}</b><br/>角色：${escapeHtml(role)}<br/>版本：${escapeHtml(n.version || "—")}<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${sourceNote}${aiTooltip(n)}`},
       _raw:n,
       z:4
     };
@@ -302,38 +451,34 @@ function buildChart(elId, nodes, edges, layout, snapshot) {
 
   function makeLinks() {
     return edges.map(e => {
-    const source = nodeById[e.source] || {};
-    const target = nodeById[e.target] || {};
-    const expansion = e.edge_type === "expanded_from";
-    const aggregateId = expansion ? (isAgg(source) ? e.source : e.target) : null;
-    if (aggregateId && !expandedDomains.has(aggregateId)) return null;
-    const membership = expansion || isAgg(source) || isAgg(target);
-    const risky = !membership && (
-      ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(source.decision) ||
-      ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(target.decision)
-    );
-    return {
-      source:e.source,
-      target:e.target,
-      edgeSymbol:membership ? ["none","none"] : ["none","arrow"],
-      edgeSymbolSize:[0,9],
-      lineStyle:{width:risky ? 4 : (membership ? 1.2 : 1.5),color:risky ? "#c0392b" : (membership ? "#aeb8c7" : "#95a5a6"),type:membership ? "dashed" : "solid"},
-      _edge:e
-    };
+      const source = nodeById[e.source] || {};
+      const target = nodeById[e.target] || {};
+      // Grouping is shown by card containment, never as a lineage edge.
+      if (e.edge_type === "expanded_from" || isAgg(source) || isAgg(target)) return null;
+      const risky = ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(source.decision) ||
+        ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(target.decision);
+      return {
+        source:e.source,
+        target:e.target,
+        label:{show:false},
+        emphasis:{label:{show:true,formatter:e.render_label || e.edge_type || "派生自",fontSize:9,color:risky ? "#c0392b" : "#475569"}},
+        lineStyle:{width:risky ? 3 : 1.4,color:risky ? "#c0392b" : "#8794a6",type:"solid",curveness:0.03,opacity:risky ? 0.92 : 0.72},
+        _edge:e
+      };
   }).filter(Boolean);
   }
-  const graphics = (layout?.clusters || []).map(c => ({
-    type:"group",
-    left:c.x,
-    top:c.y,
-    z:-1,
-    silent:true,
-    children:[
-      {type:"rect",shape:{x:0,y:0,width:c.width,height:c.height,r:14},style:{fill:"#fbfcfe",stroke:"#dfe7f1",lineWidth:1}},
-      {type:"text",style:{x:14,y:20,text:c.title,fill:"#253044",font:"bold 12px Microsoft YaHei"}},
-      {type:"text",style:{x:14,y:38,text:`风险域 ${c.aggregate_count} 个${c.expanded_count ? " · 点击风险域展开" : " · 聚合范围"}`,fill:"#7b8799",font:"10px Microsoft YaHei"}}
-    ]
-  }));
+  const graphics = (layout?.clusters || []).map(c => {
+    const lineageLayer = c.kind === "lineage_layer";
+    const subtitle = c.subtitle || `聚合域 ${c.aggregate_count} 个${c.expanded_count ? " · 点击展开" : ""}`;
+    return {
+      type:"group",left:c.x,top:c.y,z:-1,silent:true,
+      children:[
+        {type:"rect",shape:{x:0,y:0,width:c.width,height:c.height,r:12},style:{fill:lineageLayer ? "#f8fafc" : "#fbfcfe",stroke:lineageLayer ? "#e5eaf1" : "#dfe7f1",lineWidth:1}},
+        {type:"text",style:{x:14,y:20,text:c.title,fill:"#253044",font:"bold 12px Microsoft YaHei"}},
+        {type:"text",style:{x:14,y:38,text:subtitle,fill:"#7b8799",font:"10px Microsoft YaHei"}}
+      ]
+    };
+  });
   const chart = echarts.init(document.getElementById(elId));
   chart._refreshExpansion = () => chart.setOption({
     tooltip:{trigger:"item",backgroundColor:"#fff",borderColor:"#d0d7de",textStyle:{color:"#334155",fontSize:12}},
@@ -342,12 +487,16 @@ function buildChart(elId, nodes, edges, layout, snapshot) {
     series:[{
       type:"graph",
       layout:"none",
-      roam:false,
+      roam:true,
       draggable:false,
+      zoom:0.95,
+      scaleLimit:{min:0.55,max:2.5},
+      edgeSymbol:["none","arrow"],
+      edgeSymbolSize:[0,11],
       data:makeData(),
       links:makeLinks(),
-      emphasis:{focus:"none",lineStyle:{width:5}},
-      labelLayout:{hideOverlap:true}
+      emphasis:{focus:"adjacency",lineStyle:{width:5}},
+      labelLayout:{hideOverlap:false}
     }]
   }, true);
   chart._refreshExpansion();
@@ -402,18 +551,122 @@ function renderNodeDetail(raw, snapshot) {
   const evidence = (raw.evidence_chain || []).map(e =>
     `<div class="ev"><b>证据 ${escapeHtml(e.evidence_level || "—")}</b> · ${escapeHtml(e.source_api || "")}<br/>字段：${escapeHtml(e.source_field || "—")}</div>`
   ).join("") || `<div class="ev">无证据链</div>`;
-  document.getElementById("panel-body").innerHTML = html + evidence;
+  document.getElementById("panel-body").innerHTML = html + renderAiDetails(raw) + evidence;
 }
 
 function renderEdgeDetail(edge) {
   document.getElementById("panel-body").innerHTML =
     `<div class="kv"><b>关系类型</b> ${escapeHtml(edge.edge_type || "—")}</div>` +
-    `<div class="kv"><b>来源</b> ${escapeHtml(shortName(edge.source))}</div>` +
-    `<div class="kv"><b>目标</b> ${escapeHtml(shortName(edge.target))}</div>` +
-    `<div class="kv"><b>语义</b> ${edge.edge_type === "expanded_from" ? "聚合域展开归属，不参与风险传播" : "真实血缘关系"}</div>`;
+    `<div class="kv"><b>下游/派生方</b> ${escapeHtml(shortName(edge.source))}</div>` +
+    `<div class="kv"><b>上游/来源方</b> ${escapeHtml(shortName(edge.target))}</div>` +
+    `<div class="kv"><b>方向</b> ${edge.edge_type === "expanded_from" ? "聚合成员归属，不是血缘" : "箭头指向更上游的来源模型"}</div>` +
+    `<div class="kv"><b>语义</b> ${edge.edge_type === "expanded_from" ? "聚合域展开归属，不参与风险传播" : "下游模型派生自上游模型"}</div>`;
+}
+
+const aiDiffList = document.getElementById("ai-diff-list");
+const aiStatusStrip = document.getElementById("ai-status-strip");
+const aiChanges = (DATA.ai_diff && DATA.ai_diff.changes) || [];
+if (DATA.ai_diff && DATA.ai_diff.ai_available === false) {
+  aiStatusStrip.innerHTML = "<b>AI 状态：未固化条款画像</b> · 本次仅运行规则与传播链；不是图谱渲染失败";
+  aiDiffList.innerHTML = `<div class="empty">本次快照生成时未传入 AI 服务，因此没有模型卡或 LICENSE 的 C 级语义画像。AI 不会用当前时间重新猜测许可证含义。</div>`;
+} else if (!aiChanges.length) {
+  aiStatusStrip.innerHTML = "<b>AI 状态：已读取冻结画像</b> · 未发现可验证的语义变化，仍需人工复核 C 级证据";
+  aiDiffList.innerHTML = `<div class="empty">AI 画像已读取，未发现可验证的语义变化；规则 Delta 不受影响。</div>`;
+} else {
+  aiStatusStrip.innerHTML = `<b>AI 状态：发现 ${aiChanges.length} 项语义差异</b> · 证据等级 C，只提示人工复核，不改变风险灯色`;
+  if (DATA.ai_diff && DATA.ai_diff.simulation) {
+    aiStatusStrip.innerHTML += " · 验收模拟差异，不代表真实世界许可证已变更";
+  }
+  aiChanges.forEach(change => {
+    const item = document.createElement("div");
+    item.className = "ai-diff";
+    item.innerHTML = `<div class="route">${escapeHtml(change.model_id)} · ${escapeHtml(change.dimension_zh || change.dimension)}</div>` +
+      `<div>${escapeHtml(change.before_state_zh || change.before_state)} → ${escapeHtml(change.after_state_zh || change.after_state)}</div>` +
+      `<div class="meta">复核优先级 ${escapeHtml(change.review_priority)} · C 级 · 待人工确认</div>` +
+      `<div class="ai-quote">旧：${escapeHtml(change.before_quote || "—")}<br/>新：${escapeHtml(change.after_quote || "—")}</div>`;
+    aiDiffList.appendChild(item);
+  });
 }
 
 const evtDiv = document.getElementById("evt-list");
+const downloadReport = document.getElementById("download-report");
+const reportPreview = document.getElementById("report-preview");
+const openReport = document.getElementById("open-report");
+const closeReport = document.getElementById("close-report");
+const reportModal = document.getElementById("report-modal");
+function setReportOpen(open) {
+  reportModal.hidden = !open;
+  if (open) reportPreview.focus();
+}
+openReport.addEventListener("click", () => setReportOpen(true));
+closeReport.addEventListener("click", () => setReportOpen(false));
+reportModal.addEventListener("click", event => {
+  if (event.target === reportModal) setReportOpen(false);
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !reportModal.hidden) setReportOpen(false);
+});
+if (REPORT_MARKDOWN) {
+  reportPreview.textContent = REPORT_MARKDOWN;
+  downloadReport.addEventListener("click", () => {
+    const url = URL.createObjectURL(new Blob([REPORT_MARKDOWN], {type:"text/markdown;charset=utf-8"}));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "diff_report.md";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  });
+} else {
+  downloadReport.disabled = true;
+  downloadReport.textContent = "未附带 Markdown 报告";
+  openReport.disabled = true;
+  reportPreview.textContent = "本次 HTML 渲染未传入 --report；报告生成链路本身仍然保留。";
+}
+
+const aggregateLegend = document.getElementById("legend-aggregate");
+if (aggregateLegend) aggregateLegend.hidden = !DATA.nodes_t0.concat(DATA.nodes_t1).some(isAgg);
+
+function renderLineageForest() {
+  const host = document.getElementById("lineage-forest");
+  if (!host) return;
+  const byId = {};
+  DATA.nodes_t1.forEach(n => byId[n.id] = n);
+  const upstream = {};
+  DATA.edges_t1.forEach(e => {
+    if (e.edge_type === "expanded_from") return;
+    if (!upstream[e.source]) upstream[e.source] = [];
+    if (byId[e.target]) upstream[e.source].push(e.target);
+  });
+  let roots = DATA.nodes_t1.filter(n => !isAgg(n) && (n.lineage_role === "root" || n.lineage_depth === 0));
+  if (!roots.length) roots = DATA.nodes_t1.filter(n => !isAgg(n));
+  if (!roots.length) {
+    host.innerHTML = `<div class="lineage-empty">当前快照没有具体模型节点。</div>`;
+    return;
+  }
+  function branch(nodeId, seen, depth) {
+    if (depth > 12 || seen.has(nodeId)) return `<li><span class="arrow">↺</span>${escapeHtml(shortName(nodeId))} <span class="role">循环引用，已停止</span></li>`;
+    const nextSeen = new Set(seen);
+    nextSeen.add(nodeId);
+    return (upstream[nodeId] || []).map(target => {
+      const targetNode = byId[target] || {};
+      const role = targetNode.render_role_label || targetNode.lineage_type_ch || targetNode.lineage_type || "上游来源";
+      const license = targetNode.license || "未声明";
+      const children = branch(target, nextSeen, depth + 1);
+      return `<li><span class="arrow">↑</span><b>${escapeHtml(shortName(target))}</b> <span class="role">${escapeHtml(role)} · ${escapeHtml(license)}</span>${children ? `<ul>${children}</ul>` : ""}</li>`;
+    }).join("");
+  }
+  host.innerHTML = roots.map(root => {
+    const j = decisionOf(root.decision);
+    const tree = branch(root.id, new Set(), 0);
+    return `<div class="lineage-root"><div class="root-name">${escapeHtml(root.name || root.canonical_id)}</div>` +
+      `<div class="root-meta">项目直接使用 · 许可证 ${escapeHtml(root.license || "未声明")} · ${escapeHtml(j.label)}</div>` +
+      `${tree ? `<ul>${tree}</ul>` : `<div class="lineage-empty" style="margin-top:7px">未发现可解析的上游来源。</div>`}</div>`;
+  }).join("");
+}
+renderLineageForest();
+
 DATA.events.forEach(ev => {
   const j = decisionOf(ev.decision);
   const d = document.createElement("div");
@@ -503,7 +756,7 @@ if (!riskMap.size) {
     button.className = "risk-card";
     button.style.borderLeftColor = j.color;
     button.innerHTML = `<div class="name">${escapeHtml(n.name || n.canonical_id)}</div>` +
-      `<div class="meta">${j.label} · 许可证 ${escapeHtml(n.license || "未声明")} · 快照 ${item.snapshots.join("/")}</div>` +
+      `<div class="meta">${j.label} · 许可证 ${escapeHtml(n.license || "未声明")} · 快照 ${item.snapshots.join("/")}${aiAnalysis(n) ? ` · AI ${(aiAnalysis(n).claims || []).length} 条待确认` : ""}</div>` +
       `${isFixtureNode(n) ? `<div class="fixture-note">构造测试夹具，不代表真实下游模型</div>` : ""}`;
     button.onclick = () => {
       renderNodeDetail(n, item.snapshots.join("/"));
@@ -627,6 +880,82 @@ def annotate_event_endpoints(
     return events
 
 
+def _stable_node_key(node: dict) -> str:
+    """Return the identity shared by t0/t1 snapshots."""
+    return str(
+        node.get("canonical_id")
+        or node.get("entity_key")
+        or node.get("id")
+        or node.get("name")
+        or ""
+    )
+
+
+def synchronize_diff_layouts(
+    nodes_t0: list[dict],
+    edges_t0: list[dict],
+    nodes_t1: list[dict],
+    edges_t1: list[dict],
+    *,
+    canvas_width: int = 1280,
+) -> dict:
+    """Lay out both snapshots in one coordinate space.
+
+    A risk decision changes colour, never position. Nodes that exist in only
+    one snapshot reserve their slot in the union layout, so t0 and t1 remain
+    directly comparable and added/removed nodes do not shift every other card.
+    """
+    by_key: dict[str, dict] = {}
+    id_to_key: dict[str, str] = {}
+    for node in [*nodes_t0, *nodes_t1]:
+        key = _stable_node_key(node)
+        if not key:
+            continue
+        id_to_key[str(node.get("id") or key)] = key
+        if key not in by_key:
+            layout_node = copy.deepcopy(node)
+            layout_node["id"] = key
+            by_key[key] = layout_node
+        else:
+            for field, value in node.items():
+                by_key[key].setdefault(field, value)
+
+    union_nodes = list(by_key.values())
+    seen_edges: set[tuple[str, str, str]] = set()
+    union_edges: list[dict] = []
+    for edge in [*edges_t0, *edges_t1]:
+        source = id_to_key.get(str(edge.get("source")), str(edge.get("source") or ""))
+        target = id_to_key.get(str(edge.get("target")), str(edge.get("target") or ""))
+        edge_type = str(edge.get("edge_type") or "")
+        signature = (source, target, edge_type)
+        if source not in by_key or target not in by_key or source == target or signature in seen_edges:
+            continue
+        seen_edges.add(signature)
+        union_edge = copy.deepcopy(edge)
+        union_edge["source"] = source
+        union_edge["target"] = target
+        union_edges.append(union_edge)
+
+    layout = layout_graph(
+        union_nodes,
+        union_edges,
+        canvas_width=canvas_width,
+        stable_order=True,
+    )
+    coordinate_fields = (
+        "x", "y", "lp", "render_layer", "render_role_label", "render_role_short", "render_card",
+        "render_risk_counts", "render_tone", "render_role", "render_parent_id",
+    )
+    for node in [*nodes_t0, *nodes_t1]:
+        source = by_key.get(_stable_node_key(node))
+        if not source:
+            continue
+        for field in coordinate_fields:
+            if field in source:
+                node[field] = copy.deepcopy(source[field])
+    return layout
+
+
 def _copy_echarts(output_dir: Path) -> str:
     local_echarts = output_dir / "echarts.min.js"
     candidates = [
@@ -658,6 +987,7 @@ def main() -> None:
     parser.add_argument("--before", required=True, type=Path, help="t0 BOM（CycloneDX，含 pedigree.ancestors）")
     parser.add_argument("--after", required=True, type=Path, help="t1 BOM")
     parser.add_argument("--output", required=True, type=Path, help="输出 HTML 路径")
+    parser.add_argument("--report", type=Path, default=None, help="可选：Markdown 审计报告路径，嵌入页面供预览和下载")
     parser.add_argument("--title", default=None, help="页面标题（默认自动）")
     parser.add_argument(
         "--include-fixtures",
@@ -668,10 +998,15 @@ def main() -> None:
     args = parser.parse_args()
 
     from main import _build_snapshot
+    from main import _ai_model_analyses_from_assets
 
     include_fixtures = bool(getattr(args, "include_fixtures", False))
     before = _build_snapshot(args.before, "t0", include_fixtures=include_fixtures)
     after = _build_snapshot(args.after, "t1", include_fixtures=include_fixtures)
+    ai_diff = semantic_diff(
+        _ai_model_analyses_from_assets(before["assets"]),
+        _ai_model_analyses_from_assets(after["assets"]),
+    )
 
     operational_before_nodes, operational_before_edges = operational_snapshot(
         before["assets"], before["edges"], include_fixtures=include_fixtures
@@ -707,8 +1042,13 @@ def main() -> None:
         )
     apply_event_decisions(nodes_t0, nodes_t1, propagated["events"], certs)
     annotate_event_endpoints(propagated["events"], certs)
-    layout_t0 = layout_graph(nodes_t0, edges_t0, canvas_width=680)
-    layout_t1 = layout_graph(nodes_t1, edges_t1, canvas_width=680)
+    shared_layout = synchronize_diff_layouts(
+        nodes_t0, edges_t0, nodes_t1, edges_t1, canvas_width=1280
+    )
+    # The two snapshots intentionally share one coordinate space. A colour or
+    # decision change must never make the reader think the graph itself moved.
+    layout_t0 = shared_layout
+    layout_t1 = shared_layout
 
     data = {
         "nodes_t0": nodes_t0,
@@ -719,11 +1059,17 @@ def main() -> None:
         "layout_t1": layout_t1,
         "events": propagated["events"],
         "certificates": certs,
+        "ai_diff": ai_diff,
     }
     title = args.title or (
         "%s → %s 血缘风险传播" % (args.before.stem, args.after.stem)
     )
     chart_height = max(620, layout_t0["height"], layout_t1["height"])
+    report_markdown = ""
+    if args.report is not None:
+        if not args.report.exists():
+            raise FileNotFoundError(f"report not found: {args.report}")
+        report_markdown = args.report.read_text(encoding="utf-8")
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     echarts_src = _copy_echarts(args.output.parent)
@@ -742,6 +1088,7 @@ def main() -> None:
         "{{DECISION_LABEL_JSON}}": json.dumps(DECISION_LABEL, ensure_ascii=False),
         "{{DECISION_RANK_JSON}}": json.dumps(DECISION_RANK, ensure_ascii=False),
         "{{CHANGE_LABEL_JSON}}": json.dumps(CHANGE_LABEL, ensure_ascii=False),
+        "{{REPORT_MARKDOWN_JSON}}": json.dumps(report_markdown, ensure_ascii=False),
         "{{ECHARTS_SRC}}": echarts_src,
         "{{CHART_HEIGHT}}": str(chart_height),
     }

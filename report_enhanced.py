@@ -253,9 +253,15 @@ def _format_path(path: list, names: dict) -> str:
 # 四、报告渲染
 # ---------------------------------------------------------------------------
 
+def _md_cell(value: object) -> str:
+    """Escape a value inserted into a Markdown table cell."""
+    return str(value if value not in (None, "") else "—").replace("|", "\\|").replace("\n", "<br>")
+
+
 def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | None,
                   ev_path: str = "", cert_path: str = "",
-                  interval_lines: list[str] | None = None) -> str:
+                  interval_lines: list[str] | None = None,
+                  ai_diff: dict | None = None) -> str:
     names_t0 = _load_asset_names(bom_t0)
     names_t1 = _load_asset_names(bom_t1)
     names = {**names_t0, **names_t1}
@@ -421,13 +427,39 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
         L.append("")
 
     # ---- 七、证据等级与判定说明 ----
-    L.append("## 七、证据等级与判定说明")
+    if isinstance(ai_diff, dict):
+        L.append("## 七、AI 语义差异（C 级，待人工确认）")
+        L.append("")
+        L.append("> AI 只比较 t0/t1 BOM 中已固化的条款画像，不回查今天的最新原文，不修改 Delta、风险判定或 CI。")
+        L.append("")
+        ai_changes = ai_diff.get("changes") or []
+        if ai_changes:
+            L.append("| 模型 | 维度 | 语义变化 | 复核优先级 | 旧原文 | 新原文 |")
+            L.append("|---|---|---|---|---|---|")
+            for change in ai_changes:
+                L.append(
+                    f"| {_md_cell(change.get('model_id'))} |"
+                    f" {_md_cell(change.get('dimension_zh') or change.get('dimension'))} |"
+                    f" {_md_cell(change.get('before_state_zh') or change.get('before_state'))} →"
+                    f" {_md_cell(change.get('after_state_zh') or change.get('after_state'))} |"
+                    f" {_md_cell(change.get('review_priority'))} |"
+                    f" {_md_cell(change.get('before_quote'))} |"
+                    f" {_md_cell(change.get('after_quote'))} |"
+                )
+        elif ai_diff.get("ai_available") is False:
+            L.append("BOM 未固化 AI 条款画像；这里不推断最新许可证语义，规则 Delta 不受影响。")
+        else:
+            L.append("AI 画像已读取，未发现可验证的语义变化。")
+        L.append("")
+        L.append("## 八、证据等级与判定说明")
+    else:
+        L.append("## 七、证据等级与判定说明")
     L.append("")
     L.append("| 等级 | 定义（接口约定 v0.3） |")
     L.append("|---|---|")
-    L.append("| A | 官方或权威元数据直接证明（PyPI / npm / Hugging Face API 许可证字段、仓库 LICENSE 文件） |")
-    L.append("| B | 工具产物或结构化依赖证据（CycloneDX BOM、lockfile、模型卡结构化字段） |")
-    L.append("| C | 推断、启发式或降级证据（同名对齐、模型卡文本推断、API 失败降级） |")
+    L.append("| A | ModelScope 官方 API 直接返回的字段，或从 ModelScope 官方仓库取得的 LICENSE / README 原文 |")
+    L.append("| B | 工具基于 ModelScope 事实生成的派生结构化证据（血缘边、聚合节点、BOM 映射） |")
+    L.append("| C | AI 条款抽取、启发式或降级证据；必须保留逐字原文并等待人工确认 |")
     L.append("")
     L.append("| 判定 | 含义 |")
     L.append("|---|---|")
@@ -435,7 +467,7 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
     L.append("| RISK_POTENTIAL | 路径上存在 B 级边，规则可能适用 |")
     L.append("| UNDETERMINED | 路径上存在 C 级边、缺失祖先或冲突字段 |")
     L.append("")
-    L.append("> 口径（接口约定 v0.3）：血缘边证据等级按实际来源标注（A=官方数据，B=工具产物，C=推断）；例如 Hugging Face 官方 API 直接返回的模型卡元数据为 A，CycloneDX BOM 等工具产物为 B，推断、启发式或降级证据为 C。")
+    L.append("> 口径：A=ModelScope 官方字段或官方原文；B=工具基于 ModelScope 事实生成的派生结构；C=AI 语义抽取或降级推断。AI 不修改许可证事实、风险灯色、Delta、decision 或 CI。")
     L.append("> 风险传播使用 weakest link 规则：路径证据等级取路径中最低等级；`UNDETERMINED` 不是“无风险”，而是“证据不足以判定”。")
     L.append("")
     L.append("---")

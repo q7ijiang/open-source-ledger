@@ -22,6 +22,8 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
+import main as ledger_main
+
 ROOT = Path(__file__).resolve().parent
 PY = sys.executable
 ECHARTS_CDN = "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
@@ -60,38 +62,46 @@ def _embed_html(html_path: Path, height: int = 620) -> None:
     components.html(html, height=height, scrolling=True)
 
 
-def run_model(model: str) -> None:
+def run_model(model: str, enable_ai: bool = False) -> None:
     safe = model.strip().strip("/").replace("/", "__")
-    out = ROOT / "outputs" / safe
-    _run(["main.py", "--model", model])
+    out = ledger_main._model_output_dir(ROOT, model)
+    ai_flag = ["--ai"] if enable_ai else []
+    _run([str(ROOT / "main.py"), "--model", model, *ai_flag])
     graph, report = out / "graph.json", out / "report.md"
-    _run(["render_graph.py", "--input", str(graph), "--output", str(out / "lineage.html"), "--title", safe])
+    _run([str(ROOT / "render_graph.py"), "--input", str(graph), "--output", str(out / "lineage.html"), "--report", str(report), "--title", safe])
     st.subheader("风险血缘图（交互式）")
     _embed_html(out / "lineage.html")
     st.subheader("中文审计报告")
     _show_report(report)
 
 
-def run_project(project: str) -> None:
-    proj = Path(project.strip().strip("/"))
-    out = ROOT / "outputs" / proj.name
-    _run(["main.py", "--project", str(proj)])
+def run_project(project: Path, enable_ai: bool = False) -> None:
+    proj = project.resolve()
+    out = ledger_main._project_output_dir(ROOT, proj)
+    ai_flag = ["--ai"] if enable_ai else []
+    _run([str(ROOT / "main.py"), "--project", str(proj), *ai_flag])
     graph, report = out / "graph.json", out / "report.md"
-    _run(["render_graph.py", "--input", str(graph), "--output", str(out / "lineage.html"), "--title", proj.name])
+    _run([str(ROOT / "render_graph.py"), "--input", str(graph), "--output", str(out / "lineage.html"), "--report", str(report), "--title", proj.name])
     st.subheader("风险血缘图（交互式）")
     _embed_html(out / "lineage.html")
     st.subheader("中文审计报告")
     _show_report(report)
 
 
-def run_diff(before_path: Path, after_path: Path, include_fixtures: bool = False) -> None:
+def run_diff(
+    before_path: Path,
+    after_path: Path,
+    include_fixtures: bool = False,
+    enable_ai: bool = False,
+) -> None:
     flag = ["--include-fixtures"] if include_fixtures else []
+    ai_flag = ["--ai"] if enable_ai else []
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
         report = tmp_dir / "diff_report.md"
         diff_html = tmp_dir / "diff_lineage.html"
-        _run(["main.py", "--diff", "--before", str(before_path), "--after", str(after_path), "--output", str(report), *flag])
-        _run(["render_diff.py", "--before", str(before_path), "--after", str(after_path), "--output", str(diff_html), *flag])
+        _run([str(ROOT / "main.py"), "--diff", "--before", str(before_path), "--after", str(after_path), "--output", str(report), *flag, *ai_flag])
+        _run([str(ROOT / "render_diff.py"), "--before", str(before_path), "--after", str(after_path), "--output", str(diff_html), "--report", str(report), *flag])
         st.subheader("时间轴风险传播图（t0 → t1）")
         _embed_html(diff_html, height=520)
         st.subheader("中文审计报告")
@@ -109,6 +119,11 @@ st.title("AI 模型血缘许可证风险审计工具")
 st.caption("开源账本 · ModelScope 血缘风险审计（答辩演示）")
 
 mode = st.selectbox("模式", ["单模型", "项目", "时间对比"], index=0)
+enable_ai = st.checkbox(
+    "启用 AI 语义证据（C 级，需人工确认）",
+    value=False,
+    help="调用配置的 OpenAI-compatible 模型抽取条款；默认关闭，不影响规则主链。",
+)
 
 if mode == "单模型":
     model = st.text_input("ModelScope 模型名", value="Qwen/Qwen-Image-2.1",
@@ -118,7 +133,7 @@ if mode == "单模型":
             st.error("请输入合法的模型名（命名空间/模型名）")
         else:
             with st.spinner("正在扫描 ModelScope 血缘并生成报告…"):
-                run_model(model.strip())
+                run_model(model.strip(), enable_ai)
 
 elif mode == "项目":
     project = st.text_input("项目路径（相对仓库根）", value="example/multi_model_project",
@@ -129,7 +144,7 @@ elif mode == "项目":
             st.error("项目路径不存在：%s" % proj)
         else:
             with st.spinner("正在扫描项目模型并生成合并血缘图…"):
-                run_project(project)
+                run_project(proj, enable_ai)
 
 else:  # 时间对比
     st.info("上传两个 CycloneDX BOM 文件（需含 pedigree.ancestors 固化的血缘边）")
@@ -151,4 +166,4 @@ else:  # 时间对比
                 p0.write_bytes(f0.getvalue())
                 p1.write_bytes(f1.getvalue())
                 with st.spinner("正在对比血缘变化并生成传播图…"):
-                    run_diff(p0, p1, include_fixtures)
+                    run_diff(p0, p1, include_fixtures, enable_ai)

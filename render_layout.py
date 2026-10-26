@@ -8,6 +8,8 @@ import re
 from collections import defaultdict
 from typing import Any
 
+from render_lineage_layout import layout_lineage_dag
+
 DECISION_RANK = {
     "RISK_CONFIRMED": 3,
     "RISK_POTENTIAL": 2,
@@ -135,7 +137,10 @@ def _node_label(node: dict[str, Any]) -> str:
 
 
 def _ordered_model_nodes(
-    nodes: list[dict[str, Any]], excluded_ids: set[str]
+    nodes: list[dict[str, Any]],
+    excluded_ids: set[str],
+    *,
+    order_by_decision: bool = True,
 ) -> list[dict[str, Any]]:
     indexed = {str(n.get("id")): i for i, n in enumerate(nodes)}
     models = [
@@ -147,7 +152,11 @@ def _ordered_model_nodes(
     ]
 
     def key(node: dict[str, Any]) -> tuple[int, int]:
-        decision_rank = DECISION_RANK.get(str(node.get("decision") or ""), -1)
+        decision_rank = (
+            DECISION_RANK.get(str(node.get("decision") or ""), -1)
+            if order_by_decision
+            else 0
+        )
         return (-decision_rank, indexed.get(str(node.get("id")), 0))
 
     return sorted(models, key=key)
@@ -168,6 +177,7 @@ def layout_graph(
     edges: list[dict[str, Any]],
     *,
     canvas_width: int = 1280,
+    stable_order: bool = False,
 ) -> dict[str, Any]:
     """Assign deterministic positions and return adaptive cluster metadata.
 
@@ -182,6 +192,10 @@ def layout_graph(
     by_id = {str(n.get("id")): n for n in nodes if n.get("id") is not None}
     aggregates = [n for n in nodes if is_aggregate_node(n)]
     aggregate_ids = {str(n.get("id")) for n in aggregates}
+
+    if not aggregates:
+        return layout_lineage_dag(nodes, edges, canvas_width=canvas_width)
+
 
     adjacent: dict[str, list[str]] = defaultdict(list)
     expanded_children: dict[str, list[str]] = defaultdict(list)
@@ -230,7 +244,11 @@ def layout_graph(
         else:
             orphan_aggregates.append(aggregate)
 
-    model_nodes = _ordered_model_nodes(nodes, expanded_child_ids)
+    model_nodes = _ordered_model_nodes(
+        nodes,
+        expanded_child_ids,
+        order_by_decision=not stable_order,
+    )
     model_ids = {str(n.get("id")) for n in model_nodes}
     for owner_id in aggregates_by_owner:
         if owner_id not in model_ids and owner_id in by_id:

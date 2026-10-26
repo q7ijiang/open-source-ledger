@@ -41,6 +41,34 @@ TPL = """<!DOCTYPE html>
   .legend-row { padding:8px 22px; background:#fff; border-bottom:1px solid #eef2f7; font-size:12px; color:#526176; display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
   .legend-row i { display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:5px; vertical-align:-2px; }
   .legend-row .line { width:22px; height:3px; }
+  .ai-status-strip { padding:8px 22px; background:#f8fafc; border-bottom:1px solid var(--line); font-size:12px; color:#475569; }
+  .ai-status-strip b { color:#075985; }
+  .lineage-section { background:#fff; border-top:1px solid var(--line); padding:14px 22px 18px; }
+  .lineage-section h2 { margin:0 0 4px; font-size:15px; }
+  .lineage-section p { margin:0 0 10px; color:var(--muted); font-size:12px; }
+  .lineage-forest { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:9px; }
+  .lineage-root { border:1px solid var(--line); border-radius:7px; background:#fbfdff; padding:9px 11px; min-width:0; }
+  .lineage-root .root-name { font-weight:700; font-size:12px; color:#253044; word-break:break-all; }
+  .lineage-root .root-meta { margin-top:3px; font-size:11px; color:var(--muted); }
+  .lineage-root ul { margin:7px 0 0 17px; padding:0; }
+  .lineage-root li { margin:5px 0; font-size:11px; color:#475569; line-height:1.45; }
+  .lineage-root li .arrow { color:#2f6fed; font-weight:700; margin-right:4px; }
+  .lineage-root li .role { color:#7b8799; }
+  .report-section { display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; padding:12px 22px; background:#fff; border-top:1px solid var(--line); font-size:12px; }
+  .report-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .download-button { appearance:none; border:1px solid #2f6fed; border-radius:6px; background:#2f6fed; color:#fff; padding:8px 13px; font:700 12px/1.2 "Microsoft YaHei","Segoe UI",Arial,sans-serif; cursor:pointer; }
+  .download-button:disabled { opacity:.5; cursor:not-allowed; }
+  .secondary-button { appearance:none; border:1px solid #2f6fed; border-radius:6px; background:#fff; color:#2f6fed; padding:8px 13px; font:700 12px/1.2 "Microsoft YaHei","Segoe UI",Arial,sans-serif; cursor:pointer; }
+  .secondary-button:disabled { opacity:.5; cursor:not-allowed; }
+  .report-modal[hidden] { display:none; }
+  .report-modal { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(15,23,42,.58); }
+  .report-dialog { width:min(1180px,calc(100vw - 32px)); height:min(86vh,900px); display:flex; flex-direction:column; overflow:hidden; background:#fff; border:1px solid #cbd5e1; border-radius:10px; box-shadow:0 24px 70px rgba(15,23,42,.28); }
+  .report-modal-head { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:12px 16px; border-bottom:1px solid var(--line); background:#f8fafc; }
+  .report-modal-head b { font-size:14px; }
+  .report-modal-head span { color:var(--muted); font-size:11px; }
+  .report-close { appearance:none; border:1px solid #cbd5e1; border-radius:6px; background:#fff; color:#475569; padding:6px 11px; font:700 12px/1.2 "Microsoft YaHei","Segoe UI",Arial,sans-serif; cursor:pointer; }
+  .report-preview { flex:1 1 auto; min-height:0; overflow:auto; overscroll-behavior:contain; margin:0; padding:16px 18px; background:#fbfdff; border:0; white-space:pre-wrap; word-break:break-word; font:12px/1.65 Consolas,"Microsoft YaHei",monospace; outline:none; }
+  .report-preview:focus { box-shadow:inset 0 0 0 2px rgba(47,111,237,.22); }
   .main { display:grid; grid-template-columns:minmax(0,1fr) 320px; min-height:0; }
   #chart { width:100%; height:{{CHART_HEIGHT}}px; }
   #panel { background:#fff; border-left:1px solid var(--line); padding:14px; font-size:12px; overflow-y:auto; max-height:{{CHART_HEIGHT}}px; }
@@ -48,6 +76,14 @@ TPL = """<!DOCTYPE html>
   .kv { margin:5px 0; word-break:break-all; line-height:1.55; }
   .kv b { color:#356fa8; }
   .ev { border-top:1px dashed var(--line); padding:8px 0; line-height:1.5; }
+  .ev { word-break:break-all; }
+  .ai-box { margin-top:10px; border:1px solid #bae6fd; background:#f0f9ff; border-radius:8px; padding:10px; line-height:1.55; }
+  .ai-box h4 { margin:0 0 7px; color:#075985; font-size:13px; }
+  .ai-claim { border-top:1px solid #dbeafe; padding:7px 0; }
+  .ai-meta { color:#0369a1; font-size:11px; word-break:break-all; }
+  .ai-factor { color:#475569; font-size:10px; margin-top:3px; word-break:break-all; line-height:1.5; }
+  .ai-quote { margin-top:4px; padding:6px 8px; background:#fff; border-left:3px solid #38bdf8; white-space:pre-wrap; word-break:break-word; }
+  .ai-gap { color:#92400e; margin-top:5px; }
   .section { padding:16px 22px 4px; }
   .section h2 { font-size:16px; margin:0 0 4px; }
   .section p { margin:0; color:var(--muted); font-size:12px; }
@@ -75,7 +111,7 @@ TPL = """<!DOCTYPE html>
 </head>
 <body>
 <div class="header">
-  <div><h1>{{TITLE}}</h1><div class="sub">模型簇优先布局 · 聚合域自适应换行 · 点击节点查看证据与能力边界</div></div>
+  <div><h1>{{TITLE}}</h1><div class="sub">上游血缘分层 · 越靠上越上游 · 箭头指向来源模型 · 点击节点查看证据</div></div>
   <div class="stats">节点 {{NODE_COUNT}} · 边 {{EDGE_COUNT}} · 整体判定：<b>{{OVERALL}}</b></div>
 </div>
 <div class="legend-row">
@@ -83,14 +119,20 @@ TPL = """<!DOCTYPE html>
   <span><i style="background:#e6a23c"></i>潜在风险</span>
   <span><i style="background:#67c23a"></i>安全</span>
   <span><i style="background:#d3d7de"></i>待确认</span>
-  <span><i class="line" style="background:#c0392b"></i>真实血缘传播</span>
-  <span><i class="line" style="background:#aeb8c7"></i>虚线 = 聚合归属，不属于风险传播</span>
-  <span><i style="background:#eef0f4;border:2px solid #f56c6c"></i>中性聚合域 + 风险描边</span>
+  <span><i class="line" style="background:#95a5a6"></i>实线箭头 = 下游模型派生自上游来源</span>
+  <span id="legend-aggregate" hidden><i style="background:#eef0f4;border:2px solid #f56c6c"></i>聚合域仅表示范围，不是血缘</span>
 </div>
+<div id="ai-status-strip" class="ai-status-strip">正在读取 AI 语义证据状态…</div>
 <div class="main">
   <div id="chart"></div>
   <aside id="panel"><h3>证据与能力边界</h3><div id="panel-body" style="color:#7b8799">点击模型、聚合域或连线查看详情。</div></aside>
 </div>
+
+<section class="lineage-section">
+  <h2>项目模型与上游来源路径</h2>
+  <p>箭头从下游模型指向更上游的来源。这里把路径展开成文字，便于识别基座模型和中间来源；聚合域不作为血缘节点。</p>
+  <div id="lineage-forest" class="lineage-forest"></div>
+</section>
 
 <section class="section">
   <h2>已识别的具体风险模型</h2>
@@ -109,13 +151,82 @@ TPL = """<!DOCTYPE html>
     <tbody></tbody>
   </table>
 </div>
+
+<section class="report-section">
+  <div><b>Markdown 审计报告</b><div style="color:#64748b;margin-top:3px">报告仍由 main.py 生成，HTML 仅附带原文预览与下载，不替代报告文件。</div></div>
+  <div class="report-actions">
+    <button id="open-report" class="secondary-button" type="button">在大窗口查看报告</button>
+    <button id="download-report" class="download-button" type="button">下载 Markdown 报告</button>
+  </div>
+</section>
+<div id="report-modal" class="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-modal-title" hidden>
+  <div class="report-dialog">
+    <div class="report-modal-head">
+      <div><b id="report-modal-title">Markdown 审计报告</b><br/><span>在报告区域滚动查看；按 Esc 关闭</span></div>
+      <button id="close-report" class="report-close" type="button">关闭</button>
+    </div>
+    <pre id="report-preview" class="report-preview" tabindex="0"></pre>
+  </div>
+</div>
 <script>
 const DATA = {{DATA_JSON}};
 const DECISION_COLOR = {{DECISION_COLOR_JSON}};
 const DECISION_LABEL = {{DECISION_LABEL_JSON}};
+const REPORT_MARKDOWN = {{REPORT_MARKDOWN_JSON}};
 
 function escapeHtml(value) {
   return String(value == null ? "" : value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+function aiAnalysis(n) {
+  return n && n.ai_analysis && n.ai_analysis.analysis_type === "model_profile" ? n.ai_analysis : null;
+}
+function confidenceFactorText(claim) {
+  const labels = {base:"基础",license_file:"LICENSE 文件",readme:"README 文件",structured_file:"结构化文件",exact_quote:"原文精确命中",restriction_wording:"限制措辞",source_sha256:"SHA256",quote_context:"引文长度",uncertain_state:"不确定性"};
+  return Object.entries(claim.confidence_factors || {}).map(([key, value]) => {
+    const number = Number(value);
+    return `${labels[key] || key} ${number >= 0 ? "+" : ""}${number.toFixed(2)}`;
+  }).join(" · ");
+}
+function aiTooltip(n) {
+  const ai = aiAnalysis(n);
+  if (!ai) return "";
+  const claims = ai.claims || [];
+  const first = claims[0];
+  const summary = first ? `${escapeHtml(first.dimension_zh || first.dimension)}：${escapeHtml(first.state_zh || first.state)}（${escapeHtml(first.confidence)}）` : "无通过原文校验的条款";
+  return `<br/>AI 语义：C级 · ${summary} · 待人工确认`;
+}
+function renderAiDetails(raw) {
+  const ai = aiAnalysis(raw);
+  const project = raw && raw.ai_project_context && raw.ai_project_context.analysis_type === "project_context" ? raw.ai_project_context : null;
+  if (!ai && !project) return "";
+  let html = `<div class="ai-box"><h4>AI 语义证据（C 级，不改变规则判定）</h4>`;
+  if (ai) {
+    if (ai.simulation) html += `<div class="ai-gap"><b>验收模拟</b>：${escapeHtml(ai.simulation_note || "该条款画像用于验收，不代表数据源当前事实")}</div>`;
+    html += `<div class="kv"><b>模型分析状态</b> ${escapeHtml(ai.status || "unknown")}</div>`;
+    if (ai.summary) html += `<div class="kv"><b>摘要</b> ${escapeHtml(ai.summary)}</div>`;
+    (ai.claims || []).forEach(claim => {
+      const evidence = claim.evidence || {};
+      html += `<div class="ai-claim"><div><b>${escapeHtml(claim.dimension_zh || claim.dimension)}</b>：${escapeHtml(claim.state_zh || claim.state)}</div>` +
+        `<div class="ai-meta">置信度 ${escapeHtml(claim.confidence)} · 证据等级 ${escapeHtml(claim.evidence_level || "C")} · ${escapeHtml(claim.human_review || "pending")}</div>` +
+        `<div class="ai-factor">置信度构成：${escapeHtml(confidenceFactorText(claim))}</div>` +
+        `<div class="ai-quote">${escapeHtml(evidence.quote || "—")}</div>` +
+        `<div class="ai-meta">原文：${escapeHtml(evidence.source_path || "—")} · SHA256 ${escapeHtml(evidence.quote_sha256 || "—")}</div></div>`;
+    });
+    const gaps = ai.gaps || [];
+    if (gaps.length) html += `<div class="ai-gap"><b>证据缺口</b><br/>${gaps.map(g => `${escapeHtml(g.dimension_zh || g.dimension)}：${escapeHtml(g.reason || "证据不足")}`).join("<br/>")}</div>`;
+  }
+  if (project) {
+    if (project.simulation) html += `<div class="ai-gap"><b>验收模拟</b>：${escapeHtml(project.simulation_note || "该项目上下文用于验收展示")}</div>`;
+    html += `<div class="kv"><b>项目使用上下文</b></div>`;
+    (project.uses || []).forEach(item => {
+      const evidence = item.evidence || {};
+      html += `<div class="ai-claim"><div><b>${escapeHtml(item.use_type_zh || item.use_type)}</b>：${escapeHtml(item.statement)}</div>` +
+        `<div class="ai-meta">置信度 ${escapeHtml(item.confidence)} · C · ${escapeHtml(item.human_review || "pending")}</div>` +
+        `<div class="ai-quote">${escapeHtml(evidence.quote || "—")}</div>` +
+        `<div class="ai-meta">项目文件：${escapeHtml(evidence.source_path || "—")}</div></div>`;
+    });
+  }
+  return html + `</div>`;
 }
 function decisionOf(value) {
   const code = value || "UNDETERMINED";
@@ -185,7 +296,7 @@ function buildNodes() {
       symbolSize:visible ? [n.render_card?.width || 72, n.render_card?.height || 38] : [0, 0],
       itemStyle:{color:childFill(n.decision),borderColor:j.color,borderWidth:2,borderRadius:6,opacity:visible ? 1 : 0},
       label:{show:visible,position:"inside",formatter:() => `{name|${label}}\n{state|${decisionShort(n.decision)}}`,rich:{name:{fontSize:10,fontWeight:"bold",color:"#253044",lineHeight:15},state:{fontSize:8,color:j.color,lineHeight:13}}},
-      tooltip:{show:visible,formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>类型：展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${isFixtureNode(n) ? "<br/>构造测试夹具，不代表真实下游模型" : ""}`},
+      tooltip:{show:visible,formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>类型：展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${isFixtureNode(n) ? "<br/>构造测试夹具，不代表真实下游模型" : ""}${aiTooltip(n)}`},
       _raw:n,
       _childParent:n.render_parent_id,
       silent:!visible,
@@ -223,6 +334,40 @@ function buildNodes() {
       z:2
     };
   }
+  const card = n.render_card || {};
+  const role = n.render_role_short || n.render_role_label || (n.lineage_role === "root" ? "项目直接使用" : "上游模型");
+  const aiTag = aiAnalysis(n) ? " · AI" : "";
+  const supplyMeta = n.lineage_depth == null ? "" : `上游深度 ${n.lineage_depth}`;
+  if (card.width) {
+    return {
+      id:n.id,
+      name:n.name || n.id,
+      x:n.x,
+      y:n.y,
+      symbol:"rect",
+      symbolSize:[card.width, card.height],
+      itemStyle:{
+        color:childFill(n.decision),
+        borderColor:j.color,
+        borderWidth:["RISK_CONFIRMED","RISK_POTENTIAL"].includes(n.decision) ? 2.5 : 1.8,
+        borderRadius:8,
+        shadowBlur:["RISK_CONFIRMED","RISK_POTENTIAL"].includes(n.decision) ? 7 : 0,
+        shadowColor:"rgba(15,23,42,.12)"
+      },
+      label:{
+        show:true,
+        position:"inside",
+        formatter:() => `{name|${card.label || n.name || n.id}}\\n{role|${role}${aiTag}}`,
+        rich:{
+          name:{fontSize:card.width < 145 ? 9 : 10,fontWeight:"bold",color:"#253044",lineHeight:15,width:card.width - 18,overflow:"truncate"},
+          role:{fontSize:8,color:aiAnalysis(n) ? "#0369a1" : j.color,lineHeight:13}
+        }
+      },
+      tooltip:{formatter:() => `<b>${escapeHtml(n.name || n.id)}</b><br/>角色：${escapeHtml(role)}<br/>类型：${escapeHtml(n.asset_type || "—")}<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>${escapeHtml(supplyMeta)}<br/>判定：${j.label}${n.decision_source === "diff_propagation" ? "（传播）" : ""}${aiTooltip(n)}`},
+      _raw:n,
+      z:4
+    };
+  }
   return {
     id: n.id,
     name: n.name || n.id,
@@ -232,7 +377,7 @@ function buildNodes() {
     symbolSize: n.asset_type === "dataset" ? 30 : 38,
     itemStyle: {color:j.color, borderColor:j.color === "#d3d7de" ? "#abb4c2" : j.color, borderWidth:1.5},
     label: {show:true, formatter:() => n.name || n.id, fontSize:11, color:"#334155", position:n.lp || "bottom"},
-    tooltip: {formatter: () => `<b>${escapeHtml(n.name || n.id)}</b><br/>类型：${escapeHtml(n.asset_type || "—")}<br/>版本：${escapeHtml(n.version || "—")}<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${n.decision_source === "diff_propagation" ? "（传播）" : ""}`},
+    tooltip: {formatter: () => `<b>${escapeHtml(n.name || n.id)}</b><br/>类型：${escapeHtml(n.asset_type || "—")}<br/>版本：${escapeHtml(n.version || "—")}<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${n.decision_source === "diff_propagation" ? "（传播）" : ""}${aiTooltip(n)}`},
     _raw:n,
     z:4
   };
@@ -241,47 +386,133 @@ function buildNodes() {
 
 function buildLinks() {
   return DATA.edges.map(e => {
-  const source = nodeById[e.source] || {};
-  const target = nodeById[e.target] || {};
-  const expansion = e.edge_type === "expanded_from";
-  const aggregateId = expansion ? (isAggregate(source) ? e.source : e.target) : null;
-  if (aggregateId && !expandedDomains.has(aggregateId)) return null;
-  const membership = isAggregate(source) || isAggregate(target);
-  const risky = !membership && (
-    ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(source.decision) ||
-    ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(target.decision)
-  );
-  return {
-    source:e.source,
-    target:e.target,
-    edgeSymbol: membership ? ["none","none"] : ["none","arrow"],
-    edgeSymbolSize: [0,10],
-    label: {show:!membership, formatter:e.edge_type || "", fontSize:10, color:risky ? "#c0392b" : "#7b8799", position:"middle"},
-    lineStyle: {
-      width:risky ? 4 : (membership ? 1.3 : 2),
-      color:risky ? "#c0392b" : (membership ? "#aeb8c7" : "#95a5a6"),
-      type:membership ? "dashed" : "solid",
-      curveness:0.04
-    },
-    _edge:e
-  };
+    const source = nodeById[e.source] || {};
+    const target = nodeById[e.target] || {};
+    // Aggregate membership is expressed by spatial containment. Drawing it as
+    // a graph edge makes grouping look like model lineage.
+    if (e.edge_type === "expanded_from" || isAggregate(source) || isAggregate(target)) return null;
+    const risky = ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(source.decision) ||
+      ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(target.decision);
+    return {
+      source:e.source,
+      target:e.target,
+      label:{show:false},
+      emphasis:{label:{show:true,formatter:e.render_label || e.edge_type || "派生自",fontSize:10,color:risky ? "#c0392b" : "#475569"}},
+      lineStyle:{
+        width:risky ? 3.2 : 1.6,
+        color:risky ? "#c0392b" : "#8794a6",
+        type:"solid",
+        curveness:0.035,
+        opacity:risky ? 0.92 : 0.76
+      },
+      _edge:e
+    };
   }).filter(Boolean);
 }
 
-const clusterGraphics = DATA.layout.clusters.map(c => ({
-  type:"group",
-  left:c.x,
-  top:c.y,
-  z:-1,
-  silent:true,
-  children:[
-    {type:"rect", shape:{x:0,y:0,width:c.width,height:c.height,r:14}, style:{fill:"#fbfcfe",stroke:"#dfe7f1",lineWidth:1}},
-    {type:"text", style:{x:16,y:22,text:c.title,fill:"#253044",font:"bold 13px Microsoft YaHei"}},
-    {type:"text", style:{x:16,y:41,text:`风险域 ${c.aggregate_count} 个${c.expanded_count ? ` · 展开 ${c.expanded_count}` : " · 聚合范围"}`,fill:"#7b8799",font:"11px Microsoft YaHei"}}
-  ]
-}));
+const clusterGraphics = DATA.layout.clusters.map(c => {
+  const lineageLayer = c.kind === "lineage_layer";
+  const subtitle = c.subtitle || `聚合域 ${c.aggregate_count} 个${c.expanded_count ? ` · 展开 ${c.expanded_count}` : ""}`;
+  return {
+    type:"group",
+    left:c.x,
+    top:c.y,
+    z:-1,
+    silent:true,
+    children:[
+      {type:"rect",shape:{x:0,y:0,width:c.width,height:c.height,r:12},style:{fill:lineageLayer ? "#f8fafc" : "#fbfcfe",stroke:lineageLayer ? "#e5eaf1" : "#dfe7f1",lineWidth:1}},
+      {type:"text",style:{x:16,y:22,text:c.title,fill:"#253044",font:"bold 13px Microsoft YaHei"}},
+      {type:"text",style:{x:16,y:41,text:subtitle,fill:"#7b8799",font:"10px Microsoft YaHei"}}
+    ]
+  };
+});
+const aggregateLegend = document.getElementById("legend-aggregate");
+if (aggregateLegend) aggregateLegend.hidden = !DATA.nodes.some(isAggregate);
+if (DATA.layout.cycle_nodes?.length) {
+  const subtitle = document.querySelector(".header .sub");
+  if (subtitle) subtitle.textContent += ` · 数据源返回 ${DATA.layout.cycle_nodes.length} 个异常循环节点，已保留但未改变关系`;
+}
 
 const chart = echarts.init(document.getElementById("chart"));
+const aiStatusStrip = document.getElementById("ai-status-strip");
+const aiProfiles = DATA.nodes.filter(n => aiAnalysis(n));
+const projectContexts = [...new Map(DATA.nodes.filter(n => n.ai_project_context && n.ai_project_context.analysis_type === "project_context").map(n => [n.ai_project_context.subject?.project_path || "project", n])).values()];
+if (aiProfiles.length || projectContexts.length) {
+  const claimCount = aiProfiles.reduce((sum, n) => sum + ((aiAnalysis(n).claims || []).length), 0);
+  const simulated = aiProfiles.some(n => aiAnalysis(n).simulation);
+  aiStatusStrip.innerHTML = `<b>AI 证据已启用</b> · ${aiProfiles.length} 个模型条款画像 · ${claimCount} 条逐字条款 · ${projectContexts.length} 个项目上下文 · C 级待人工确认${simulated ? " · 含验收模拟条款" : ""}`;
+} else {
+  aiStatusStrip.innerHTML = "<b>AI 状态：本图未固化条款画像</b> · 这不影响规则判定与图谱渲染；启用 --ai 后重新扫描可生成 C 级证据";
+}
+const downloadReport = document.getElementById("download-report");
+const reportPreview = document.getElementById("report-preview");
+const openReport = document.getElementById("open-report");
+const closeReport = document.getElementById("close-report");
+const reportModal = document.getElementById("report-modal");
+function setReportOpen(open) {
+  reportModal.hidden = !open;
+  if (open) reportPreview.focus();
+}
+openReport.addEventListener("click", () => setReportOpen(true));
+closeReport.addEventListener("click", () => setReportOpen(false));
+reportModal.addEventListener("click", event => {
+  if (event.target === reportModal) setReportOpen(false);
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !reportModal.hidden) setReportOpen(false);
+});
+if (REPORT_MARKDOWN) {
+  reportPreview.textContent = REPORT_MARKDOWN;
+  downloadReport.addEventListener("click", () => {
+    const url = URL.createObjectURL(new Blob([REPORT_MARKDOWN], {type:"text/markdown;charset=utf-8"}));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "audit_report.md";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  });
+} else {
+  downloadReport.disabled = true;
+  downloadReport.textContent = "未附带 Markdown 报告";
+  openReport.disabled = true;
+  reportPreview.textContent = "本次 HTML 渲染未传入 --report；报告生成链路本身仍然保留。";
+}
+
+function renderLineageForest() {
+  const host = document.getElementById("lineage-forest");
+  if (!host) return;
+  const upstream = {};
+  DATA.edges.forEach(e => {
+    if (e.edge_type === "expanded_from") return;
+    if (!upstream[e.source]) upstream[e.source] = [];
+    if (nodeById[e.target]) upstream[e.source].push(e.target);
+  });
+  let roots = DATA.nodes.filter(n => !isAggregate(n) && (n.lineage_role === "root" || n.lineage_depth === 0));
+  if (!roots.length) roots = DATA.nodes.filter(n => !isAggregate(n));
+  if (!roots.length) { host.innerHTML = `<div class="lineage-empty">当前图没有具体模型节点。</div>`; return; }
+  function branch(nodeId, seen, depth) {
+    if (depth > 12 || seen.has(nodeId)) return `<li><span class="arrow">↺</span>${escapeHtml(nodeId)} <span class="role">循环引用，已停止</span></li>`;
+    const nextSeen = new Set(seen);
+    nextSeen.add(nodeId);
+    return (upstream[nodeId] || []).map(target => {
+      const targetNode = nodeById[target] || {};
+      const role = targetNode.render_role_label || targetNode.lineage_type_ch || targetNode.lineage_type || "上游来源";
+      const children = branch(target, nextSeen, depth + 1);
+      return `<li><span class="arrow">↑</span><b>${escapeHtml(targetNode.name || target)}</b> <span class="role">${escapeHtml(role)} · ${escapeHtml(targetNode.license || "未声明")}</span>${children ? `<ul>${children}</ul>` : ""}</li>`;
+    }).join("");
+  }
+  host.innerHTML = roots.map(root => {
+    const j = decisionOf(root.decision);
+    const tree = branch(root.id, new Set(), 0);
+    return `<div class="lineage-root"><div class="root-name">${escapeHtml(root.name || root.canonical_id)}</div>` +
+      `<div class="root-meta">项目直接使用 · 许可证 ${escapeHtml(root.license || "未声明")} · ${escapeHtml(j.label)}</div>` +
+      `${tree ? `<ul>${tree}</ul>` : `<div class="lineage-empty" style="margin-top:7px">未发现可解析的上游来源。</div>`}</div>`;
+  }).join("");
+}
+renderLineageForest();
+
 window.__chart = chart;
 function refresh() {
   chart.setOption({
@@ -291,12 +522,16 @@ function refresh() {
     series:[{
       type:"graph",
       layout:"none",
-      roam:false,
+      roam:true,
       draggable:false,
+      zoom:0.95,
+      scaleLimit:{min:0.55,max:2.5},
+      edgeSymbol:["none","arrow"],
+      edgeSymbolSize:[0,12],
       data:buildNodes(),
       links:buildLinks(),
       emphasis:{focus:"adjacency",lineStyle:{width:5}},
-      labelLayout:{hideOverlap:true}
+      labelLayout:{hideOverlap:false}
     }]
   }, true);
 }
@@ -320,11 +555,16 @@ function renderNodeDetail(raw) {
       `<div class="kv"><b>已知风险</b> 红 ${counts.red} / 黄 ${counts.yellow} / 灰 ${counts.gray}</div>` +
       `<div class="kv"><b>能力边界</b> 聚合域只表达范围；只有数据源返回具体身份时才展示模拟名称。</div>`;
   } else {
-    html += `<div class="kv"><b>判定来源</b> ${escapeHtml(raw.decision_source || "自身许可证评估")}</div>` +
+    const lineageType = raw.lineage_type_ch || raw.lineage_type || "未标注";
+    const lineageRole = raw.render_role_label || (raw.lineage_role === "root" ? "项目直接使用" : `上游 · ${lineageType}`);
+    html += `<div class="kv"><b>血缘角色</b> ${escapeHtml(lineageRole)}</div>` +
+      `<div class="kv"><b>上游深度</b> ${escapeHtml(raw.lineage_depth ?? "—")}</div>` +
+      `<div class="kv"><b>血缘状态</b> ${escapeHtml(raw.lineage_status || "—")}</div>` +
+      `<div class="kv"><b>判定来源</b> ${escapeHtml(raw.decision_source || "自身许可证评估")}</div>` +
       `<div class="kv"><b>merge_status</b> ${escapeHtml(raw.merge_status || "—")}</div>` +
       `<div class="kv"><b>reason_code</b> ${escapeHtml(raw.reason_code || "—")}</div>`;
   }
-  document.getElementById("panel-body").innerHTML = html + `<h3 style="margin-top:12px">证据链</h3>` + evs;
+  document.getElementById("panel-body").innerHTML = html + renderAiDetails(raw) + `<h3 style="margin-top:12px">证据链</h3>` + evs;
 }
 
 function renderEdgeDetail(edge) {
@@ -333,11 +573,12 @@ function renderEdgeDetail(edge) {
   const membership = isAggregate(source) || isAggregate(target);
   document.getElementById("panel-body").innerHTML =
     `<div class="kv"><b>关系类型</b> ${escapeHtml(edge.edge_type || "—")}</div>` +
-    `<div class="kv"><b>来源</b> ${escapeHtml(source.name || edge.source)}</div>` +
-    `<div class="kv"><b>目标</b> ${escapeHtml(target.name || edge.target)}</div>` +
+    `<div class="kv"><b>下游/派生方</b> ${escapeHtml(source.name || edge.source)}</div>` +
+    `<div class="kv"><b>上游/来源方</b> ${escapeHtml(target.name || edge.target)}</div>` +
+    `<div class="kv"><b>方向</b> ${membership ? "聚合成员归属，不是血缘" : "箭头指向更上游的来源模型"}</div>` +
     `<div class="kv"><b>证据等级</b> ${escapeHtml(edge.evidence_level || "—")}</div>` +
     `<div class="kv"><b>source_field</b> ${escapeHtml(edge.source_field || "—")}</div>` +
-    `<div class="kv"><b>语义</b> ${membership ? "聚合归属，不触发风险传播" : "真实血缘关系"}</div>` +
+    `<div class="kv"><b>语义</b> ${membership ? "聚合域成员归属，不参与风险传播" : "下游模型派生自上游模型"}</div>` +
     `<div class="kv"><b>传播路径证书</b> ${edge.certificates && edge.certificates.length ? edge.certificates.map(escapeHtml).join("<br/>") : "—"}</div>`;
 }
 
@@ -371,7 +612,7 @@ if (!concreteRiskNodes.length) {
     card.style.borderLeftColor = j.color;
     card.style.textAlign = "left";
     card.style.font = "inherit";
-    card.innerHTML = `<div class="name">${escapeHtml(n.name || n.canonical_id)}</div><div class="meta">${j.label} · 许可证 ${escapeHtml(n.license || "未声明")} · 证据链 ${(n.evidence_chain || []).length} 条</div>`;
+    card.innerHTML = `<div class="name">${escapeHtml(n.name || n.canonical_id)}</div><div class="meta">${j.label} · 许可证 ${escapeHtml(n.license || "未声明")} · 证据链 ${(n.evidence_chain || []).length} 条${aiAnalysis(n) ? ` · AI ${(aiAnalysis(n).claims || []).length} 条待确认` : ""}</div>`;
     card.onclick = () => renderNodeDetail(n);
     riskGrid.appendChild(card);
   });
@@ -442,6 +683,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="开源账本通用血缘图渲染器（读 graph.json）")
     parser.add_argument("--input", required=True, type=Path, help="graph.json 路径")
     parser.add_argument("--output", required=True, type=Path, help="输出 HTML 路径")
+    parser.add_argument("--report", type=Path, default=None, help="可选：Markdown 审计报告路径，嵌入页面供预览和下载")
     parser.add_argument("--title", default=None, help="页面标题")
     args = parser.parse_args()
 
@@ -456,6 +698,11 @@ def main() -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     echarts_src = _copy_echarts(args.output.parent)
     chart_height = max(620, int(layout.get("height", 620)))
+    report_markdown = ""
+    if args.report is not None:
+        if not args.report.exists():
+            raise FileNotFoundError(f"report not found: {args.report}")
+        report_markdown = args.report.read_text(encoding="utf-8")
 
     html = TPL
     replacements = {
@@ -466,6 +713,7 @@ def main() -> None:
         "{{DATA_JSON}}": json.dumps(data, ensure_ascii=False),
         "{{DECISION_COLOR_JSON}}": json.dumps(DECISION_COLOR, ensure_ascii=False),
         "{{DECISION_LABEL_JSON}}": json.dumps(DECISION_LABEL, ensure_ascii=False),
+        "{{REPORT_MARKDOWN_JSON}}": json.dumps(report_markdown, ensure_ascii=False),
         "{{ECHARTS_SRC}}": echarts_src,
         "{{CHART_HEIGHT}}": str(chart_height),
     }
