@@ -237,7 +237,7 @@ def test_export_bom_adds_reversible_purl_for_internal_aggregate(
 
 def test_run_project_writes_bom_in_normal_path(monkeypatch, tmp_path: Path) -> None:
     import main
-    import work.extract_modelscope_lineage as extractor
+    import modelscope_lineage as extractor
 
     project = tmp_path / "demo_project"
     project.mkdir()
@@ -287,7 +287,7 @@ def test_run_project_writes_bom_in_normal_path(monkeypatch, tmp_path: Path) -> N
     monkeypatch.setattr(
         extractor,
         "extract",
-        lambda _ns, _name, _snapshot_id, _source_url: ([asset], [edge]),
+        lambda _ns, _name, _snapshot_id, _source_url, **_kwargs: ([asset], [edge]),
     )
 
     args = types.SimpleNamespace(
@@ -301,3 +301,47 @@ def test_run_project_writes_bom_in_normal_path(monkeypatch, tmp_path: Path) -> N
     bom = json.loads(bom_path.read_text(encoding="utf-8"))
     assert bom["specVersion"] == "1.7"
     assert bom["components"][0]["bom-ref"] == asset["canonical_id"]
+
+
+def test_bom_round_trip_preserves_lineage_completeness(tmp_path: Path) -> None:
+    asset = _asset(
+        "model:modelscope/acme/demo@master",
+        asset_type="model",
+        name="acme/demo",
+        version="master",
+        purls=["pkg:modelscope/acme/demo@master"],
+        license_value="Apache-2.0",
+    )
+    asset.update(
+        {
+            "lineage_role": "root",
+            "lineage_status": "truncated",
+            "lineage_complete": False,
+            "lineage_truncation_reason": "node_budget",
+            "resolved_upstream_count": 2,
+            "max_depth_seen": 2,
+            "unresolved_upstream_models": ["acme/missing-parent"],
+            "lineage_cycles": [["acme/demo", "acme/parent", "acme/demo"]],
+        }
+    )
+    assets_path = tmp_path / "assets.json"
+    edges_path = tmp_path / "edges.json"
+    bom_path = tmp_path / "bom.json"
+    _write_json(assets_path, [asset])
+    _write_json(edges_path, [])
+
+    export_bom.export_bom(assets_path, edges_path, bom_path)
+    bom = json.loads(bom_path.read_text(encoding="utf-8"))
+    converted = bom_adapter.convert_bom(
+        bom,
+        source_file=str(bom_path),
+        snapshot_id="t1",
+    )[0]
+
+    assert converted["lineage_complete"] is False
+    assert converted["lineage_status"] == "truncated"
+    assert converted["lineage_truncation_reason"] == "node_budget"
+    assert converted["resolved_upstream_count"] == 2
+    assert converted["max_depth_seen"] == 2
+    assert converted["unresolved_upstream_models"] == ["acme/missing-parent"]
+    assert converted["lineage_cycles"]

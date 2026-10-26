@@ -204,6 +204,21 @@ def graph_to_dict(
             "decision_source",
             "risk_level",
             "risk_note",
+            "lineage_complete",
+            "lineage_status",
+            "lineage_truncation_reason",
+            "unresolved_upstream_models",
+            "lineage_cycles",
+            "max_upstream_depth",
+            "max_upstream_nodes",
+            "max_depth_seen",
+            "resolved_upstream_count",
+            "include_downstream",
+            "lineage_depth",
+            "lineage_type",
+            "lineage_type_ch",
+            "unresolved",
+            "unresolved_reason",
         ):
             if field_name in attrs:
                 node[field_name] = attrs[field_name]

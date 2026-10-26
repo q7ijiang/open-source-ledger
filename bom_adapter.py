@@ -328,6 +328,14 @@ def extract_evidence_chain(
         entry_evidence_level = "B"
         if isinstance(entry, dict):
             entry_evidence_level = clean_text(entry.get("evidence_level")) or "B"
+            nested_evidence = [
+                item
+                for item in as_list(entry.get("evidence_chain"))
+                if isinstance(item, dict)
+            ]
+            if nested_evidence:
+                evidence_chain.extend(dict(item) for item in nested_evidence)
+                continue
         evidence_chain.append(
             evidence_entry(
                 "components[].licenses",
@@ -559,8 +567,66 @@ def convert_component(
     for flag_name in ("is_fixture", "display_only"):
         if flag_name in ledger_properties:
             asset[flag_name] = _as_bool(ledger_properties[flag_name])
+    if "simulation" in ledger_properties:
+        asset["simulation"] = _as_bool(ledger_properties["simulation"])
+    for property_name, field_name in (
+        ("simulation_reason", "simulation_reason"),
+        ("simulation_original_license", "simulation_original_license"),
+        ("simulation_target_license", "simulation_target_license"),
+    ):
+        if property_name in ledger_properties:
+            asset[field_name] = ledger_properties[property_name]
     if ledger_properties.get("expanded_from"):
         asset["expanded_from"] = str(ledger_properties["expanded_from"])
+
+    for field_name in (
+        "lineage_role",
+        "lineage_status",
+        "lineage_truncation_reason",
+    ):
+        if field_name in ledger_properties:
+            asset[field_name] = ledger_properties[field_name]
+    for field_name in (
+        "lineage_depth",
+        "max_upstream_depth",
+        "max_upstream_nodes",
+        "resolved_upstream_count",
+        "max_depth_seen",
+    ):
+        if field_name in ledger_properties:
+            try:
+                asset[field_name] = int(ledger_properties[field_name])
+            except (TypeError, ValueError):
+                pass
+    if "lineage_complete" in ledger_properties:
+        asset["lineage_complete"] = _as_bool(ledger_properties["lineage_complete"])
+    for property_name, field_name in (
+        ("unresolved_upstream_models_json", "unresolved_upstream_models"),
+        ("lineage_cycles_json", "lineage_cycles"),
+    ):
+        raw_value = ledger_properties.get(property_name)
+        if not raw_value:
+            continue
+        try:
+            parsed = json.loads(raw_value)
+        except (TypeError, ValueError):
+            continue
+        if isinstance(parsed, list):
+            asset[field_name] = parsed
+
+    for property_name, field_name in (
+        ("ai_analysis_json", "ai_analysis"),
+        ("ai_project_context_json", "ai_project_context"),
+    ):
+        raw_value = ledger_properties.get(property_name)
+        if not raw_value:
+            continue
+        try:
+            parsed = json.loads(raw_value)
+        except (TypeError, ValueError):
+            continue
+        if isinstance(parsed, dict):
+            asset[field_name] = parsed
 
     return asset
 

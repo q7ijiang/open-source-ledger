@@ -8,7 +8,7 @@
     bom_adapter.convert_bom
     -> entity_resolver.deduplicate_assets
     -> evidence_enricher.enrich_assets
-    -> work.extract_modelscope_lineage.extract（ModelScope 模型 BOM）
+    -> modelscope_lineage.extract（ModelScope 模型 BOM）
 
 深度模式：
     对 t0/t1 分别执行基础数据转换，然后：
@@ -25,7 +25,6 @@ import argparse
 import json
 import os
 import re
-import subprocess
 import sys
 from collections import Counter
 from datetime import datetime, timezone
@@ -84,13 +83,35 @@ _TEXT_MODEL_RE = re.compile(
 def _model_output_dir(root: Path, model: str) -> Path:
     """返回模型模式独立产物目录，避免不同模型互相覆盖。"""
     safe_name = model.strip().strip("/").replace("/", "__")
-    return root / "outputs" / safe_name
+    return root / "models" / safe_name
 
 
 def _project_output_dir(root: Path, project_path: Path) -> Path:
     """返回项目模式独立产物目录，避免不同项目互相覆盖。"""
     safe_name = project_path.name.strip().strip("/").replace("/", "__")
-    return root / "outputs" / safe_name
+    return root / "projects" / safe_name
+
+
+def _runtime_directory(cli_value: Path | None, env_name: str, default_name: str) -> Path:
+    """解析调用方指定的运行目录，不依赖仓库内固定 outputs 路径。"""
+    raw = cli_value or os.getenv(env_name, "").strip() or default_name
+    return Path(raw).expanduser().resolve()
+
+
+def _artifacts_root(args: argparse.Namespace) -> Path:
+    return _runtime_directory(
+        getattr(args, "artifacts_dir", None),
+        "OPEN_SOURCE_LEDGER_ARTIFACTS_DIR",
+        ".open-source-ledger/artifacts",
+    )
+
+
+def _cache_root(args: argparse.Namespace) -> Path:
+    return _runtime_directory(
+        getattr(args, "cache_dir", None),
+        "OPEN_SOURCE_LEDGER_CACHE_DIR",
+        ".open-source-ledger/cache",
+    )
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -111,7 +132,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--mode", choices=("basic", "deep"), required=False,
                         help="基础/深度模式（与 --model / --diff 二选一）")
     parser.add_argument("--model", type=str, default=None,
-                        help="HF 模型名，触发模型血缘扫描模式（与 --mode / --diff / --project 二选一）")
+                        help="ModelScope 模型名，触发模型血缘扫描模式（与 --mode / --diff / --project 二选一）")
     parser.add_argument("--project", type=Path, default=None,
                         help="项目路径，触发项目扫描模式：识别项目内 ModelScope 模型并生成合并血缘图")
     parser.add_argument("--diff", action="store_true",
@@ -121,6 +142,53 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--after", type=Path, help="深度/diff 模式的 t1 CycloneDX BOM")
     parser.add_argument("--output", type=Path, required=False, default=None, help="输出 Markdown 报告（模型/项目模式省略时自动生成）")
     parser.add_argument(
+        "--artifacts-dir",
+        type=Path,
+        default=None,
+        help="模型/项目模式的产物根目录；也可用 OPEN_SOURCE_LEDGER_ARTIFACTS_DIR 配置",
+    )
+    parser.add_argument(
+        "--cache-dir",
+        type=Path,
+        default=None,
+        help="可选缓存根目录；也可用 OPEN_SOURCE_LEDGER_CACHE_DIR 配置",
+    )
+    parser.add_argument(
+        "--bom-output",
+        type=Path,
+        default=None,
+        help="显式指定模型/项目模式 BOM 输出路径，便于 CI 不搜索文件",
+    )
+    parser.add_argument(
+        "--graph-output",
+        type=Path,
+        default=None,
+        help="显式指定模型/项目模式 graph.json 输出路径",
+    )
+    parser.add_argument(
+        "--max-upstream-depth",
+        type=int,
+        default=None,
+        help="最大上游递归深度；省略表示完整上游闭包",
+    )
+    parser.add_argument(
+        "--max-upstream-nodes",
+        type=int,
+        default=128,
+        help="上游血缘节点预算（默认 128），超预算保留占位节点",
+    )
+    parser.add_argument(
+        "--ai-max-models",
+        type=int,
+        default=20,
+        help="单次 AI 运行最多分析的模型数（默认 20），按直接模型和上游深度排序",
+    )
+    ai_group = parser.add_mutually_exclusive_group()
+    ai_group.add_argument("--ai", dest="ai_mode", action="store_const", const=True,
+                           help="启用 AI 语义证据分析（ModelScope 原文校验 + C 级证据）")
+    ai_group.add_argument("--no-ai", dest="ai_mode", action="store_const", const=False,
+                           help="禁用 AI；规则审计流程保持原行为")
+    parser.add_argument(
         "--include-fixtures",
         action="store_true",
         help="演示模式：保留 is_fixture / display_only 标记的演示夹具。"
@@ -128,6 +196,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     args = parser.parse_args(argv)
 
+    if args.max_upstream_depth is not None and args.max_upstream_depth < 0:
+        parser.error("--max-upstream-depth 不能为负数")
+    if args.max_upstream_nodes < 1:
+        parser.error("--max-upstream-nodes 必须大于等于 1")
+    if args.ai_max_models < 1:
+        parser.error("--ai-max-models 必须大于等于 1")
     if args.diff and (args.model is not None or args.mode is not None or args.project is not None):
         parser.error("--diff 与 --model / --mode / --project 互斥，请二选一")
     if args.model is not None and (args.mode is not None or args.project is not None):
@@ -143,11 +217,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     if args.mode == "deep" and (args.before is None or args.after is None):
         parser.error("--mode deep 必须同时提供 --before 和 --after")
     if args.output is None:
-        root = Path(__file__).resolve().parent
+        artifacts_root = _artifacts_root(args)
         if args.model is not None:
-            args.output = _model_output_dir(root, args.model) / "report.md"
+            args.output = _model_output_dir(artifacts_root, args.model) / "report.md"
         elif args.project is not None:
-            args.output = _project_output_dir(root, args.project) / "report.md"
+            args.output = _project_output_dir(artifacts_root, args.project) / "report.md"
         else:
             parser.error("--diff / --mode 模式必须提供 --output")
     return args
@@ -155,6 +229,326 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+def _ai_config_from_args(args: argparse.Namespace):
+    from ai_layer.config import AIConfig
+
+    config = AIConfig.from_env(getattr(args, "ai_mode", None))
+    config.validate()
+    return config
+
+
+def _write_json(path: Path, value: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _attach_ai_to_graph(graph_path: Path, assets: list[dict[str, Any]]) -> None:
+    if not graph_path.exists():
+        return
+    graph = json.loads(graph_path.read_text(encoding="utf-8"))
+    by_canonical = {asset.get("canonical_id"): asset for asset in assets}
+    for node in graph.get("nodes", []):
+        asset = by_canonical.get(node.get("canonical_id"))
+        if not asset:
+            continue
+        for field in ("ai_analysis", "ai_project_context"):
+            if field in asset:
+                node[field] = asset[field]
+    _write_json(graph_path, graph)
+
+
+def _run_ai_for_assets(
+    models: list[dict[str, Any]],
+    assets: list[dict[str, Any]],
+    output_dir: Path,
+    config,
+    graph_path: Path | None = None,
+    project_path: Path | None = None,
+    service=None,
+) -> dict[str, Any] | None:
+    """运行 AI 旁路分析；失败只产生 unavailable 证据，不阻断规则审计。"""
+    if not config.enabled:
+        return None
+    import modelscope_adapter
+    from ai_layer.schemas import unavailable_analysis
+    from ai_layer.service import (
+        AIService,
+        analysis_bundle,
+        attach_model_analysis,
+        attach_project_context,
+    )
+
+    ai_service = service or AIService(config)
+    model_analyses: list[dict[str, Any]] = []
+    source_dir = output_dir / "source_bundles"
+    for model in models:
+        model_id = str(model.get("model") or "")
+        ns = str(model.get("ns") or "")
+        name = str(model.get("name") or "")
+        if not model_id or not ns or not name:
+            continue
+        try:
+            source_bundle = modelscope_adapter.fetch_source_bundle(ns, name)
+        except Exception as exc:  # noqa: BLE001
+            source_bundle = {
+                "schema_version": "modelscope-source-bundle/v1",
+                "source": "modelscope",
+                "model_id": model_id,
+                "revision": "",
+                "retrieved_at": _utc_now(),
+                "facts": {"license": {"value": None, "source_field": None, "evidence_level": None}},
+                "documents": [],
+                "warnings": [f"source_bundle unavailable: {type(exc).__name__}: {exc}"],
+            }
+            analysis = unavailable_analysis(
+                "model_profile",
+                {"model_id": model_id, "license_fact": None},
+                f"{type(exc).__name__}: {exc}",
+                config.public_dict(),
+            )
+        else:
+            analysis = ai_service.analyze_model_source(source_bundle)
+        safe_name = model_id.replace("/", "__")
+        _write_json(source_dir / f"{safe_name}.json", source_bundle)
+        model_analyses.append(analysis)
+        attach_model_analysis(assets, analysis)
+
+    project_context = None
+    if project_path is not None:
+        project_context = ai_service.analyze_project_context(project_path, model_analyses)
+        attach_project_context(assets, project_context)
+
+    bundle = analysis_bundle(
+        config,
+        model_analyses=model_analyses,
+        project_context=project_context,
+    )
+    _write_json(output_dir / "ai_analysis.json", bundle)
+    _write_json(output_dir / "assets.json", assets)
+    if graph_path is not None:
+        _attach_ai_to_graph(graph_path, assets)
+    print(f"AI 语义证据已写入：{output_dir / 'ai_analysis.json'}")
+    return bundle
+
+
+def _ai_model_analyses_from_assets(assets: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """从 BOM 固化的资产中恢复模型级 AI 画像，不重新访问网络。"""
+    analyses: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for asset in assets:
+        analysis = asset.get("ai_analysis")
+        if not isinstance(analysis, dict) or analysis.get("analysis_type") != "model_profile":
+            continue
+        subject = analysis.get("subject") if isinstance(analysis.get("subject"), dict) else {}
+        key = (
+            str(subject.get("model_id") or asset.get("name") or ""),
+            str(subject.get("source_bundle_sha256") or analysis.get("generated_at") or ""),
+        )
+        if key in seen:
+            continue
+        seen.add(key)
+        analyses.append(analysis)
+    return analyses
+
+
+def _ai_models_from_assets(
+    assets: list[dict[str, Any]],
+    limit: int,
+    direct_models: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    """按“直接模型优先、上游距离由近到远”选择 AI 分析对象。"""
+    sources_by_model = {
+        str(item.get("model") or ""): list(item.get("sources") or [])
+        for item in (direct_models or [])
+    }
+    candidates: list[tuple[tuple[int, int, str], dict[str, Any]]] = []
+    seen: set[str] = set()
+    for asset in assets:
+        if asset.get("aggregate"):
+            continue
+        model_id = str(asset.get("name") or "").strip().strip("/")
+        if not _MODEL_ID_RE.match(model_id) or model_id in seen:
+            continue
+        seen.add(model_id)
+        ns, name = model_id.split("/", 1)
+        try:
+            depth = int(asset.get("lineage_depth") or 0)
+        except (TypeError, ValueError):
+            depth = 0
+        is_direct = model_id in sources_by_model or asset.get("lineage_role") == "root"
+        entry = {
+            "model": model_id,
+            "ns": ns,
+            "name": name,
+            "sources": sources_by_model.get(model_id, []),
+            "lineage_depth": depth,
+        }
+        candidates.append(((0 if is_direct else 1, depth, model_id), entry))
+    candidates.sort(key=lambda item: item[0])
+    if len(candidates) > limit:
+        print(
+            f"提示：AI 候选模型 {len(candidates)} 个，按 --ai-max-models={limit} 截断；"
+            "规则血缘仍保留完整上游闭包。",
+            file=sys.stderr,
+        )
+    return [entry for _, entry in candidates[:limit]]
+
+
+def _render_ai_sections(bundle: dict[str, Any] | None) -> list[str]:
+    confidence_labels = {
+        "base": "基础",
+        "license_file": "LICENSE 文件",
+        "readme": "README 文件",
+        "structured_file": "结构化文件",
+        "exact_quote": "原文精确命中",
+        "restriction_wording": "限制措辞",
+        "source_sha256": "SHA256",
+        "quote_context": "引文长度",
+        "uncertain_state": "不确定性",
+        "cross_document_support": "跨文档互证",
+    }
+    if not isinstance(bundle, dict):
+        return []
+    lines = ["", "## AI 语义证据（C 级，待人工确认）", ""]
+    lines.append("> AI 只解释可精确定位的条款，不修改许可证事实、风险灯色、Delta、decision 或 CI。")
+    lines.append("")
+    lines.extend(
+        _table(
+            ["置信度因子", "分值", "含义"],
+            [
+                ["基础", "+0.48", "条款已绑定到来源文档和可定位的逐字原文。"],
+                ["来源文件类型", "LICENSE +0.15 / README +0.08 / 其他结构化文件 +0.03", "LICENSE 文件对许可证条款证据最强，README 次之。"],
+                ["原文精确命中", "+0.10", "AI 引用文本能在冻结的 source_bundle 中逐字找到。"],
+                ["限制措辞", "+0.08", "原文包含明确的禁止、仅限、不得等限制表达。"],
+                ["SHA256", "+0.03", "来源文件已计算 SHA256，可与后续快照核对是否变化。"],
+                ["引文长度", "+0.02", "引文至少 8 个字符，能够保留必要语境。"],
+                ["跨文档互证", "每增加一份文档 +0.02，最多 +0.06", "同一维度得到多个独立来源支持。"],
+                ["不确定性", "-0.12", "结论为有条件允许、未知或未找到，需降低自动置信度。"],
+            ],
+        )
+    )
+    lines.extend(
+        [
+            "",
+            "> 置信度是“证据可复核程度”，不是模型自报概率，也不是许可证合规或法律结论概率。最终分数限制在 0.05 至 0.89；所有 C 级结论仍需人工确认。",
+            "",
+        ]
+    )
+    analyses = bundle.get("model_analyses") or []
+    for analysis in analyses:
+        subject = analysis.get("subject") or {}
+        model_id = subject.get("model_id") or "—"
+        lines.extend([f"### {model_id}", ""])
+        lines.append(f"- AI 状态：`{analysis.get('status') or 'unknown'}`")
+        if analysis.get("simulation"):
+            note = analysis.get("simulation_note") or "验收模拟条款，不代表数据源当前事实"
+            lines.append(f"- **验收模拟**：{note}")
+        lines.append(f"- 许可证事实：**{subject.get('license_fact') or '（未识别）'}**（AI 不可改写）")
+        if analysis.get("summary"):
+            lines.append(f"- 摘要：{analysis['summary']}")
+        if analysis.get("reason"):
+            lines.append(f"- 失败原因：{analysis['reason']}")
+        claims = analysis.get("claims") or []
+        if claims:
+            rows = []
+            for claim in claims:
+                evidences = claim.get("evidences") or [claim.get("evidence") or {}]
+                for evidence in evidences:
+                    rows.append(
+                        [
+                            claim.get("dimension_zh") or claim.get("dimension"),
+                            claim.get("state_zh") or claim.get("state"),
+                            f"{claim.get('confidence', '—')} / C / {claim.get('human_review', 'pending')}",
+                            evidence.get("source_path"),
+                            evidence.get("quote"),
+                        ]
+                    )
+            lines.extend(_table(["维度", "AI 语义结论", "置信度 / 证据等级 / 状态", "原文文件", "原文依据"], rows))
+            if any(claim.get("conflict") for claim in claims):
+                lines.extend(["", "**跨文档冲突（待人工复核）**", ""])
+                for conflict in analysis.get("conflicts") or []:
+                    lines.append(
+                        f"- {conflict.get('dimension_zh') or conflict.get('dimension')}："
+                        f"{' / '.join(conflict.get('states') or [])}；{conflict.get('reason')}"
+                    )
+            formula_lines = []
+            for claim in claims:
+                factors = claim.get("confidence_factors") or {}
+                if not isinstance(factors, dict) or not factors:
+                    continue
+                parts = []
+                for name, value in factors.items():
+                    try:
+                        number = float(value)
+                    except (TypeError, ValueError):
+                        continue
+                    parts.append(f"{confidence_labels.get(name, name)} {number:+.2f}")
+                if parts:
+                    formula_lines.append(
+                        f"- {claim.get('dimension_zh') or claim.get('dimension')}：{' + '.join(parts)} = {claim.get('confidence')}"
+                    )
+            if formula_lines:
+                lines.extend(["", "**置信度构成**", "", *formula_lines])
+        else:
+            lines.append("_无通过原文校验的条款项。_")
+        gaps = analysis.get("gaps") or []
+        if gaps:
+            lines.extend(["", "**未识别维度与证据缺口**", ""])
+            lines.extend(_table(["维度", "原因"], [[g.get("dimension_zh") or g.get("dimension"), g.get("reason")] for g in gaps]))
+        lines.append("")
+
+    project_context = bundle.get("project_context")
+    if isinstance(project_context, dict):
+        lines.extend(["### 项目使用上下文", ""])
+        if project_context.get("simulation"):
+            note = project_context.get("simulation_note") or "项目上下文用于验收展示"
+            lines.append(f"> 验收模拟：{note}")
+            lines.append("")
+        uses = project_context.get("uses") or []
+        if uses:
+            rows = []
+            for use in uses:
+                evidence = use.get("evidence") or {}
+                rows.append(
+                    [
+                        use.get("use_type_zh") or use.get("use_type"),
+                        use.get("statement"),
+                        f"{use.get('confidence', '—')} / C / {use.get('human_review', 'pending')}",
+                        evidence.get("source_path"),
+                        evidence.get("quote"),
+                    ]
+                )
+            lines.extend(_table(["使用方式", "结论", "置信度 / 证据等级 / 状态", "项目文件", "原文依据"], rows))
+        else:
+            lines.append(f"_未形成可复核的项目使用结论：{project_context.get('reason') or '证据不足'}_")
+        lines.append("")
+    semantic = bundle.get("semantic_diff")
+    if isinstance(semantic, dict):
+        lines.extend(["### 语义 Diff", ""])
+        if semantic.get("simulation"):
+            lines.append("> 验收模拟：以下语义差异不代表真实世界许可证已经变更。")
+            lines.append("")
+        changes = semantic.get("changes") or []
+        if changes:
+            rows = []
+            for change in changes:
+                rows.append(
+                    [
+                        change.get("model_id"),
+                        change.get("dimension_zh") or change.get("dimension"),
+                        f"{change.get('before_state_zh') or change.get('before_state')} → {change.get('after_state_zh') or change.get('after_state')}",
+                        change.get("review_priority"),
+                        change.get("before_quote"),
+                        change.get("after_quote"),
+                    ]
+                )
+            lines.extend(_table(["模型", "维度", "语义变化", "复核优先级", "t0 原文", "t1 原文"], rows))
+        else:
+            lines.append("_未发现可验证的语义变化。_")
+        lines.append("")
+    return lines
 
 
 def _cell(value: Any) -> str:
@@ -877,6 +1271,7 @@ def run_diff(
     after_bom: Path,
     output_path: Path,
     include_fixtures: bool = False,
+    ai_service=None,
 ) -> None:
     """BOM 对比模式：实体对齐 → Delta 检测 → 风险传播 → 增强报告。
 
@@ -912,6 +1307,19 @@ def run_diff(
     )
     propagated = propagation_engine.propagate(events, graph_before, graph_after)
 
+    ai_diff = None
+    ai_config = getattr(ai_service, "config", None)
+    if ai_service is not None and getattr(ai_config, "enabled", False):
+        before_analyses = _ai_model_analyses_from_assets(before["assets"])
+        after_analyses = _ai_model_analyses_from_assets(after["assets"])
+        ai_diff = ai_service.compare_models(before_analyses, after_analyses)
+        from ai_layer.service import analysis_bundle
+
+        bundle = analysis_bundle(ai_config, diff_analysis=ai_diff)
+        ai_output = output_path.with_suffix(".ai.json")
+        _write_json(ai_output, bundle)
+        print(f"AI 语义差异已写入：{ai_output}")
+
     report = report_enhanced.render_report(
         propagated["events"],
         propagated["path_certificates"],
@@ -921,6 +1329,7 @@ def run_diff(
             bom_adapter.load_json(before_bom),
             bom_adapter.load_json(after_bom),
         ),
+        ai_diff=ai_diff,
     )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -937,29 +1346,6 @@ def run_diff(
     print(f"三级判定分布：{dict(decision_distribution)}")
 
 
-def _run_py_script(script: Path, script_args: list[str], label: str) -> None:
-    """以子进程方式调用仓库脚本，转发输出，失败时抛异常。"""
-    cmd = [sys.executable, str(script), *script_args]
-    print(f"[{label}] 运行：{' '.join(cmd)}")
-    env = os.environ.copy()
-    # 强制子进程以 UTF-8 读写，避免 Windows 下中文输出被按本地代码页解码导致乱码。
-    env["PYTHONUTF8"] = "1"
-    env["PYTHONIOENCODING"] = "utf-8"
-    proc = subprocess.run(
-        cmd,
-        cwd=str(script.parent),
-        env=env,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-    )
-    if proc.stdout:
-        print(proc.stdout.rstrip())
-    if proc.stderr:
-        print(proc.stderr.rstrip(), file=sys.stderr)
-    if proc.returncode != 0:
-        raise RuntimeError(f"{label} 执行失败（退出码 {proc.returncode}）")
 
 
 def _probe_modelscope(model: str) -> bool | None:
@@ -1070,6 +1456,27 @@ def _enrich_risk_fields(
     return result
 
 
+def _write_graph_output(
+    assets_path: Path,
+    edges_path: Path,
+    graph_path: Path,
+    label: str,
+) -> dict[str, Any]:
+    """从显式输入路径构建图，避免依赖固定脚本或固定输出目录。"""
+    import build_graph
+
+    assets = json.loads(assets_path.read_text(encoding="utf-8"))
+    edges = json.loads(edges_path.read_text(encoding="utf-8"))
+    graph = build_graph.build_graph(assets, edges)
+    canonical_to_scc, compressed = build_graph.compress_scc(graph)
+    graph_dict = build_graph.graph_to_dict(graph, canonical_to_scc, compressed)
+    _write_json(graph_path, graph_dict)
+    print(
+        f"[{label}] 图节点 {graph_dict.get('node_count', 0)} / 边 {graph_dict.get('edge_count', 0)}"
+    )
+    return graph_dict
+
+
 def _run_modelscope_model(args: argparse.Namespace, model: str, root: Path) -> None:
     """ModelScope 模型模式：提取血缘 → 风险判定 → 中文报告。"""
     model = model.strip().strip("/")
@@ -1078,10 +1485,45 @@ def _run_modelscope_model(args: argparse.Namespace, model: str, root: Path) -> N
     started = datetime.now(timezone.utc)
 
     # 1. 提取血缘（详情 + lineage → assets/edges/graph.json）
-    _run_py_script(
-        root / "work" / "extract_modelscope_lineage.py",
-        ["--model", model, "--output-dir", str(extract_dir)],
-        "extract_modelscope_lineage",
+    from modelscope_lineage import extract as extract_modelscope_lineage
+    import modelscope_adapter
+
+    if "/" not in model:
+        raise ValueError("ModelScope 模型名必须是 namespace/name 形式")
+    ns, name = model.split("/", 1)
+    snapshot_id = f"modelscope-{ns}__{name}"
+    source_url = f"{modelscope_adapter.API_BASE}/models/{ns}/{name}"
+    assets, edges = extract_modelscope_lineage(
+        ns,
+        name,
+        snapshot_id,
+        source_url,
+        include_downstream=True,
+        max_upstream_depth=getattr(args, "max_upstream_depth", None),
+        max_upstream_nodes=getattr(args, "max_upstream_nodes", 128),
+    )
+    if not assets:
+        raise RuntimeError(
+            f"无法从 ModelScope 获取模型 {ns}/{name} 的详情，请检查网络或模型名。"
+        )
+    extract_dir.mkdir(parents=True, exist_ok=True)
+    _write_json(extract_dir / "assets.json", assets)
+    _write_json(extract_dir / "edges.json", edges)
+    graph_path = getattr(args, "graph_output", None) or (extract_dir / "graph.json")
+    _write_json(
+        extract_dir / "run_context.json",
+        {
+            "mode": "model",
+            "artifacts_dir": str(root),
+            "cache_dir": str(_cache_root(args)),
+            "graph_path": str(graph_path),
+        },
+    )
+    _write_graph_output(
+        extract_dir / "assets.json",
+        extract_dir / "edges.json",
+        graph_path,
+        "modelscope_lineage",
     )
 
     # 2. 补风险判定字段（risk_level / decision），失败不阻断报告生成。
@@ -1089,13 +1531,29 @@ def _run_modelscope_model(args: argparse.Namespace, model: str, root: Path) -> N
         _enrich_risk_fields(
             extract_dir / "assets.json",
             extract_dir / "edges.json",
-            extract_dir / "graph.json",
+            graph_path,
         )
     except Exception as exc:  # noqa: BLE001
         print(f"提示：风险判定字段补全失败（{type(exc).__name__}: {exc}）", file=sys.stderr)
 
+    ai_bundle = None
+    ai_config = _ai_config_from_args(args)
+    if ai_config.enabled:
+        assets = json.loads((extract_dir / "assets.json").read_text(encoding="utf-8"))
+        ai_models = _ai_models_from_assets(
+            assets,
+            limit=getattr(args, "ai_max_models", 20),
+        )
+        ai_bundle = _run_ai_for_assets(
+            models=ai_models,
+            assets=assets,
+            output_dir=extract_dir,
+            config=ai_config,
+            graph_path=graph_path,
+        )
+
     # 3. 导出标准 CycloneDX BOM，供 --diff 离线对比使用。
-    bom_path = extract_dir / "bom.json"
+    bom_path = getattr(args, "bom_output", None) or (extract_dir / "bom.json")
     export_bom.export_bom(
         extract_dir / "assets.json",
         extract_dir / "edges.json",
@@ -1104,7 +1562,13 @@ def _run_modelscope_model(args: argparse.Namespace, model: str, root: Path) -> N
     print(f"CycloneDX BOM 已写入：{bom_path}")
 
     duration_s = (datetime.now(timezone.utc) - started).total_seconds()
-    report = _render_modelscope_report(model, extract_dir, duration_s)
+    report = _render_modelscope_report(
+        model,
+        extract_dir,
+        duration_s,
+        ai_bundle,
+        graph_path=graph_path,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(report, encoding="utf-8")
     print(f"模型模式报告已写入：{args.output}")
@@ -1113,30 +1577,34 @@ def _run_modelscope_model(args: argparse.Namespace, model: str, root: Path) -> N
 def run_model(args: argparse.Namespace) -> None:
     """模型模式：自动探测 ModelScope 来源并运行对应流水线。"""
     model = args.model
-    root = Path(__file__).resolve().parent
+    repo_root = Path(__file__).resolve().parent
 
     is_modelscope = _probe_modelscope(model)
     if is_modelscope is True:
-        _run_modelscope_model(args, model, root)
+        _run_modelscope_model(args, model, _artifacts_root(args))
     elif is_modelscope is False:
-        _run_legacy_fallback(args, model, root)
+        _run_legacy_fallback(args, model, repo_root)
     else:
         print("提示：ModelScope 探测因网络异常失败。", file=sys.stderr)
-        _run_legacy_fallback(args, model, root)
+        _run_legacy_fallback(args, model, repo_root)
 
 
 def _render_modelscope_report(
     model: str,
     extract_dir: Path,
     duration_s: float,
+    ai_bundle: dict[str, Any] | None = None,
+    graph_path: Path | None = None,
 ) -> str:
     """渲染 ModelScope 模型血缘扫描的中文 Markdown 报告。"""
-    graph = json.loads((extract_dir / "graph.json").read_text(encoding="utf-8"))
+    effective_graph_path = graph_path or (extract_dir / "graph.json")
+    graph = json.loads(effective_graph_path.read_text(encoding="utf-8"))
     assets = json.loads((extract_dir / "assets.json").read_text(encoding="utf-8"))
     nodes = graph.get("nodes", [])
     edges = graph.get("edges", [])
     aggregate_nodes = [a for a in assets if a.get("aggregate")]
-    current = next((a for a in assets if not a.get("aggregate")), {})
+    current = next((a for a in assets if a.get("lineage_role") == "root"), None)
+    current = current or next((a for a in assets if not a.get("aggregate")), {})
     overall = graph.get("overall_decision") or current.get("decision")
 
     node_rows = [
@@ -1171,8 +1639,11 @@ def _render_modelscope_report(
         f"- 生成时间：{_utc_now()}",
         f"- 许可证：**{current.get('license') or '（未识别）'}**",
         f"- 整体判定：**{_decision_zh(overall) if overall else '（未判定）'}**",
+        f"- 上游血缘：**{current.get('lineage_status') or 'unknown'}**"
+        f"（已展开 {current.get('resolved_upstream_count', 0)} 个父模型，最大深度 {current.get('max_depth_seen', 0)}）",
         f"- 血缘图节点数：**{len(nodes)}**，边数：**{len(edges)}**",
         f"- 聚合节点：**{len(aggregate_nodes)}** 个（聚合 {sum(a.get('count', 0) for a in aggregate_nodes)} 个派生/祖先模型）",
+        f"- 下游聚合视图：**{len(aggregate_nodes)}** 个（平台计数共 {sum(a.get('count', 0) for a in aggregate_nodes)} 个下游模型；仅调查展示，不进入项目风险闭包）",
         f"- SCC 强连通分量：**{graph.get('scc_count', 0)}**",
         f"- 本报告生成：**成功**（流水线耗时 {duration_s:.1f}s）",
         "",
@@ -1192,6 +1663,7 @@ def _render_modelscope_report(
         lines.append("_无聚合节点_")
     lines.extend(["", "## 三、血缘边", ""])
     lines.extend(_table(["来源", "边类型", "目标", "证据等级"], edge_rows))
+    lines.extend(_render_ai_sections(ai_bundle))
     lines.extend(
         [
             "",
@@ -1314,10 +1786,10 @@ def _scan_text_files(project_path: Path) -> list[tuple[str, str]]:
 
 
 def _scan_project_models(project_path: Path) -> list[dict[str, Any]]:
-    """按 BOM → config → 文本 三级扫描，去重并聚合来源文件路径。"""
+    """扫描项目直接使用模型；README 只作为说明，不单独构成直接依赖。"""
     candidates: dict[str, dict[str, Any]] = {}
 
-    def add(model: str, source: str) -> None:
+    def add(model: str, source: str, *, direct_usage: bool) -> None:
         model = _normalize_model_id(model)
         if not model or "/" not in model:
             return
@@ -1326,19 +1798,21 @@ def _scan_project_models(project_path: Path) -> list[dict[str, Any]]:
             return
         entry = candidates.setdefault(
             model,
-            {"model": model, "ns": ns, "name": name, "sources": []},
+            {"model": model, "ns": ns, "name": name, "sources": [], "direct_usage": False},
         )
         if source not in entry["sources"]:
             entry["sources"].append(source)
+        entry["direct_usage"] = entry["direct_usage"] or direct_usage
 
     for model, source in _scan_bom_files(project_path):
-        add(model, source)
+        add(model, source, direct_usage=True)
     for model, source in _scan_config_files(project_path):
-        add(model, source)
+        add(model, source, direct_usage=True)
     for model, source in _scan_text_files(project_path):
-        add(model, source)
+        is_documentation = Path(source).name.lower() == "readme.md"
+        add(model, source, direct_usage=not is_documentation)
 
-    return list(candidates.values())
+    return [entry for entry in candidates.values() if entry.get("direct_usage")]
 
 
 def _validate_modelscope_models(
@@ -1366,6 +1840,7 @@ def _render_modelscope_project_report(
     graph: dict[str, Any] | None,
     duration_s: float,
     no_manifest: bool,
+    ai_bundle: dict[str, Any] | None = None,
 ) -> str:
     """渲染项目模式（ModelScope）的中文 Markdown 报告，标注每个模型的来源文件。"""
     header = [
@@ -1404,6 +1879,7 @@ def _render_modelscope_project_report(
     ]
 
     lines = header + [f"- 识别模型数：**{len(models)}**"]
+    lines.append("- 扫描范围：**仅项目直接使用模型及其上游闭包；默认不枚举下游模型**")
 
     if graph:
         nodes = graph.get("nodes", [])
@@ -1417,6 +1893,8 @@ def _render_modelscope_project_report(
                 n.get("name") or n.get("canonical_id"),
                 n.get("version"),
                 n.get("license"),
+                n.get("lineage_status"),
+                n.get("lineage_depth"),
             ]
             for n in nodes
         ]
@@ -1434,7 +1912,10 @@ def _render_modelscope_project_report(
         ])
         lines.extend(_table(["模型", "命名空间", "名称", "来源文件"], model_rows))
         lines.extend(["", "## 二、合并血缘图节点", ""])
-        lines.extend(_table(["canonical_id", "类型", "名称", "版本", "许可证"], node_rows))
+        lines.extend(_table(
+            ["canonical_id", "类型", "名称", "版本", "许可证", "血缘状态", "上游深度"],
+            node_rows,
+        ))
         lines.extend(["", "## 三、合并血缘边", ""])
         lines.extend(_table(["来源", "边类型", "目标", "证据等级"], edge_rows))
         lines.extend(
@@ -1445,6 +1926,11 @@ def _render_modelscope_project_report(
                 f"- 节点类型分布：`{dict(node_type_counter)}`",
                 f"- 边类型分布：`{dict(edge_type_counter)}`",
                 "",
+            ]
+        )
+        lines.extend(_render_ai_sections(ai_bundle))
+        lines.extend(
+            [
                 "## 免责声明",
                 "",
                 "本报告基于 ModelScope 官方 API 的结构化证据与血缘图的辅助分析结果，不构成法律意见。",
@@ -1459,6 +1945,7 @@ def _render_modelscope_project_report(
             "",
         ])
         lines.extend(_table(["模型", "命名空间", "名称", "来源文件"], model_rows))
+        lines.extend(_render_ai_sections(ai_bundle))
         lines.extend(
             [
                 "",
@@ -1486,10 +1973,10 @@ def run_project(args: argparse.Namespace) -> None:
     """项目模式：BOM-Driven 扫描 → ModelScope API 在线验证 → 合并血缘图 → 中文报告。"""
     import modelscope_adapter
 
-    from work.extract_modelscope_lineage import extract as extract_modelscope_lineage
+    from modelscope_lineage import extract as extract_modelscope_lineage
 
-    root = Path(__file__).resolve().parent
     project_path = Path(args.project)
+    root = _artifacts_root(args)
 
     # 0. 目录校验：目录不存在或不是目录时优雅报错。
     if not project_path.exists():
@@ -1533,7 +2020,13 @@ def run_project(args: argparse.Namespace) -> None:
         snapshot_id = f"modelscope-{model['ns']}__{model['name']}"
         source_url = f"{modelscope_adapter.API_BASE}/models/{model['ns']}/{model['name']}"
         assets, edges = extract_modelscope_lineage(
-            model["ns"], model["name"], snapshot_id, source_url
+            model["ns"],
+            model["name"],
+            snapshot_id,
+            source_url,
+            include_downstream=False,
+            max_upstream_depth=getattr(args, "max_upstream_depth", None),
+            max_upstream_nodes=getattr(args, "max_upstream_nodes", 128),
         )
         for asset in assets:
             canonical_id = asset.get("canonical_id")
@@ -1571,16 +2064,19 @@ def run_project(args: argparse.Namespace) -> None:
     )
 
     # 5. 显式构建合并血缘图。
-    graph_path = report_dir / "graph.json"
-    _run_py_script(
-        root / "build_graph.py",
-        [
-            "--assets", str(assets_path),
-            "--edges", str(edges_path),
-            "--output", str(graph_path),
-        ],
-        "build_graph",
+    graph_path = getattr(args, "graph_output", None) or (report_dir / "graph.json")
+    _write_json(
+        report_dir / "run_context.json",
+        {
+            "mode": "project",
+            "project_path": str(project_path.resolve()),
+            "artifacts_dir": str(root),
+            "cache_dir": str(_cache_root(args)),
+            "graph_path": str(graph_path),
+            "include_downstream": False,
+        },
     )
+    _write_graph_output(assets_path, edges_path, graph_path, "build_graph")
 
     graph = json.loads(graph_path.read_text(encoding="utf-8"))
 
@@ -1591,13 +2087,32 @@ def run_project(args: argparse.Namespace) -> None:
     except Exception as exc:  # noqa: BLE001
         print(f"提示：风险判定字段补全失败（{type(exc).__name__}: {exc}）", file=sys.stderr)
 
+    ai_bundle = None
+    ai_config = _ai_config_from_args(args)
+    if ai_config.enabled:
+        assets = json.loads(assets_path.read_text(encoding="utf-8"))
+        ai_models = _ai_models_from_assets(
+            assets,
+            limit=getattr(args, "ai_max_models", 20),
+            direct_models=models,
+        )
+        ai_bundle = _run_ai_for_assets(
+            models=ai_models,
+            assets=assets,
+            output_dir=report_dir,
+            config=ai_config,
+            graph_path=graph_path,
+            project_path=project_path,
+        )
+        graph = json.loads(graph_path.read_text(encoding="utf-8"))
+
     # 7. 导出标准 CycloneDX BOM，供 --diff 离线对比使用。
-    bom_path = report_dir / "bom.json"
+    bom_path = getattr(args, "bom_output", None) or (report_dir / "bom.json")
     export_bom.export_bom(assets_path, edges_path, bom_path)
     print(f"CycloneDX BOM 已写入：{bom_path}")
 
     report = _render_modelscope_project_report(
-        project_path, models, graph, duration_s, no_manifest
+        project_path, models, graph, duration_s, no_manifest, ai_bundle
     )
     _write_project_report(report, report_path, args)
 
@@ -1605,11 +2120,18 @@ def run_project(args: argparse.Namespace) -> None:
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     if args.diff:
+        ai_service = None
+        ai_config = _ai_config_from_args(args)
+        if ai_config.enabled:
+            from ai_layer.service import AIService
+
+            ai_service = AIService(ai_config)
         run_diff(
             args.before,
             args.after,
             args.output,
             include_fixtures=args.include_fixtures,
+            ai_service=ai_service,
         )
     elif args.model is not None:
         run_model(args)

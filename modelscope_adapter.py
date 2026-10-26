@@ -17,6 +17,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import os
 from datetime import datetime, timezone
 from pathlib import Path
@@ -30,6 +32,9 @@ import bom_adapter as ba
 API_BASE = "https://www.modelscope.cn/api/v1"
 REQUEST_TIMEOUT_SECONDS = 20.0
 RULE_VERSION = "merge-policy-v2"
+_TEXT_DOCUMENT_NAMES = ("license", "copying", "notice", "readme", "use_policy", "acceptable_use_policy")
+_TEXT_DOCUMENT_SUFFIXES = {".md", ".txt", ".json", ".yaml", ".yml", ".toml"}
+_MAX_DOCUMENT_BYTES = 200_000
 
 # 证据等级（2026-10-12 A 最终口径）：
 #   A = "搬运"：ModelScope 官方 API 直接返回的字段值（如 Data.LicenseName）原样保留，不是推断也不是重构；
@@ -237,4 +242,262 @@ def map_to_asset(
         "rule_version": RULE_VERSION,
         "hashes": [],
         "source_file": source_file,
+    }
+
+
+def _decode_document(content: bytes) -> str | None:
+    """只接受可审计文本；权重、图片和无法解码内容不进入 source_bundle。"""
+    if not content or b"\x00" in content[:4096] or len(content) > _MAX_DOCUMENT_BYTES:
+        return None
+    for encoding in ("utf-8-sig", "gb18030"):
+        try:
+            return content.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+    return None
+
+
+def _safe_repo_path(raw_path: str) -> str | None:
+    """只接受仓库内相对路径，避免把输入拼成任意路径。"""
+    normalized = raw_path.strip().replace("\\", "/").lstrip("/")
+    parts = [part for part in normalized.split("/") if part not in {"", "."}]
+    if not parts or any(part == ".." for part in parts):
+        return None
+    return "/".join(parts)
+
+
+def _document_path(item: Any) -> str | None:
+    if isinstance(item, str):
+        return _safe_repo_path(ba.clean_text(item))
+    if not isinstance(item, dict):
+        return None
+    raw_path = ba.clean_text(
+        item.get("Path")
+        or item.get("path")
+        or item.get("FilePath")
+        or item.get("Name")
+        or item.get("name")
+    )
+    return _safe_repo_path(raw_path)
+
+
+def _is_auditable_document(path: str) -> bool:
+    lower = path.lower().strip("/")
+    name = lower.rsplit("/", 1)[-1]
+    return name.startswith(_TEXT_DOCUMENT_NAMES) or Path(name).suffix in _TEXT_DOCUMENT_SUFFIXES
+
+
+def _document_priority(path: str) -> tuple[int, str]:
+    """让许可证与说明文件先于大量结构化元数据进入上下文预算。"""
+    lower = path.lower().strip("/")
+    name = lower.rsplit("/", 1)[-1]
+    if name.startswith(("license", "copying")):
+        rank = 0
+    elif name.startswith("readme"):
+        rank = 1
+    elif name.startswith(("notice", "use_policy", "acceptable_use_policy")):
+        rank = 2
+    elif Path(name).suffix in {".md", ".txt"}:
+        rank = 3
+    else:
+        rank = 4
+    return rank, lower
+
+
+def _repo_headers(accept: str) -> dict[str, str]:
+    headers = {
+        "Accept": accept,
+        "User-Agent": "KaiYuanLedger-modelscope-adapter/0.1",
+    }
+    key = api_key()
+    if key:
+        headers["Authorization"] = f"Bearer {key}"
+    return headers
+
+
+def _request_repo_json(
+    url: str,
+    params: dict[str, str],
+) -> tuple[dict[str, Any] | list[Any] | None, str | None]:
+    try:
+        response = requests.get(
+            url,
+            headers=_repo_headers("application/json"),
+            params=params,
+            timeout=REQUEST_TIMEOUT_SECONDS,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except requests.RequestException as exc:
+        return None, str(exc)
+    except ValueError as exc:
+        return None, f"响应不是 JSON：{exc}"
+    if isinstance(payload, dict) and "Data" in payload:
+        data = payload.get("Data")
+        if isinstance(data, (dict, list)):
+            return data, None
+        return None, ba.clean_text(payload.get("Message")) or "Data 为空"
+    if isinstance(payload, (dict, list)):
+        return payload, None
+    return None, "响应结构无法识别"
+
+
+def _file_candidates(data: dict[str, Any] | list[Any] | None) -> list[Any]:
+    if isinstance(data, list):
+        return data
+    if not isinstance(data, dict):
+        return []
+    for key in ("Files", "files", "FileList", "file_list", "Items", "items"):
+        value = data.get(key)
+        if isinstance(value, list):
+            return value
+    return []
+
+
+def _fetch_repo_document(
+    ns: str,
+    name: str,
+    revision: str,
+    file_path: str,
+) -> str | None:
+    try:
+        response = requests.get(
+            f"{API_BASE}/models/{ns}/{name}/repo",
+            headers=_repo_headers("text/plain, text/markdown, application/octet-stream"),
+            params={"Revision": revision, "FilePath": file_path},
+            timeout=REQUEST_TIMEOUT_SECONDS,
+        )
+        response.raise_for_status()
+    except requests.RequestException:
+        return None
+    content = _decode_document(response.content)
+    if content and content.lstrip().startswith("{") and '"Data"' in content[:200]:
+        try:
+            envelope = json.loads(content)
+        except ValueError:
+            return content
+        if isinstance(envelope, dict) and isinstance(envelope.get("Data"), str):
+            return envelope["Data"]
+    return content
+
+
+def fetch_source_bundle(
+    ns: str,
+    name: str,
+    revision: str | None = None,
+) -> dict[str, Any]:
+    """收集 ModelScope 官方详情与文本文件，形成可审计 source_bundle。"""
+    detail = fetch_model_detail(ns, name)
+    if detail is None:
+        raise ValueError(f"ModelScope 未返回模型详情：{ns}/{name}")
+    effective_revision = ba.clean_text(revision) or ba.clean_text(detail.get("Revision")) or "master"
+    license_value, license_field = license_name_of(detail)
+    warnings: list[str] = []
+    files_data, warning = _request_repo_json(
+        f"{API_BASE}/models/{ns}/{name}/repo/files",
+        {"Revision": effective_revision, "Recursive": "true"},
+    )
+    if warning:
+        warnings.append(f"文件清单读取失败：{warning}")
+    file_entries = _file_candidates(files_data)
+    metadata_by_path = {
+        path: item
+        for item in file_entries
+        if (path := _document_path(item))
+    }
+    candidates = [
+        path
+        for item in file_entries
+        if (path := _document_path(item)) and _is_auditable_document(path)
+    ]
+    candidates.sort(key=_document_priority)
+    if not candidates:
+        candidates = ["LICENSE", "README.md"]
+    deduplicated: list[str] = []
+    for path in candidates:
+        if path not in deduplicated:
+            deduplicated.append(path)
+
+    documents: list[dict[str, Any]] = []
+    file_facts: list[dict[str, Any]] = []
+    for path in deduplicated[:12]:
+        content = _fetch_repo_document(ns, name, effective_revision, path)
+        if not content:
+            warnings.append(f"文件未读取或不是文本：{path}")
+            continue
+        digest = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        metadata = metadata_by_path.get(path)
+        metadata = metadata if isinstance(metadata, dict) else {}
+        declared_digest = ba.clean_text(metadata.get("Sha256") or metadata.get("sha256"))
+        if declared_digest and declared_digest.lower() != digest:
+            warnings.append(f"文件 SHA256 与仓库清单不一致：{path}")
+        source_url = f"https://www.modelscope.cn/models/{ns}/{name}/file/view/{effective_revision}/{path}"
+        documents.append(
+            {
+                "path": path,
+                "content": content,
+                "sha256": digest,
+                "size": len(content.encode("utf-8")),
+                "source_url": source_url,
+                "evidence_level": "A",
+            }
+        )
+        file_facts.append(
+            {
+                "path": path,
+                "sha256": digest,
+                "size": len(content.encode("utf-8")),
+                "declared_sha256": declared_digest or None,
+                "sha256_match": (declared_digest.lower() == digest) if declared_digest else None,
+            }
+        )
+
+    if not any(item.get("path") == "README.md" for item in documents):
+        readme = ba.clean_text(detail.get("ReadMeContent"))
+        if readme:
+            digest = hashlib.sha256(readme.encode("utf-8")).hexdigest()
+            documents.append(
+                {
+                    "path": "README.md",
+                    "content": readme,
+                    "sha256": digest,
+                    "size": len(readme.encode("utf-8")),
+                    "source_url": f"https://www.modelscope.cn/models/{ns}/{name}",
+                    "source_field": "Data.ReadMeContent",
+                    "evidence_level": "A",
+                }
+            )
+            file_facts.append(
+                {
+                    "path": "README.md",
+                    "sha256": digest,
+                    "size": len(readme.encode("utf-8")),
+                    "source_field": "Data.ReadMeContent",
+                }
+            )
+
+    try:
+        lineage = fetch_lineage(ns, name)
+    except Exception as exc:  # noqa: BLE001
+        lineage = None
+        warnings.append(f"血缘读取失败：{exc}")
+
+    return {
+        "schema_version": "modelscope-source-bundle/v1",
+        "source": "modelscope",
+        "model_id": f"{ns}/{name}",
+        "revision": effective_revision,
+        "retrieved_at": utc_now(),
+        "facts": {
+            "license": {
+                "value": license_value,
+                "source_field": license_field,
+                "evidence_level": LICENSE_EVIDENCE_LEVEL if license_value else None,
+            },
+            "detail": detail,
+            "files": file_facts,
+            "lineage": lineage,
+        },
+        "documents": documents,
+        "warnings": warnings,
     }

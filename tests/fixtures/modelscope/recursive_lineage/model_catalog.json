@@ -1,0 +1,93 @@
+{
+  "models": {
+    "org/AppModel": {
+      "detail": {
+        "Path": "org",
+        "Name": "AppModel",
+        "Revision": "v1",
+        "LicenseName": "Apache-2.0",
+        "BaseModel": ["org/Layer3"],
+        "BaseModelRelation": "finetune"
+      },
+      "lineage": {
+        "ParentsModels": [],
+        "SonModels": [
+          {"LineAgeType": "Adapters", "LineAgeTypeCh": "适配", "Total": 99}
+        ]
+      }
+    },
+    "org/Layer3": {
+      "detail": {
+        "Path": "org",
+        "Name": "Layer3",
+        "Revision": "main",
+        "LicenseName": "MIT",
+        "BaseModel": []
+      },
+      "lineage": {
+        "ParentsModels": [
+          {
+            "Name": "org/Layer2",
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Total": 1
+          }
+        ],
+        "SonModels": []
+      }
+    },
+    "org/Layer2": {
+      "detail": {
+        "Path": "org",
+        "Name": "Layer2",
+        "Revision": "main",
+        "LicenseName": "Apache-2.0",
+        "BaseModel": ["org/Layer1"]
+      },
+      "lineage": {"ParentsModels": [], "SonModels": []}
+    },
+    "org/Layer1": {
+      "detail": {
+        "Path": "org",
+        "Name": "Layer1",
+        "Revision": "main",
+        "LicenseName": "qwen-research",
+        "BaseModel": ["org/BaseModel"]
+      },
+      "lineage": {"ParentsModels": [], "SonModels": []}
+    },
+    "org/BaseModel": {
+      "detail": {
+        "Path": "org",
+        "Name": "BaseModel",
+        "Revision": "main",
+        "LicenseName": "Apache-2.0",
+        "BaseModel": []
+      },
+      "lineage": {"ParentsModels": [], "SonModels": []}
+    },
+    "org/CycleA": {
+      "detail": {
+        "Path": "org",
+        "Name": "CycleA",
+        "Revision": "main",
+        "LicenseName": "MIT",
+        "BaseModel": ["org/CycleB"]
+      },
+      "lineage": {"ParentsModels": [], "SonModels": []}
+    },
+    "org/CycleB": {
+      "detail": {
+        "Path": "org",
+        "Name": "CycleB",
+        "Revision": "main",
+        "LicenseName": "MIT",
+        "BaseModel": []
+      },
+      "lineage": {
+        "ParentsModels": [{"Name": "org/CycleA", "Total": 1}],
+        "SonModels": []
+      }
+    }
+  }
+}

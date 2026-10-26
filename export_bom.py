@@ -124,6 +124,37 @@ def _component_properties(asset: dict[str, Any]) -> list[dict[str, str]]:
     add("aggregate", asset.get("aggregate"))
     add("count", asset.get("count"))
     add("source_file", asset.get("source_file"))
+    add("simulation", asset.get("simulation"))
+    add("simulation_reason", asset.get("simulation_reason"))
+    add("simulation_original_license", asset.get("simulation_original_license"))
+    add("simulation_target_license", asset.get("simulation_target_license"))
+    add("lineage_role", asset.get("lineage_role"))
+    add("lineage_depth", asset.get("lineage_depth"))
+    add("lineage_status", asset.get("lineage_status"))
+    add("lineage_complete", asset.get("lineage_complete"))
+    add("lineage_truncation_reason", asset.get("lineage_truncation_reason"))
+    add("max_upstream_depth", asset.get("max_upstream_depth"))
+    add("max_upstream_nodes", asset.get("max_upstream_nodes"))
+    add("resolved_upstream_count", asset.get("resolved_upstream_count"))
+    add("max_depth_seen", asset.get("max_depth_seen"))
+    if isinstance(asset.get("unresolved_upstream_models"), list):
+        add(
+            "unresolved_upstream_models_json",
+            json.dumps(asset["unresolved_upstream_models"], ensure_ascii=False, sort_keys=True),
+        )
+    if isinstance(asset.get("lineage_cycles"), list):
+        add(
+            "lineage_cycles_json",
+            json.dumps(asset["lineage_cycles"], ensure_ascii=False, sort_keys=True),
+        )
+    ai_analysis = asset.get("ai_analysis")
+    if isinstance(ai_analysis, dict):
+        add("ai_status", ai_analysis.get("status"))
+        add("ai_evidence_level", "C")
+        add("ai_analysis_json", json.dumps(ai_analysis, ensure_ascii=False, sort_keys=True))
+    project_context = asset.get("ai_project_context")
+    if isinstance(project_context, dict):
+        add("ai_project_context_json", json.dumps(project_context, ensure_ascii=False, sort_keys=True))
     return properties
 
 
