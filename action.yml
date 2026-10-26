@@ -1,15 +1,39 @@
 name: ModelScope License Risk Watch
-description: 监控 AI 模型血缘链上的许可证变更风险
+description: 审计项目直接使用的 ModelScope 模型及其完整上游闭包，并比较许可证证据变化
 
 inputs:
   project_path:
-    description: 要扫描的用户项目路径
+    description: 要扫描的项目路径；相对路径以 GITHUB_WORKSPACE 为基准
     required: false
     default: '.'
   api_key:
-    description: ModelScope API Key，可选；公开模型可留空，私有模型或频率限制场景建议从 GitHub Secrets 传入
+    description: ModelScope API Key，可选；私有模型或频率受限时从 GitHub Secrets 传入
     required: false
     default: ''
+  ai_enabled:
+    description: 是否启用 AI 条款语义证据；必须同时提供 ai_base_url 和 ai_model
+    required: false
+    default: 'false'
+  ai_model:
+    description: OpenAI-compatible 服务中的模型名
+    required: false
+    default: 'Qwen/Qwen3-4B-Instruct-2507'
+  ai_base_url:
+    description: OpenAI-compatible 服务地址；不提供固定默认地址
+    required: false
+    default: ''
+  ai_api_key:
+    description: AI 服务密钥；建议从 GitHub Secrets 传入
+    required: false
+    default: ''
+  max_upstream_depth:
+    description: 可选的最大上游递归深度；留空表示遍历完整上游闭包
+    required: false
+    default: ''
+  max_upstream_nodes:
+    description: 上游节点预算；超过预算时保留可审计占位节点
+    required: false
+    default: '128'
 
 runs:
   using: composite
@@ -20,7 +44,7 @@ runs:
       run: |
         if [ "${{ github.event_name }}" = "pull_request" ] && [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
           echo "skip=true" >> "$GITHUB_OUTPUT"
-          echo "::warning::Fork PR 无法读取仓库 Secrets；为避免泄露 MODELSCOPE_API_KEY，本次许可证风险扫描已跳过。"
+          echo "::warning::Fork PR 无法读取仓库 Secrets；为避免泄露凭据，本次许可证风险扫描已跳过。"
         else
           echo "skip=false" >> "$GITHUB_OUTPUT"
         fi
@@ -31,17 +55,25 @@ runs:
       with:
         python-version: '3.10'
 
-    - name: Check ModelScope API key (optional)
+    - name: Check optional credentials
       if: steps.fork-guard.outputs.skip != 'true'
       env:
         MODELSCOPE_API_KEY: ${{ inputs.api_key }}
+        AI_ENABLED_INPUT: ${{ inputs.ai_enabled }}
+        AI_BASE_URL_INPUT: ${{ inputs.ai_base_url }}
+        AI_MODEL_INPUT: ${{ inputs.ai_model }}
       shell: bash
       run: |
         if [ -z "${MODELSCOPE_API_KEY:-}" ]; then
-          echo "::warning::未配置 MODELSCOPE_API_KEY，将尝试以匿名方式访问 ModelScope 公开模型。"
-        else
-          echo "已检测到 MODELSCOPE_API_KEY，将使用认证请求。"
+          echo "::warning::未配置 ModelScope API Key，将尝试匿名访问公开模型。"
         fi
+        case "${AI_ENABLED_INPUT,,}" in
+          true|1|yes|on)
+            if [ -z "${AI_BASE_URL_INPUT:-}" ] || [ -z "${AI_MODEL_INPUT:-}" ]; then
+              echo "::warning::AI 已请求启用，但 ai_base_url 或 ai_model 为空；本次仅运行规则审计。"
+            fi
+            ;;
+        esac
 
     - name: Install Python dependencies
       if: steps.fork-guard.outputs.skip != 'true'
@@ -50,85 +82,133 @@ runs:
         python -m pip install --upgrade pip
         python -m pip install -r "${{ github.action_path }}/requirements.txt"
 
+    - name: Prepare run directories
+      if: steps.fork-guard.outputs.skip != 'true'
+      shell: bash
+      run: |
+        RUN_ROOT="${RUNNER_TEMP}/license-watch"
+        REPORTS_DIR="${RUN_ROOT}/reports"
+        ARTIFACTS_DIR="${RUN_ROOT}/artifacts"
+        CACHE_DIR="${RUN_ROOT}/cache"
+        mkdir -p "$REPORTS_DIR" "$ARTIFACTS_DIR" "$CACHE_DIR"
+        {
+          echo "LEDGER_RUN_ROOT=$RUN_ROOT"
+          echo "LEDGER_REPORTS_DIR=$REPORTS_DIR"
+          echo "LEDGER_ARTIFACTS_DIR=$ARTIFACTS_DIR"
+          echo "LEDGER_CACHE_DIR=$CACHE_DIR"
+        } >> "$GITHUB_ENV"
+        echo "运行目录由 RUNNER_TEMP 派生，未使用仓库内固定输出路径。"
+
     - name: Prepare snapshot cache key
       if: steps.fork-guard.outputs.skip != 'true'
       id: snapshot-key
       shell: bash
-      run: echo "date=$(date -u +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+      run: |
+        SAFE_REF="${GITHUB_REF_NAME//\//-}"
+        DATE_UTC="$(date -u +'%Y-%m-%d')"
+        echo "prefix=license-watch-${GITHUB_REPOSITORY_ID:-local}-${SAFE_REF}-${DATE_UTC}" >> "$GITHUB_OUTPUT"
 
     - name: Restore previous BOM snapshot
       if: steps.fork-guard.outputs.skip != 'true'
       id: snapshot-cache
       uses: actions/cache/restore@v4
       with:
-        path: .license-watch-cache/latest_bom.json
-        key: license-watch-snapshot-${{ steps.snapshot-key.outputs.date }}
+        path: ${{ runner.temp }}/license-watch/cache
+        key: ${{ steps.snapshot-key.outputs.prefix }}-${{ github.run_id }}
         restore-keys: |
-          license-watch-snapshot-
+          ${{ steps.snapshot-key.outputs.prefix }}-
 
     - name: Restore previous BOM as t0
       if: steps.fork-guard.outputs.skip != 'true'
       id: previous-snapshot
       shell: bash
       run: |
-        if [ -f .license-watch-cache/latest_bom.json ]; then
-          mv .license-watch-cache/latest_bom.json prev_bom.json
+        PREVIOUS_BOM="${LEDGER_CACHE_DIR}/latest_bom.json"
+        if [ -f "$PREVIOUS_BOM" ]; then
+          cp "$PREVIOUS_BOM" "${LEDGER_REPORTS_DIR}/previous_bom.json"
           echo "found=true" >> "$GITHUB_OUTPUT"
-          echo "已恢复上一次 BOM 快照：prev_bom.json"
+          echo "已恢复历史 BOM：${LEDGER_REPORTS_DIR}/previous_bom.json"
         else
           echo "found=false" >> "$GITHUB_OUTPUT"
-          echo "缓存中没有历史 BOM，本次仅建立基线。"
+          echo "缓存中没有历史 BOM，本次只建立基线。"
         fi
 
-    - name: Scan current project and create t1 BOM
+    - name: Scan project and create t1 BOM
       id: scan
       if: steps.fork-guard.outputs.skip != 'true'
       env:
         MODELSCOPE_API_KEY: ${{ inputs.api_key }}
+        AI_ENABLED_INPUT: ${{ inputs.ai_enabled }}
+        AI_MODEL: ${{ inputs.ai_model }}
+        AI_BASE_URL: ${{ inputs.ai_base_url }}
+        AI_API_KEY: ${{ inputs.ai_api_key }}
         PYTHONUTF8: '1'
         PYTHONIOENCODING: utf-8
       shell: bash
       run: |
+        set -euo pipefail
         ACTION_PATH="${{ github.action_path }}"
         PROJECT_PATH="${{ inputs.project_path }}"
-        if [ -z "$PROJECT_PATH" ]; then
-          PROJECT_PATH="."
-        fi
-        if [ "$PROJECT_PATH" = "." ]; then
+        if [ -z "$PROJECT_PATH" ] || [ "$PROJECT_PATH" = "." ]; then
           PROJECT_PATH="$GITHUB_WORKSPACE"
-        else
-          PROJECT_PATH="$(cd "$PROJECT_PATH" && pwd)"
+        elif [[ "$PROJECT_PATH" != /* ]]; then
+          PROJECT_PATH="${GITHUB_WORKSPACE}/${PROJECT_PATH}"
+        fi
+        if [ ! -d "$PROJECT_PATH" ]; then
+          echo "::error::project_path 不是有效目录：$PROJECT_PATH"
+          exit 1
         fi
 
-        mkdir -p "$GITHUB_WORKSPACE/outputs"
-        python "$ACTION_PATH/main.py" \
-          --project "$PROJECT_PATH" \
-          --output "$GITHUB_WORKSPACE/outputs/watch_report.md"
+        BOM_PATH="${LEDGER_REPORTS_DIR}/current_bom.json"
+        GRAPH_PATH="${LEDGER_ARTIFACTS_DIR}/project/graph.json"
+        WATCH_REPORT="${LEDGER_REPORTS_DIR}/watch_report.md"
+        mkdir -p "${LEDGER_ARTIFACTS_DIR}/project"
 
-        BOM_PATH="$(find "$ACTION_PATH/outputs" -type f -name bom.json | head -n 1)"
-        if [ -z "$BOM_PATH" ]; then
-          echo "found=false" >> "$GITHUB_OUTPUT"
-          echo "::warning::项目扫描未生成 bom.json。请检查 project_path、ModelScope 模型标识，或确认模型是否为公开模型；私有模型需配置 api_key。本次跳过 diff 和风险检测。"
-          exit 0
+        ARGS=(
+          "$ACTION_PATH/main.py"
+          --project "$PROJECT_PATH"
+          --output "$WATCH_REPORT"
+          --artifacts-dir "$LEDGER_ARTIFACTS_DIR"
+          --cache-dir "$LEDGER_CACHE_DIR"
+          --bom-output "$BOM_PATH"
+          --graph-output "$GRAPH_PATH"
+          --max-upstream-nodes "${{ inputs.max_upstream_nodes }}"
+        )
+        if [ -n "${{ inputs.max_upstream_depth }}" ]; then
+          ARGS+=(--max-upstream-depth "${{ inputs.max_upstream_depth }}")
         fi
+        case "${AI_ENABLED_INPUT,,}" in
+          true|1|yes|on)
+            if [ -n "${AI_BASE_URL:-}" ] && [ -n "${AI_MODEL:-}" ]; then
+              ARGS+=(--ai)
+            fi
+            ;;
+        esac
 
+        python "${ARGS[@]}"
+
+        if [ ! -s "$BOM_PATH" ]; then
+          echo "::error::项目扫描未生成显式 BOM：$BOM_PATH"
+          exit 1
+        fi
         echo "found=true" >> "$GITHUB_OUTPUT"
-        cp "$BOM_PATH" "$GITHUB_WORKSPACE/latest_bom.json"
-        echo "已将最新 BOM 复制为 latest_bom.json：$BOM_PATH"
+        echo "bom_path=$BOM_PATH" >> "$GITHUB_OUTPUT"
+        echo "graph_path=$GRAPH_PATH" >> "$GITHUB_OUTPUT"
+        cp "$BOM_PATH" "${LEDGER_CACHE_DIR}/latest_bom.json"
+        echo "最新 BOM：$BOM_PATH"
 
     - name: Create first-run baseline report
       if: steps.fork-guard.outputs.skip != 'true' && steps.scan.outputs.found == 'true' && steps.previous-snapshot.outputs.found != 'true'
       shell: bash
       run: |
-        mkdir -p "$GITHUB_WORKSPACE/outputs"
         printf '%s\n' \
-          '# AI 模型血缘风险传播报告' \
+          '# AI 模型供应链许可证风险报告' \
           '' \
           '> 对比区间：无（首次运行只建立基线）' \
-          '> 状态：缓存中没有历史 BOM，本次已跳过 diff。' \
+          '> 状态：缓存中没有历史 BOM，本次跳过 Delta。' \
           '' \
-          '后续运行会将本次 BOM 作为 t0，与新的项目扫描结果进行对比。' \
-          > "$GITHUB_WORKSPACE/outputs/diff_report.md"
+          '后续运行会把本次项目 BOM 作为 t0，与新的项目扫描结果比较。' \
+          > "${LEDGER_REPORTS_DIR}/diff_report.md"
 
     - name: Compare previous and latest BOM
       if: steps.fork-guard.outputs.skip != 'true' && steps.scan.outputs.found == 'true' && steps.previous-snapshot.outputs.found == 'true'
@@ -137,24 +217,22 @@ runs:
         PYTHONIOENCODING: utf-8
       shell: bash
       run: |
+        set -euo pipefail
         python "${{ github.action_path }}/main.py" \
           --diff \
-          --before prev_bom.json \
-          --after latest_bom.json \
-          --output outputs/diff_report.md
-
-        if ! grep -q '对比区间' outputs/diff_report.md; then
-          echo "::error::diff_report.md 缺少「对比区间」说明行。"
-          exit 1
-        fi
+          --before "${LEDGER_REPORTS_DIR}/previous_bom.json" \
+          --after "${LEDGER_REPORTS_DIR}/current_bom.json" \
+          --output "${LEDGER_REPORTS_DIR}/diff_report.md"
+        grep -q '^> 对比区间：' "${LEDGER_REPORTS_DIR}/diff_report.md"
 
     - name: Detect confirmed license risk
       id: risk-check
       if: steps.fork-guard.outputs.skip != 'true' && steps.scan.outputs.found == 'true'
       shell: bash
       run: |
-        # 只检查正文风险记录，排除报告末尾固定说明表中的 RISK_CONFIRMED，避免误报。
-        CONFIRMED_LINES="$(awk '/^## .*证据等级与判定说明/ {exit} {print}' outputs/diff_report.md | grep -F 'RISK_CONFIRMED' || true)"
+        set -euo pipefail
+        DIFF_REPORT="${LEDGER_REPORTS_DIR}/diff_report.md"
+        CONFIRMED_LINES="$(awk '/^## .*证据等级与判定说明/ {exit} {print}' "$DIFF_REPORT" | grep -F 'RISK_CONFIRMED' || true)"
         if [ -n "$CONFIRMED_LINES" ]; then
           printf '%s\n' "$CONFIRMED_LINES"
           echo "::error::检测到 RISK_CONFIRMED，许可证风险检查未通过。"
@@ -162,16 +240,20 @@ runs:
         fi
         echo "未检测到 RISK_CONFIRMED，许可证风险检查通过。"
 
-    - name: Stage latest BOM for cache
-      if: steps.fork-guard.outputs.skip != 'true' && steps.scan.outputs.found == 'true'
-      shell: bash
-      run: |
-        mkdir -p .license-watch-cache
-        cp latest_bom.json .license-watch-cache/latest_bom.json
-
     - name: Save latest BOM snapshot
-      if: steps.fork-guard.outputs.skip != 'true' && steps.scan.outputs.found == 'true'
+      if: steps.fork-guard.outputs.skip != 'true' && steps.scan.outputs.found == 'true' && success()
       uses: actions/cache/save@v4
       with:
-        path: .license-watch-cache/latest_bom.json
-        key: license-watch-snapshot-${{ steps.snapshot-key.outputs.date }}
+        path: ${{ runner.temp }}/license-watch/cache
+        key: ${{ steps.snapshot-key.outputs.prefix }}-${{ github.run_id }}
+
+    - name: Upload audit evidence
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: license-watch-evidence
+        path: |
+          ${{ runner.temp }}/license-watch/reports
+          ${{ runner.temp }}/license-watch/artifacts
+        if-no-files-found: warn
+        retention-days: 14

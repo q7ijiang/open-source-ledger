@@ -1,10 +1,14 @@
 # ModelScope License Risk Watch
 #
-# 这个 workflow 面向最终使用本工具的用户仓库，不是 open-source-ledger 开发仓库。
-# 公开模型无需 MODELSCOPE_API_KEY；私有模型或遇到 API 频率限制时，
-# 可在 GitHub 仓库的 Settings -> Secrets and variables -> Actions 中配置该 Secret。
-# 默认 cron 为每周一 02:00 UTC，用户可按自己的扫描频率自行修改。
-# 首次运行时缓存中没有历史 BOM，因此会跳过 diff，只建立基线快照。
+# 该 workflow 供使用本工具的项目仓库参考。它只审计项目直接使用的模型及其
+# 上游闭包，不枚举平台上的下游模型。运行目录均由 RUNNER_TEMP 派生，审计证据
+# 统一通过 artifact 上传。
+#
+# 可选配置：
+# - Secret MODELSCOPE_API_KEY：私有模型或匿名限流时使用
+# - Repository variable AI_ENABLED=true：启用 AI 语义证据
+# - Repository variable AI_BASE_URL / AI_MODEL：OpenAI-compatible 服务与模型
+# - Secret AI_API_KEY：AI 服务密钥
 
 name: ModelScope License Risk Watch
 
@@ -27,15 +31,15 @@ jobs:
       - name: Explain skipped scan
         shell: bash
         run: |
-          echo "::warning::Fork PR 无法读取仓库 Secrets；为避免泄露 MODELSCOPE_API_KEY，本次许可证风险扫描已跳过。"
+          echo "::warning::Fork PR 无法读取仓库 Secrets；本次许可证风险扫描已跳过。"
 
   license-watch:
-    name: Scan and compare license snapshot
+    name: Scan project model supply chain
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out user repository
+      - name: Check out target repository
         uses: actions/checkout@v4
 
       - name: Check out open-source-ledger
@@ -43,91 +47,142 @@ jobs:
         with:
           repository: q7ijiang/open-source-ledger
           ref: main
-          path: .license-watch-tool
+          path: ${{ runner.temp }}/open-source-ledger-tool
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Check ModelScope API key (optional)
+      - name: Check optional credentials
         env:
           MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
+          AI_ENABLED_INPUT: ${{ vars.AI_ENABLED }}
+          AI_BASE_URL_INPUT: ${{ vars.AI_BASE_URL }}
+          AI_MODEL_INPUT: ${{ vars.AI_MODEL }}
         shell: bash
         run: |
           if [ -z "${MODELSCOPE_API_KEY:-}" ]; then
-            echo "::warning::未配置 MODELSCOPE_API_KEY，将尝试以匿名方式访问 ModelScope 公开模型。"
-          else
-            echo "已检测到 MODELSCOPE_API_KEY，将使用认证请求。"
+            echo "::warning::未配置 MODELSCOPE_API_KEY，将尝试匿名访问公开模型。"
           fi
+          AI_ENABLED_NORMALIZED="$(printf '%s' "${AI_ENABLED_INPUT:-false}" | tr '[:upper:]' '[:lower:]')"
+          case "$AI_ENABLED_NORMALIZED" in
+            true|1|yes|on)
+              if [ -z "${AI_BASE_URL_INPUT:-}" ] || [ -z "${AI_MODEL_INPUT:-}" ]; then
+                echo "::warning::AI_ENABLED 已开启，但 AI_BASE_URL 或 AI_MODEL 缺失；本次仅运行规则审计。"
+              fi
+              ;;
+          esac
 
       - name: Install Python dependencies
         shell: bash
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r .license-watch-tool/requirements.txt
+          python -m pip install -r "${{ runner.temp }}/open-source-ledger-tool/requirements.txt"
+
+      - name: Prepare run directories
+        shell: bash
+        run: |
+          RUN_ROOT="${RUNNER_TEMP}/license-watch"
+          REPORTS_DIR="${RUN_ROOT}/reports"
+          ARTIFACTS_DIR="${RUN_ROOT}/artifacts"
+          CACHE_DIR="${RUN_ROOT}/cache"
+          mkdir -p "$REPORTS_DIR" "$ARTIFACTS_DIR" "$CACHE_DIR"
+          {
+            echo "LEDGER_RUN_ROOT=$RUN_ROOT"
+            echo "LEDGER_REPORTS_DIR=$REPORTS_DIR"
+            echo "LEDGER_ARTIFACTS_DIR=$ARTIFACTS_DIR"
+            echo "LEDGER_CACHE_DIR=$CACHE_DIR"
+          } >> "$GITHUB_ENV"
 
       - name: Prepare snapshot cache key
         id: snapshot-key
         shell: bash
-        run: echo "date=$(date -u +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+        run: |
+          SAFE_REF="${GITHUB_REF_NAME//\//-}"
+          DATE_UTC="$(date -u +'%Y-%m-%d')"
+          echo "prefix=license-watch-${GITHUB_REPOSITORY_ID:-local}-${SAFE_REF}-${DATE_UTC}" >> "$GITHUB_OUTPUT"
 
       - name: Restore previous BOM snapshot
         id: snapshot-cache
         uses: actions/cache/restore@v4
         with:
-          path: .license-watch-cache/latest_bom.json
-          key: license-watch-snapshot-${{ steps.snapshot-key.outputs.date }}
+          path: ${{ runner.temp }}/license-watch/cache
+          key: ${{ steps.snapshot-key.outputs.prefix }}-${{ github.run_id }}
           restore-keys: |
-            license-watch-snapshot-
+            ${{ steps.snapshot-key.outputs.prefix }}-
 
       - name: Restore previous BOM as t0
         id: previous-snapshot
         shell: bash
         run: |
-          if [ -f .license-watch-cache/latest_bom.json ]; then
-            mv .license-watch-cache/latest_bom.json prev_bom.json
+          PREVIOUS_BOM="${LEDGER_CACHE_DIR}/latest_bom.json"
+          if [ -f "$PREVIOUS_BOM" ]; then
+            cp "$PREVIOUS_BOM" "${LEDGER_REPORTS_DIR}/previous_bom.json"
             echo "found=true" >> "$GITHUB_OUTPUT"
-            echo "已恢复上一次 BOM 快照：prev_bom.json"
+            echo "已恢复历史 BOM：${LEDGER_REPORTS_DIR}/previous_bom.json"
           else
             echo "found=false" >> "$GITHUB_OUTPUT"
-            echo "缓存中没有历史 BOM，本次仅建立基线。"
+            echo "缓存中没有历史 BOM，本次只建立基线。"
           fi
 
-      - name: Scan current project and create t1 BOM
+      - name: Scan project and create t1 BOM
         env:
           MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
+          AI_ENABLED_INPUT: ${{ vars.AI_ENABLED }}
+          AI_MODEL: ${{ vars.AI_MODEL || 'Qwen/Qwen3-4B-Instruct-2507' }}
+          AI_BASE_URL: ${{ vars.AI_BASE_URL }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
           PYTHONUTF8: '1'
           PYTHONIOENCODING: utf-8
         shell: bash
         run: |
-          mkdir -p outputs
-          python .license-watch-tool/main.py \
-            --project "$GITHUB_WORKSPACE" \
-            --output outputs/watch_report.md
+          set -euo pipefail
+          TOOL_DIR="${{ runner.temp }}/open-source-ledger-tool"
+          BOM_PATH="${LEDGER_REPORTS_DIR}/current_bom.json"
+          GRAPH_PATH="${LEDGER_ARTIFACTS_DIR}/project/graph.json"
+          WATCH_REPORT="${LEDGER_REPORTS_DIR}/watch_report.md"
+          AI_ENABLED_NORMALIZED="$(printf '%s' "${AI_ENABLED_INPUT:-false}" | tr '[:upper:]' '[:lower:]')"
+          mkdir -p "${LEDGER_ARTIFACTS_DIR}/project"
 
-          BOM_PATH="$(find .license-watch-tool/outputs -type f -name bom.json -printf '%T@ %p\n' | sort -nr | head -n 1 | cut -d' ' -f2-)"
-          if [ -z "$BOM_PATH" ]; then
-            echo "::error::项目扫描未生成 bom.json。请检查项目路径、ModelScope 模型标识，或确认模型是否为公开模型；私有模型需配置 MODELSCOPE_API_KEY。"
+          ARGS=(
+            "$TOOL_DIR/main.py"
+            --project "$GITHUB_WORKSPACE"
+            --output "$WATCH_REPORT"
+            --artifacts-dir "$LEDGER_ARTIFACTS_DIR"
+            --cache-dir "$LEDGER_CACHE_DIR"
+            --bom-output "$BOM_PATH"
+            --graph-output "$GRAPH_PATH"
+            --max-upstream-nodes 128
+          )
+          case "$AI_ENABLED_NORMALIZED" in
+            true|1|yes|on)
+              if [ -n "${AI_BASE_URL:-}" ] && [ -n "${AI_MODEL:-}" ]; then
+                ARGS+=(--ai)
+              fi
+              ;;
+          esac
+
+          python "${ARGS[@]}"
+
+          if [ ! -s "$BOM_PATH" ]; then
+            echo "::error::项目扫描未生成显式 BOM：$BOM_PATH"
             exit 1
           fi
-
-          cp "$BOM_PATH" latest_bom.json
-          echo "已将最新 BOM 复制为 latest_bom.json：$BOM_PATH"
+          cp "$BOM_PATH" "${LEDGER_CACHE_DIR}/latest_bom.json"
 
       - name: Create first-run baseline report
         if: steps.previous-snapshot.outputs.found != 'true'
         shell: bash
         run: |
-          mkdir -p outputs
           printf '%s\n' \
-            '# AI 模型血缘风险传播报告' \
+            '# AI 模型供应链许可证风险报告' \
             '' \
             '> 对比区间：无（首次运行只建立基线）' \
-            '> 状态：缓存中没有历史 BOM，本次已跳过 diff。' \
+            '> 状态：缓存中没有历史 BOM，本次跳过 Delta。' \
             '' \
-            '后续运行会将本次 BOM 作为 t0，与新的项目扫描结果进行对比。' \
-            > outputs/diff_report.md
+            '后续运行会把本次项目 BOM 作为 t0，与新的项目扫描结果比较。' \
+            > "${LEDGER_REPORTS_DIR}/diff_report.md"
 
       - name: Compare previous and latest BOM
         if: steps.previous-snapshot.outputs.found == 'true'
@@ -136,23 +191,20 @@ jobs:
           PYTHONIOENCODING: utf-8
         shell: bash
         run: |
-          python .license-watch-tool/main.py \
+          set -euo pipefail
+          python "${{ runner.temp }}/open-source-ledger-tool/main.py" \
             --diff \
-            --before prev_bom.json \
-            --after latest_bom.json \
-            --output outputs/diff_report.md
-
-          if ! grep -q '^> 对比区间：' outputs/diff_report.md; then
-            echo "::error::diff_report.md 缺少「对比区间」说明行。"
-            exit 1
-          fi
+            --before "${LEDGER_REPORTS_DIR}/previous_bom.json" \
+            --after "${LEDGER_REPORTS_DIR}/current_bom.json" \
+            --output "${LEDGER_REPORTS_DIR}/diff_report.md"
+          grep -q '^> 对比区间：' "${LEDGER_REPORTS_DIR}/diff_report.md"
 
       - name: Detect confirmed license risk
-        id: risk-check
         shell: bash
         run: |
-          # 只检查正文风险记录，排除报告末尾固定说明表中的 RISK_CONFIRMED，避免误报。
-          CONFIRMED_LINES="$(awk '/^## .*证据等级与判定说明/ {exit} {print}' outputs/diff_report.md | grep -F 'RISK_CONFIRMED' || true)"
+          set -euo pipefail
+          DIFF_REPORT="${LEDGER_REPORTS_DIR}/diff_report.md"
+          CONFIRMED_LINES="$(awk '/^## .*证据等级与判定说明/ {exit} {print}' "$DIFF_REPORT" | grep -F 'RISK_CONFIRMED' || true)"
           if [ -n "$CONFIRMED_LINES" ]; then
             printf '%s\n' "$CONFIRMED_LINES"
             echo "::error::检测到 RISK_CONFIRMED，许可证风险检查未通过，阻断本次 PR 合并。"
@@ -160,26 +212,20 @@ jobs:
           fi
           echo "未检测到 RISK_CONFIRMED，许可证风险检查通过。"
 
-      - name: Stage latest BOM for cache
-        if: success()
-        shell: bash
-        run: |
-          mkdir -p .license-watch-cache
-          cp latest_bom.json .license-watch-cache/latest_bom.json
-
       - name: Save latest BOM snapshot
         if: success()
         uses: actions/cache/save@v4
         with:
-          path: .license-watch-cache/latest_bom.json
-          key: license-watch-snapshot-${{ steps.snapshot-key.outputs.date }}
+          path: ${{ runner.temp }}/license-watch/cache
+          key: ${{ steps.snapshot-key.outputs.prefix }}-${{ github.run_id }}
 
-      - name: Upload license report
+      - name: Upload license audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: license-report
+          name: license-watch-evidence
           path: |
-            outputs/diff_report.md
-            outputs/watch_report.md
+            ${{ runner.temp }}/license-watch/reports
+            ${{ runner.temp }}/license-watch/artifacts
           if-no-files-found: warn
+          retention-days: 14
