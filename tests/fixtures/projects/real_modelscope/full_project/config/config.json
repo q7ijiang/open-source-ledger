@@ -1,0 +1,28 @@
+{
+  "routes": {
+    "chat_primary": {
+      "model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "quantization": "awq"
+    },
+    "chat_fast": {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "quantization": "awq"
+    },
+    "code_support": {
+      "model_id": "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+      "quantization": "awq"
+    },
+    "vision_support": {
+      "model_id": "OpenGVLab/InternVL3-8B-Instruct"
+    },
+    "billing_support": {
+      "model_id": "Qwen/Qwen2.5-Math-7B-Instruct"
+    },
+    "multilingual_fallback": {
+      "model_id": "LLM-Research/gemma-3-4b-it"
+    }
+  },
+  "retrieval": {
+    "embedding_model_id": "BAAI/bge-m3"
+  }
+}

@@ -1,0 +1,283 @@
+{
+  "node_count": 3,
+  "edge_count": 3,
+  "scc_count": 3,
+  "nodes": [
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct-AWQ",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T13:03:38.190461Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-2",
+      "lineage_role": "root",
+      "lineage_complete": true,
+      "lineage_status": "complete",
+      "lineage_truncation_reason": null,
+      "unresolved_upstream_models": [],
+      "lineage_cycles": [],
+      "max_upstream_depth": null,
+      "max_upstream_nodes": 128,
+      "max_depth_seen": 2,
+      "resolved_upstream_count": 2,
+      "include_downstream": false,
+      "lineage_depth": 0,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）"
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-7B-Instruct",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T13:03:39.334481Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T13:03:40.738848Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-7B-Instruct"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T13:03:40.738852Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-7B-Instruct"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-1",
+      "lineage_role": "upstream",
+      "lineage_type": "Finetuned",
+      "lineage_type_ch": "微调",
+      "lineage_status": "resolved",
+      "lineage_depth": 1,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）"
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-7B",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-7B",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-7B@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T13:03:40.388780Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T13:03:40.738826Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-7B"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T13:03:40.738842Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-7B"
+          }
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T13:03:40.738857Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 1,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-7B"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-0",
+      "lineage_role": "upstream",
+      "lineage_type": "Base Model",
+      "lineage_type_ch": "基模型",
+      "lineage_status": "resolved",
+      "lineage_depth": 2,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）"
+    }
+  ],
+  "edges": [
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "lineage.ParentsModels",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+    }
+  ],
+  "canonical_to_scc": {
+    "model:modelscope/Qwen/Qwen2.5-7B@master": "scc-0",
+    "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master": "scc-1",
+    "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master": "scc-2"
+  },
+  "scc": {
+    "scc-0": [
+      "model:modelscope/Qwen/Qwen2.5-7B@master"
+    ],
+    "scc-1": [
+      "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master"
+    ],
+    "scc-2": [
+      "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master"
+    ]
+  },
+  "compressed": {
+    "nodes": [
+      {
+        "scc_id": "scc-0",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-7B@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-1",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-2",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master"
+        ],
+        "is_cycle": false
+      }
+    ],
+    "edges": [
+      {
+        "source_scc": "scc-1",
+        "target_scc": "scc-0",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-2",
+        "target_scc": "scc-1",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-2",
+        "target_scc": "scc-0",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      }
+    ]
+  },
+  "overall_decision": "SAFE",
+  "overall_decision_zh": "安全（绿）"
+}

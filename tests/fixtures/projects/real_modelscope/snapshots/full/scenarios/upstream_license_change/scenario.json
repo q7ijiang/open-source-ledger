@@ -1,0 +1,29 @@
+{
+  "schema_version": "modelscope-what-if-diff/v1",
+  "name": "upstream_license_change",
+  "created_at": "2026-10-26T14:46:25Z",
+  "simulation": true,
+  "ai_acceptance_simulation": true,
+  "simulation_reason": "upstream_model_license_change",
+  "source_snapshot": "tests/fixtures/projects/real_modelscope/snapshots/full/t0_bom.json",
+  "mutated_model": "Qwen/Qwen2.5-7B",
+  "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B@master",
+  "original_license": "Apache-2.0",
+  "target_license": "qwen-research",
+  "expected_affected_models": [
+    "OpenGVLab/InternVL3-8B-Instruct",
+    "OpenGVLab/InternVL3-8B-Pretrained",
+    "Qwen/Qwen2.5-7B-Instruct-AWQ",
+    "Qwen/Qwen2.5-7B-Instruct",
+    "Qwen/Qwen2.5-7B",
+    "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+    "Qwen/Qwen2.5-Coder-7B-Instruct",
+    "Qwen/Qwen2.5-Coder-7B",
+    "Qwen/Qwen2.5-Math-7B-Instruct",
+    "Qwen/Qwen2.5-Math-7B"
+  ],
+  "t0": "t0_bom.json",
+  "t1": "t1_bom.json",
+  "diff_report": "diff_report.md",
+  "diff_graph": "diff_graph.html"
+}

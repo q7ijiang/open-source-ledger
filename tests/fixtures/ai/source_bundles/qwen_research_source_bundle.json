@@ -1,0 +1,52 @@
+{
+  "schema_version": "modelscope-source-bundle/v1",
+  "source": "modelscope",
+  "model_id": "example/qwen-research-demo",
+  "revision": "master",
+  "retrieved_at": "2026-10-26T00:00:00Z",
+  "facts": {
+    "license": {
+      "value": "qwen-research",
+      "source_field": "Data.LicenseName",
+      "evidence_level": "A"
+    },
+    "detail": {
+      "Name": "qwen-research-demo",
+      "Path": "example",
+      "Revision": "master",
+      "LicenseName": "qwen-research"
+    },
+    "files": [
+      {
+        "path": "LICENSE",
+        "size": 124,
+        "sha256": "5e9e0b36258d8f296e3ba0a4a67f2835d633b34b7f3e15b5de4e81bb2c81e51f"
+      },
+      {
+        "path": "README.md",
+        "size": 76,
+        "sha256": "1120834694f65a0453a3bc0b32421254c68a468c21ddf46093816d29836fd166"
+      }
+    ],
+    "lineage": null
+  },
+  "documents": [
+    {
+      "path": "LICENSE",
+      "content": "qwen-research 许可证\n\n该模型仅限研究用途，不得用于商业目的。\n\n如需商用，请另行联系我们。\n",
+      "sha256": "5e9e0b36258d8f296e3ba0a4a67f2835d633b34b7f3e15b5de4e81bb2c81e51f",
+      "size": 124,
+      "source_url": "https://www.modelscope.cn/models/example/qwen-research-demo/file/view/master/LICENSE",
+      "evidence_level": "A"
+    },
+    {
+      "path": "README.md",
+      "content": "本模型用于研究实验。分发时请保留许可证和版权声明。\n",
+      "sha256": "1120834694f65a0453a3bc0b32421254c68a468c21ddf46093816d29836fd166",
+      "size": 76,
+      "source_url": "https://www.modelscope.cn/models/example/qwen-research-demo/file/view/master/README.md",
+      "evidence_level": "A"
+    }
+  ],
+  "warnings": []
+}

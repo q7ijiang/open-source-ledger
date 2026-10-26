@@ -1,0 +1,46 @@
+{
+  "schema_version": "modelscope-source-bundle/v1",
+  "source": "acceptance-fixture",
+  "model_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "revision": "master",
+  "retrieved_at": "2026-10-26T00:00:00Z",
+  "simulation": true,
+  "simulation_note": "验收模拟：LICENSE.ACCEPTANCE.md 为注入的收紧条款，不代表该模型当前 ModelScope 许可证事实。",
+  "facts": {
+    "license": {
+      "value": "qwen-research",
+      "source_field": "fixture.acceptance.license_after",
+      "evidence_level": "A"
+    },
+    "files": [
+      {
+        "path": "LICENSE.ACCEPTANCE.md",
+        "sha256": "f45ba33424d5199a9bd9516d1bf0891d9cb661704fbfc9a7ee8a4302a28bd789"
+      },
+      {
+        "path": "README.ACCEPTANCE.md",
+        "sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6"
+      }
+    ],
+    "lineage": null
+  },
+  "documents": [
+    {
+      "path": "LICENSE.ACCEPTANCE.md",
+      "content": "验收模拟条款：仅限研究用途，不得用于商业目的。",
+      "sha256": "f45ba33424d5199a9bd9516d1bf0891d9cb661704fbfc9a7ee8a4302a28bd789",
+      "source_url": null,
+      "evidence_level": "A"
+    },
+    {
+      "path": "README.ACCEPTANCE.md",
+      "content": "分发时请保留许可证与版权声明。",
+      "sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+      "source_url": null,
+      "evidence_level": "A"
+    }
+  ],
+  "warnings": [
+    "acceptance simulation only; not a live ModelScope observation"
+  ]
+}

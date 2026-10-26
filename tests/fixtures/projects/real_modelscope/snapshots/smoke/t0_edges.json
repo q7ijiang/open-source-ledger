@@ -1,0 +1,26 @@
+[
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+  }
+]

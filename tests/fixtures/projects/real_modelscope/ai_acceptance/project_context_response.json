@@ -1,0 +1,12 @@
+{
+  "uses": [
+    {
+      "use_type": "remote_api",
+      "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+      "evidence": {
+        "source_path": "inference_client.py",
+        "quote": "response = client.chat.completions.create(model=model, messages=messages)"
+      }
+    }
+  ]
+}

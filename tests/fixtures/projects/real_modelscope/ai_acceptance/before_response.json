@@ -1,0 +1,38 @@
+{
+  "summary": "验收模拟：旧画像允许商业使用，并要求再分发时保留声明。",
+  "claims": [
+    {
+      "dimension": "commercial_use",
+      "state": "allowed",
+      "statement": "验收模拟条款允许商业使用。",
+      "evidence": {
+        "source_path": "LICENSE.ACCEPTANCE.md",
+        "quote": "验收模拟条款：允许用于商业目的。"
+      }
+    },
+    {
+      "dimension": "notice",
+      "state": "conditional",
+      "statement": "再分发时需要保留许可证与版权声明。",
+      "condition": "仅在再分发时适用",
+      "evidence": {
+        "source_path": "README.ACCEPTANCE.md",
+        "quote": "分发时请保留许可证与版权声明。"
+      }
+    }
+  ],
+  "gaps": [
+    {
+      "dimension": "training_other_models",
+      "reason": "验收模拟文本未覆盖"
+    },
+    {
+      "dimension": "fine_tuned_redistribution",
+      "reason": "验收模拟文本未覆盖"
+    },
+    {
+      "dimension": "commercial_license_request",
+      "reason": "验收模拟文本未给出申请方式"
+    }
+  ]
+}

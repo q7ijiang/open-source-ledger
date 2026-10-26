@@ -1,0 +1,42 @@
+{
+  "schema_version": "ai-analysis/v2",
+  "analysis_type": "project_context",
+  "status": "ok",
+  "subject": {
+    "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+    "model_count": 0
+  },
+  "provider": {
+    "provider": "mock",
+    "model": "frozen-acceptance-fixture",
+    "base_url": "offline://acceptance",
+    "timeout": 60.0
+  },
+  "prompt_version": "modelscope-license-audit-v2",
+  "generated_at": "2026-10-26T14:46:18Z",
+  "uses": [
+    {
+      "use_type": "remote_api",
+      "use_type_zh": "远程 API 调用",
+      "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+      "evidence_level": "C",
+      "confidence": 0.83,
+      "evidence": {
+        "source_path": "inference_client.py",
+        "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+        "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+        "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+      },
+      "human_review": "pending"
+    }
+  ],
+  "rejected": [],
+  "fact_policy": {
+    "ai_may_change_license": false,
+    "ai_may_change_decision": false,
+    "ai_evidence_level": "C",
+    "human_review_required": true
+  },
+  "simulation": true,
+  "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+}

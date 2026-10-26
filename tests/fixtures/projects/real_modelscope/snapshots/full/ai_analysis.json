@@ -1,0 +1,394 @@
+{
+  "schema_version": "ai-analysis-bundle/v1",
+  "prompt_version": "modelscope-license-audit-v2",
+  "generated_at": "2026-10-26T14:46:18Z",
+  "provider": {
+    "provider": "mock",
+    "model": "frozen-acceptance-fixture",
+    "base_url": "offline://acceptance",
+    "timeout": 60.0
+  },
+  "model_analyses": [
+    {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "model_profile",
+      "status": "ok",
+      "subject": {
+        "model_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+        "revision": "master",
+        "license_fact": "Apache-2.0",
+        "fact_source": "acceptance-fixture simulation",
+        "source_bundle_sha256": "9d58b41dc39d09fddebfb2c4276e288624cc998e3fd98fc1df3fec3004142b1e"
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-acceptance-fixture",
+        "base_url": "offline://acceptance",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-26T14:46:18Z",
+      "summary": "验收模拟：旧画像允许商业使用，并要求再分发时保留声明。",
+      "claims": [
+        {
+          "claim_id": "claim-a81c9c081ed1",
+          "dimension": "commercial_use",
+          "dimension_zh": "商业使用",
+          "state": "allowed",
+          "state_zh": "允许",
+          "statement": "验收模拟条款允许商业使用。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.78,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02
+          },
+          "evidence": {
+            "source_path": "LICENSE.ACCEPTANCE.md",
+            "source_url": "",
+            "quote": "验收模拟条款：允许用于商业目的。",
+            "quote_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+            "file_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+            "confidence": 0.78,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE.ACCEPTANCE.md",
+              "source_url": "",
+              "quote": "验收模拟条款：允许用于商业目的。",
+              "quote_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+              "file_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+              "confidence": 0.78,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        },
+        {
+          "claim_id": "claim-d68bb6f1d80f",
+          "dimension": "notice",
+          "dimension_zh": "许可证与版权声明保留",
+          "state": "conditional",
+          "state_zh": "有条件允许",
+          "statement": "再分发时需要保留许可证与版权声明。",
+          "condition": "仅在再分发时适用",
+          "conditions": [
+            {
+              "text": "仅在再分发时适用"
+            }
+          ],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.59,
+          "confidence_factors": {
+            "base": 0.48,
+            "readme": 0.08,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "uncertain_state": -0.12
+          },
+          "evidence": {
+            "source_path": "README.ACCEPTANCE.md",
+            "source_url": "",
+            "quote": "分发时请保留许可证与版权声明。",
+            "quote_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+            "file_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+            "confidence": 0.59,
+            "confidence_factors": {
+              "base": 0.48,
+              "readme": 0.08,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "README.ACCEPTANCE.md",
+              "source_url": "",
+              "quote": "分发时请保留许可证与版权声明。",
+              "quote_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+              "file_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+              "confidence": 0.59,
+              "confidence_factors": {
+                "base": 0.48,
+                "readme": 0.08,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        }
+      ],
+      "conflicts": [],
+      "gaps": [
+        {
+          "dimension": "training_other_models",
+          "dimension_zh": "训练其他模型",
+          "reason": "验收模拟文本未覆盖"
+        },
+        {
+          "dimension": "fine_tuned_redistribution",
+          "dimension_zh": "微调版本再分发",
+          "reason": "验收模拟文本未覆盖"
+        },
+        {
+          "dimension": "commercial_license_request",
+          "dimension_zh": "商用授权申请方式",
+          "reason": "验收模拟文本未给出申请方式"
+        }
+      ],
+      "simulation": true,
+      "simulation_note": "验收模拟：LICENSE.ACCEPTANCE.md 为注入文本，不代表该模型当前 ModelScope 许可证事实。",
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      }
+    },
+    {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "model_profile",
+      "status": "ok",
+      "subject": {
+        "model_id": "Qwen/Qwen2.5-7B",
+        "revision": "master",
+        "license_fact": "Apache-2.0",
+        "fact_source": "acceptance-fixture simulation",
+        "source_bundle_sha256": "46863ba1271864b86805661e79ed313ba2ccdf383e9b7df9841917272ef62ac0"
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-acceptance-fixture",
+        "base_url": "offline://acceptance",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-26T14:46:18Z",
+      "summary": "验收模拟：旧画像允许商业使用，并要求再分发时保留声明。",
+      "claims": [
+        {
+          "claim_id": "claim-a81c9c081ed1",
+          "dimension": "commercial_use",
+          "dimension_zh": "商业使用",
+          "state": "allowed",
+          "state_zh": "允许",
+          "statement": "验收模拟条款允许商业使用。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.78,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02
+          },
+          "evidence": {
+            "source_path": "LICENSE.ACCEPTANCE.md",
+            "source_url": "",
+            "quote": "验收模拟条款：允许用于商业目的。",
+            "quote_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+            "file_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+            "confidence": 0.78,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE.ACCEPTANCE.md",
+              "source_url": "",
+              "quote": "验收模拟条款：允许用于商业目的。",
+              "quote_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+              "file_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+              "confidence": 0.78,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        },
+        {
+          "claim_id": "claim-d68bb6f1d80f",
+          "dimension": "notice",
+          "dimension_zh": "许可证与版权声明保留",
+          "state": "conditional",
+          "state_zh": "有条件允许",
+          "statement": "再分发时需要保留许可证与版权声明。",
+          "condition": "仅在再分发时适用",
+          "conditions": [
+            {
+              "text": "仅在再分发时适用"
+            }
+          ],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.59,
+          "confidence_factors": {
+            "base": 0.48,
+            "readme": 0.08,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "uncertain_state": -0.12
+          },
+          "evidence": {
+            "source_path": "README.ACCEPTANCE.md",
+            "source_url": "",
+            "quote": "分发时请保留许可证与版权声明。",
+            "quote_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+            "file_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+            "confidence": 0.59,
+            "confidence_factors": {
+              "base": 0.48,
+              "readme": 0.08,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "README.ACCEPTANCE.md",
+              "source_url": "",
+              "quote": "分发时请保留许可证与版权声明。",
+              "quote_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+              "file_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+              "confidence": 0.59,
+              "confidence_factors": {
+                "base": 0.48,
+                "readme": 0.08,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        }
+      ],
+      "conflicts": [],
+      "gaps": [
+        {
+          "dimension": "training_other_models",
+          "dimension_zh": "训练其他模型",
+          "reason": "验收模拟文本未覆盖"
+        },
+        {
+          "dimension": "fine_tuned_redistribution",
+          "dimension_zh": "微调版本再分发",
+          "reason": "验收模拟文本未覆盖"
+        },
+        {
+          "dimension": "commercial_license_request",
+          "dimension_zh": "商用授权申请方式",
+          "reason": "验收模拟文本未给出申请方式"
+        }
+      ],
+      "simulation": true,
+      "simulation_note": "验收模拟：LICENSE.ACCEPTANCE.md 为注入文本，不代表该模型当前 ModelScope 许可证事实。",
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      }
+    }
+  ],
+  "project_context": {
+    "schema_version": "ai-analysis/v2",
+    "analysis_type": "project_context",
+    "status": "ok",
+    "subject": {
+      "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+      "model_count": 0
+    },
+    "provider": {
+      "provider": "mock",
+      "model": "frozen-acceptance-fixture",
+      "base_url": "offline://acceptance",
+      "timeout": 60.0
+    },
+    "prompt_version": "modelscope-license-audit-v2",
+    "generated_at": "2026-10-26T14:46:18Z",
+    "uses": [
+      {
+        "use_type": "remote_api",
+        "use_type_zh": "远程 API 调用",
+        "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+        "evidence_level": "C",
+        "confidence": 0.83,
+        "evidence": {
+          "source_path": "inference_client.py",
+          "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+          "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+          "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+        },
+        "human_review": "pending"
+      }
+    ],
+    "rejected": [],
+    "fact_policy": {
+      "ai_may_change_license": false,
+      "ai_may_change_decision": false,
+      "ai_evidence_level": "C",
+      "human_review_required": true
+    },
+    "simulation": true,
+    "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+  },
+  "semantic_diff": null,
+  "simulation": true,
+  "simulation_note": "验收模拟：AI 画像只用于验证证据展示、语义 Diff 与置信度构成，不代表目标模型当前 ModelScope 许可证事实。"
+}

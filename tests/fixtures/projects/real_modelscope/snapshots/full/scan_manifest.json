@@ -1,0 +1,870 @@
+{
+  "schema_version": "real-modelscope-project-snapshot/v1",
+  "stage": "full",
+  "generated_at": "2026-10-26T14:46:18Z",
+  "live_api": true,
+  "project_path": "tests/fixtures/projects/real_modelscope/full_project",
+  "direct_models": [
+    {
+      "model": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "ns": "Qwen",
+      "name": "Qwen2.5-14B-Instruct-AWQ",
+      "sources": [
+        "config/config.json",
+        "model_registry.py",
+        "README.md"
+      ],
+      "direct_usage": true
+    },
+    {
+      "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "ns": "Qwen",
+      "name": "Qwen2.5-7B-Instruct-AWQ",
+      "sources": [
+        "config/config.json",
+        "model_registry.py",
+        "README.md"
+      ],
+      "direct_usage": true
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+      "ns": "Qwen",
+      "name": "Qwen2.5-Coder-7B-Instruct-AWQ",
+      "sources": [
+        "config/config.json",
+        "model_registry.py",
+        "README.md"
+      ],
+      "direct_usage": true
+    },
+    {
+      "model": "OpenGVLab/InternVL3-8B-Instruct",
+      "ns": "OpenGVLab",
+      "name": "InternVL3-8B-Instruct",
+      "sources": [
+        "config/config.json",
+        "model_registry.py",
+        "README.md"
+      ],
+      "direct_usage": true
+    },
+    {
+      "model": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "ns": "Qwen",
+      "name": "Qwen2.5-Math-7B-Instruct",
+      "sources": [
+        "config/config.json",
+        "model_registry.py",
+        "README.md"
+      ],
+      "direct_usage": true
+    },
+    {
+      "model": "LLM-Research/gemma-3-4b-it",
+      "ns": "LLM-Research",
+      "name": "gemma-3-4b-it",
+      "sources": [
+        "config/config.json",
+        "model_registry.py",
+        "README.md"
+      ],
+      "direct_usage": true
+    },
+    {
+      "model": "BAAI/bge-m3",
+      "ns": "BAAI",
+      "name": "bge-m3",
+      "sources": [
+        "model_registry.py",
+        "README.md"
+      ],
+      "direct_usage": true
+    }
+  ],
+  "validation": {
+    "status": "pass",
+    "direct_model_precision": 1.0,
+    "direct_model_recall": 1.0,
+    "expected_direct_models": [
+      "BAAI/bge-m3",
+      "LLM-Research/gemma-3-4b-it",
+      "OpenGVLab/InternVL3-8B-Instruct",
+      "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+      "Qwen/Qwen2.5-Math-7B-Instruct"
+    ],
+    "detected_direct_models": [
+      "BAAI/bge-m3",
+      "LLM-Research/gemma-3-4b-it",
+      "OpenGVLab/InternVL3-8B-Instruct",
+      "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+      "Qwen/Qwen2.5-Math-7B-Instruct"
+    ],
+    "missing_direct_models": [],
+    "unexpected_direct_models": [],
+    "required_lineage_paths": [
+      {
+        "from": "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+        "to": "Qwen/Qwen2.5-7B",
+        "found": true
+      },
+      {
+        "from": "OpenGVLab/InternVL3-8B-Instruct",
+        "to": "OpenGVLab/InternViT-300M-448px",
+        "found": true
+      },
+      {
+        "from": "OpenGVLab/InternVL3-8B-Instruct",
+        "to": "Qwen/Qwen2.5-7B",
+        "found": true
+      },
+      {
+        "from": "Qwen/Qwen2.5-Math-7B-Instruct",
+        "to": "Qwen/Qwen2.5-7B",
+        "found": true
+      },
+      {
+        "from": "LLM-Research/gemma-3-4b-it",
+        "to": "google/gemma-3-4b-pt",
+        "found": true
+      }
+    ],
+    "observed_max_upstream_depth": 3,
+    "downstream_model_nodes": []
+  },
+  "model_count": 18,
+  "edge_count": 22,
+  "graph_node_count": 18,
+  "models": [
+    {
+      "model_id": "BAAI/bge-m3",
+      "canonical_id": "model:modelscope/BAAI/bge-m3@master",
+      "license": "MIT",
+      "lineage_role": "root",
+      "lineage_status": "complete",
+      "lineage_complete": true,
+      "lineage_depth": 0,
+      "resolved_upstream_count": 0,
+      "max_depth_seen": 0,
+      "source_file": "https://www.modelscope.cn/api/v1/models/BAAI/bge-m3",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/BAAI/bge-m3",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:27.583747Z",
+          "status": "ok",
+          "raw_value": "mit"
+        }
+      ]
+    },
+    {
+      "model_id": "LLM-Research/gemma-3-4b-it",
+      "canonical_id": "model:modelscope/LLM-Research/gemma-3-4b-it@master",
+      "license": "gemma",
+      "lineage_role": "root",
+      "lineage_status": "complete",
+      "lineage_complete": true,
+      "lineage_depth": 0,
+      "resolved_upstream_count": 1,
+      "max_depth_seen": 1,
+      "source_file": "https://www.modelscope.cn/api/v1/models/LLM-Research/gemma-3-4b-it",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/LLM-Research/gemma-3-4b-it",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:25.972314Z",
+          "status": "ok",
+          "raw_value": "gemma"
+        }
+      ]
+    },
+    {
+      "model_id": "OpenGVLab/InternVL3-8B-Instruct",
+      "canonical_id": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+      "license": "Apache-2.0",
+      "lineage_role": "root",
+      "lineage_status": "complete",
+      "lineage_complete": true,
+      "lineage_depth": 0,
+      "resolved_upstream_count": 4,
+      "max_depth_seen": 3,
+      "source_file": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Instruct",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:19.195945Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ]
+    },
+    {
+      "model_id": "OpenGVLab/InternVL3-8B-Pretrained",
+      "canonical_id": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+      "license": "Apache-2.0",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 1,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Pretrained",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Pretrained",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:20.120928Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:22.881956Z",
+          "status": "ok",
+          "raw_value": "OpenGVLab/InternVL3-8B-Pretrained"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:22.881958Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Merge Model",
+            "LineAgeTypeCh": "合并",
+            "Name": "OpenGVLab/InternVL3-8B-Pretrained"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "OpenGVLab/InternViT-300M-448px",
+      "canonical_id": "model:modelscope/OpenGVLab/InternViT-300M-448px@master",
+      "license": "MIT",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 3,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:21.779549Z",
+          "status": "ok",
+          "raw_value": "mit"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:22.097231Z",
+          "status": "ok",
+          "raw_value": "OpenGVLab/InternViT-300M-448px"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:22.097244Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "OpenGVLab/InternViT-300M-448px"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "OpenGVLab/InternViT-300M-448px-V2_5",
+      "canonical_id": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+      "license": "MIT",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 2,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px-V2_5",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px-V2_5",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:20.919282Z",
+          "status": "ok",
+          "raw_value": "mit"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:22.097250Z",
+          "status": "ok",
+          "raw_value": "OpenGVLab/InternViT-300M-448px-V2_5"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:22.097253Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "OpenGVLab/InternViT-300M-448px-V2_5"
+          }
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:22.881964Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 1,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "OpenGVLab/InternViT-300M-448px-V2_5"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-14B",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-14B@master",
+      "license": "Apache-2.0",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 2,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-14B",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-14B",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:12.619115Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:12.894734Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-14B"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:12.894751Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-14B"
+          }
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:12.894764Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 1,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-14B"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-14B-Instruct",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-14B-Instruct@master",
+      "license": "Apache-2.0",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 1,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-14B-Instruct",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-14B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:11.834106Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:12.894757Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-14B-Instruct"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:12.894760Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-14B-Instruct"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ@master",
+      "license": "Apache-2.0",
+      "lineage_role": "root",
+      "lineage_status": "complete",
+      "lineage_complete": true,
+      "lineage_depth": 0,
+      "resolved_upstream_count": 2,
+      "max_depth_seen": 2,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-14B-Instruct-AWQ",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:10.992457Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-7B",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "license": "Apache-2.0",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 2,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:15.071440Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:15.401144Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-7B"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:15.401159Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-7B"
+          }
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:15.401172Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 1,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-7B"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "license": "Apache-2.0",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 1,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:14.204904Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:15.401164Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-7B-Instruct"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:15.401166Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-7B-Instruct"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "license": "Apache-2.0",
+      "lineage_role": "root",
+      "lineage_status": "complete",
+      "lineage_complete": true,
+      "lineage_depth": 0,
+      "resolved_upstream_count": 2,
+      "max_depth_seen": 2,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct-AWQ",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:13.410304Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-Coder-7B",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-Coder-7B@master",
+      "license": "Apache-2.0",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 2,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Coder-7B",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Coder-7B",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:17.456119Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:18.706739Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-Coder-7B"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:18.706741Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-Coder-7B"
+          }
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:18.706756Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 1,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-Coder-7B"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master",
+      "license": "Apache-2.0",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 1,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Coder-7B-Instruct",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Coder-7B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:16.710587Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:18.706750Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-Coder-7B-Instruct"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:18.706753Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-Coder-7B-Instruct"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master",
+      "license": "Apache-2.0",
+      "lineage_role": "root",
+      "lineage_status": "complete",
+      "lineage_complete": true,
+      "lineage_depth": 0,
+      "resolved_upstream_count": 3,
+      "max_depth_seen": 3,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:15.927409Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-Math-7B",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-Math-7B@master",
+      "license": "Apache-2.0",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 1,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Math-7B",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Math-7B",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:24.225566Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:25.516894Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-Math-7B"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:25.516897Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-Math-7B"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-Math-7B-Instruct@master",
+      "license": "Apache-2.0",
+      "lineage_role": "root",
+      "lineage_status": "complete",
+      "lineage_complete": true,
+      "lineage_depth": 0,
+      "resolved_upstream_count": 2,
+      "max_depth_seen": 2,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Math-7B-Instruct",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Math-7B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:23.398754Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ]
+    },
+    {
+      "model_id": "google/gemma-3-4b-pt",
+      "canonical_id": "model:modelscope/google/gemma-3-4b-pt@master",
+      "license": "gemma",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 1,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/google/gemma-3-4b-pt",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/google/gemma-3-4b-pt",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:26.790548Z",
+          "status": "ok",
+          "raw_value": "gemma"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:27.100987Z",
+          "status": "ok",
+          "raw_value": "google/gemma-3-4b-pt"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:27.101001Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "google/gemma-3-4b-pt"
+          }
+        }
+      ]
+    }
+  ],
+  "source": "ModelScope official API",
+  "simulation": false,
+  "ai_acceptance_simulation": true
+}

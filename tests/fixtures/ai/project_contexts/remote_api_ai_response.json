@@ -1,0 +1,12 @@
+{
+  "uses": [
+    {
+      "use_type": "remote_api",
+      "statement": "项目通过 OpenAI-compatible 远程接口调用模型。",
+      "evidence": {
+        "source_path": "app.py",
+        "quote": "client.chat.completions.create(model=\"example/qwen-research-demo\")"
+      }
+    }
+  ]
+}

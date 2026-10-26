@@ -1,0 +1,86 @@
+{
+  "model_id": "example/semantic-demo",
+  "license": "qwen-research",
+  "before_source": {
+    "schema_version": "modelscope-source-bundle/v1",
+    "source": "modelscope",
+    "model_id": "example/semantic-demo",
+    "revision": "master",
+    "retrieved_at": "2026-10-25T00:00:00Z",
+    "facts": {
+      "license": {
+        "value": "qwen-research",
+        "source_field": "Data.LicenseName",
+        "evidence_level": "A"
+      },
+      "files": [],
+      "lineage": null
+    },
+    "documents": [
+      {
+        "path": "LICENSE",
+        "content": "qwen-research 许可证\n\n允许用于商业目的。\n",
+        "sha256": "fa1ea03a51cb82ee73c3f14fe46cbad774079387cbf39dc08aff05c1e554ddd4",
+        "source_url": "https://www.modelscope.cn/models/example/semantic-demo/file/view/master/LICENSE",
+        "evidence_level": "A"
+      }
+    ],
+    "warnings": []
+  },
+  "after_source": {
+    "schema_version": "modelscope-source-bundle/v1",
+    "source": "modelscope",
+    "model_id": "example/semantic-demo",
+    "revision": "master",
+    "retrieved_at": "2026-10-26T00:00:00Z",
+    "facts": {
+      "license": {
+        "value": "qwen-research",
+        "source_field": "Data.LicenseName",
+        "evidence_level": "A"
+      },
+      "files": [],
+      "lineage": null
+    },
+    "documents": [
+      {
+        "path": "LICENSE",
+        "content": "qwen-research 许可证\n\n不得用于商业目的。\n",
+        "sha256": "54244a45a6e2b4c1b135f919f4b1de9f5c5953647cc8da421ddf9891f8e74ffa",
+        "source_url": "https://www.modelscope.cn/models/example/semantic-demo/file/view/master/LICENSE",
+        "evidence_level": "A"
+      }
+    ],
+    "warnings": []
+  },
+  "before_response": {
+    "summary": "旧版本允许商业使用。",
+    "claims": [
+      {
+        "dimension": "commercial_use",
+        "state": "allowed",
+        "statement": "允许用于商业目的。",
+        "evidence": {
+          "source_path": "LICENSE",
+          "quote": "允许用于商业目的。"
+        }
+      }
+    ],
+    "gaps": []
+  },
+  "after_response": {
+    "summary": "新版本禁止商业使用。",
+    "claims": [
+      {
+        "dimension": "commercial_use",
+        "state": "prohibited",
+        "statement": "不得用于商业目的。",
+        "evidence": {
+          "source_path": "LICENSE",
+          "quote": "不得用于商业目的。"
+        }
+      }
+    ],
+    "gaps": []
+  }
+}

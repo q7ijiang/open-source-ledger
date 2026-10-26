@@ -1,0 +1,39 @@
+{
+  "summary": "许可证包含研究用途限制，商用条款需要人工确认。",
+  "claims": [
+    {
+      "dimension": "commercial_use",
+      "state": "prohibited",
+      "statement": "该模型仅限研究用途，不得用于商业目的。",
+      "condition": "如用于商业目的需另行取得授权",
+      "evidence": {
+        "source_path": "LICENSE",
+        "quote": "该模型仅限研究用途，不得用于商业目的。"
+      }
+    },
+    {
+      "dimension": "notice",
+      "state": "conditional",
+      "statement": "分发时需要保留许可证和版权声明。",
+      "condition": "仅在再分发时适用",
+      "evidence": {
+        "source_path": "README.md",
+        "quote": "分发时请保留许可证和版权声明。"
+      }
+    }
+  ],
+  "gaps": [
+    {
+      "dimension": "training_other_models",
+      "reason": "证据不足"
+    },
+    {
+      "dimension": "fine_tuned_redistribution",
+      "reason": "证据不足"
+    },
+    {
+      "dimension": "commercial_license_request",
+      "reason": "未找到明确条款"
+    }
+  ]
+}

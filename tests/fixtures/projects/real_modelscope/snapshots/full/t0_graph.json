@@ -1,0 +1,2709 @@
+{
+  "node_count": 18,
+  "edge_count": 22,
+  "scc_count": 18,
+  "nodes": [
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-14B-Instruct-AWQ",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:10.992457Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-14B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-2",
+      "lineage_role": "root",
+      "lineage_complete": true,
+      "lineage_status": "complete",
+      "lineage_truncation_reason": null,
+      "unresolved_upstream_models": [],
+      "lineage_cycles": [],
+      "max_upstream_depth": null,
+      "max_upstream_nodes": 128,
+      "max_depth_seen": 2,
+      "resolved_upstream_count": 2,
+      "include_downstream": false,
+      "lineage_depth": 0,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-14B-Instruct@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-14B-Instruct",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-14B-Instruct",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-14B-Instruct@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-14B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:11.834106Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:12.894757Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-14B-Instruct"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:12.894760Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-14B-Instruct"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-14B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-1",
+      "lineage_role": "upstream",
+      "lineage_type": "Finetuned",
+      "lineage_type_ch": "微调",
+      "lineage_status": "resolved",
+      "lineage_depth": 1,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-14B@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-14B",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-14B",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-14B@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-14B",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:12.619115Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:12.894734Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-14B"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:12.894751Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-14B"
+          }
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:12.894764Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 1,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-14B"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-14B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-0",
+      "lineage_role": "upstream",
+      "lineage_type": "Base Model",
+      "lineage_type_ch": "基模型",
+      "lineage_status": "resolved",
+      "lineage_depth": 2,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct-AWQ",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:13.410304Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-5",
+      "lineage_role": "root",
+      "lineage_complete": true,
+      "lineage_status": "complete",
+      "lineage_truncation_reason": null,
+      "unresolved_upstream_models": [],
+      "lineage_cycles": [],
+      "max_upstream_depth": null,
+      "max_upstream_nodes": 128,
+      "max_depth_seen": 2,
+      "resolved_upstream_count": 2,
+      "include_downstream": false,
+      "lineage_depth": 0,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_analysis": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "model_profile",
+        "status": "ok",
+        "subject": {
+          "model_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+          "revision": "master",
+          "license_fact": "Apache-2.0",
+          "fact_source": "acceptance-fixture simulation",
+          "source_bundle_sha256": "9d58b41dc39d09fddebfb2c4276e288624cc998e3fd98fc1df3fec3004142b1e"
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "summary": "验收模拟：旧画像允许商业使用，并要求再分发时保留声明。",
+        "claims": [
+          {
+            "claim_id": "claim-a81c9c081ed1",
+            "dimension": "commercial_use",
+            "dimension_zh": "商业使用",
+            "state": "allowed",
+            "state_zh": "允许",
+            "statement": "验收模拟条款允许商业使用。",
+            "condition": "",
+            "conditions": [],
+            "exceptions": [],
+            "evidence_level": "C",
+            "confidence": 0.78,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02
+            },
+            "evidence": {
+              "source_path": "LICENSE.ACCEPTANCE.md",
+              "source_url": "",
+              "quote": "验收模拟条款：允许用于商业目的。",
+              "quote_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+              "file_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+              "confidence": 0.78,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            },
+            "evidences": [
+              {
+                "source_path": "LICENSE.ACCEPTANCE.md",
+                "source_url": "",
+                "quote": "验收模拟条款：允许用于商业目的。",
+                "quote_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+                "file_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+                "confidence": 0.78,
+                "confidence_factors": {
+                  "base": 0.48,
+                  "license_file": 0.15,
+                  "exact_quote": 0.1,
+                  "source_sha256": 0.03,
+                  "quote_context": 0.02
+                }
+              }
+            ],
+            "evidence_count": 1,
+            "cross_document_support": false,
+            "conflict": false,
+            "human_review": "pending"
+          },
+          {
+            "claim_id": "claim-d68bb6f1d80f",
+            "dimension": "notice",
+            "dimension_zh": "许可证与版权声明保留",
+            "state": "conditional",
+            "state_zh": "有条件允许",
+            "statement": "再分发时需要保留许可证与版权声明。",
+            "condition": "仅在再分发时适用",
+            "conditions": [
+              {
+                "text": "仅在再分发时适用"
+              }
+            ],
+            "exceptions": [],
+            "evidence_level": "C",
+            "confidence": 0.59,
+            "confidence_factors": {
+              "base": 0.48,
+              "readme": 0.08,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            },
+            "evidence": {
+              "source_path": "README.ACCEPTANCE.md",
+              "source_url": "",
+              "quote": "分发时请保留许可证与版权声明。",
+              "quote_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+              "file_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+              "confidence": 0.59,
+              "confidence_factors": {
+                "base": 0.48,
+                "readme": 0.08,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            },
+            "evidences": [
+              {
+                "source_path": "README.ACCEPTANCE.md",
+                "source_url": "",
+                "quote": "分发时请保留许可证与版权声明。",
+                "quote_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+                "file_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+                "confidence": 0.59,
+                "confidence_factors": {
+                  "base": 0.48,
+                  "readme": 0.08,
+                  "exact_quote": 0.1,
+                  "source_sha256": 0.03,
+                  "quote_context": 0.02,
+                  "uncertain_state": -0.12
+                }
+              }
+            ],
+            "evidence_count": 1,
+            "cross_document_support": false,
+            "conflict": false,
+            "human_review": "pending"
+          }
+        ],
+        "conflicts": [],
+        "gaps": [
+          {
+            "dimension": "training_other_models",
+            "dimension_zh": "训练其他模型",
+            "reason": "验收模拟文本未覆盖"
+          },
+          {
+            "dimension": "fine_tuned_redistribution",
+            "dimension_zh": "微调版本再分发",
+            "reason": "验收模拟文本未覆盖"
+          },
+          {
+            "dimension": "commercial_license_request",
+            "dimension_zh": "商用授权申请方式",
+            "reason": "验收模拟文本未给出申请方式"
+          }
+        ],
+        "simulation": true,
+        "simulation_note": "验收模拟：LICENSE.ACCEPTANCE.md 为注入文本，不代表该模型当前 ModelScope 许可证事实。",
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        }
+      },
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-7B-Instruct",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:14.204904Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:15.401164Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-7B-Instruct"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:15.401166Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-7B-Instruct"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-4",
+      "lineage_role": "upstream",
+      "lineage_type": "Finetuned",
+      "lineage_type_ch": "微调",
+      "lineage_status": "resolved",
+      "lineage_depth": 1,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-7B",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-7B",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-7B@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:15.071440Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:15.401144Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-7B"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:15.401159Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-7B"
+          }
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:15.401172Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 1,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-7B"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-3",
+      "lineage_role": "upstream",
+      "lineage_type": "Base Model",
+      "lineage_type_ch": "基模型",
+      "lineage_status": "resolved",
+      "lineage_depth": 2,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_analysis": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "model_profile",
+        "status": "ok",
+        "subject": {
+          "model_id": "Qwen/Qwen2.5-7B",
+          "revision": "master",
+          "license_fact": "Apache-2.0",
+          "fact_source": "acceptance-fixture simulation",
+          "source_bundle_sha256": "46863ba1271864b86805661e79ed313ba2ccdf383e9b7df9841917272ef62ac0"
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "summary": "验收模拟：旧画像允许商业使用，并要求再分发时保留声明。",
+        "claims": [
+          {
+            "claim_id": "claim-a81c9c081ed1",
+            "dimension": "commercial_use",
+            "dimension_zh": "商业使用",
+            "state": "allowed",
+            "state_zh": "允许",
+            "statement": "验收模拟条款允许商业使用。",
+            "condition": "",
+            "conditions": [],
+            "exceptions": [],
+            "evidence_level": "C",
+            "confidence": 0.78,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02
+            },
+            "evidence": {
+              "source_path": "LICENSE.ACCEPTANCE.md",
+              "source_url": "",
+              "quote": "验收模拟条款：允许用于商业目的。",
+              "quote_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+              "file_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+              "confidence": 0.78,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            },
+            "evidences": [
+              {
+                "source_path": "LICENSE.ACCEPTANCE.md",
+                "source_url": "",
+                "quote": "验收模拟条款：允许用于商业目的。",
+                "quote_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+                "file_sha256": "e58f797aaed3acf63dc76824f49d5144de342d3240419e49b22450e8acce5e19",
+                "confidence": 0.78,
+                "confidence_factors": {
+                  "base": 0.48,
+                  "license_file": 0.15,
+                  "exact_quote": 0.1,
+                  "source_sha256": 0.03,
+                  "quote_context": 0.02
+                }
+              }
+            ],
+            "evidence_count": 1,
+            "cross_document_support": false,
+            "conflict": false,
+            "human_review": "pending"
+          },
+          {
+            "claim_id": "claim-d68bb6f1d80f",
+            "dimension": "notice",
+            "dimension_zh": "许可证与版权声明保留",
+            "state": "conditional",
+            "state_zh": "有条件允许",
+            "statement": "再分发时需要保留许可证与版权声明。",
+            "condition": "仅在再分发时适用",
+            "conditions": [
+              {
+                "text": "仅在再分发时适用"
+              }
+            ],
+            "exceptions": [],
+            "evidence_level": "C",
+            "confidence": 0.59,
+            "confidence_factors": {
+              "base": 0.48,
+              "readme": 0.08,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            },
+            "evidence": {
+              "source_path": "README.ACCEPTANCE.md",
+              "source_url": "",
+              "quote": "分发时请保留许可证与版权声明。",
+              "quote_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+              "file_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+              "confidence": 0.59,
+              "confidence_factors": {
+                "base": 0.48,
+                "readme": 0.08,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            },
+            "evidences": [
+              {
+                "source_path": "README.ACCEPTANCE.md",
+                "source_url": "",
+                "quote": "分发时请保留许可证与版权声明。",
+                "quote_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+                "file_sha256": "7ca6e7bda3801c193145e89c2ac2daed290b33c8a110238f1cb48b85e25d7dc6",
+                "confidence": 0.59,
+                "confidence_factors": {
+                  "base": 0.48,
+                  "readme": 0.08,
+                  "exact_quote": 0.1,
+                  "source_sha256": 0.03,
+                  "quote_context": 0.02,
+                  "uncertain_state": -0.12
+                }
+              }
+            ],
+            "evidence_count": 1,
+            "cross_document_support": false,
+            "conflict": false,
+            "human_review": "pending"
+          }
+        ],
+        "conflicts": [],
+        "gaps": [
+          {
+            "dimension": "training_other_models",
+            "dimension_zh": "训练其他模型",
+            "reason": "验收模拟文本未覆盖"
+          },
+          {
+            "dimension": "fine_tuned_redistribution",
+            "dimension_zh": "微调版本再分发",
+            "reason": "验收模拟文本未覆盖"
+          },
+          {
+            "dimension": "commercial_license_request",
+            "dimension_zh": "商用授权申请方式",
+            "reason": "验收模拟文本未给出申请方式"
+          }
+        ],
+        "simulation": true,
+        "simulation_note": "验收模拟：LICENSE.ACCEPTANCE.md 为注入文本，不代表该模型当前 ModelScope 许可证事实。",
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        }
+      },
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:15.927409Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-8",
+      "lineage_role": "root",
+      "lineage_complete": true,
+      "lineage_status": "complete",
+      "lineage_truncation_reason": null,
+      "unresolved_upstream_models": [],
+      "lineage_cycles": [],
+      "max_upstream_depth": null,
+      "max_upstream_nodes": 128,
+      "max_depth_seen": 3,
+      "resolved_upstream_count": 3,
+      "include_downstream": false,
+      "lineage_depth": 0,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Coder-7B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:16.710587Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:18.706750Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-Coder-7B-Instruct"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:18.706753Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-Coder-7B-Instruct"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-7",
+      "lineage_role": "upstream",
+      "lineage_type": "Finetuned",
+      "lineage_type_ch": "微调",
+      "lineage_status": "resolved",
+      "lineage_depth": 1,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-Coder-7B@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-Coder-7B",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-Coder-7B",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-Coder-7B@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Coder-7B",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:17.456119Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:18.706739Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-Coder-7B"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:18.706741Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-Coder-7B"
+          }
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:18.706756Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 1,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-Coder-7B"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-6",
+      "lineage_role": "upstream",
+      "lineage_type": "Finetuned",
+      "lineage_type_ch": "微调",
+      "lineage_status": "resolved",
+      "lineage_depth": 2,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+      "entity_key": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct",
+      "asset_type": "model",
+      "name": "OpenGVLab/InternVL3-8B-Instruct",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/OpenGVLab/InternVL3-8B-Instruct@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:19.195945Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ],
+      "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-12",
+      "lineage_role": "root",
+      "lineage_complete": true,
+      "lineage_status": "complete",
+      "lineage_truncation_reason": null,
+      "unresolved_upstream_models": [],
+      "lineage_cycles": [],
+      "max_upstream_depth": null,
+      "max_upstream_nodes": 128,
+      "max_depth_seen": 3,
+      "resolved_upstream_count": 4,
+      "include_downstream": false,
+      "lineage_depth": 0,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+      "entity_key": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained",
+      "asset_type": "model",
+      "name": "OpenGVLab/InternVL3-8B-Pretrained",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Pretrained",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:20.120928Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:22.881956Z",
+          "status": "ok",
+          "raw_value": "OpenGVLab/InternVL3-8B-Pretrained"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:22.881958Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Merge Model",
+            "LineAgeTypeCh": "合并",
+            "Name": "OpenGVLab/InternVL3-8B-Pretrained"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-11",
+      "lineage_role": "upstream",
+      "lineage_type": "Merge Model",
+      "lineage_type_ch": "合并",
+      "lineage_status": "resolved",
+      "lineage_depth": 1,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+      "entity_key": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5",
+      "asset_type": "model",
+      "name": "OpenGVLab/InternViT-300M-448px-V2_5",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master"
+      ],
+      "license": "MIT",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px-V2_5",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:20.919282Z",
+          "status": "ok",
+          "raw_value": "mit"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:22.097250Z",
+          "status": "ok",
+          "raw_value": "OpenGVLab/InternViT-300M-448px-V2_5"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:22.097253Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "OpenGVLab/InternViT-300M-448px-V2_5"
+          }
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:22.881964Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 1,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "OpenGVLab/InternViT-300M-448px-V2_5"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-10",
+      "lineage_role": "upstream",
+      "lineage_type": "Finetuned",
+      "lineage_type_ch": "微调",
+      "lineage_status": "resolved",
+      "lineage_depth": 2,
+      "risk_level": 1,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/OpenGVLab/InternViT-300M-448px@master",
+      "entity_key": "model:modelscope/OpenGVLab/InternViT-300M-448px",
+      "asset_type": "model",
+      "name": "OpenGVLab/InternViT-300M-448px",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/OpenGVLab/InternViT-300M-448px@master"
+      ],
+      "license": "MIT",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:21.779549Z",
+          "status": "ok",
+          "raw_value": "mit"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:22.097231Z",
+          "status": "ok",
+          "raw_value": "OpenGVLab/InternViT-300M-448px"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:22.097244Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "OpenGVLab/InternViT-300M-448px"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-9",
+      "lineage_role": "upstream",
+      "lineage_type": "Base Model",
+      "lineage_type_ch": "基模型",
+      "lineage_status": "resolved",
+      "lineage_depth": 3,
+      "risk_level": 1,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-Math-7B-Instruct@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-Math-7B-Instruct",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-Math-7B-Instruct@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Math-7B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:23.398754Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Math-7B-Instruct",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-14",
+      "lineage_role": "root",
+      "lineage_complete": true,
+      "lineage_status": "complete",
+      "lineage_truncation_reason": null,
+      "unresolved_upstream_models": [],
+      "lineage_cycles": [],
+      "max_upstream_depth": null,
+      "max_upstream_nodes": 128,
+      "max_depth_seen": 2,
+      "resolved_upstream_count": 2,
+      "include_downstream": false,
+      "lineage_depth": 0,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-Math-7B@master",
+      "entity_key": "model:modelscope/Qwen/Qwen2.5-Math-7B",
+      "asset_type": "model",
+      "name": "Qwen/Qwen2.5-Math-7B",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/Qwen/Qwen2.5-Math-7B@master"
+      ],
+      "license": "Apache-2.0",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-Math-7B",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:24.225566Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:25.516894Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-Math-7B"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:25.516897Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-Math-7B"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Math-7B-Instruct",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-13",
+      "lineage_role": "upstream",
+      "lineage_type": "Finetuned",
+      "lineage_type_ch": "微调",
+      "lineage_status": "resolved",
+      "lineage_depth": 1,
+      "risk_level": 2,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/LLM-Research/gemma-3-4b-it@master",
+      "entity_key": "model:modelscope/LLM-Research/gemma-3-4b-it",
+      "asset_type": "model",
+      "name": "LLM-Research/gemma-3-4b-it",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/LLM-Research/gemma-3-4b-it@master"
+      ],
+      "license": "gemma",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/LLM-Research/gemma-3-4b-it",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:25.972314Z",
+          "status": "ok",
+          "raw_value": "gemma"
+        }
+      ],
+      "snapshot_id": "modelscope-LLM-Research__gemma-3-4b-it",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-16",
+      "lineage_role": "root",
+      "lineage_complete": true,
+      "lineage_status": "complete",
+      "lineage_truncation_reason": null,
+      "unresolved_upstream_models": [],
+      "lineage_cycles": [],
+      "max_upstream_depth": null,
+      "max_upstream_nodes": 128,
+      "max_depth_seen": 1,
+      "resolved_upstream_count": 1,
+      "include_downstream": false,
+      "lineage_depth": 0,
+      "risk_level": 4,
+      "decision": "RISK_CONFIRMED",
+      "decision_zh": "高风险（红）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/google/gemma-3-4b-pt@master",
+      "entity_key": "model:modelscope/google/gemma-3-4b-pt",
+      "asset_type": "model",
+      "name": "google/gemma-3-4b-pt",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/google/gemma-3-4b-pt@master"
+      ],
+      "license": "gemma",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/google/gemma-3-4b-pt",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:26.790548Z",
+          "status": "ok",
+          "raw_value": "gemma"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T12:54:27.100987Z",
+          "status": "ok",
+          "raw_value": "google/gemma-3-4b-pt"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T12:54:27.101001Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "google/gemma-3-4b-pt"
+          }
+        }
+      ],
+      "snapshot_id": "modelscope-LLM-Research__gemma-3-4b-it",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-15",
+      "lineage_role": "upstream",
+      "lineage_type": "Base Model",
+      "lineage_type_ch": "基模型",
+      "lineage_status": "resolved",
+      "lineage_depth": 1,
+      "risk_level": 4,
+      "decision": "RISK_CONFIRMED",
+      "decision_zh": "高风险（红）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    },
+    {
+      "canonical_id": "model:modelscope/BAAI/bge-m3@master",
+      "entity_key": "model:modelscope/BAAI/bge-m3",
+      "asset_type": "model",
+      "name": "BAAI/bge-m3",
+      "version": "master",
+      "purls": [
+        "pkg:modelscope/BAAI/bge-m3@master"
+      ],
+      "license": "MIT",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/BAAI/bge-m3",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T12:54:27.583747Z",
+          "status": "ok",
+          "raw_value": "mit"
+        }
+      ],
+      "snapshot_id": "modelscope-BAAI__bge-m3",
+      "merge_status": "KEPT_SEPARATE",
+      "reason_code": "NO_MERGE_CANDIDATE",
+      "rule_version": "merge-policy-v3",
+      "hashes": [],
+      "scc_id": "scc-17",
+      "lineage_role": "root",
+      "lineage_complete": true,
+      "lineage_status": "complete",
+      "lineage_truncation_reason": null,
+      "unresolved_upstream_models": [],
+      "lineage_cycles": [],
+      "max_upstream_depth": null,
+      "max_upstream_nodes": 128,
+      "max_depth_seen": 0,
+      "resolved_upstream_count": 0,
+      "include_downstream": false,
+      "lineage_depth": 0,
+      "risk_level": 1,
+      "decision": "SAFE",
+      "decision_zh": "安全（绿）",
+      "ai_project_context": {
+        "schema_version": "ai-analysis/v2",
+        "analysis_type": "project_context",
+        "status": "ok",
+        "subject": {
+          "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+          "model_count": 0
+        },
+        "provider": {
+          "provider": "mock",
+          "model": "frozen-acceptance-fixture",
+          "base_url": "offline://acceptance",
+          "timeout": 60.0
+        },
+        "prompt_version": "modelscope-license-audit-v2",
+        "generated_at": "2026-10-26T14:46:18Z",
+        "uses": [
+          {
+            "use_type": "remote_api",
+            "use_type_zh": "远程 API 调用",
+            "statement": "项目通过 OpenAI-compatible 客户端把已登记的模型标识传给远程推理端点。",
+            "evidence_level": "C",
+            "confidence": 0.83,
+            "evidence": {
+              "source_path": "inference_client.py",
+              "quote": "response = client.chat.completions.create(model=model, messages=messages)",
+              "quote_sha256": "b567820cb3af352e018a2c7d22577887616efd0419ac213a9c43804572b21c0b",
+              "file_sha256": "9efafa89744a4d536c81291dd7f0a1a9d8e81b3a165feef97cf87b69f01ec111"
+            },
+            "human_review": "pending"
+          }
+        ],
+        "rejected": [],
+        "fact_policy": {
+          "ai_may_change_license": false,
+          "ai_may_change_decision": false,
+          "ai_evidence_level": "C",
+          "human_review_required": true
+        },
+        "simulation": true,
+        "simulation_note": "验收模拟：项目上下文只用于验证逐字代码引用和 C 级证据展示。"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-14B-Instruct@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-14B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "lineage.ParentsModels",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-14B-Instruct@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-14B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "lineage.ParentsModels",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-Coder-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "lineage.ParentsModels",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "lineage.ParentsModels",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-Coder-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "lineage.ParentsModels",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+    },
+    {
+      "source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+      "target": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+    },
+    {
+      "source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+      "target": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "lineage.ParentsModels",
+      "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+    },
+    {
+      "source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "lineage.ParentsModels",
+      "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+    },
+    {
+      "source": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+      "target": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+    },
+    {
+      "source": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+    },
+    {
+      "source": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+      "target": "model:modelscope/OpenGVLab/InternViT-300M-448px@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-Math-7B-Instruct@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-Math-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Math-7B-Instruct"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-Math-7B-Instruct@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "B",
+      "source_field": "lineage.ParentsModels",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Math-7B-Instruct"
+    },
+    {
+      "source": "model:modelscope/Qwen/Qwen2.5-Math-7B@master",
+      "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-Qwen__Qwen2.5-Math-7B-Instruct"
+    },
+    {
+      "source": "model:modelscope/LLM-Research/gemma-3-4b-it@master",
+      "target": "model:modelscope/google/gemma-3-4b-pt@master",
+      "edge_type": "derived_from",
+      "evidence_level": "A",
+      "source_field": "Data.BaseModel",
+      "snapshot_id": "modelscope-LLM-Research__gemma-3-4b-it"
+    }
+  ],
+  "canonical_to_scc": {
+    "model:modelscope/Qwen/Qwen2.5-14B@master": "scc-0",
+    "model:modelscope/Qwen/Qwen2.5-14B-Instruct@master": "scc-1",
+    "model:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ@master": "scc-2",
+    "model:modelscope/Qwen/Qwen2.5-7B@master": "scc-3",
+    "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master": "scc-4",
+    "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master": "scc-5",
+    "model:modelscope/Qwen/Qwen2.5-Coder-7B@master": "scc-6",
+    "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master": "scc-7",
+    "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master": "scc-8",
+    "model:modelscope/OpenGVLab/InternViT-300M-448px@master": "scc-9",
+    "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master": "scc-10",
+    "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master": "scc-11",
+    "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master": "scc-12",
+    "model:modelscope/Qwen/Qwen2.5-Math-7B@master": "scc-13",
+    "model:modelscope/Qwen/Qwen2.5-Math-7B-Instruct@master": "scc-14",
+    "model:modelscope/google/gemma-3-4b-pt@master": "scc-15",
+    "model:modelscope/LLM-Research/gemma-3-4b-it@master": "scc-16",
+    "model:modelscope/BAAI/bge-m3@master": "scc-17"
+  },
+  "scc": {
+    "scc-0": [
+      "model:modelscope/Qwen/Qwen2.5-14B@master"
+    ],
+    "scc-1": [
+      "model:modelscope/Qwen/Qwen2.5-14B-Instruct@master"
+    ],
+    "scc-2": [
+      "model:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ@master"
+    ],
+    "scc-3": [
+      "model:modelscope/Qwen/Qwen2.5-7B@master"
+    ],
+    "scc-4": [
+      "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master"
+    ],
+    "scc-5": [
+      "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master"
+    ],
+    "scc-6": [
+      "model:modelscope/Qwen/Qwen2.5-Coder-7B@master"
+    ],
+    "scc-7": [
+      "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master"
+    ],
+    "scc-8": [
+      "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master"
+    ],
+    "scc-9": [
+      "model:modelscope/OpenGVLab/InternViT-300M-448px@master"
+    ],
+    "scc-10": [
+      "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master"
+    ],
+    "scc-11": [
+      "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master"
+    ],
+    "scc-12": [
+      "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master"
+    ],
+    "scc-13": [
+      "model:modelscope/Qwen/Qwen2.5-Math-7B@master"
+    ],
+    "scc-14": [
+      "model:modelscope/Qwen/Qwen2.5-Math-7B-Instruct@master"
+    ],
+    "scc-15": [
+      "model:modelscope/google/gemma-3-4b-pt@master"
+    ],
+    "scc-16": [
+      "model:modelscope/LLM-Research/gemma-3-4b-it@master"
+    ],
+    "scc-17": [
+      "model:modelscope/BAAI/bge-m3@master"
+    ]
+  },
+  "compressed": {
+    "nodes": [
+      {
+        "scc_id": "scc-0",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-14B@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-1",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-14B-Instruct@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-2",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-3",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-7B@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-4",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-5",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-6",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-Coder-7B@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-7",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-8",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-9",
+        "size": 1,
+        "members": [
+          "model:modelscope/OpenGVLab/InternViT-300M-448px@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-10",
+        "size": 1,
+        "members": [
+          "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-11",
+        "size": 1,
+        "members": [
+          "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-12",
+        "size": 1,
+        "members": [
+          "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-13",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-Math-7B@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-14",
+        "size": 1,
+        "members": [
+          "model:modelscope/Qwen/Qwen2.5-Math-7B-Instruct@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-15",
+        "size": 1,
+        "members": [
+          "model:modelscope/google/gemma-3-4b-pt@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-16",
+        "size": 1,
+        "members": [
+          "model:modelscope/LLM-Research/gemma-3-4b-it@master"
+        ],
+        "is_cycle": false
+      },
+      {
+        "scc_id": "scc-17",
+        "size": 1,
+        "members": [
+          "model:modelscope/BAAI/bge-m3@master"
+        ],
+        "is_cycle": false
+      }
+    ],
+    "edges": [
+      {
+        "source_scc": "scc-1",
+        "target_scc": "scc-0",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-2",
+        "target_scc": "scc-1",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-2",
+        "target_scc": "scc-0",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-4",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-5",
+        "target_scc": "scc-4",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-5",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-6",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-7",
+        "target_scc": "scc-6",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-7",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-8",
+        "target_scc": "scc-7",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-8",
+        "target_scc": "scc-6",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-8",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-10",
+        "target_scc": "scc-9",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-11",
+        "target_scc": "scc-10",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-11",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-12",
+        "target_scc": "scc-11",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-12",
+        "target_scc": "scc-10",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-12",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-13",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-14",
+        "target_scc": "scc-13",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-14",
+        "target_scc": "scc-3",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "B",
+        "count": 1
+      },
+      {
+        "source_scc": "scc-16",
+        "target_scc": "scc-15",
+        "edge_types": [
+          "derived_from"
+        ],
+        "evidence_level": "A",
+        "count": 1
+      }
+    ]
+  },
+  "overall_decision": "RISK_CONFIRMED",
+  "overall_decision_zh": "高风险（红）"
+}

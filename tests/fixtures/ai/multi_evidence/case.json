@@ -1,0 +1,98 @@
+{
+  "source_bundle": {
+    "schema_version": "modelscope-source-bundle/v1",
+    "source": "modelscope",
+    "model_id": "org/multi-evidence-demo",
+    "revision": "main",
+    "facts": {
+      "license": {
+        "value": "qwen-research",
+        "source_field": "Data.LicenseName",
+        "evidence_level": "A"
+      }
+    },
+    "documents": [
+      {
+        "path": "LICENSE",
+        "content": "研究用途条件\n仅限非商业研究使用。",
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "source_url": "https://www.modelscope.cn/models/org/multi-evidence-demo/file/view/main/LICENSE"
+      },
+      {
+        "path": "README.md",
+        "content": "商业使用需另行申请书面授权。",
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "source_url": "https://www.modelscope.cn/models/org/multi-evidence-demo"
+      }
+    ]
+  },
+  "response": {
+    "summary": "许可证名称相同，但 LICENSE 与 README 都形成商业使用限制证据。",
+    "claims": [
+      {
+        "dimension": "commercial_use",
+        "state": "restricted",
+        "statement": "仅限非商业研究使用",
+        "conditions": [
+          {
+            "text": "研究用途需遵守许可证条件",
+            "source_path": "LICENSE",
+            "quote": "仅限非商业研究使用。"
+          }
+        ],
+        "evidences": [
+          {
+            "source_path": "LICENSE",
+            "quote": "仅限非商业研究使用。"
+          }
+        ]
+      },
+      {
+        "dimension": "commercial_use",
+        "state": "restricted",
+        "statement": "商业使用需要申请授权",
+        "conditions": [
+          {
+            "text": "需取得书面授权",
+            "source_path": "README.md",
+            "quote": "商业使用需另行申请书面授权。"
+          }
+        ],
+        "evidences": [
+          {
+            "source_path": "README.md",
+            "quote": "商业使用需另行申请书面授权。"
+          }
+        ]
+      }
+    ],
+    "gaps": []
+  },
+  "conflicting_response": {
+    "summary": "两份文件出现冲突。",
+    "claims": [
+      {
+        "dimension": "commercial_use",
+        "state": "allowed",
+        "statement": "允许商业使用",
+        "evidences": [
+          {
+            "source_path": "README.md",
+            "quote": "商业使用需另行申请书面授权。"
+          }
+        ]
+      },
+      {
+        "dimension": "commercial_use",
+        "state": "prohibited",
+        "statement": "禁止商业使用",
+        "evidences": [
+          {
+            "source_path": "LICENSE",
+            "quote": "仅限非商业研究使用。"
+          }
+        ]
+      }
+    ]
+  }
+}

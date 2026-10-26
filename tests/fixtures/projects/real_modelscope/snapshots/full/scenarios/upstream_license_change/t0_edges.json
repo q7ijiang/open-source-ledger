@@ -1,0 +1,178 @@
+[
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-14B-Instruct@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-14B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-14B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-14B-Instruct@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-14B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-14B-Instruct-AWQ@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-14B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-14B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-Coder-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-Coder-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-Coder-7B-Instruct-AWQ@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-Coder-7B-Instruct-AWQ"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+    "target": "model:modelscope/OpenGVLab/InternViT-300M-448px@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+    "target": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+    "target": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+    "target": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-Math-7B@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-Math-7B-Instruct"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-Math-7B-Instruct@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-Math-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-Math-7B-Instruct"
+  },
+  {
+    "source": "model:modelscope/Qwen/Qwen2.5-Math-7B-Instruct@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-Math-7B-Instruct"
+  },
+  {
+    "source": "model:modelscope/LLM-Research/gemma-3-4b-it@master",
+    "target": "model:modelscope/google/gemma-3-4b-pt@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-LLM-Research__gemma-3-4b-it"
+  }
+]

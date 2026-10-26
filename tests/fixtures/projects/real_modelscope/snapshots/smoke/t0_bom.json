@@ -1,0 +1,314 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-26T21:03:40.785568+08:00"
+  },
+  "components": [
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct-AWQ",
+              "source_field": "Data.License",
+              "retrieved_at": "2026-10-26T13:03:38.190461Z",
+              "status": "ok",
+              "raw_value": "apache-2.0"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "SAFE"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "安全（绿）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct-AWQ"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "root"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "complete"
+        },
+        {
+          "name": "open-source-ledger:lineage_complete",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:max_upstream_nodes",
+          "value": "128"
+        },
+        {
+          "name": "open-source-ledger:resolved_upstream_count",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:max_depth_seen",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:unresolved_upstream_models_json",
+          "value": "[]"
+        },
+        {
+          "name": "open-source-ledger:lineage_cycles_json",
+          "value": "[]"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+            "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+            "evidence_level": "A",
+            "source_field": "Data.BaseModel"
+          },
+          {
+            "ref": "model:modelscope/Qwen/Qwen2.5-7B@master",
+            "purl": "pkg:modelscope/Qwen/Qwen2.5-7B@master",
+            "evidence_level": "B",
+            "source_field": "lineage.ParentsModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen2.5-7B-Instruct",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+              "source_field": "Data.License",
+              "retrieved_at": "2026-10-26T13:03:39.334481Z",
+              "status": "ok",
+              "raw_value": "apache-2.0"
+            },
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "Data.BaseModel",
+              "retrieved_at": "2026-10-26T13:03:40.738848Z",
+              "status": "ok",
+              "raw_value": "Qwen/Qwen2.5-7B-Instruct"
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-10-26T13:03:40.738852Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 0,
+                "LineAgeType": "Finetuned",
+                "LineAgeTypeCh": "微调",
+                "Name": "Qwen/Qwen2.5-7B-Instruct"
+              }
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "SAFE"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "安全（绿）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "upstream"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "1"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "resolved"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen2.5-7B@master",
+            "purl": "pkg:modelscope/Qwen/Qwen2.5-7B@master",
+            "evidence_level": "A",
+            "source_field": "Data.BaseModel"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen2.5-7B",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen2.5-7B@master",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+              "source_field": "Data.License",
+              "retrieved_at": "2026-10-26T13:03:40.388780Z",
+              "status": "ok",
+              "raw_value": "apache-2.0"
+            },
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "Data.BaseModel",
+              "retrieved_at": "2026-10-26T13:03:40.738826Z",
+              "status": "ok",
+              "raw_value": "Qwen/Qwen2.5-7B"
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-10-26T13:03:40.738842Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 0,
+                "LineAgeType": "Base Model",
+                "LineAgeTypeCh": "基模型",
+                "Name": "Qwen/Qwen2.5-7B"
+              }
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-10-26T13:03:40.738857Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 1,
+                "LineAgeType": "Base Model",
+                "LineAgeTypeCh": "基模型",
+                "Name": "Qwen/Qwen2.5-7B"
+              }
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "SAFE"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "安全（绿）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "upstream"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "resolved"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "dependsOn": []
+    }
+  ]
+}

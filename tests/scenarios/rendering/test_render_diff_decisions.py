@@ -10,7 +10,7 @@ import build_graph
 import delta_engine
 import render_diff
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
 def _node(node_id: str, decision: str | None = None) -> dict:
@@ -286,7 +286,8 @@ def test_diff_template_uses_snapshot_tabs_and_per_snapshot_expansion() -> None:
     assert "expandedDomains = new Set();" not in template
     assert "const expandedDomains = expandedSet(snapshot);" in template
     assert "visible = expandedDomains.has(n.render_parent_id)" in template
-    assert "if (aggregateId && !expandedDomains.has(aggregateId)) return null;" in template
+    assert "const agg = isAgg(n);" in template
+    assert "if (e.edge_type === \"expanded_from\" || isAgg(source) || isAgg(target)) return null;" in template
     assert "const expanded = expandedSet(snapshot);" in template
     assert "expandedSet(preferred).add(n.render_parent_id);" in template
     assert "button.addEventListener(\"click\", () => activateSnapshot" in template

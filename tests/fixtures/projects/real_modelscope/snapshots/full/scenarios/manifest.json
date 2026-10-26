@@ -1,0 +1,17 @@
+{
+  "schema_version": "modelscope-what-if-manifest/v1",
+  "source_snapshot": "tests/fixtures/projects/real_modelscope/snapshots/full/t0_bom.json",
+  "simulation": true,
+  "scenarios": [
+    {
+      "name": "direct_license_change",
+      "path": "direct_license_change",
+      "target": "Qwen/Qwen2.5-7B-Instruct-AWQ"
+    },
+    {
+      "name": "upstream_license_change",
+      "path": "upstream_license_change",
+      "target": "Qwen/Qwen2.5-7B"
+    }
+  ]
+}

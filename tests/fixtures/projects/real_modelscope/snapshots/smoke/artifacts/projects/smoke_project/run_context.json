@@ -1,0 +1,8 @@
+{
+  "mode": "project",
+  "project_path": "tests\\fixtures\\projects\\real_modelscope\\smoke_project",
+  "artifacts_dir": "tests\\fixtures\\projects\\real_modelscope\\snapshots\\smoke\\artifacts",
+  "cache_dir": "tests\\fixtures\\projects\\real_modelscope\\snapshots\\smoke\\cache",
+  "graph_path": "tests\\fixtures\\projects\\real_modelscope\\snapshots\\smoke\\t0_graph.json",
+  "include_downstream": false
+}

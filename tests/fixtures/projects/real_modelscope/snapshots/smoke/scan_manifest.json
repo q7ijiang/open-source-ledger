@@ -1,0 +1,177 @@
+{
+  "schema_version": "real-modelscope-project-snapshot/v1",
+  "stage": "smoke",
+  "generated_at": "2026-10-26T13:03:40Z",
+  "live_api": true,
+  "project_path": "tests/fixtures/projects/real_modelscope/smoke_project",
+  "direct_models": [
+    {
+      "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "ns": "Qwen",
+      "name": "Qwen2.5-7B-Instruct-AWQ",
+      "sources": [
+        "app.py",
+        "README.md"
+      ],
+      "direct_usage": true
+    }
+  ],
+  "validation": {
+    "status": "pass",
+    "direct_model_precision": 1.0,
+    "direct_model_recall": 1.0,
+    "expected_direct_models": [
+      "Qwen/Qwen2.5-7B-Instruct-AWQ"
+    ],
+    "detected_direct_models": [
+      "Qwen/Qwen2.5-7B-Instruct-AWQ"
+    ],
+    "missing_direct_models": [],
+    "unexpected_direct_models": [],
+    "required_lineage_paths": [
+      {
+        "from": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+        "to": "Qwen/Qwen2.5-7B",
+        "found": true
+      }
+    ],
+    "observed_max_upstream_depth": 2,
+    "downstream_model_nodes": []
+  },
+  "model_count": 3,
+  "edge_count": 3,
+  "graph_node_count": 3,
+  "models": [
+    {
+      "model_id": "Qwen/Qwen2.5-7B",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "license": "Apache-2.0",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 2,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T13:03:40.388780Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T13:03:40.738826Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-7B"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T13:03:40.738842Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-7B"
+          }
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T13:03:40.738857Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 1,
+            "LineAgeType": "Base Model",
+            "LineAgeTypeCh": "基模型",
+            "Name": "Qwen/Qwen2.5-7B"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+      "license": "Apache-2.0",
+      "lineage_role": "upstream",
+      "lineage_status": "resolved",
+      "lineage_complete": null,
+      "lineage_depth": 1,
+      "resolved_upstream_count": null,
+      "max_depth_seen": null,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T13:03:39.334481Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        },
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "Data.BaseModel",
+          "retrieved_at": "2026-10-26T13:03:40.738848Z",
+          "status": "ok",
+          "raw_value": "Qwen/Qwen2.5-7B-Instruct"
+        },
+        {
+          "evidence_level": "B",
+          "source_api": "modelscope",
+          "source_url": null,
+          "source_field": "lineage.ParentsModels",
+          "retrieved_at": "2026-10-26T13:03:40.738852Z",
+          "status": "ok",
+          "raw_value": {
+            "Level": 0,
+            "LineAgeType": "Finetuned",
+            "LineAgeTypeCh": "微调",
+            "Name": "Qwen/Qwen2.5-7B-Instruct"
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+      "license": "Apache-2.0",
+      "lineage_role": "root",
+      "lineage_status": "complete",
+      "lineage_complete": true,
+      "lineage_depth": 0,
+      "resolved_upstream_count": 2,
+      "max_depth_seen": 2,
+      "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "evidence_chain": [
+        {
+          "evidence_level": "A",
+          "source_api": "modelscope",
+          "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct-AWQ",
+          "source_field": "Data.License",
+          "retrieved_at": "2026-10-26T13:03:38.190461Z",
+          "status": "ok",
+          "raw_value": "apache-2.0"
+        }
+      ]
+    }
+  ],
+  "source": "ModelScope official API",
+  "simulation": false
+}

@@ -14,7 +14,8 @@ def test_project_graph_aggregates_collapse_until_clicked() -> None:
     assert "function buildLinks() {" in tpl
     assert "const visible = expandedDomains.has(n.render_parent_id);" in tpl
     assert "symbolSize:visible ? [n.render_card?.width || 72, n.render_card?.height || 38] : [0, 0]," in tpl
-    assert "if (aggregateId && !expandedDomains.has(aggregateId)) return null;" in tpl
+    assert "if (e.edge_type === \"expanded_from\" || isAggregate(source) || isAggregate(target)) return null;" in tpl
+    assert "aggregate membership" in tpl.lower() or "grouping" in tpl.lower()
     assert "data:buildNodes()," in tpl
     assert "links:buildLinks()," in tpl
     assert "}, true);" in tpl
