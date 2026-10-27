@@ -145,7 +145,7 @@ def generate_model(output_root: Path, config: AIConfig) -> None:
     export_bom.export_bom(assets_path, edges_path, output_dir / "bom.json")
     report = main._render_modelscope_report(source_bundle["model_id"], output_dir, 0.0, bundle)
     (output_dir / "report.md").write_text(report, encoding="utf-8")
-    _render_graph(graph_path, output_dir / "lineage.html", "AI 模型模式验收")
+    _render_graph(graph_path, output_dir / "lineage.html", "AI 内部模型调查验收")
 
 
 def generate_project(output_root: Path, config: AIConfig) -> None:
@@ -196,7 +196,7 @@ def generate_project(output_root: Path, config: AIConfig) -> None:
         bundle,
     )
     (output_dir / "report.md").write_text(report, encoding="utf-8")
-    _render_graph(graph_path, output_dir / "lineage.html", "AI 项目模式验收")
+    _render_graph(graph_path, output_dir / "lineage.html", "AI Project 入口验收")
 
 
 def generate_diff(output_root: Path, config: AIConfig) -> None:
@@ -228,20 +228,20 @@ def generate_diff(output_root: Path, config: AIConfig) -> None:
 def _write_acceptance_readme(output_root: Path) -> None:
     content = """# AI 能力离线验收包
 
-本目录由 `tests/acceptance/generate_ai_acceptance.py` 从固定夹具重新生成，全程不访问网络。
+本目录由 `tests/acceptance/generate_ai_acceptance.py` 从固定夹具重新生成，全程不访问网络。产品用户入口只有 Project 与 Diff；Model 产物用于内部调查与回归测试。
 测试模型为 `example/qwen-research-demo`，事实许可证名为 `qwen-research`，不代表真实模型的法律结论。
 
 ## 验收入口
 
-- [模型模式](model/lineage.html)：打开后点击模型节点，查看商业使用禁止、0.86 置信度、C 级证据、原文引文和待人工确认状态。
-- [项目模式](project/lineage.html)：点击模型节点，查看项目通过远程 API 使用模型，以及 `app.py` 中的逐字依据。
-- [Diff 模式](diff/diff.html)：查看相同许可证名下“允许商用 → 禁止商用”的语义收紧，以及 t0/t1 原文。
+- [内部模型调查](model/lineage.html)：打开后点击模型节点，查看商业使用禁止、0.86 置信度、C 级证据、原文引文和待人工确认状态。
+- [Project](project/lineage.html)：点击模型节点，查看项目通过远程 API 使用模型，以及 `app.py` 中的逐字依据。
+- [Diff](diff/diff.html)：查看相同许可证名下“允许商用 → 禁止商用”的语义收紧，以及 t0/t1 原文。
 
 ## 预期结果
 
 | 模式 | 预期 |
 |---|---|
-| Model | `commercial_use=prohibited`；`confidence=0.86`；`evidence_level=C`；`human_review=pending` |
+| Model（内部） | `commercial_use=prohibited`；`confidence=0.86`；`evidence_level=C`；`human_review=pending` |
 | Model gaps | 训练其他模型、微调版本再分发、商用授权申请方式三项证据不足 |
 | Project | `remote_api`；引文来自项目 `app.py`；C 级、待人工确认 |
 | Diff | `allowed → prohibited`；复核优先级 `high`；规则 Delta 不被 AI 改写 |
@@ -317,7 +317,7 @@ def main_cli(argv: list[str] | None = None) -> int:
     _write_acceptance_readme(output_root)
     manifest = build_manifest(output_root)
     print(f"AI 离线验收包已生成：{output_root}")
-    print(f"模型/项目/Diff 产物共 {len(manifest['files'])} 个文件；未访问网络。")
+    print(f"内部模型调查/项目/Diff 产物共 {len(manifest['files'])} 个文件；未访问网络。")
     return 0
 
 

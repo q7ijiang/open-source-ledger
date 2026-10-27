@@ -18,15 +18,15 @@ ModelScope 官方事实与冻结文档
 - 当前数据口径只使用 ModelScope，不回退到其他模型社区。
 - 服务地址没有固定默认值，必须由运行方显式配置。
 
-## 2. 三种模式中的职责
+## 2. 三类分析产物中的职责
 
 | 模式 | 架构地位 | AI 输入 | AI 产出 |
 |---|---|---|---|
 | Project | 核心入口 | 项目源码、配置、说明文件，以及项目模型及其上游的官方文档 | 远程 API、本地推理、权重分发、微调、衍生发布等实际使用方式 |
 | Diff | 核心入口 | t0/t1 BOM 中固化的许可证事实、血缘和 AI 画像 | 同名许可证下的语义收紧、放宽、条件变化、证据新增或丢失 |
-| Model | 调查视图 | 单个 ModelScope 模型的 LICENSE、README、使用政策与结构化文本 | 条款状态、逐字原文、条件、例外、冲突、置信度和证据缺口 |
+| Model（内部 CLI） | 内部调查与测试 | 单个 ModelScope 模型的 LICENSE、README、使用政策与结构化文本 | 条款状态、逐字原文、条件、例外、冲突、置信度和证据缺口 |
 
-Model 模式不会成为项目风险闭包的一部分。项目模式默认只关注项目直接使用的模型及其完整上游闭包，不枚举平台上的全量下游模型。
+Streamlit 只提供 Project 与 Diff 两个用户入口；Model 仅保留为内部 CLI 与测试能力，不会成为项目风险闭包的一部分。Project 默认只关注项目直接使用的模型及其完整上游闭包，不枚举平台上的全量下游模型。
 
 ## 3. AI 为什么不是通用接口套壳
 
@@ -65,7 +65,7 @@ Model 模式不会成为项目风险闭包的一部分。项目模式默认只�
 ## 5. 证据等级
 
 - A：ModelScope 官方 API 字段，或从 ModelScope 官方仓库取得的 LICENSE / README 原文。
-- B：工具基于 A 级事实生成的派生结构，例如血缘边、聚合节点和 BOM 映射。
+- B：工具基于 A 级事实生成的派生结构，例如血缘边、稳定标识和 BOM 映射。
 - C：AI 条款抽取、项目上下文、语义 Diff、启发式或失败降级结果。
 
 示例：
@@ -151,7 +151,7 @@ python main.py --model <namespace>/<name> --ai
 python main.py --diff --before <t0-bom.json> --after <t1-bom.json> --output <report.md> --ai
 ```
 
-所有输入输出路径来自命令行参数或调用方配置。项目/模型模式建议显式传入：
+所有输入输出路径来自命令行参数或调用方配置。项目扫描与内部模型调查建议显式传入：
 
 - `--artifacts-dir`
 - `--cache-dir`
@@ -168,7 +168,7 @@ Action 与示例 Workflow：
 - 显式传入 BOM 与 graph 输出路径；
 - AI 仅在 `ai_enabled=true` 且 `AI_BASE_URL`、`AI_MODEL` 均非空时启用；
 - 上传 `reports/` 和 `artifacts/`，包含 Markdown、BOM、source bundle、`ai_analysis.json`、graph、assets、edges；
-- 规则判定 `RISK_CONFIRMED` 仍会阻断流水线；
+- 规则判定 `RISK_CONFIRMED` 会使当前检查任务失败；是否阻断合并仍取决于仓库分支保护；
 - Secrets 不写入审计产物。
 
 ## 12. 验收与测试

@@ -6,7 +6,7 @@
 
 - 审计对象是**项目直接使用的 ModelScope 模型及其完整上游闭包**。
 - 默认不枚举、不评估平台上的全量下游模型；下游风险传播保留为未来研究方向。
-- 模型模式是单模型调查视图，不作为项目风险结论的主要入口。
+- Streamlit 只保留 Project 与 Diff 两个用户入口；单模型调查仅作为内部 CLI 与测试能力。
 - AI 是受原文约束的 C 级语义证据层，不修改许可证事实、Delta、风险灯色、decision 或 CI 结果。
 - 输入输出路径均来自命令行参数、环境变量或 GitHub Actions 运行目录，不依赖固定本机路径。
 
@@ -22,15 +22,15 @@ ModelScope 详情页可以展示模型许可证，但项目仍需要回答：
 
 工具输出用于工程辅助审计，不构成法律意见。
 
-## 工作模式
+## 用户入口与内部调查
 
 | 模式 | 作用 | 是否进入项目风险闭包 |
 |---|---|---|
 | Project | 扫描项目中的 ModelScope 模型，递归查询上游闭包，生成 BOM、图和报告 | 是，核心模式 |
 | Diff | 比较 t0/t1 BOM 中的许可证事实、血缘与 AI 语义证据 | 是，核心模式 |
-| Model | 查询单个模型及其上游，并可显示平台提供的下游聚合计数 | 否，调查视图 |
+| Model（内部 CLI） | 查询单个模型及其上游，并可显示平台提供的下游规模提示 | 否，仅用于调查与测试 |
 
-项目模式和 Diff 模式默认不读取 `SonModels`。单模型调查可以保留平台返回的下游聚合计数，但这些计数只是规模信息，不会展开成下游模型身份，也不会参与项目风险判定。
+Streamlit 不提供 Model 用户入口。Project 和 Diff 默认不读取 `SonModels`；内部单模型调查可以保留平台返回的下游规模提示，但这些提示只是计数，不会展开成下游模型身份，也不会参与项目风险判定。
 
 ## 上游血缘
 
@@ -100,7 +100,7 @@ python main.py `
 python main.py --model <namespace>/<name>
 ```
 
-通过 `--artifacts-dir` 可指定产物根目录；通过 `--max-upstream-depth` 可限制上游深度。模型模式的产物位于 `<artifacts-dir>/models/<safe-model-name>/`。
+通过 `--artifacts-dir` 可指定产物根目录；通过 `--max-upstream-depth` 可限制上游深度。内部模型调查的产物位于 `<artifacts-dir>/models/<safe-model-name>/`。
 
 ### 4. 生成可交互 HTML
 
@@ -178,7 +178,7 @@ Action 的特征：
 python tests/acceptance/generate_ai_acceptance.py --output <acceptance-directory>
 ```
 
-验收包不访问网络，包含模型、项目和 Diff 三种模式的 Markdown、HTML、BOM 与 AI JSON。每类测试夹具位于 `tests/fixtures/`，对应目录附有 README。
+验收包不访问网络，包含内部模型调查、项目和 Diff 三类分析产物的 Markdown、HTML、BOM 与 AI JSON；产品用户入口仍只有 Project 与 Diff。每类测试夹具位于 `tests/fixtures/`，对应目录附有 README。
 
 ## 测试与可复现性
 
@@ -192,7 +192,7 @@ python -m pytest -q
 ## 证据等级
 
 - A：ModelScope 官方 API 字段，或从 ModelScope 官方仓库取得的 LICENSE / README 原文。
-- B：工具从 A 级事实推导出的血缘边、聚合节点和 BOM 映射。
+- B：工具从 A 级事实推导出的血缘边、稳定标识和 BOM 映射。
 - C：AI 条款抽取、项目使用上下文、语义 Diff、启发式或失败降级结果，必须人工确认。
 
 ## 免责声明

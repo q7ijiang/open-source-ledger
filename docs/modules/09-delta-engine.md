@@ -89,10 +89,10 @@ entity_index : entity_key   → [canonical_id] # 辅助判断"仅版本变化"
 | 种子方向 | `ancestor_added` | 种子为 `edge.target`（缺失祖先 `Qwen/Qwen2.5-7B`）✓ |
 | 方向判定 | `license_changed` | 带 `compare_direction` 结果 ✓ |
 | 无变化 | t0 自比 | 0 事件 ✓ |
-| 真实数据 | 项目级 BOM 45 组件 t0/t1 | 2 事件、证书 19 ✓ |
+| 当前验收 | `qwen_image_license_tightening/upstream` t0/t1 | 1 个种子事件 ✓ |
 
 ## 已知边界
 
 - **不做跨实体的语义合并**：`foo-model` 改名成 `bar-model` 会被识别为"一删一增"两个事件。
 - **证据等级变化即事件**：即使许可证没变，证据从 A 降到 C 也会产出 `evidence_downgrade`（这是有意的——同一结论的可信度下降了）。
-- **聚合计数节点的变化会被计为事件**：ModelScope 的 `Total` 计数存在日间波动（实测 2091→2246），这类波动可能产生噪声事件，目前未过滤。
+- **平台下游规模提示不进入 Delta**：项目作用域只读取直接模型的上游闭包，`SonModels` 计数不会作为项目资产参与事件检测。

@@ -78,7 +78,7 @@ FUNCTION compress_scc(graph):
 | 并行边保留 | 两节点互指（`cycle_a ⇄ cycle_b`） | `MultiDiGraph` 两个方向各 1 条 ✓ |
 | SCC 成环检测 | 同上 | 两节点被压成 1 个 `size=2` 的分量 ✓ |
 | 最弱证据聚合 | 压缩边 | `evidence_level="B"`、`count>=1` ✓ |
-| 真实数据规模 | 项目级语料 177 节点 / 137 边 | 建图成功，SCC 全单点（真实数据无环） |
+| 当前验收规模 | `qwen_image_license_tightening/upstream` | 8 个上游闭包节点 / 9 条边，最深 3 层，SCC 全单点 |
 
 ## 已知边界
 
