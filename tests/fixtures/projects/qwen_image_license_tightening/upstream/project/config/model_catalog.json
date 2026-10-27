@@ -1,0 +1,10 @@
+{
+  "image_generation": {
+    "model_id": "unsloth/Qwen-Image-2.1-Turbo-FP8",
+    "purpose": "efficient image generation"
+  },
+  "document_understanding": {
+    "model_id": "OpenGVLab/InternVL3-8B-Instruct",
+    "purpose": "poster and document understanding"
+  }
+}

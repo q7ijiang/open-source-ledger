@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Qwen-Image-2.1 许可证收紧 - 真实上游传播 - 时间轴风险传播图</title>
+<script src="./echarts.min.js"></script>
+<style>
+  :root { --ink:#172033; --muted:#64748b; --line:#e2e8f0; --paper:#f7f9fc; }
+  * { box-sizing:border-box; }
+  body { font-family:"Microsoft YaHei","Segoe UI",Arial,sans-serif; margin:0; background:var(--paper); color:var(--ink); }
+  .header { display:flex; justify-content:space-between; align-items:center; gap:18px; padding:12px 20px; background:#fff; border-bottom:1px solid var(--line); }
+  .header h1 { font-size:18px; margin:0 0 3px; }
+  .header .sub { font-size:11px; color:var(--muted); }
+  .stats { font-size:12px; color:#475569; white-space:nowrap; }
+  .legend-row { padding:7px 20px; background:#fff; border-bottom:1px solid #eef2f7; font-size:12px; color:#526176; display:flex; flex-wrap:wrap; gap:13px; align-items:center; }
+  .legend-row i { display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:4px; vertical-align:-2px; }
+  .legend-row .line { width:20px; height:3px; }
+  .snapshot-tabs { display:flex; gap:8px; align-items:center; padding:8px 20px; background:#fff; border-bottom:1px solid var(--line); }
+  .snapshot-tab { appearance:none; border:1px solid #d8e0eb; border-radius:6px; background:#f8fafc; color:#526176; padding:7px 14px; font:700 12px/1.2 "Microsoft YaHei","Segoe UI",Arial,sans-serif; cursor:pointer; }
+  .snapshot-tab:hover { border-color:#8fb5df; color:#275f96; }
+  .snapshot-tab.is-active { border-color:#409eff; background:#eef6ff; color:#1e64aa; box-shadow:0 0 0 1px rgba(64,158,255,.08); }
+  .snapshot-tab .hint { font-weight:400; opacity:.72; margin-left:5px; }
+  .main { display:grid; grid-template-columns:minmax(0,1fr) 270px; min-height:0; background:#fff; }
+  .stage { min-width:0; overflow:hidden; background:#fff; }
+  .stage-title { position:sticky; top:0; z-index:2; font-size:13px; font-weight:700; padding:8px 14px; color:#475569; background:#fff; border-bottom:1px solid #eef2f7; }
+  .stage-title span { margin-left:8px; color:#7b8799; font-size:11px; font-weight:400; }
+  .chart-shell { overflow:auto; }
+  .ai-status-strip { padding:8px 20px; background:#f8fafc; border-bottom:1px solid var(--line); font-size:12px; color:#475569; }
+  .ai-status-strip b { color:#075985; }
+  .report-section { display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; padding:12px 20px; background:#fff; border-top:1px solid var(--line); font-size:12px; }
+  .report-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .download-button { appearance:none; border:1px solid #2f6fed; border-radius:6px; background:#2f6fed; color:#fff; padding:8px 13px; font:700 12px/1.2 "Microsoft YaHei","Segoe UI",Arial,sans-serif; cursor:pointer; }
+  .download-button:disabled { opacity:.5; cursor:not-allowed; }
+  .secondary-button { appearance:none; border:1px solid #2f6fed; border-radius:6px; background:#fff; color:#2f6fed; padding:8px 13px; font:700 12px/1.2 "Microsoft YaHei","Segoe UI",Arial,sans-serif; cursor:pointer; }
+  .secondary-button:disabled { opacity:.5; cursor:not-allowed; }
+  .report-modal[hidden] { display:none; }
+  .report-modal { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(15,23,42,.58); }
+  .report-dialog { width:min(1180px,calc(100vw - 32px)); height:min(86vh,900px); display:flex; flex-direction:column; overflow:hidden; background:#fff; border:1px solid #cbd5e1; border-radius:10px; box-shadow:0 24px 70px rgba(15,23,42,.28); }
+  .report-modal-head { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:12px 16px; border-bottom:1px solid var(--line); background:#f8fafc; }
+  .report-modal-head b { font-size:14px; }
+  .report-modal-head span { color:var(--muted); font-size:11px; }
+  .report-close { appearance:none; border:1px solid #cbd5e1; border-radius:6px; background:#fff; color:#475569; padding:6px 11px; font:700 12px/1.2 "Microsoft YaHei","Segoe UI",Arial,sans-serif; cursor:pointer; }
+  .report-preview { flex:1 1 auto; min-height:0; overflow:auto; overscroll-behavior:contain; margin:0; padding:16px 18px; background:#fbfdff; border:0; white-space:pre-wrap; word-break:break-word; font:12px/1.65 Consolas,"Microsoft YaHei",monospace; outline:none; }
+  .report-preview:focus { box-shadow:inset 0 0 0 2px rgba(47,111,237,.22); }
+  .chart-page[hidden] { display:none; }
+  .chart { width:100%; min-width:1080px; height:706px; }
+  .mid { background:#fff; border-left:1px solid var(--line); padding:10px; font-size:12px; overflow-y:auto; max-height:706px; }
+  .mid h3 { margin:0 0 8px; font-size:13px; }
+  .evt { border:1px solid var(--line); border-radius:6px; padding:7px 8px; margin-bottom:8px; cursor:pointer; background:#fafcfe; }
+  .evt:hover { border-color:#409eff; }
+  .evt .tag { display:inline-block; padding:1px 6px; border-radius:3px; color:#fff; font-size:10px; }
+  .evt .arrow { color:#c0392b; font-weight:700; }
+  .ai-diff-block { margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--line); }
+  .ai-diff { border:1px solid #bae6fd; background:#f0f9ff; border-radius:6px; padding:7px 8px; margin-bottom:7px; line-height:1.5; }
+  .ai-diff .route { color:#075985; font-weight:700; }
+  .ai-diff .meta { color:#0369a1; font-size:11px; margin-top:3px; }
+  .ai-box { margin-top:10px; border:1px solid #bae6fd; background:#f0f9ff; border-radius:8px; padding:10px; line-height:1.55; }
+  .ai-box h4 { margin:0 0 7px; color:#075985; font-size:13px; }
+  .ai-claim { border-top:1px solid #dbeafe; padding:7px 0; }
+  .ai-meta { color:#0369a1; font-size:11px; }
+  .ai-quote { margin-top:4px; padding:6px 8px; background:#fff; border-left:3px solid #38bdf8; white-space:pre-wrap; word-break:break-word; }
+  .ai-gap { color:#92400e; margin-top:5px; }
+  #panel { padding:12px 20px; background:#fff; border-top:1px solid var(--line); font-size:12px; }
+  #panel h3 { margin:0 0 8px; font-size:14px; }
+  .cert { border:1px solid var(--line); border-radius:6px; padding:8px; margin-bottom:8px; background:#fafcfe; }
+  .cert .path { color:#c0392b; word-break:break-all; }
+  .kv { margin:3px 0; word-break:break-all; line-height:1.55; }
+  .kv b { color:#356fa8; }
+  .ev { border-top:1px dashed var(--line); padding:7px 0; line-height:1.5; }
+  .risk-section { background:#fff; border-top:1px solid var(--line); padding:14px 20px 20px; }
+  .lineage-section { background:#fff; border-top:1px solid var(--line); padding:14px 20px 18px; }
+  .lineage-section h2 { margin:0 0 4px; font-size:15px; }
+  .lineage-section p { margin:0 0 10px; color:var(--muted); font-size:12px; }
+  .lineage-forest { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:9px; }
+  .lineage-root { border:1px solid var(--line); border-radius:7px; background:#fbfdff; padding:9px 11px; min-width:0; }
+  .lineage-root .root-name { font-weight:700; font-size:12px; color:#253044; word-break:break-all; }
+  .lineage-root .root-meta { margin-top:3px; font-size:11px; color:var(--muted); }
+  .lineage-root ul { margin:7px 0 0 17px; padding:0; }
+  .lineage-root li { margin:5px 0; font-size:11px; color:#475569; line-height:1.45; }
+  .lineage-root li .arrow { color:#2f6fed; font-weight:700; margin-right:4px; }
+  .lineage-root li .role { color:#7b8799; }
+  .lineage-empty { color:var(--muted); font-size:12px; }
+  .risk-head { display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-bottom:10px; }
+  .risk-head h2 { margin:0 0 3px; font-size:15px; }
+  .risk-head p { margin:0; color:var(--muted); font-size:12px; }
+  .risk-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:10px; }
+  .risk-card { background:#fff; border:1px solid var(--line); border-left-width:4px; border-radius:8px; padding:9px 11px; cursor:pointer; text-align:left; font:inherit; }
+  .risk-card:hover { box-shadow:0 4px 12px rgba(15,23,42,.08); }
+  .risk-card .name { font-weight:700; font-size:12px; color:#253044; word-break:break-all; }
+  .risk-card .meta { margin-top:4px; color:var(--muted); font-size:11px; line-height:1.5; }
+  .fixture-note { margin-top:6px; color:#a15c00; font-size:11px; }
+  .empty { border:1px dashed #cbd5e1; border-radius:8px; padding:10px 12px; color:var(--muted); font-size:12px; }
+  @media (min-width:1320px) and (max-width:1549px) {
+  }
+  @media (max-width:1100px) {
+    .main { grid-template-columns:1fr; }
+    .mid { border-left:0; border-top:1px solid var(--line); max-height:260px; }
+    .stats { display:none; }
+  }
+  @media (max-width:700px) {
+    .snapshot-tabs { padding:8px 12px; }
+    .snapshot-tab { flex:1; padding:8px 6px; }
+    .snapshot-tab .hint { display:none; }
+    .chart-shell { overflow-x:auto; overflow-y:hidden; }
+    .chart { min-width:680px; }
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <div><h1>Qwen-Image-2.1 许可证收紧 - 真实上游传播</h1><div class="sub">t0/t1 固定坐标 · 上游在上 · 箭头指向来源模型 · 点击节点查看证据</div></div>
+  <div class="stats">t0：8 节点 / 9 边 · t1：8 节点 / 9 边 · 变更事件 1 · 路径证书 2</div>
+</div>
+<div class="legend-row">
+  <span><i style="background:#f56c6c"></i>高风险</span>
+  <span><i style="background:#e6a23c"></i>潜在风险</span>
+  <span><i style="background:#67c23a"></i>安全</span>
+  <span><i style="background:#d3d7de"></i>待确认</span>
+  <span><i class="line" style="background:#8794a6"></i>实线箭头 = 下游派生自上游</span>
+  <span><i class="line" style="background:#c0392b"></i>红色箭头 = 风险传播路径</span>
+  <span id="legend-aggregate" hidden><i style="background:#eef0f4;border:2px solid #f56c6c"></i>聚合域仅表示范围，不是血缘</span>
+</div>
+<div id="ai-status-strip" class="ai-status-strip">正在读取 AI 语义证据状态…</div>
+<div class="snapshot-tabs" role="tablist" aria-label="快照选择">
+  <button type="button" class="snapshot-tab is-active" data-snapshot="t1" role="tab" aria-selected="true">t1 当前<span class="hint">8 节点 / 9 边</span></button>
+  <button type="button" class="snapshot-tab" data-snapshot="t0" role="tab" aria-selected="false">t0 基线<span class="hint">8 节点 / 9 边</span></button>
+</div>
+<div class="main">
+  <section class="stage">
+    <div class="stage-title">上游血缘与风险传播图 <span id="stage-hint">越靠上越上游；同一模型在 t0/t1 保持相同坐标</span></div>
+    <div class="chart-shell">
+      <div id="chart0" class="chart chart-page" role="tabpanel" hidden></div>
+      <div id="chart1" class="chart chart-page" role="tabpanel"></div>
+    </div>
+  </section>
+  <aside class="mid">
+    <div class="ai-diff-block">
+      <h3>AI 语义差异（C 级）</h3>
+      <div id="ai-diff-list"></div>
+    </div>
+    <h3>变更事件（点击查看传播证书）</h3>
+    <div id="evt-list"></div>
+  </aside>
+</div>
+<div id="panel"><h3>证据、传播路径与能力边界</h3><div id="panel-body" style="color:#7b8799">点击图中节点或变更事件查看详情。</div></div>
+<section class="lineage-section">
+  <h2>项目模型与上游来源路径</h2>
+  <p>箭头方向是“下游模型 → 上游来源”。这里把 t1 的路径展开成文字，避免只靠连线猜基座关系；风险变化不会改变路径。</p>
+  <div id="lineage-forest" class="lineage-forest"></div>
+</section>
+<section class="risk-section">
+  <div class="risk-head">
+    <div><h2>已识别的具体风险模型</h2><p>只列具有具体模型身份的节点；聚合域只作为范围显示，不把聚合计数伪装成模型名称。</p></div>
+    <div id="risk-count" style="font-size:12px;color:#64748b"></div>
+  </div>
+  <div id="risk-grid" class="risk-grid"></div>
+  <div id="risk-empty" class="empty" hidden></div>
+</section>
+<section class="report-section">
+  <div><b>Markdown 审计报告</b><div style="color:#64748b;margin-top:3px">报告仍由 main.py 生成，HTML 仅附带原文预览与下载，不替代报告文件。</div></div>
+  <div class="report-actions">
+    <button id="open-report" class="secondary-button" type="button">在大窗口查看报告</button>
+    <button id="download-report" class="download-button" type="button">下载 Markdown 报告</button>
+  </div>
+</section>
+<div id="report-modal" class="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-modal-title" hidden>
+  <div class="report-dialog">
+    <div class="report-modal-head">
+      <div><b id="report-modal-title">Markdown 审计报告</b><br/><span>在报告区域滚动查看；按 Esc 关闭</span></div>
+      <button id="close-report" class="report-close" type="button">关闭</button>
+    </div>
+    <pre id="report-preview" class="report-preview" tabindex="0"></pre>
+  </div>
+</div>
+<script>
+const DATA = {"nodes_t0": [{"entity_key": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8", "canonical_id": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "asset_type": "model", "name": "unsloth/Qwen-Image-2.1-Turbo-FP8", "version": "master", "purls": ["pkg:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master"], "purl_identities": [{"type": "modelscope", "namespace": "unsloth", "name": "Qwen-Image-2.1-Turbo-FP8", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "qwen-research", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/unsloth/Qwen-Image-2.1-Turbo-FP8", "source_field": "Data.LicenseName", "retrieved_at": "2026-10-27T11:20:11.351613Z", "status": "ok", "raw_value": "qwen-research"}], "snapshot_id": "t0", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t0_bom.json", "decision": "RISK_POTENTIAL", "decision_zh": "潜在风险（黄）", "lineage_role": "root", "lineage_status": "complete", "lineage_depth": 0, "max_upstream_depth": 4, "max_upstream_nodes": 128, "resolved_upstream_count": 2, "max_depth_seen": 2, "lineage_complete": true, "unresolved_upstream_models": [], "lineage_cycles": [], "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "x": 555.0, "y": 615.0, "lp": "inside", "render_layer": 0, "render_role_label": "项目直接使用", "render_role_short": "项目直接使用", "render_card": {"width": 158, "height": 66, "label": "unsloth/Qwen-Image-2.1-…"}}, {"entity_key": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo", "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "asset_type": "model", "name": "Qwen/Qwen-Image-2.1-Turbo", "version": "master", "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1-Turbo@master"], "purl_identities": [{"type": "modelscope", "namespace": "Qwen", "name": "Qwen-Image-2.1-Turbo", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "qwen-research", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1-Turbo", "source_field": "Data.LicenseName", "retrieved_at": "2026-10-27T11:20:12.188435Z", "status": "ok", "raw_value": "qwen-research"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:13.440319Z", "status": "ok", "raw_value": "Qwen/Qwen-Image-2.1-Turbo"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:13.440324Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "Finetuned", "LineAgeTypeCh": "微调", "Name": "Qwen/Qwen-Image-2.1-Turbo"}}], "snapshot_id": "t0", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t0_bom.json", "decision": "RISK_POTENTIAL", "decision_zh": "潜在风险（黄）", "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 1, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "x": 555.0, "y": 447.0, "lp": "inside", "render_layer": 1, "render_role_label": "上游 · 第 1 层", "render_role_short": "上游·第 1 层", "render_card": {"width": 158, "height": 66, "label": "Qwen/Qwen-Image-2.1-Tur…"}}, {"entity_key": "model:modelscope/Qwen/Qwen-Image-2.1", "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master", "asset_type": "model", "name": "Qwen/Qwen-Image-2.1", "version": "master", "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1@master"], "purl_identities": [{"type": "modelscope", "namespace": "Qwen", "name": "Qwen-Image-2.1", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "Apache-2.0", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md", "source_field": "README.md:front_matter.license", "retrieved_at": "2026-10-27T11:09:25Z", "raw_value": "Apache License 2.0", "commit": "72900d004951bd845d7a4a77d566562eadd37c3f", "historical_reconstruction": true}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:13.440289Z", "status": "ok", "raw_value": "Qwen/Qwen-Image-2.1"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:13.440311Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "Base Model", "LineAgeTypeCh": "基模型", "Name": "Qwen/Qwen-Image-2.1"}}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:13.440331Z", "status": "ok", "raw_value": {"Level": 1, "LineAgeType": "Base Model", "LineAgeTypeCh": "基模型", "Name": "Qwen/Qwen-Image-2.1"}}, {"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1", "source_field": "Data.LicenseName", "retrieved_at": "2026-10-27T11:20:28.311849Z", "status": "ok", "raw_value": "qwen-research"}], "snapshot_id": "t0", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t0_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 2, "simulation": true, "historical_reconstruction": true, "historical_commit": "72900d004951bd845d7a4a77d566562eadd37c3f", "historical_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md", "simulation_reason": "当前真实血缘与 Qwen-Image-2.1 历史 README 许可证元数据的反事实重放；Turbo/FP8 在 Apache 标注阶段尚未发布。", "simulation_original_license": "qwen-research", "simulation_target_license": "Apache License 2.0", "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 2, "ai_analysis": {"analysis_type": "model_profile", "claims": [{"claim_id": "claim-641d7d08748c", "condition": "", "conditions": [], "confidence": 0.59, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "quote_context": 0.02, "readme": 0.08, "source_sha256": 0.03, "uncertain_state": -0.12}, "conflict": false, "cross_document_support": false, "dimension": "commercial_use", "dimension_zh": "商业使用", "evidence": {"confidence": 0.59, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "quote_context": 0.02, "readme": 0.08, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484", "quote": "license: Apache License 2.0", "quote_sha256": "ec5dff827b5f977ee667a3ff57daa447e3d6a443a53d633242a5c7abdbbc95c4", "source_path": "README.md", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md"}, "evidence_count": 1, "evidence_level": "C", "evidences": [{"confidence": 0.59, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "quote_context": 0.02, "readme": 0.08, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484", "quote": "license: Apache License 2.0", "quote_sha256": "ec5dff827b5f977ee667a3ff57daa447e3d6a443a53d633242a5c7abdbbc95c4", "source_path": "README.md", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md"}], "exceptions": [], "human_review": "pending", "state": "unknown", "state_zh": "证据不足", "statement": "README 元数据声明 Apache License 2.0，但仅凭该字段不能替代对完整许可原文的核验。"}], "conflicts": [], "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "gaps": [{"dimension": "redistribution", "dimension_zh": "再分发", "reason": "历史快照未保存完整许可文本"}, {"dimension": "modification", "dimension_zh": "修改与衍生", "reason": "历史快照未保存完整许可文本"}, {"dimension": "training_other_models", "dimension_zh": "训练其他模型", "reason": "证据不足：README 元数据无法说明训练其他模型的条件"}, {"dimension": "fine_tuned_redistribution", "dimension_zh": "微调版本再分发", "reason": "证据不足"}, {"dimension": "commercial_license_request", "dimension_zh": "商用授权申请方式", "reason": "证据不足"}], "generated_at": "2026-10-27T11:20:06Z", "historical_reconstruction": true, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "当前真实血缘与 Qwen-Image-2.1 历史 README 许可证元数据的反事实重放；Turbo/FP8 在 Apache 标注阶段尚未发布。", "status": "ok", "subject": {"fact_source": "ModelScope historical README reconstruction", "license_fact": "Apache License 2.0", "model_id": "Qwen/Qwen-Image-2.1", "revision": "72900d004951bd845d7a4a77d566562eadd37c3f", "source_bundle_sha256": "9284c9fb7bfa6367a80e1054abcf3c2a8bec9baa4730251dce2d28a4351b6e0b"}, "summary": "该历史快照只能证明 README 元数据曾声明 Apache License 2.0；未保留当时的完整 Apache LICENSE 文件，不能据此补齐全部授权边界。"}, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/Qwen/Qwen-Image-2.1@master", "x": 470.0, "y": 279.0, "lp": "inside", "render_layer": 2, "render_role_label": "上游 · 第 2 层", "render_role_short": "上游·第 2 层", "render_card": {"width": 158, "height": 66, "label": "Qwen/Qwen-Image-2.1"}}, {"entity_key": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct", "canonical_id": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master", "asset_type": "model", "name": "OpenGVLab/InternVL3-8B-Instruct", "version": "master", "purls": ["pkg:modelscope/OpenGVLab/InternVL3-8B-Instruct@master"], "purl_identities": [{"type": "modelscope", "namespace": "OpenGVLab", "name": "InternVL3-8B-Instruct", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "Apache-2.0", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Instruct", "source_field": "Data.License", "retrieved_at": "2026-10-27T11:20:13.999234Z", "status": "ok", "raw_value": "apache-2.0"}], "snapshot_id": "t0", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t0_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 2, "lineage_role": "root", "lineage_status": "complete", "lineage_depth": 0, "max_upstream_depth": 4, "max_upstream_nodes": 128, "resolved_upstream_count": 4, "max_depth_seen": 3, "lineage_complete": true, "unresolved_upstream_models": [], "lineage_cycles": [], "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master", "x": 725.0, "y": 615.0, "lp": "inside", "render_layer": 0, "render_role_label": "项目直接使用", "render_role_short": "项目直接使用", "render_card": {"width": 158, "height": 66, "label": "OpenGVLab/InternVL3-8B-…"}}, {"entity_key": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained", "canonical_id": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master", "asset_type": "model", "name": "OpenGVLab/InternVL3-8B-Pretrained", "version": "master", "purls": ["pkg:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master"], "purl_identities": [{"type": "modelscope", "namespace": "OpenGVLab", "name": "InternVL3-8B-Pretrained", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "Apache-2.0", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Pretrained", "source_field": "Data.License", "retrieved_at": "2026-10-27T11:20:14.806253Z", "status": "ok", "raw_value": "apache-2.0"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:17.531671Z", "status": "ok", "raw_value": "OpenGVLab/InternVL3-8B-Pretrained"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:17.531676Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "Merge Model", "LineAgeTypeCh": "合并", "Name": "OpenGVLab/InternVL3-8B-Pretrained"}}], "snapshot_id": "t0", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t0_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 2, "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 1, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master", "x": 725.0, "y": 447.0, "lp": "inside", "render_layer": 1, "render_role_label": "上游 · 第 1 层", "render_role_short": "上游·第 1 层", "render_card": {"width": 158, "height": 66, "label": "OpenGVLab/InternVL3-8B-…"}}, {"entity_key": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5", "canonical_id": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master", "asset_type": "model", "name": "OpenGVLab/InternViT-300M-448px-V2_5", "version": "master", "purls": ["pkg:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master"], "purl_identities": [{"type": "modelscope", "namespace": "OpenGVLab", "name": "InternViT-300M-448px-V2_5", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "MIT", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px-V2_5", "source_field": "Data.License", "retrieved_at": "2026-10-27T11:20:15.551723Z", "status": "ok", "raw_value": "mit"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:16.735146Z", "status": "ok", "raw_value": "OpenGVLab/InternViT-300M-448px-V2_5"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:16.735148Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "Finetuned", "LineAgeTypeCh": "微调", "Name": "OpenGVLab/InternViT-300M-448px-V2_5"}}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:17.531685Z", "status": "ok", "raw_value": {"Level": 1, "LineAgeType": "Finetuned", "LineAgeTypeCh": "微调", "Name": "OpenGVLab/InternViT-300M-448px-V2_5"}}], "snapshot_id": "t0", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t0_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 1, "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 2, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master", "x": 640.0, "y": 279.0, "lp": "inside", "render_layer": 2, "render_role_label": "上游 · 第 2 层", "render_role_short": "上游·第 2 层", "render_card": {"width": 158, "height": 66, "label": "OpenGVLab/InternViT-300…"}}, {"entity_key": "model:modelscope/OpenGVLab/InternViT-300M-448px", "canonical_id": "model:modelscope/OpenGVLab/InternViT-300M-448px@master", "asset_type": "model", "name": "OpenGVLab/InternViT-300M-448px", "version": "master", "purls": ["pkg:modelscope/OpenGVLab/InternViT-300M-448px@master"], "purl_identities": [{"type": "modelscope", "namespace": "OpenGVLab", "name": "InternViT-300M-448px", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "MIT", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px", "source_field": "Data.License", "retrieved_at": "2026-10-27T11:20:16.447919Z", "status": "ok", "raw_value": "mit"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:16.735127Z", "status": "ok", "raw_value": "OpenGVLab/InternViT-300M-448px"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:16.735141Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "Base Model", "LineAgeTypeCh": "基模型", "Name": "OpenGVLab/InternViT-300M-448px"}}], "snapshot_id": "t0", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t0_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 1, "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 3, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/OpenGVLab/InternViT-300M-448px@master", "x": 640.0, "y": 111.0, "lp": "inside", "render_layer": 3, "render_role_label": "上游 · 第 3 层", "render_role_short": "上游·第 3 层", "render_card": {"width": 158, "height": 66, "label": "OpenGVLab/InternViT-300…"}}, {"entity_key": "model:modelscope/Qwen/Qwen2.5-7B", "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B@master", "asset_type": "model", "name": "Qwen/Qwen2.5-7B", "version": "master", "purls": ["pkg:modelscope/Qwen/Qwen2.5-7B@master"], "purl_identities": [{"type": "modelscope", "namespace": "Qwen", "name": "Qwen2.5-7B", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "Apache-2.0", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B", "source_field": "Data.License", "retrieved_at": "2026-10-27T11:20:17.182700Z", "status": "ok", "raw_value": "apache-2.0"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:17.531638Z", "status": "ok", "raw_value": "Qwen/Qwen2.5-7B"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:17.531661Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "", "LineAgeTypeCh": "", "Name": "Qwen/Qwen2.5-7B"}}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:17.531691Z", "status": "ok", "raw_value": {"Level": 1, "LineAgeType": "", "LineAgeTypeCh": "", "Name": "Qwen/Qwen2.5-7B"}}], "snapshot_id": "t0", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t0_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 2, "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 2, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/Qwen/Qwen2.5-7B@master", "x": 810.0, "y": 279.0, "lp": "inside", "render_layer": 2, "render_role_label": "上游 · 第 2 层", "render_role_short": "上游·第 2 层", "render_card": {"width": 158, "height": 66, "label": "Qwen/Qwen2.5-7B"}}], "edges_t0": [{"source": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "target": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t0"}, {"source": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "target": "model:modelscope/Qwen/Qwen-Image-2.1@master", "edge_type": "derived_from", "evidence_level": "B", "source_field": "pedigree.ancestors", "snapshot_id": "t0"}, {"source": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "target": "model:modelscope/Qwen/Qwen-Image-2.1@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t0"}, {"source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master", "target": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t0"}, {"source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master", "target": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master", "edge_type": "derived_from", "evidence_level": "B", "source_field": "pedigree.ancestors", "snapshot_id": "t0"}, {"source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master", "target": "model:modelscope/Qwen/Qwen2.5-7B@master", "edge_type": "derived_from", "evidence_level": "B", "source_field": "pedigree.ancestors", "snapshot_id": "t0"}, {"source": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master", "target": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t0"}, {"source": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master", "target": "model:modelscope/Qwen/Qwen2.5-7B@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t0"}, {"source": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master", "target": "model:modelscope/OpenGVLab/InternViT-300M-448px@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t0"}], "layout_t0": {"clusters": [{"id": "lineage-layer-3", "x": 28, "y": 24, "width": 1224, "height": 140, "title": "上游第 3 层", "subtitle": "向上追溯第 3 层 · 箭头继续指向上游", "decision": "NEUTRAL", "aggregate_count": 0, "expanded_count": 0, "kind": "lineage_layer", "layer_depth": 3}, {"id": "lineage-layer-2", "x": 28, "y": 192, "width": 1224, "height": 140, "title": "上游第 2 层", "subtitle": "向上追溯第 2 层 · 箭头继续指向上游", "decision": "NEUTRAL", "aggregate_count": 0, "expanded_count": 0, "kind": "lineage_layer", "layer_depth": 2}, {"id": "lineage-layer-1", "x": 28, "y": 360, "width": 1224, "height": 140, "title": "上游第 1 层", "subtitle": "向上追溯第 1 层 · 箭头继续指向上游", "decision": "NEUTRAL", "aggregate_count": 0, "expanded_count": 0, "kind": "lineage_layer", "layer_depth": 1}, {"id": "lineage-layer-0", "x": 28, "y": 528, "width": 1224, "height": 140, "title": "项目直接使用的模型", "subtitle": "由项目配置、代码或 BOM 直接识别", "decision": "NEUTRAL", "aggregate_count": 0, "expanded_count": 0, "kind": "lineage_layer", "layer_depth": 0}], "width": 1280, "height": 706, "layout_mode": "lineage_dag", "cycle_nodes": []}, "nodes_t1": [{"entity_key": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8", "canonical_id": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "asset_type": "model", "name": "unsloth/Qwen-Image-2.1-Turbo-FP8", "version": "master", "purls": ["pkg:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master"], "purl_identities": [{"type": "modelscope", "namespace": "unsloth", "name": "Qwen-Image-2.1-Turbo-FP8", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "qwen-research", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/unsloth/Qwen-Image-2.1-Turbo-FP8", "source_field": "Data.LicenseName", "retrieved_at": "2026-10-27T11:20:11.351613Z", "status": "ok", "raw_value": "qwen-research"}], "snapshot_id": "t1", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t1_bom.json", "decision": "RISK_POTENTIAL", "decision_zh": "潜在风险（黄）", "lineage_role": "root", "lineage_status": "complete", "lineage_depth": 0, "max_upstream_depth": 4, "max_upstream_nodes": 128, "resolved_upstream_count": 2, "max_depth_seen": 2, "lineage_complete": true, "unresolved_upstream_models": [], "lineage_cycles": [], "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "x": 555.0, "y": 615.0, "lp": "inside", "render_layer": 0, "render_role_label": "项目直接使用", "render_role_short": "项目直接使用", "render_card": {"width": 158, "height": 66, "label": "unsloth/Qwen-Image-2.1-…"}}, {"entity_key": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo", "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "asset_type": "model", "name": "Qwen/Qwen-Image-2.1-Turbo", "version": "master", "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1-Turbo@master"], "purl_identities": [{"type": "modelscope", "namespace": "Qwen", "name": "Qwen-Image-2.1-Turbo", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "qwen-research", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1-Turbo", "source_field": "Data.LicenseName", "retrieved_at": "2026-10-27T11:20:12.188435Z", "status": "ok", "raw_value": "qwen-research"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:13.440319Z", "status": "ok", "raw_value": "Qwen/Qwen-Image-2.1-Turbo"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:13.440324Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "Finetuned", "LineAgeTypeCh": "微调", "Name": "Qwen/Qwen-Image-2.1-Turbo"}}], "snapshot_id": "t1", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t1_bom.json", "decision": "RISK_CONFIRMED", "decision_zh": "潜在风险（黄）", "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 1, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "decision_source": "diff_propagation", "x": 555.0, "y": 447.0, "lp": "inside", "render_layer": 1, "render_role_label": "上游 · 第 1 层", "render_role_short": "上游·第 1 层", "render_card": {"width": 158, "height": 66, "label": "Qwen/Qwen-Image-2.1-Tur…"}}, {"entity_key": "model:modelscope/Qwen/Qwen-Image-2.1", "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master", "asset_type": "model", "name": "Qwen/Qwen-Image-2.1", "version": "master", "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1@master"], "purl_identities": [{"type": "modelscope", "namespace": "Qwen", "name": "Qwen-Image-2.1", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "qwen-research", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1", "source_field": "Data.LicenseName", "retrieved_at": "2026-10-27T11:20:13.082599Z", "status": "ok", "raw_value": "qwen-research"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:13.440289Z", "status": "ok", "raw_value": "Qwen/Qwen-Image-2.1"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:13.440311Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "Base Model", "LineAgeTypeCh": "基模型", "Name": "Qwen/Qwen-Image-2.1"}}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:13.440331Z", "status": "ok", "raw_value": {"Level": 1, "LineAgeType": "Base Model", "LineAgeTypeCh": "基模型", "Name": "Qwen/Qwen-Image-2.1"}}], "snapshot_id": "t1", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t1_bom.json", "decision": "RISK_CONFIRMED", "decision_zh": "潜在风险（黄）", "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 2, "ai_analysis": {"analysis_type": "model_profile", "claims": [{"claim_id": "claim-d198c1c27513", "condition": "", "conditions": [], "confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "conflict": false, "cross_document_support": false, "dimension": "commercial_license_request", "dimension_zh": "商用授权申请方式", "evidence": {"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "b. You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us. If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com.", "quote_sha256": "604f3cd83aee7258c588f3cd7720a4a85c6c33d5db360ec9119a95a8b8037073", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}, "evidence_count": 1, "evidence_level": "C", "evidences": [{"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "b. You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us. If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com.", "quote_sha256": "604f3cd83aee7258c588f3cd7720a4a85c6c33d5db360ec9119a95a8b8037073", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}], "exceptions": [], "human_review": "pending", "state": "conditional", "state_zh": "有条件允许", "statement": "商业使用需要向协议所列联系地址申请单独商业许可证。"}, {"claim_id": "claim-7fbfa1849e11", "condition": "", "conditions": [], "confidence": 0.86, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "restriction_wording": 0.08, "source_sha256": 0.03}, "conflict": false, "cross_document_support": false, "dimension": "commercial_use", "dimension_zh": "商业使用", "evidence": {"confidence": 0.86, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "restriction_wording": 0.08, "source_sha256": 0.03}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.", "quote_sha256": "913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}, "evidence_count": 1, "evidence_level": "C", "evidences": [{"confidence": 0.86, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "restriction_wording": 0.08, "source_sha256": 0.03}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.", "quote_sha256": "913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}], "exceptions": [], "human_review": "pending", "state": "prohibited", "state_zh": "禁止", "statement": "材料仅可用于非商业目的，未取得单独商业许可时不得商用。"}, {"claim_id": "claim-0b987c48eb74", "condition": "", "conditions": [], "confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "conflict": false, "cross_document_support": false, "dimension": "fine_tuned_redistribution", "dimension_zh": "微调版本再分发", "evidence": {"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "d. You may add your own copyright statement to your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of your modifications, or for any such derivative works as a whole, provided your use, reproduction, and distribution of the work otherwise complies with the terms and conditions of this Agreement.", "quote_sha256": "7ebc41ea077fca7ef4fb5d30f9a5b0ba61e00da45669faddf021e4614ce7273b", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}, "evidence_count": 1, "evidence_level": "C", "evidences": [{"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "d. You may add your own copyright statement to your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of your modifications, or for any such derivative works as a whole, provided your use, reproduction, and distribution of the work otherwise complies with the terms and conditions of this Agreement.", "quote_sha256": "7ebc41ea077fca7ef4fb5d30f9a5b0ba61e00da45669faddf021e4614ce7273b", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}], "exceptions": [], "human_review": "pending", "state": "conditional", "state_zh": "有条件允许", "statement": "衍生作品可附带不同条款，但仍须遵守原协议。"}, {"claim_id": "claim-74eabd451069", "condition": "", "conditions": [], "confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "conflict": false, "cross_document_support": false, "dimension": "modification", "dimension_zh": "修改与衍生", "evidence": {"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "b. You shall cause any modified files to carry prominent notices stating that you changed the files;", "quote_sha256": "3ca44bbf10976843f30f6b6cbcf6938681b2da23d0e9616125a7d91816f7782e", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}, "evidence_count": 1, "evidence_level": "C", "evidences": [{"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "b. You shall cause any modified files to carry prominent notices stating that you changed the files;", "quote_sha256": "3ca44bbf10976843f30f6b6cbcf6938681b2da23d0e9616125a7d91816f7782e", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}], "exceptions": [], "human_review": "pending", "state": "conditional", "state_zh": "有条件允许", "statement": "修改文件必须带有醒目的修改声明。"}, {"claim_id": "claim-3561d2feace4", "condition": "", "conditions": [], "confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "conflict": false, "cross_document_support": false, "dimension": "notice", "dimension_zh": "许可证与版权声明保留", "evidence": {"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "c. You shall retain in all copies of the Materials that you distribute the following attribution notices within a \"Notice\" text file distributed as a part of such copies: \"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\"; and", "quote_sha256": "dd5271267fd48b7dc69ccea1638ec556744479f1dce2db9bd8f5a94f18b83371", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}, "evidence_count": 1, "evidence_level": "C", "evidences": [{"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "c. You shall retain in all copies of the Materials that you distribute the following attribution notices within a \"Notice\" text file distributed as a part of such copies: \"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\"; and", "quote_sha256": "dd5271267fd48b7dc69ccea1638ec556744479f1dce2db9bd8f5a94f18b83371", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}], "exceptions": [], "human_review": "pending", "state": "conditional", "state_zh": "有条件允许", "statement": "再分发副本需要保留 Notice 文件中的指定声明。"}, {"claim_id": "claim-35c3cce89bb4", "condition": "", "conditions": [], "confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "conflict": false, "cross_document_support": false, "dimension": "redistribution", "dimension_zh": "再分发", "evidence": {"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "Subject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:", "quote_sha256": "392e11e45e37ac421840f4c69e2bc023e0f0540dc909a603948e9552620a6558", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}, "evidence_count": 1, "evidence_level": "C", "evidences": [{"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "Subject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:", "quote_sha256": "392e11e45e37ac421840f4c69e2bc023e0f0540dc909a603948e9552620a6558", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}], "exceptions": [], "human_review": "pending", "state": "conditional", "state_zh": "有条件允许", "statement": "协议允许在满足第 2 条及后续条件时再分发材料或衍生作品。"}, {"claim_id": "claim-cf7635865c4c", "condition": "", "conditions": [], "confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "conflict": false, "cross_document_support": false, "dimension": "training_other_models", "dimension_zh": "训练其他模型", "evidence": {"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "b. If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.", "quote_sha256": "b062018cb9c1f37db79dafa82a51516906c39482ac56fd411985fdb47dfccd11", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}, "evidence_count": 1, "evidence_level": "C", "evidences": [{"confidence": 0.66, "confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d", "quote": "b. If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.", "quote_sha256": "b062018cb9c1f37db79dafa82a51516906c39482ac56fd411985fdb47dfccd11", "source_path": "LICENSE", "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE"}], "exceptions": [], "human_review": "pending", "state": "conditional", "state_zh": "有条件允许", "statement": "使用材料或其输出训练、微调或改进其他 AI 模型并发布时，需要展示指定归属文案。"}], "conflicts": [], "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "gaps": [{"dimension": "patent", "dimension_zh": "专利条款", "reason": "证据不足：当前 LICENSE 未形成可独立验证的专利授权条款。"}], "generated_at": "2026-10-27T11:20:06Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "schema_version": "ai-analysis/v2", "simulation": false, "simulation_note": "", "status": "ok", "subject": {"fact_source": "ModelScope current source bundle", "license_fact": "qwen-research", "model_id": "Qwen/Qwen-Image-2.1", "revision": "master", "source_bundle_sha256": "549e4cb96d541371c578ff94f69d9696cfa4af44a0da6ab8e9483461cfbf5fc8"}, "summary": "Qwen Research License 将材料用途限制为非商业目的；商用需要单独授权，再分发、修改、声明保留和模型训练相关发布还附带条件。"}, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/Qwen/Qwen-Image-2.1@master", "decision_source": "diff_propagation", "x": 470.0, "y": 279.0, "lp": "inside", "render_layer": 2, "render_role_label": "上游 · 第 2 层", "render_role_short": "上游·第 2 层", "render_card": {"width": 158, "height": 66, "label": "Qwen/Qwen-Image-2.1"}}, {"entity_key": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct", "canonical_id": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master", "asset_type": "model", "name": "OpenGVLab/InternVL3-8B-Instruct", "version": "master", "purls": ["pkg:modelscope/OpenGVLab/InternVL3-8B-Instruct@master"], "purl_identities": [{"type": "modelscope", "namespace": "OpenGVLab", "name": "InternVL3-8B-Instruct", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "Apache-2.0", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Instruct", "source_field": "Data.License", "retrieved_at": "2026-10-27T11:20:13.999234Z", "status": "ok", "raw_value": "apache-2.0"}], "snapshot_id": "t1", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t1_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 2, "lineage_role": "root", "lineage_status": "complete", "lineage_depth": 0, "max_upstream_depth": 4, "max_upstream_nodes": 128, "resolved_upstream_count": 4, "max_depth_seen": 3, "lineage_complete": true, "unresolved_upstream_models": [], "lineage_cycles": [], "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master", "x": 725.0, "y": 615.0, "lp": "inside", "render_layer": 0, "render_role_label": "项目直接使用", "render_role_short": "项目直接使用", "render_card": {"width": 158, "height": 66, "label": "OpenGVLab/InternVL3-8B-…"}}, {"entity_key": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained", "canonical_id": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master", "asset_type": "model", "name": "OpenGVLab/InternVL3-8B-Pretrained", "version": "master", "purls": ["pkg:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master"], "purl_identities": [{"type": "modelscope", "namespace": "OpenGVLab", "name": "InternVL3-8B-Pretrained", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "Apache-2.0", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Pretrained", "source_field": "Data.License", "retrieved_at": "2026-10-27T11:20:14.806253Z", "status": "ok", "raw_value": "apache-2.0"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:17.531671Z", "status": "ok", "raw_value": "OpenGVLab/InternVL3-8B-Pretrained"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:17.531676Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "Merge Model", "LineAgeTypeCh": "合并", "Name": "OpenGVLab/InternVL3-8B-Pretrained"}}], "snapshot_id": "t1", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t1_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 2, "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 1, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master", "x": 725.0, "y": 447.0, "lp": "inside", "render_layer": 1, "render_role_label": "上游 · 第 1 层", "render_role_short": "上游·第 1 层", "render_card": {"width": 158, "height": 66, "label": "OpenGVLab/InternVL3-8B-…"}}, {"entity_key": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5", "canonical_id": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master", "asset_type": "model", "name": "OpenGVLab/InternViT-300M-448px-V2_5", "version": "master", "purls": ["pkg:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master"], "purl_identities": [{"type": "modelscope", "namespace": "OpenGVLab", "name": "InternViT-300M-448px-V2_5", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "MIT", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px-V2_5", "source_field": "Data.License", "retrieved_at": "2026-10-27T11:20:15.551723Z", "status": "ok", "raw_value": "mit"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:16.735146Z", "status": "ok", "raw_value": "OpenGVLab/InternViT-300M-448px-V2_5"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:16.735148Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "Finetuned", "LineAgeTypeCh": "微调", "Name": "OpenGVLab/InternViT-300M-448px-V2_5"}}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:17.531685Z", "status": "ok", "raw_value": {"Level": 1, "LineAgeType": "Finetuned", "LineAgeTypeCh": "微调", "Name": "OpenGVLab/InternViT-300M-448px-V2_5"}}], "snapshot_id": "t1", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t1_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 1, "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 2, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master", "x": 640.0, "y": 279.0, "lp": "inside", "render_layer": 2, "render_role_label": "上游 · 第 2 层", "render_role_short": "上游·第 2 层", "render_card": {"width": 158, "height": 66, "label": "OpenGVLab/InternViT-300…"}}, {"entity_key": "model:modelscope/OpenGVLab/InternViT-300M-448px", "canonical_id": "model:modelscope/OpenGVLab/InternViT-300M-448px@master", "asset_type": "model", "name": "OpenGVLab/InternViT-300M-448px", "version": "master", "purls": ["pkg:modelscope/OpenGVLab/InternViT-300M-448px@master"], "purl_identities": [{"type": "modelscope", "namespace": "OpenGVLab", "name": "InternViT-300M-448px", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "MIT", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px", "source_field": "Data.License", "retrieved_at": "2026-10-27T11:20:16.447919Z", "status": "ok", "raw_value": "mit"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:16.735127Z", "status": "ok", "raw_value": "OpenGVLab/InternViT-300M-448px"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:16.735141Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "Base Model", "LineAgeTypeCh": "基模型", "Name": "OpenGVLab/InternViT-300M-448px"}}], "snapshot_id": "t1", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t1_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 1, "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 3, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/OpenGVLab/InternViT-300M-448px@master", "x": 640.0, "y": 111.0, "lp": "inside", "render_layer": 3, "render_role_label": "上游 · 第 3 层", "render_role_short": "上游·第 3 层", "render_card": {"width": 158, "height": 66, "label": "OpenGVLab/InternViT-300…"}}, {"entity_key": "model:modelscope/Qwen/Qwen2.5-7B", "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B@master", "asset_type": "model", "name": "Qwen/Qwen2.5-7B", "version": "master", "purls": ["pkg:modelscope/Qwen/Qwen2.5-7B@master"], "purl_identities": [{"type": "modelscope", "namespace": "Qwen", "name": "Qwen2.5-7B", "version": "master", "qualifiers": {}, "subpath": null}], "hashes": [], "license": "Apache-2.0", "evidence_chain": [{"evidence_level": "A", "source_api": "modelscope", "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B", "source_field": "Data.License", "retrieved_at": "2026-10-27T11:20:17.182700Z", "status": "ok", "raw_value": "apache-2.0"}, {"evidence_level": "A", "source_api": "modelscope", "source_url": null, "source_field": "Data.BaseModel", "retrieved_at": "2026-10-27T11:20:17.531638Z", "status": "ok", "raw_value": "Qwen/Qwen2.5-7B"}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:17.531661Z", "status": "ok", "raw_value": {"Level": 0, "LineAgeType": "", "LineAgeTypeCh": "", "Name": "Qwen/Qwen2.5-7B"}}, {"evidence_level": "B", "source_api": "modelscope", "source_url": null, "source_field": "lineage.ParentsModels", "retrieved_at": "2026-10-27T11:20:17.531691Z", "status": "ok", "raw_value": {"Level": 1, "LineAgeType": "", "LineAgeTypeCh": "", "Name": "Qwen/Qwen2.5-7B"}}], "snapshot_id": "t1", "source_file": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t1_bom.json", "decision": "SAFE", "decision_zh": "安全（绿）", "risk_level": 2, "lineage_role": "upstream", "lineage_status": "resolved", "lineage_depth": 2, "ai_project_context": {"analysis_type": "project_context", "fact_policy": {"ai_evidence_level": "C", "ai_may_change_decision": false, "ai_may_change_license": false, "human_review_required": true}, "generated_at": "2026-10-27T11:20:17Z", "historical_reconstruction": false, "prompt_version": "modelscope-license-audit-v2", "provider": {"base_url": "offline://qwen-image-license-fixture", "model": "frozen-qwen-image-license-fixture", "provider": "mock", "timeout": 60.0}, "rejected": [], "schema_version": "ai-analysis/v2", "simulation": true, "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。", "status": "ok", "subject": {"model_count": 0, "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project"}, "uses": [{"confidence": 0.83, "evidence": {"file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc", "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)", "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b", "source_path": "app.py"}, "evidence_level": "C", "human_review": "pending", "statement": "项目源码在本地加载模型并执行推理。", "use_type": "local_inference", "use_type_zh": "本地推理"}]}, "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2", "id": "model:modelscope/Qwen/Qwen2.5-7B@master", "x": 810.0, "y": 279.0, "lp": "inside", "render_layer": 2, "render_role_label": "上游 · 第 2 层", "render_role_short": "上游·第 2 层", "render_card": {"width": 158, "height": 66, "label": "Qwen/Qwen2.5-7B"}}], "edges_t1": [{"source": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "target": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t1"}, {"source": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "target": "model:modelscope/Qwen/Qwen-Image-2.1@master", "edge_type": "derived_from", "evidence_level": "B", "source_field": "pedigree.ancestors", "snapshot_id": "t1"}, {"source": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "target": "model:modelscope/Qwen/Qwen-Image-2.1@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t1"}, {"source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master", "target": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t1"}, {"source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master", "target": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master", "edge_type": "derived_from", "evidence_level": "B", "source_field": "pedigree.ancestors", "snapshot_id": "t1"}, {"source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master", "target": "model:modelscope/Qwen/Qwen2.5-7B@master", "edge_type": "derived_from", "evidence_level": "B", "source_field": "pedigree.ancestors", "snapshot_id": "t1"}, {"source": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master", "target": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t1"}, {"source": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master", "target": "model:modelscope/Qwen/Qwen2.5-7B@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t1"}, {"source": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master", "target": "model:modelscope/OpenGVLab/InternViT-300M-448px@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors", "snapshot_id": "t1"}], "layout_t1": {"clusters": [{"id": "lineage-layer-3", "x": 28, "y": 24, "width": 1224, "height": 140, "title": "上游第 3 层", "subtitle": "向上追溯第 3 层 · 箭头继续指向上游", "decision": "NEUTRAL", "aggregate_count": 0, "expanded_count": 0, "kind": "lineage_layer", "layer_depth": 3}, {"id": "lineage-layer-2", "x": 28, "y": 192, "width": 1224, "height": 140, "title": "上游第 2 层", "subtitle": "向上追溯第 2 层 · 箭头继续指向上游", "decision": "NEUTRAL", "aggregate_count": 0, "expanded_count": 0, "kind": "lineage_layer", "layer_depth": 2}, {"id": "lineage-layer-1", "x": 28, "y": 360, "width": 1224, "height": 140, "title": "上游第 1 层", "subtitle": "向上追溯第 1 层 · 箭头继续指向上游", "decision": "NEUTRAL", "aggregate_count": 0, "expanded_count": 0, "kind": "lineage_layer", "layer_depth": 1}, {"id": "lineage-layer-0", "x": 28, "y": 528, "width": 1224, "height": 140, "title": "项目直接使用的模型", "subtitle": "由项目配置、代码或 BOM 直接识别", "decision": "NEUTRAL", "aggregate_count": 0, "expanded_count": 0, "kind": "lineage_layer", "layer_depth": 0}], "width": 1280, "height": 706, "layout_mode": "lineage_dag", "cycle_nodes": []}, "events": [{"event_id": "evt-t1-001", "seed": "model:modelscope/Qwen/Qwen-Image-2.1@master", "change_type": "license_changed", "before": {"canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master", "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1", "license": "Apache-2.0", "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1@master"], "snapshot_id": "t0", "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2"}, "after": {"canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master", "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1", "license": "qwen-research", "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1@master"], "snapshot_id": "t1", "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2"}, "path": [], "evidence_level": "A", "decision": "RISK_POTENTIAL", "direction": {"old": {"raw": "Apache-2.0", "canonical_ids": ["Apache-2.0"], "risk_level": 2, "category": "permissive", "unknown_items": []}, "new": {"raw": "qwen-research", "canonical_ids": [null], "risk_level": null, "category": "unknown", "unknown_items": ["qwen-research"]}, "direction": "许可证移除", "risk_increased": false, "ai_involved": false}, "conflict_detected": false, "conflict_type": "none", "conflict_detail": "上游或下游许可证规则未知，无法判定继承冲突", "display_source": "model:modelscope/Qwen/Qwen-Image-2.1@master", "display_target": "model:modelscope/Qwen/Qwen-Image-2.1@master"}, {"event_id": "evt-t1-001-p01", "seed": "model:modelscope/Qwen/Qwen-Image-2.1@master", "change_type": "license_changed", "before": {"canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master", "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1", "license": "Apache-2.0", "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1@master"], "snapshot_id": "t0", "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2"}, "after": {"canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master", "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1", "license": "qwen-research", "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1@master"], "snapshot_id": "t1", "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2"}, "path": [{"source": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "target": "model:modelscope/Qwen/Qwen-Image-2.1@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors"}], "evidence_level": "A", "decision": "RISK_CONFIRMED", "direction": {"old": {"raw": "Apache-2.0", "canonical_ids": ["Apache-2.0"], "risk_level": 2, "category": "permissive", "unknown_items": []}, "new": {"raw": "qwen-research", "canonical_ids": [null], "risk_level": null, "category": "unknown", "unknown_items": ["qwen-research"]}, "direction": "许可证移除", "risk_increased": false, "ai_involved": false}, "conflict_detected": false, "conflict_type": "none", "conflict_detail": "上游或下游许可证规则未知，无法判定继承冲突", "display_source": "model:modelscope/Qwen/Qwen-Image-2.1@master", "display_target": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master"}, {"event_id": "evt-t1-001-p02", "seed": "model:modelscope/Qwen/Qwen-Image-2.1@master", "change_type": "license_changed", "before": {"canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master", "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1", "license": "Apache-2.0", "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1@master"], "snapshot_id": "t0", "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2"}, "after": {"canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master", "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1", "license": "qwen-research", "purls": ["pkg:modelscope/Qwen/Qwen-Image-2.1@master"], "snapshot_id": "t1", "merge_status": "KEPT_SEPARATE", "reason_code": "NO_MERGE_CANDIDATE", "rule_version": "merge-policy-v2"}, "path": [{"source": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "target": "model:modelscope/Qwen/Qwen-Image-2.1@master", "edge_type": "derived_from", "evidence_level": "B", "source_field": "pedigree.ancestors"}], "evidence_level": "B", "decision": "RISK_POTENTIAL", "direction": {"old": {"raw": "Apache-2.0", "canonical_ids": ["Apache-2.0"], "risk_level": 2, "category": "permissive", "unknown_items": []}, "new": {"raw": "qwen-research", "canonical_ids": [null], "risk_level": null, "category": "unknown", "unknown_items": ["qwen-research"]}, "direction": "许可证移除", "risk_increased": false, "ai_involved": false}, "conflict_detected": false, "conflict_type": "none", "conflict_detail": "上游或下游许可证规则未知，无法判定继承冲突", "display_source": "model:modelscope/Qwen/Qwen-Image-2.1@master", "display_target": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master"}], "certificates": [{"certificate_id": "cert-evt-t1-001-01", "event_id": "evt-t1-001-p01", "seed": "model:modelscope/Qwen/Qwen-Image-2.1@master", "affected": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "change_type": "license_changed", "path": [{"source": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master", "target": "model:modelscope/Qwen/Qwen-Image-2.1@master", "edge_type": "derived_from", "evidence_level": "A", "source_field": "pedigree.ancestors"}], "hop_count": 1, "weakest_evidence": "A", "decision": "RISK_CONFIRMED", "termination": "exhausted", "missing_ancestor": false, "path_fingerprint": "5862d8f22d39af5092e5c509fd2677fbbd42f796", "verified": true}, {"certificate_id": "cert-evt-t1-001-02", "event_id": "evt-t1-001-p02", "seed": "model:modelscope/Qwen/Qwen-Image-2.1@master", "affected": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "change_type": "license_changed", "path": [{"source": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master", "target": "model:modelscope/Qwen/Qwen-Image-2.1@master", "edge_type": "derived_from", "evidence_level": "B", "source_field": "pedigree.ancestors"}], "hop_count": 1, "weakest_evidence": "B", "decision": "RISK_POTENTIAL", "termination": "exhausted", "missing_ancestor": false, "path_fingerprint": "a421261d81854b2b4a23603a10a4e0f1d09280ff", "verified": true}], "ai_diff": {"schema_version": "ai-analysis/v2", "analysis_type": "semantic_diff", "status": "ok", "ai_available": true, "before_profile_count": 1, "after_profile_count": 1, "simulation": true, "generated_at": "2026-10-27T11:20:36Z", "changes": [{"model_id": "Qwen/Qwen-Image-2.1", "dimension": "commercial_license_request", "dimension_zh": "商用授权申请方式", "before_state": "not_found", "before_state_zh": "未找到明确条款", "after_state": "conditional", "after_state_zh": "有条件允许", "change_type": "evidence_added", "review_priority": "low", "reason": "t1 新增可验证的commercial_license_request条款证据", "before_quote": "", "after_quote": "b. You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us. If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com.", "after_confidence": 0.66, "after_confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "after_evidence_level": "C", "after_source_path": "LICENSE", "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE", "after_quote_sha256": "604f3cd83aee7258c588f3cd7720a4a85c6c33d5db360ec9119a95a8b8037073", "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"}, {"model_id": "Qwen/Qwen-Image-2.1", "dimension": "commercial_use", "dimension_zh": "商业使用", "before_state": "unknown", "before_state_zh": "证据不足", "after_state": "prohibited", "after_state_zh": "禁止", "change_type": "tightened", "review_priority": "high", "reason": "许可证名称未变，但commercial_use语义由unknown变为prohibited", "before_quote": "license: Apache License 2.0", "after_quote": "a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.", "before_confidence": 0.59, "before_confidence_factors": {"base": 0.48, "exact_quote": 0.1, "quote_context": 0.02, "readme": 0.08, "source_sha256": 0.03, "uncertain_state": -0.12}, "before_evidence_level": "C", "before_source_path": "README.md", "before_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md", "before_quote_sha256": "ec5dff827b5f977ee667a3ff57daa447e3d6a443a53d633242a5c7abdbbc95c4", "before_file_sha256": "69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484", "after_confidence": 0.86, "after_confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "restriction_wording": 0.08, "source_sha256": 0.03}, "after_evidence_level": "C", "after_source_path": "LICENSE", "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE", "after_quote_sha256": "913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6", "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"}, {"model_id": "Qwen/Qwen-Image-2.1", "dimension": "fine_tuned_redistribution", "dimension_zh": "微调版本再分发", "before_state": "not_found", "before_state_zh": "未找到明确条款", "after_state": "conditional", "after_state_zh": "有条件允许", "change_type": "evidence_added", "review_priority": "low", "reason": "t1 新增可验证的fine_tuned_redistribution条款证据", "before_quote": "", "after_quote": "d. You may add your own copyright statement to your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of your modifications, or for any such derivative works as a whole, provided your use, reproduction, and distribution of the work otherwise complies with the terms and conditions of this Agreement.", "after_confidence": 0.66, "after_confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "after_evidence_level": "C", "after_source_path": "LICENSE", "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE", "after_quote_sha256": "7ebc41ea077fca7ef4fb5d30f9a5b0ba61e00da45669faddf021e4614ce7273b", "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"}, {"model_id": "Qwen/Qwen-Image-2.1", "dimension": "modification", "dimension_zh": "修改与衍生", "before_state": "not_found", "before_state_zh": "未找到明确条款", "after_state": "conditional", "after_state_zh": "有条件允许", "change_type": "evidence_added", "review_priority": "low", "reason": "t1 新增可验证的modification条款证据", "before_quote": "", "after_quote": "b. You shall cause any modified files to carry prominent notices stating that you changed the files;", "after_confidence": 0.66, "after_confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "after_evidence_level": "C", "after_source_path": "LICENSE", "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE", "after_quote_sha256": "3ca44bbf10976843f30f6b6cbcf6938681b2da23d0e9616125a7d91816f7782e", "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"}, {"model_id": "Qwen/Qwen-Image-2.1", "dimension": "notice", "dimension_zh": "许可证与版权声明保留", "before_state": "not_found", "before_state_zh": "未找到明确条款", "after_state": "conditional", "after_state_zh": "有条件允许", "change_type": "evidence_added", "review_priority": "low", "reason": "t1 新增可验证的notice条款证据", "before_quote": "", "after_quote": "c. You shall retain in all copies of the Materials that you distribute the following attribution notices within a \"Notice\" text file distributed as a part of such copies: \"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\"; and", "after_confidence": 0.66, "after_confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "after_evidence_level": "C", "after_source_path": "LICENSE", "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE", "after_quote_sha256": "dd5271267fd48b7dc69ccea1638ec556744479f1dce2db9bd8f5a94f18b83371", "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"}, {"model_id": "Qwen/Qwen-Image-2.1", "dimension": "redistribution", "dimension_zh": "再分发", "before_state": "not_found", "before_state_zh": "未找到明确条款", "after_state": "conditional", "after_state_zh": "有条件允许", "change_type": "evidence_added", "review_priority": "low", "reason": "t1 新增可验证的redistribution条款证据", "before_quote": "", "after_quote": "Subject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:", "after_confidence": 0.66, "after_confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "after_evidence_level": "C", "after_source_path": "LICENSE", "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE", "after_quote_sha256": "392e11e45e37ac421840f4c69e2bc023e0f0540dc909a603948e9552620a6558", "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"}, {"model_id": "Qwen/Qwen-Image-2.1", "dimension": "training_other_models", "dimension_zh": "训练其他模型", "before_state": "not_found", "before_state_zh": "未找到明确条款", "after_state": "conditional", "after_state_zh": "有条件允许", "change_type": "evidence_added", "review_priority": "low", "reason": "t1 新增可验证的training_other_models条款证据", "before_quote": "", "after_quote": "b. If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.", "after_confidence": 0.66, "after_confidence_factors": {"base": 0.48, "exact_quote": 0.1, "license_file": 0.15, "quote_context": 0.02, "source_sha256": 0.03, "uncertain_state": -0.12}, "after_evidence_level": "C", "after_source_path": "LICENSE", "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE", "after_quote_sha256": "b062018cb9c1f37db79dafa82a51516906c39482ac56fd411985fdb47dfccd11", "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"}], "fact_policy": {"ai_may_change_decision": false, "ai_may_change_delta": false, "ai_evidence_level": "C", "human_review_required": true}}};
+const DECISION_COLOR = {"RISK_CONFIRMED": "#f56c6c", "RISK_POTENTIAL": "#e6a23c", "SAFE": "#67c23a", "UNDETERMINED": "#d3d7de"};
+const DECISION_LABEL = {"RISK_CONFIRMED": "高风险（红灯）", "RISK_POTENTIAL": "潜在风险（黄灯）", "SAFE": "安全（绿灯）", "UNDETERMINED": "待确认（灰）"};
+const DECISION_RANK = {"UNDETERMINED": 0, "SAFE": 1, "RISK_POTENTIAL": 2, "RISK_CONFIRMED": 3};
+const CHANGE_LABEL = {"license_changed": "许可证变更", "version_changed": "版本变更", "version_upgraded": "版本升级", "version_downgraded": "版本降级", "evidence_downgrade": "证据降级", "edge_added": "新增血缘边", "edge_removed": "血缘边移除", "asset_added": "新增资产", "asset_removed": "资产移除"};
+const REPORT_MARKDOWN = "# AI 模型血缘风险传播报告\n\n> 生成时间：2026-10-27 19:20\n> 对比区间：2026-10-27 → 2026-10-27\n> 间隔天数：0 天\n> 快照：t0 `tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t0_bom.json` → t1 `tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\t1_bom.json`\n> 生成工具：开源账本（深度层）· report_enhanced.py（接口约定 v0.3）\n\n## 一、变更摘要\n\n共检测到 **3** 个变更事件，按类型分布：\n\n- **许可证变更**（`license_changed`）：3 个\n\n| 事件 ID | 类型 | 风险源（seed） | 变更（before → after） | 证据 | 判定 | 审计（merge_status / reason_code / rule_version） |\n|---|---|---|---|---|---|---|\n| evt-t1-001 | 许可证变更 | Qwen/Qwen-Image-2.1@master | Apache-2.0 → qwen-research | A | RISK_POTENTIAL | merge_status=KEPT_SEPARATE；reason_code=NO_MERGE_CANDIDATE；rule_version=merge-policy-v2 |\n| evt-t1-001-p01 | 许可证变更 | Qwen/Qwen-Image-2.1@master | Apache-2.0 → qwen-research | A | RISK_CONFIRMED | merge_status=KEPT_SEPARATE；reason_code=NO_MERGE_CANDIDATE；rule_version=merge-policy-v2 |\n| evt-t1-001-p02 | 许可证变更 | Qwen/Qwen-Image-2.1@master | Apache-2.0 → qwen-research | B | RISK_POTENTIAL | merge_status=KEPT_SEPARATE；reason_code=NO_MERGE_CANDIDATE；rule_version=merge-policy-v2 |\n\n## 二、传播路径\n\n每个事件携带从种子到受影响资产的传播路径（weakest link 规则取最弱证据）：\n\n### evt-t1-001-p01 · 许可证变更\n\n- 种子资产：`Qwen/Qwen-Image-2.1@master`\n- 传播路径（共 1 跳，最弱证据 A，判定 RISK_CONFIRMED）：\n\n```text\nQwen/Qwen-Image-2.1-Turbo@master —[derived_from / A]→ Qwen/Qwen-Image-2.1@master\n```\n\n### evt-t1-001-p02 · 许可证变更\n\n- 种子资产：`Qwen/Qwen-Image-2.1@master`\n- 传播路径（共 1 跳，最弱证据 B，判定 RISK_POTENTIAL）：\n\n```text\nunsloth/Qwen-Image-2.1-Turbo-FP8@master —[derived_from / B]→ Qwen/Qwen-Image-2.1@master\n```\n\n\n## 三、许可证继承冲突分析\n\n对每个许可证变更事件，比较上游许可证义务（Duty）与下游许可证禁止（Prohibition），检测是否存在继承冲突：\n\n共 **3** 个许可证变更事件，其中检测到继承冲突 **0** 个。\n\n| 事件 ID | 风险源（seed） | 变更（before → after） | 冲突检测 | 冲突类型 | 冲突描述 |\n|---|---|---|---|---|---|\n| evt-t1-001 | Qwen/Qwen-Image-2.1@master | Apache-2.0 → qwen-research | 无冲突 | `none` | 上游或下游许可证规则未知，无法判定继承冲突 |\n| evt-t1-001-p01 | Qwen/Qwen-Image-2.1@master | Apache-2.0 → qwen-research | 无冲突 | `none` | 上游或下游许可证规则未知，无法判定继承冲突 |\n| evt-t1-001-p02 | Qwen/Qwen-Image-2.1@master | Apache-2.0 → qwen-research | 无冲突 | `none` | 上游或下游许可证规则未知，无法判定继承冲突 |\n\n## 四、路径证书\n\n共生成 **2** 张路径证书：\n\n| 证书 ID | 受影响资产 | 变更类型 | 跳数 | 最弱证据 | 判定 | 终止原因 | 缺失祖先 | 路径指纹 |\n|---|---|---|---|---|---|---|---|---|\n| cert-evt-t1-001-01 | Qwen/Qwen-Image-2.1-Turbo@master | 许可证变更 | 1 | A | RISK_CONFIRMED | exhausted | 否 | 5862d8f22d39af5092e5c509fd2677fbbd42f796 |\n| cert-evt-t1-001-02 | unsloth/Qwen-Image-2.1-Turbo-FP8@master | 许可证变更 | 1 | B | RISK_POTENTIAL | exhausted | 否 | a421261d81854b2b4a23603a10a4e0f1d09280ff |\n\n## 五、受影响资产（按判定分组）\n\n### 🔴 确认风险（1 项）\n\n| 受影响资产 | 变更类型 | 跳数 | 最弱证据 | 证书 ID |\n|---|---|---|---|---|\n| Qwen/Qwen-Image-2.1-Turbo@master | 许可证变更 | 1 | A | cert-evt-t1-001-01 |\n\n### 🟠 潜在风险（1 项）\n\n| 受影响资产 | 变更类型 | 跳数 | 最弱证据 | 证书 ID |\n|---|---|---|---|---|\n| unsloth/Qwen-Image-2.1-Turbo-FP8@master | 许可证变更 | 1 | B | cert-evt-t1-001-02 |\n\n## 六、风险源汇总\n\n| 风险源 | 关联事件数 |\n|---|---|\n| Qwen/Qwen-Image-2.1@master | 3 |\n\n## 七、AI 语义差异（C 级，待人工确认）\n\n> AI 只比较 t0/t1 BOM 中已固化的条款画像，不回查今天的最新原文，不修改 Delta、风险判定或 CI。\n\n| 模型 | 维度 | 语义变化 | 复核优先级 | AI 置信度（t0 → t1） | 旧原文 | 新原文 |\n|---|---|---|---|---|---|---|\n| Qwen/Qwen-Image-2.1 | 商用授权申请方式 | 未找到明确条款 → 有条件允许 | low | — → 0.66 | — | b. You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us. If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com. |\n| Qwen/Qwen-Image-2.1 | 商业使用 | 证据不足 → 禁止 | high | 0.59 → 0.86 | license: Apache License 2.0 | a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY. |\n| Qwen/Qwen-Image-2.1 | 微调版本再分发 | 未找到明确条款 → 有条件允许 | low | — → 0.66 | — | d. You may add your own copyright statement to your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of your modifications, or for any such derivative works as a whole, provided your use, reproduction, and distribution of the work otherwise complies with the terms and conditions of this Agreement. |\n| Qwen/Qwen-Image-2.1 | 修改与衍生 | 未找到明确条款 → 有条件允许 | low | — → 0.66 | — | b. You shall cause any modified files to carry prominent notices stating that you changed the files; |\n| Qwen/Qwen-Image-2.1 | 许可证与版权声明保留 | 未找到明确条款 → 有条件允许 | low | — → 0.66 | — | c. You shall retain in all copies of the Materials that you distribute the following attribution notices within a \"Notice\" text file distributed as a part of such copies: \"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\"; and |\n| Qwen/Qwen-Image-2.1 | 再分发 | 未找到明确条款 → 有条件允许 | low | — → 0.66 | — | Subject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions: |\n| Qwen/Qwen-Image-2.1 | 训练其他模型 | 未找到明确条款 → 有条件允许 | low | — → 0.66 | — | b. If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation. |\n\n### AI 置信度构成\n\n| 模型 | 维度 | t0 构成 | t1 构成 | t1 原文 SHA256 |\n|---|---|---|---|---|\n| Qwen/Qwen-Image-2.1 | 商用授权申请方式 | — | base +0.48 + exact_quote +0.10 + license_file +0.15 + quote_context +0.02 + source_sha256 +0.03 + uncertain_state -0.12 | 604f3cd83aee7258c588f3cd7720a4a85c6c33d5db360ec9119a95a8b8037073 |\n| Qwen/Qwen-Image-2.1 | 商业使用 | base +0.48 + exact_quote +0.10 + quote_context +0.02 + readme +0.08 + source_sha256 +0.03 + uncertain_state -0.12 | base +0.48 + exact_quote +0.10 + license_file +0.15 + quote_context +0.02 + restriction_wording +0.08 + source_sha256 +0.03 | 913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6 |\n| Qwen/Qwen-Image-2.1 | 微调版本再分发 | — | base +0.48 + exact_quote +0.10 + license_file +0.15 + quote_context +0.02 + source_sha256 +0.03 + uncertain_state -0.12 | 7ebc41ea077fca7ef4fb5d30f9a5b0ba61e00da45669faddf021e4614ce7273b |\n| Qwen/Qwen-Image-2.1 | 修改与衍生 | — | base +0.48 + exact_quote +0.10 + license_file +0.15 + quote_context +0.02 + source_sha256 +0.03 + uncertain_state -0.12 | 3ca44bbf10976843f30f6b6cbcf6938681b2da23d0e9616125a7d91816f7782e |\n| Qwen/Qwen-Image-2.1 | 许可证与版权声明保留 | — | base +0.48 + exact_quote +0.10 + license_file +0.15 + quote_context +0.02 + source_sha256 +0.03 + uncertain_state -0.12 | dd5271267fd48b7dc69ccea1638ec556744479f1dce2db9bd8f5a94f18b83371 |\n| Qwen/Qwen-Image-2.1 | 再分发 | — | base +0.48 + exact_quote +0.10 + license_file +0.15 + quote_context +0.02 + source_sha256 +0.03 + uncertain_state -0.12 | 392e11e45e37ac421840f4c69e2bc023e0f0540dc909a603948e9552620a6558 |\n| Qwen/Qwen-Image-2.1 | 训练其他模型 | — | base +0.48 + exact_quote +0.10 + license_file +0.15 + quote_context +0.02 + source_sha256 +0.03 + uncertain_state -0.12 | b062018cb9c1f37db79dafa82a51516906c39482ac56fd411985fdb47dfccd11 |\n\n## 八、证据等级与判定说明\n\n| 等级 | 定义（接口约定 v0.3） |\n|---|---|\n| A | ModelScope 官方 API 直接返回的字段，或从 ModelScope 官方仓库取得的 LICENSE / README 原文 |\n| B | 工具基于 ModelScope 事实生成的派生结构化证据（血缘边、聚合节点、BOM 映射） |\n| C | AI 条款抽取、启发式或降级证据；必须保留逐字原文并等待人工确认 |\n\n| 判定 | 含义 |\n|---|---|\n| RISK_CONFIRMED | 路径上所有边证据等级为 A，规则明确适用 |\n| RISK_POTENTIAL | 路径上存在 B 级边，规则可能适用 |\n| UNDETERMINED | 路径上存在 C 级边、缺失祖先或冲突字段 |\n\n> 口径：A=ModelScope 官方字段或官方原文；B=工具基于 ModelScope 事实生成的派生结构；C=AI 语义抽取或降级推断。AI 不修改许可证事实、风险灯色、Delta、decision 或 CI。\n> 风险传播使用 weakest link 规则：路径证据等级取路径中最低等级；`UNDETERMINED` 不是“无风险”，而是“证据不足以判定”。\n\n---\n\n> **免责声明**：本报告由开源账本自动生成，基于证据的辅助审计，不构成法律意见，也不能替代针对具体许可证、司法辖区和业务模式的执业法律审查。\n";
+
+function escapeHtml(value) {
+  return String(value == null ? "" : value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+function modelscopeModelPageUrl(raw) {
+  if (!raw || raw.asset_type !== "model") return null;
+  if (raw.aggregate === true || raw.coverage_status === "AGGREGATE_ONLY") return null;
+  const canonical = String(raw.canonical_id || "");
+  if (canonical.includes(":son:") || canonical.includes(":parent:")) return null;
+  const canonicalPrefix = "model:modelscope/";
+  let modelId = canonical.startsWith(canonicalPrefix)
+    ? canonical.slice(canonicalPrefix.length).split("@")[0]
+    : "";
+  if (!modelId) {
+    const purlPrefix = "pkg:modelscope/";
+    const purl = (raw.purls || []).find(value => String(value).startsWith(purlPrefix));
+    if (purl) modelId = String(purl).slice(purlPrefix.length).split("@")[0];
+  }
+  const parts = modelId.split("/");
+  if (parts.length !== 2 || parts.some(part => !part || /\s/.test(part))) return null;
+  return `https://www.modelscope.cn/models/${parts.map(encodeURIComponent).join("/")}`;
+}
+function aiAnalysis(n) {
+  return n && n.ai_analysis && n.ai_analysis.analysis_type === "model_profile" ? n.ai_analysis : null;
+}
+function confidenceFactorText(claim) {
+  const labels = {base:"基础",license_file:"LICENSE 文件",readme:"README 文件",structured_file:"结构化文件",exact_quote:"原文精确命中",restriction_wording:"限制措辞",source_sha256:"SHA256",quote_context:"引文长度",uncertain_state:"不确定性",cross_document_support:"跨文档支持"};
+  return Object.entries(claim.confidence_factors || {}).map(([key, value]) => {
+    const number = Number(value);
+    return `${labels[key] || key} ${number >= 0 ? "+" : ""}${number.toFixed(2)}`;
+  }).join(" · ");
+}
+function aiTooltip(n) {
+  const ai = aiAnalysis(n);
+  if (!ai) return "";
+  const first = (ai.claims || [])[0];
+  const summary = first ? `${escapeHtml(first.dimension_zh || first.dimension)}：${escapeHtml(first.state_zh || first.state)}（${escapeHtml(first.confidence)}）` : "无通过原文校验的条款";
+  return `<br/>AI 语义：C级 · ${summary} · 待人工确认`;
+}
+function renderAiDetails(raw) {
+  const ai = aiAnalysis(raw);
+  const project = raw && raw.ai_project_context && raw.ai_project_context.analysis_type === "project_context" ? raw.ai_project_context : null;
+  if (!ai && !project) return "";
+  let html = `<div class="ai-box"><h4>AI 语义证据（C 级，不改变规则判定）</h4>`;
+  if (ai) {
+    if (ai.simulation) html += `<div class="ai-gap"><b>验收模拟</b>：${escapeHtml(ai.simulation_note || "该条款画像用于验收，不代表数据源当前事实")}</div>`;
+    html += `<div class="kv"><b>模型分析状态</b> ${escapeHtml(ai.status || "unknown")}</div>`;
+    if (ai.summary) html += `<div class="kv"><b>摘要</b> ${escapeHtml(ai.summary)}</div>`;
+    (ai.claims || []).forEach(claim => {
+      const evidence = claim.evidence || {};
+      html += `<div class="ai-claim"><div><b>${escapeHtml(claim.dimension_zh || claim.dimension)}</b>：${escapeHtml(claim.state_zh || claim.state)}</div>` +
+        `<div class="ai-meta">置信度 ${escapeHtml(claim.confidence)} · 证据等级 ${escapeHtml(claim.evidence_level || "C")} · ${escapeHtml(claim.human_review || "pending")}</div>` +
+        `<div class="ai-meta">置信度构成：${escapeHtml(confidenceFactorText(claim) || "—")}</div>` +
+        `<div class="ai-quote">${escapeHtml(evidence.quote || "—")}</div>` +
+        `<div class="ai-meta">原文：${escapeHtml(evidence.source_path || "—")} · SHA256 ${escapeHtml(evidence.quote_sha256 || "—")}</div></div>`;
+    });
+    const gaps = ai.gaps || [];
+    if (gaps.length) html += `<div class="ai-gap"><b>证据缺口</b><br/>${gaps.map(g => `${escapeHtml(g.dimension_zh || g.dimension)}：${escapeHtml(g.reason || "证据不足")}`).join("<br/>")}</div>`;
+  }
+  if (project) {
+    if (project.simulation) html += `<div class="ai-gap"><b>验收模拟</b>：${escapeHtml(project.simulation_note || "该项目上下文用于验收展示")}</div>`;
+    html += `<div class="kv"><b>项目使用上下文</b></div>`;
+    (project.uses || []).forEach(item => {
+      const evidence = item.evidence || {};
+      html += `<div class="ai-claim"><div><b>${escapeHtml(item.use_type_zh || item.use_type)}</b>：${escapeHtml(item.statement)}</div>` +
+        `<div class="ai-meta">置信度 ${escapeHtml(item.confidence)} · C · ${escapeHtml(item.human_review || "pending")}</div>` +
+        `<div class="ai-quote">${escapeHtml(evidence.quote || "—")}</div>` +
+        `<div class="ai-meta">项目文件：${escapeHtml(evidence.source_path || "—")}</div></div>`;
+    });
+  }
+  return html + `</div>`;
+}
+function decisionOf(value) {
+  const code = value || "UNDETERMINED";
+  return {code, color:DECISION_COLOR[code] || "#d3d7de", label:DECISION_LABEL[code] || code};
+}
+function isAgg(n) {
+  if (n.aggregate === true || n.coverage_status === "AGGREGATE_ONLY") return true;
+  if ((n.canonical_id || n.entity_key || "").includes(":son:") ||
+      (n.canonical_id || n.entity_key || "").includes(":parent:")) return true;
+  return (n.name || "").includes("(Total:") && !(n.purls || []).length;
+}
+function isFixtureNode(n) {
+  // 只认显式声明：名称长得像夹具的真实模型不该被标成构造夹具。
+  return !!n && (n.is_fixture === true || n.display_only === true);
+}
+function aggTotal(n) {
+  if (Number.isInteger(n.count)) return n.count;
+  const match = String(n.name || "").match(/\(Total:\s*(\d+)\)/i);
+  return match ? Number(match[1]) : 0;
+}
+function aggLabel(n) {
+  if (n.render_card && n.render_card.label) return n.render_card.label;
+  const name = n.name || n.canonical_id || "聚合域";
+  return (name.includes(" · ") ? name.split(" · ").pop() : name).replace(/\(Total:\s*\d+\)/i, "").trim();
+}
+function aggTone(n) {
+  const tone = n.render_tone || "NEUTRAL";
+  return tone === "NEUTRAL" ? "#aeb8c7" : (DECISION_COLOR[tone] || "#aeb8c7");
+}
+function isExpandedChild(n) {
+  return n.render_role === "expanded_child";
+}
+function decisionShort(code) {
+  return {RISK_CONFIRMED:"高风险",RISK_POTENTIAL:"潜在风险",SAFE:"安全",UNDETERMINED:"待确认"}[code || "UNDETERMINED"] || "待确认";
+}
+function childFill(code) {
+  return {RISK_CONFIRMED:"#fff2f0",RISK_POTENTIAL:"#fff8e8",SAFE:"#f0f9eb",UNDETERMINED:"#f6f7f9"}[code || "UNDETERMINED"] || "#f6f7f9";
+}
+// 展开状态按快照隔离：在 t0 展开聚合域不应把 t1 的同一聚合域一起展开。
+const expandedBySnapshot = {t0:new Set(), t1:new Set()};
+function expandedSet(snapshot) {
+  const key = snapshot === "t0" ? "t0" : "t1";
+  if (!expandedBySnapshot[key]) expandedBySnapshot[key] = new Set();
+  return expandedBySnapshot[key];
+}
+
+function buildChart(elId, nodes, edges, layout, snapshot) {
+  const expandedDomains = expandedSet(snapshot);
+  const nodeById = {};
+  nodes.forEach(n => nodeById[n.id] = n);
+  const childrenByAggregate = {};
+  edges.forEach(e => {
+    if (e.edge_type !== "expanded_from") return;
+    const aggregateId = isAgg(nodeById[e.source] || {}) ? e.source : e.target;
+    if (!childrenByAggregate[aggregateId]) childrenByAggregate[aggregateId] = [];
+    childrenByAggregate[aggregateId].push(e);
+  });
+  function makeData() {
+    return nodes.map(n => {
+    const agg = isAgg(n);
+    const j = decisionOf(n.decision);
+    const sourceNote = n.decision_source === "diff_propagation" ? "（diff 传播）" : "";
+    if (isExpandedChild(n)) {
+      const label = n.render_card?.label || n.name || n.id;
+      const visible = expandedDomains.has(n.render_parent_id);
+      return {
+        id:n.id,
+        name:label,
+        x:n.x,
+        y:n.y,
+        symbol:"rect",
+        symbolSize:visible ? [n.render_card?.width || 64, n.render_card?.height || 38] : [0, 0],
+        itemStyle:{color:childFill(n.decision),borderColor:j.color,borderWidth:2,borderRadius:6,opacity:visible ? 1 : 0},
+        label:{
+          show:visible,
+          position:"inside",
+          formatter:() => `{name|${label}}
+{state|${decisionShort(n.decision)}}`,
+          rich:{name:{fontSize:9,fontWeight:"bold",color:"#253044",lineHeight:14},state:{fontSize:8,color:j.color,lineHeight:13}}
+        },
+        tooltip:{show:visible,formatter:() => `<b>${escapeHtml(n.name || label)}</b><br/>展开的风险子节点<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${sourceNote}${isFixtureNode(n) ? "<br/>构造测试夹具，不代表真实下游模型" : ""}${aiTooltip(n)}`},
+        _raw:n,
+        _childParent:n.render_parent_id,
+        silent:!visible,
+        z:visible ? 5 : 0
+      };
+    }
+    if (agg) {
+      const counts = n.render_risk_counts || n.known_risk_counts || {red:0,yellow:0,gray:0};
+      const label = aggLabel(n);
+      const childCount = (childrenByAggregate[n.id] || []).length;
+      const expanded = childCount > 0 && expandedDomains.has(n.id);
+      const action = childCount ? `点击${expanded ? "收起" : "展开"} ${childCount} 个模型` : "聚合范围";
+      return {
+        id:n.id,
+        name:label,
+        x:n.x,
+        y:n.y,
+        symbol:"rect",
+        symbolSize:[n.render_card?.width || 154, n.render_card?.height || 64],
+        itemStyle:{color:"#eef0f4",borderColor:aggTone(n),borderWidth:2,borderRadius:9},
+        label:{
+          show:true,
+          position:"inside",
+          formatter:() => `{title|${label}}
+{meta|下游 ${aggTotal(n)} · 红${counts.red} 黄${counts.yellow} 灰${counts.gray}}
+{action|${action}}`,
+          rich:{title:{fontSize:12,fontWeight:"bold",color:"#253044",lineHeight:17},meta:{fontSize:9,color:"#64748b",lineHeight:14},action:{fontSize:8,color:childCount ? "#2d6da3" : "#94a3b8",lineHeight:12}}
+        },
+        tooltip:{formatter:() => `<b>${escapeHtml(label)}</b><br/>聚合风险域<br/>下游总量：${aggTotal(n)}<br/>已知：红 ${counts.red} / 黄 ${counts.yellow} / 灰 ${counts.gray}${childCount ? `<br/>点击${expanded ? "收起" : "展开"} ${childCount} 个具体模型` : ""}${sourceNote}`},
+        _raw:n,
+        _childCount:childCount,
+        cursor:childCount ? "pointer" : "default",
+        z:2
+      };
+    }
+    const card = n.render_card || {};
+    const role = n.render_role_short || n.render_role_label || (n.lineage_role === "root" ? "项目直接使用" : "上游模型");
+    const aiTag = aiAnalysis(n) ? " · AI" : "";
+    if (card.width) {
+      return {
+        id:n.id,
+        name:n.name || n.id,
+        x:n.x,
+        y:n.y,
+        symbol:"rect",
+        symbolSize:[card.width,card.height],
+        itemStyle:{
+          color:childFill(n.decision),borderColor:j.color,
+          borderWidth:["RISK_CONFIRMED","RISK_POTENTIAL"].includes(n.decision) ? 2.5 : 1.8,
+          borderRadius:8,
+          shadowBlur:["RISK_CONFIRMED","RISK_POTENTIAL"].includes(n.decision) ? 6 : 0,
+          shadowColor:"rgba(15,23,42,.12)"
+        },
+        label:{
+          show:true,position:"inside",
+          formatter:() => `{name|${card.label || n.name || n.id}}
+{role|${role}${aiTag}}`,
+          rich:{
+            name:{fontSize:card.width < 145 ? 8 : 9,fontWeight:"bold",color:"#253044",lineHeight:14,width:card.width - 16,overflow:"truncate"},
+            role:{fontSize:7,color:aiAnalysis(n) ? "#0369a1" : j.color,lineHeight:12}
+          }
+        },
+        tooltip:{formatter:() => `<b>${escapeHtml(n.name || n.id)}</b><br/>角色：${escapeHtml(role)}<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${sourceNote}${aiTooltip(n)}`},
+        _raw:n,
+        z:4
+      };
+    }
+    return {
+      id:n.id,
+      name:n.name || n.id,
+      x:n.x,
+      y:n.y,
+      symbol:n.asset_type === "dataset" ? "diamond" : "circle",
+      symbolSize:n.asset_type === "dataset" ? 28 : 32,
+      itemStyle:{color:j.color,borderColor:j.color === "#d3d7de" ? "#abb4c2" : j.color,borderWidth:1.5},
+      label:{show:true,formatter:() => n.name || n.id,fontSize:9,color:"#334155",position:n.lp || "bottom"},
+      tooltip:{formatter:() => `<b>${escapeHtml(n.name || n.id)}</b><br/>角色：${escapeHtml(role)}<br/>版本：${escapeHtml(n.version || "—")}<br/>许可证：${escapeHtml(n.license || "未声明")}<br/>判定：${j.label}${sourceNote}${aiTooltip(n)}`},
+      _raw:n,
+      z:4
+    };
+  });
+  }
+
+  function makeLinks() {
+    return edges.map(e => {
+      const source = nodeById[e.source] || {};
+      const target = nodeById[e.target] || {};
+      // Grouping is shown by card containment, never as a lineage edge.
+      if (e.edge_type === "expanded_from" || isAgg(source) || isAgg(target)) return null;
+      const risky = ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(source.decision) ||
+        ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(target.decision);
+      return {
+        source:e.source,
+        target:e.target,
+        label:{show:false},
+        emphasis:{label:{show:true,formatter:e.render_label || e.edge_type || "派生自",fontSize:9,color:risky ? "#c0392b" : "#475569"}},
+        lineStyle:{width:risky ? 3 : 1.4,color:risky ? "#c0392b" : "#8794a6",type:"solid",curveness:0.03,opacity:risky ? 0.92 : 0.72},
+        _edge:e
+      };
+  }).filter(Boolean);
+  }
+  const graphics = (layout?.clusters || []).map(c => {
+    const lineageLayer = c.kind === "lineage_layer";
+    const subtitle = c.subtitle || `聚合域 ${c.aggregate_count} 个${c.expanded_count ? " · 点击展开" : ""}`;
+    return {
+      type:"group",left:c.x,top:c.y,z:-1,silent:true,
+      children:[
+        {type:"rect",shape:{x:0,y:0,width:c.width,height:c.height,r:12},style:{fill:lineageLayer ? "#f8fafc" : "#fbfcfe",stroke:lineageLayer ? "#e5eaf1" : "#dfe7f1",lineWidth:1}},
+        {type:"text",style:{x:14,y:20,text:c.title,fill:"#253044",font:"bold 12px Microsoft YaHei"}},
+        {type:"text",style:{x:14,y:38,text:subtitle,fill:"#7b8799",font:"10px Microsoft YaHei"}}
+      ]
+    };
+  });
+  const chart = echarts.init(document.getElementById(elId));
+  chart._refreshExpansion = () => chart.setOption({
+    tooltip:{trigger:"item",backgroundColor:"#fff",borderColor:"#d0d7de",textStyle:{color:"#334155",fontSize:12}},
+    legend:{show:false},
+    graphic:graphics,
+    series:[{
+      type:"graph",
+      layout:"none",
+      roam:true,
+      draggable:false,
+      zoom:0.95,
+      scaleLimit:{min:0.55,max:2.5},
+      edgeSymbol:["none","arrow"],
+      edgeSymbolSize:[0,11],
+      data:makeData(),
+      links:makeLinks(),
+      emphasis:{focus:"adjacency",lineStyle:{width:5}},
+      labelLayout:{hideOverlap:false}
+    }]
+  }, true);
+  chart._refreshExpansion();
+  return chart;
+}
+
+function shortName(id) {
+  const all = {};
+  DATA.nodes_t0.concat(DATA.nodes_t1).forEach(n => all[n.id] = n);
+  const n = all[id];
+  if (!n) return id;
+  return isAgg(n) ? aggLabel(n) : (n.name || id);
+}
+
+function renderCerts(eventId, seed) {
+  const certs = DATA.certificates.filter(c => c.event_id === eventId || c.seed === seed);
+  if (!certs.length) {
+    document.getElementById("panel-body").innerHTML = "<div style='color:#7b8799'>该事件无传播证书（无受影响下游）。</div>";
+    return;
+  }
+  document.getElementById("panel-body").innerHTML = certs.map(c => {
+    const steps = (c.path || []).map(s => escapeHtml(shortName(s.source)) + " → " + escapeHtml(shortName(s.target))).join(" → ");
+    const chain = `${escapeHtml(shortName(c.affected))} ⇠ ${steps ? steps + " ⇠ " : ""}${escapeHtml(shortName(c.seed))}`;
+    return `<div class="cert"><div class="kv"><b>证书</b> ${escapeHtml(c.certificate_id)} · ${escapeHtml(c.change_type)}</div>` +
+      `<div class="kv"><b>受影响资产</b> ${escapeHtml(shortName(c.affected))}</div>` +
+      `<div class="kv"><b>传播链（受影响 ⇠ … ⇠ 上游变化资产）</b><div class="path">${chain}</div></div>` +
+      `<div class="kv"><b>跳数</b> ${escapeHtml(c.hop_count)} · <b>最弱证据</b> ${escapeHtml(c.weakest_evidence)} · <b>判定</b> ${decisionOf(c.decision).label}</div>` +
+      `<div class="kv"><b>终止原因</b> ${escapeHtml(c.termination || "—")}</div></div>`;
+  }).join("");
+}
+
+function renderNodeDetail(raw, snapshot) {
+  const pageUrl = modelscopeModelPageUrl(raw);
+  const pageLink = pageUrl
+    ? `<div class="kv"><b>ModelScope 模型主页</b> <a href="${escapeHtml(pageUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(pageUrl)}</a></div>`
+    : "";
+  const agg = isAgg(raw);
+  const j = decisionOf(raw.decision);
+  const counts = raw.render_risk_counts || raw.known_risk_counts || {red:0,yellow:0,gray:0};
+  const fixture = isFixtureNode(raw);
+  let html = `<div class="kv"><b>快照</b> ${escapeHtml(snapshot || raw.snapshot_id || "—")}</div>` +
+    `<div class="kv"><b>名称</b> ${escapeHtml(raw.name || raw.canonical_id || raw.id)}</div>` +
+    `<div class="kv"><b>节点类型</b> ${agg ? "聚合风险域（非具体模型）" : escapeHtml(raw.asset_type || "—")}</div>` +
+    `<div class="kv"><b>许可证</b> ${escapeHtml(raw.license || "未声明")}</div>` +
+    `<div class="kv"><b>判定</b> ${j.label}${raw.decision_source === "diff_propagation" ? "（diff 传播）" : ""}</div>`;
+  if (agg) {
+    html += `<div class="kv"><b>下游总量</b> ${aggTotal(raw)}</div>` +
+      `<div class="kv"><b>已知风险</b> 红 ${counts.red} / 黄 ${counts.yellow} / 灰 ${counts.gray}</div>` +
+      `<div class="kv"><b>能力边界</b> ModelScope 血缘接口只返回类型与总数；除非数据源返回具体身份，否则不能把计数写成模型名。</div>`;
+  } else {
+    html += `<div class="kv"><b>判定来源</b> ${escapeHtml(raw.decision_source || "自身许可证评估")}</div>`;
+    if (fixture) {
+      html += `<div class="fixture-note">构造测试夹具：该名称用于验证展开与着色逻辑，不代表 ModelScope API 已返回这个真实下游模型。</div>`;
+    }
+  }
+  let evidence = (raw.evidence_chain || []).map(e => {
+    const sourceUrl = String(e.source_url || "").trim();
+    const sourceLink = sourceUrl
+      ? `<br/><a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">原始 API 证据：${escapeHtml(sourceUrl)}</a>`
+      : `<br/><span class="evidence-missing">原始 API 证据：未提供</span>`;
+    return `<div class="ev"><b>证据 ${escapeHtml(e.evidence_level || "—")}</b> · ${escapeHtml(e.source_api || "")}<br/>字段：${escapeHtml(e.source_field || "—")}${sourceLink}</div>`;
+  }).join("") || `<div class="ev">无证据链</div>`;
+  evidence = (pageLink || "") + evidence;
+  document.getElementById("panel-body").innerHTML = html + renderAiDetails(raw) + evidence;
+}
+
+function renderEdgeDetail(edge) {
+  document.getElementById("panel-body").innerHTML =
+    `<div class="kv"><b>关系类型</b> ${escapeHtml(edge.edge_type || "—")}</div>` +
+    `<div class="kv"><b>下游/派生方</b> ${escapeHtml(shortName(edge.source))}</div>` +
+    `<div class="kv"><b>上游/来源方</b> ${escapeHtml(shortName(edge.target))}</div>` +
+    `<div class="kv"><b>方向</b> ${edge.edge_type === "expanded_from" ? "聚合成员归属，不是血缘" : "箭头指向更上游的来源模型"}</div>` +
+    `<div class="kv"><b>语义</b> ${edge.edge_type === "expanded_from" ? "聚合域展开归属，不参与风险传播" : "下游模型派生自上游模型"}</div>`;
+}
+
+const aiDiffList = document.getElementById("ai-diff-list");
+const aiStatusStrip = document.getElementById("ai-status-strip");
+const aiChanges = (DATA.ai_diff && DATA.ai_diff.changes) || [];
+if (DATA.ai_diff && DATA.ai_diff.ai_available === false) {
+  aiStatusStrip.innerHTML = "<b>AI 状态：未固化条款画像</b> · 本次仅运行规则与传播链；不是图谱渲染失败";
+  aiDiffList.innerHTML = `<div class="empty">本次快照生成时未传入 AI 服务，因此没有模型卡或 LICENSE 的 C 级语义画像。AI 不会用当前时间重新猜测许可证含义。</div>`;
+} else if (!aiChanges.length) {
+  aiStatusStrip.innerHTML = "<b>AI 状态：已读取冻结画像</b> · 未发现可验证的语义变化，仍需人工复核 C 级证据";
+  aiDiffList.innerHTML = `<div class="empty">AI 画像已读取，未发现可验证的语义变化；规则 Delta 不受影响。</div>`;
+} else {
+  aiStatusStrip.innerHTML = `<b>AI 状态：发现 ${aiChanges.length} 项语义差异</b> · 证据等级 C，只提示人工复核，不改变风险灯色`;
+  if (DATA.ai_diff && DATA.ai_diff.simulation) {
+    aiStatusStrip.innerHTML += " · 验收模拟差异，不代表真实世界许可证已变更";
+  }
+  aiChanges.forEach(change => {
+    const item = document.createElement("div");
+    item.className = "ai-diff";
+    const confidence = `${change.before_confidence ?? "—"} → ${change.after_confidence ?? "—"}`;
+    const sourcePath = change.after_source_path || "—";
+    item.innerHTML = `<div class="route">${escapeHtml(change.model_id)} · ${escapeHtml(change.dimension_zh || change.dimension)}</div>` +
+      `<div>${escapeHtml(change.before_state_zh || change.before_state)} → ${escapeHtml(change.after_state_zh || change.after_state)}</div>` +
+      `<div class="meta">复核优先级 ${escapeHtml(change.review_priority)} · AI 置信度 ${escapeHtml(confidence)} · C 级 · 待人工确认</div>` +
+      `<div class="meta">t1 证据来源 ${escapeHtml(sourcePath)} · 原文 SHA256 ${escapeHtml(change.after_quote_sha256 || "—")}</div>` +
+      `<div class="ai-quote">旧：${escapeHtml(change.before_quote || "—")}<br/>新：${escapeHtml(change.after_quote || "—")}</div>`;
+    aiDiffList.appendChild(item);
+  });
+}
+
+const evtDiv = document.getElementById("evt-list");
+const downloadReport = document.getElementById("download-report");
+const reportPreview = document.getElementById("report-preview");
+const openReport = document.getElementById("open-report");
+const closeReport = document.getElementById("close-report");
+const reportModal = document.getElementById("report-modal");
+function setReportOpen(open) {
+  reportModal.hidden = !open;
+  if (open) reportPreview.focus();
+}
+openReport.addEventListener("click", () => setReportOpen(true));
+closeReport.addEventListener("click", () => setReportOpen(false));
+reportModal.addEventListener("click", event => {
+  if (event.target === reportModal) setReportOpen(false);
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !reportModal.hidden) setReportOpen(false);
+});
+if (REPORT_MARKDOWN) {
+  reportPreview.textContent = REPORT_MARKDOWN;
+  downloadReport.addEventListener("click", () => {
+    const url = URL.createObjectURL(new Blob([REPORT_MARKDOWN], {type:"text/markdown;charset=utf-8"}));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "diff_report.md";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  });
+} else {
+  downloadReport.disabled = true;
+  downloadReport.textContent = "未附带 Markdown 报告";
+  openReport.disabled = true;
+  reportPreview.textContent = "本次 HTML 渲染未传入 --report；报告生成链路本身仍然保留。";
+}
+
+const aggregateLegend = document.getElementById("legend-aggregate");
+if (aggregateLegend) aggregateLegend.hidden = !DATA.nodes_t0.concat(DATA.nodes_t1).some(isAgg);
+
+function renderLineageForest() {
+  const host = document.getElementById("lineage-forest");
+  if (!host) return;
+  const byId = {};
+  DATA.nodes_t1.forEach(n => byId[n.id] = n);
+  const upstream = {};
+  DATA.edges_t1.forEach(e => {
+    if (e.edge_type === "expanded_from") return;
+    if (!upstream[e.source]) upstream[e.source] = [];
+    if (byId[e.target]) upstream[e.source].push(e.target);
+  });
+  let roots = DATA.nodes_t1.filter(n => !isAgg(n) && (n.lineage_role === "root" || n.lineage_depth === 0));
+  if (!roots.length) roots = DATA.nodes_t1.filter(n => !isAgg(n));
+  if (!roots.length) {
+    host.innerHTML = `<div class="lineage-empty">当前快照没有具体模型节点。</div>`;
+    return;
+  }
+  function branch(nodeId, seen, depth) {
+    if (depth > 12 || seen.has(nodeId)) return `<li><span class="arrow">↺</span>${escapeHtml(shortName(nodeId))} <span class="role">循环引用，已停止</span></li>`;
+    const nextSeen = new Set(seen);
+    nextSeen.add(nodeId);
+    return (upstream[nodeId] || []).map(target => {
+      const targetNode = byId[target] || {};
+      const role = targetNode.render_role_label || targetNode.lineage_type_ch || targetNode.lineage_type || "上游来源";
+      const license = targetNode.license || "未声明";
+      const children = branch(target, nextSeen, depth + 1);
+      return `<li><span class="arrow">↑</span><b>${escapeHtml(shortName(target))}</b> <span class="role">${escapeHtml(role)} · ${escapeHtml(license)}</span>${children ? `<ul>${children}</ul>` : ""}</li>`;
+    }).join("");
+  }
+  host.innerHTML = roots.map(root => {
+    const j = decisionOf(root.decision);
+    const tree = branch(root.id, new Set(), 0);
+    return `<div class="lineage-root"><div class="root-name">${escapeHtml(root.name || root.canonical_id)}</div>` +
+      `<div class="root-meta">项目直接使用 · 许可证 ${escapeHtml(root.license || "未声明")} · ${escapeHtml(j.label)}</div>` +
+      `${tree ? `<ul>${tree}</ul>` : `<div class="lineage-empty" style="margin-top:7px">未发现可解析的上游来源。</div>`}</div>`;
+  }).join("");
+}
+renderLineageForest();
+
+DATA.events.forEach(ev => {
+  const j = decisionOf(ev.decision);
+  const d = document.createElement("div");
+  d.className = "evt";
+  const fromName = shortName(ev.display_source || ev.source || ev.seed);
+  const toName = shortName(ev.display_target || ev.target || ev.seed);
+  const route = (fromName === toName)
+    ? escapeHtml(fromName)
+    : `${escapeHtml(fromName)} <span class="arrow">→</span> ${escapeHtml(toName)}`;
+  d.innerHTML = `<span class="tag" style="background:${j.color}">${escapeHtml(CHANGE_LABEL[ev.change_type] || ev.change_type)}</span>` +
+    `<div style="margin-top:4px">${route}</div>` +
+    `<div style="color:#7b8799;margin-top:2px">判定：${j.label} · 证据 ${escapeHtml(ev.evidence_level || "—")}</div>`;
+  d.onclick = () => renderCerts(ev.event_id, ev.seed);
+  evtDiv.appendChild(d);
+});
+
+const charts = {t0:null, t1:null};
+let activeSnapshot = "t1";
+
+function createSnapshotChart(snapshot) {
+  if (charts[snapshot]) return charts[snapshot];
+  const suffix = snapshot === "t1" ? "t1" : "t0";
+  const chart = buildChart(`chart${suffix.slice(1)}`, DATA[`nodes_${suffix}`], DATA[`edges_${suffix}`], DATA[`layout_${suffix}`], suffix);
+  chart.on("click", p => {
+    if (p.dataType === "node") {
+      const raw = p.data._raw;
+      renderNodeDetail(raw, snapshot);
+      if (isAgg(raw) && Number(p.data._childCount || 0) > 0) {
+        const expanded = expandedSet(snapshot);
+        if (expanded.has(raw.id)) expanded.delete(raw.id);
+        else expanded.add(raw.id);
+        chart._refreshExpansion();
+      }
+      setTimeout(() => chart.dispatchAction({type:"downplay", seriesIndex:0}), 0);
+    } else if (p.dataType === "edge") {
+      renderEdgeDetail(p.data._edge);
+    }
+  });
+  charts[snapshot] = chart;
+  return chart;
+}
+
+function activateSnapshot(snapshot) {
+  activeSnapshot = snapshot;
+  document.querySelectorAll(".snapshot-tab").forEach(button => {
+    const active = button.dataset.snapshot === snapshot;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", active ? "true" : "false");
+  });
+  document.getElementById("chart0").hidden = snapshot !== "t0";
+  document.getElementById("chart1").hidden = snapshot !== "t1";
+  const chart = createSnapshotChart(snapshot);
+  requestAnimationFrame(() => chart.resize());
+}
+
+document.querySelectorAll(".snapshot-tab").forEach(button => {
+  button.addEventListener("click", () => activateSnapshot(button.dataset.snapshot));
+});
+activateSnapshot("t1");
+
+const riskGrid = document.getElementById("risk-grid");
+const riskEmpty = document.getElementById("risk-empty");
+const riskCount = document.getElementById("risk-count");
+const riskMap = new Map();
+[["t0", DATA.nodes_t0], ["t1", DATA.nodes_t1]].forEach(([snapshot, nodes]) => {
+  nodes.filter(n => !isAgg(n) && ["RISK_CONFIRMED","RISK_POTENTIAL"].includes(n.decision || "")).forEach(n => {
+    const key = n.canonical_id || n.entity_key || n.id;
+    const current = riskMap.get(key);
+    if (!current || (DECISION_RANK[n.decision] || 0) > (DECISION_RANK[current.node.decision] || 0)) {
+      riskMap.set(key, {node:n, snapshots:[snapshot]});
+    } else if (!current.snapshots.includes(snapshot)) {
+      current.snapshots.push(snapshot);
+    }
+  });
+});
+if (!riskMap.size) {
+  riskEmpty.hidden = false;
+  riskEmpty.textContent = "当前两张快照中没有具备具体模型身份的红/黄风险节点；这不代表聚合域内不存在风险，请结合聚合统计查看。";
+  riskCount.textContent = "0 个具名风险模型";
+} else {
+  riskCount.textContent = `${riskMap.size} 个具名风险模型`;
+  [...riskMap.values()].forEach(item => {
+    const n = item.node;
+    const j = decisionOf(n.decision);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "risk-card";
+    button.style.borderLeftColor = j.color;
+    button.innerHTML = `<div class="name">${escapeHtml(n.name || n.canonical_id)}</div>` +
+      `<div class="meta">${j.label} · 许可证 ${escapeHtml(n.license || "未声明")} · 快照 ${item.snapshots.join("/")}${aiAnalysis(n) ? ` · AI ${(aiAnalysis(n).claims || []).length} 条待确认` : ""}</div>` +
+      `${isFixtureNode(n) ? `<div class="fixture-note">构造测试夹具，不代表真实下游模型</div>` : ""}`;
+    button.onclick = () => {
+      renderNodeDetail(n, item.snapshots.join("/"));
+      const preferred = item.snapshots.includes("t1") ? "t1" : "t0";
+      activateSnapshot(preferred);
+      const chart = createSnapshotChart(preferred);
+      const sourceNodes = preferred === "t1" ? DATA.nodes_t1 : DATA.nodes_t0;
+      const index = sourceNodes.findIndex(node => node.id === n.id);
+      if (isExpandedChild(n) && n.render_parent_id) {
+        expandedSet(preferred).add(n.render_parent_id);
+        chart._refreshExpansion();
+      }
+      chart.dispatchAction({type:"downplay", seriesIndex:0});
+      if (index >= 0) chart.dispatchAction({type:"highlight", seriesIndex:0, dataIndex:index});
+    };
+    riskGrid.appendChild(button);
+  });
+}
+
+window.addEventListener("resize", () => {
+  Object.values(charts).forEach(chart => chart && chart.resize());
+});
+</script>
+</body>
+</html>

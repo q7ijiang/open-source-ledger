@@ -1,0 +1,133 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-27T19:20:07.273077+08:00"
+  },
+  "components": [
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen-Image-2.1",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen-Image-2.1@master",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md",
+              "source_field": "README.md:front_matter.license",
+              "retrieved_at": "2026-10-27T11:09:25Z",
+              "raw_value": "Apache License 2.0",
+              "commit": "72900d004951bd845d7a4a77d566562eadd37c3f",
+              "historical_reconstruction": true
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-Qwen__Qwen-Image-2.1"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "SAFE"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "安全（绿）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1"
+        },
+        {
+          "name": "open-source-ledger:historical_reconstruction",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:historical_commit",
+          "value": "72900d004951bd845d7a4a77d566562eadd37c3f"
+        },
+        {
+          "name": "open-source-ledger:historical_source_url",
+          "value": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "root"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "complete"
+        },
+        {
+          "name": "open-source-ledger:lineage_complete",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:max_upstream_depth",
+          "value": "4"
+        },
+        {
+          "name": "open-source-ledger:max_upstream_nodes",
+          "value": "128"
+        },
+        {
+          "name": "open-source-ledger:resolved_upstream_count",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:max_depth_seen",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:unresolved_upstream_models_json",
+          "value": "[]"
+        },
+        {
+          "name": "open-source-ledger:lineage_cycles_json",
+          "value": "[]"
+        },
+        {
+          "name": "open-source-ledger:ai_status",
+          "value": "ok"
+        },
+        {
+          "name": "open-source-ledger:ai_evidence_level",
+          "value": "C"
+        },
+        {
+          "name": "open-source-ledger:ai_analysis_json",
+          "value": "{\"analysis_type\": \"model_profile\", \"claims\": [{\"claim_id\": \"claim-641d7d08748c\", \"condition\": \"\", \"conditions\": [], \"confidence\": 0.59, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"commercial_use\", \"dimension_zh\": \"商业使用\", \"evidence\": {\"confidence\": 0.59, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484\", \"quote\": \"license: Apache License 2.0\", \"quote_sha256\": \"ec5dff827b5f977ee667a3ff57daa447e3d6a443a53d633242a5c7abdbbc95c4\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.59, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484\", \"quote\": \"license: Apache License 2.0\", \"quote_sha256\": \"ec5dff827b5f977ee667a3ff57daa447e3d6a443a53d633242a5c7abdbbc95c4\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"unknown\", \"state_zh\": \"证据不足\", \"statement\": \"README 元数据声明 Apache License 2.0，但仅凭该字段不能替代对完整许可原文的核验。\"}], \"conflicts\": [], \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"gaps\": [{\"dimension\": \"redistribution\", \"dimension_zh\": \"再分发\", \"reason\": \"历史快照未保存完整许可文本\"}, {\"dimension\": \"modification\", \"dimension_zh\": \"修改与衍生\", \"reason\": \"历史快照未保存完整许可文本\"}, {\"dimension\": \"training_other_models\", \"dimension_zh\": \"训练其他模型\", \"reason\": \"证据不足：README 元数据无法说明训练其他模型的条件\"}, {\"dimension\": \"fine_tuned_redistribution\", \"dimension_zh\": \"微调版本再分发\", \"reason\": \"证据不足\"}, {\"dimension\": \"commercial_license_request\", \"dimension_zh\": \"商用授权申请方式\", \"reason\": \"证据不足\"}], \"generated_at\": \"2026-10-27T11:20:06Z\", \"historical_reconstruction\": true, \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"offline://qwen-image-license-fixture\", \"model\": \"frozen-qwen-image-license-fixture\", \"provider\": \"mock\", \"timeout\": 60.0}, \"schema_version\": \"ai-analysis/v2\", \"simulation\": false, \"simulation_note\": \"\", \"status\": \"ok\", \"subject\": {\"fact_source\": \"ModelScope historical README reconstruction\", \"license_fact\": \"Apache License 2.0\", \"model_id\": \"Qwen/Qwen-Image-2.1\", \"revision\": \"72900d004951bd845d7a4a77d566562eadd37c3f\", \"source_bundle_sha256\": \"9284c9fb7bfa6367a80e1054abcf3c2a8bec9baa4730251dce2d28a4351b6e0b\"}, \"summary\": \"该历史快照只能证明 README 元数据曾声明 Apache License 2.0；未保留当时的完整 Apache LICENSE 文件，不能据此补齐全部授权边界。\"}"
+        },
+        {
+          "name": "open-source-ledger:ai_project_context_json",
+          "value": "{\"analysis_type\": \"project_context\", \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"generated_at\": \"2026-10-27T11:20:07Z\", \"historical_reconstruction\": true, \"historical_reconstruction_note\": \"项目文件是演示夹具；许可证时间点来自 ModelScope 的真实提交历史。\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"offline://qwen-image-license-fixture\", \"model\": \"frozen-qwen-image-license-fixture\", \"provider\": \"mock\", \"timeout\": 60.0}, \"rejected\": [], \"schema_version\": \"ai-analysis/v2\", \"simulation\": false, \"status\": \"ok\", \"subject\": {\"model_count\": 0, \"project_path\": \"C:\\\\Users\\\\Qijiang\\\\Documents\\\\GitHub\\\\open-source-ledger\\\\tests\\\\fixtures\\\\projects\\\\qwen_image_license_tightening\\\\direct\\\\project\"}, \"uses\": [{\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"4f01e3ec537338ca4aed662582852d5e7aab0266b50cdd7c51c4e9fbd8893401\", \"quote\": \"pipeline = AutoPipelineForImage2Image.from_pretrained(MODEL_ID)\", \"quote_sha256\": \"9f1998e4eab409ec8ec3b32db674e3125dfed295b7e28dd73e61f080ee93fa6d\", \"source_path\": \"app.py\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"项目源码直接加载 Qwen-Image-2.1 并在本地执行推理。\", \"use_type\": \"local_inference\", \"use_type_zh\": \"本地推理\"}]}"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+      "dependsOn": []
+    }
+  ]
+}

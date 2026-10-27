@@ -1,0 +1,5 @@
+{
+  "service": "image-generation",
+  "model_id": "Qwen/Qwen-Image-2.1",
+  "deployment": "internal"
+}

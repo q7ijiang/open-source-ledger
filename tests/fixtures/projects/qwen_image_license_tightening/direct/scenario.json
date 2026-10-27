@@ -1,0 +1,25 @@
+{
+  "schema_version": "modelscope-license-tightening-demo/v1",
+  "name": "direct",
+  "generated_at": "2026-10-27T11:20:07Z",
+  "fixture_project": true,
+  "historical_reconstruction": true,
+  "simulation": false,
+  "simulation_reason": null,
+  "project_path": "project",
+  "direct_models": [
+    "Qwen/Qwen-Image-2.1"
+  ],
+  "target_model": "Qwen/Qwen-Image-2.1",
+  "historical_commit": "72900d004951bd845d7a4a77d566562eadd37c3f",
+  "license_commit": "4b1751dd4e00f6c1a097c5a80d05e6521cea1c39",
+  "readme_license_commit": "c64b6eace0507982fa3f4828461b201d836d625a",
+  "historical_license_label": "Apache License 2.0",
+  "current_license": "qwen-research",
+  "t0": "t0_bom.json",
+  "t1": "t1_bom.json",
+  "diff_report": "diff_report.md",
+  "diff_graph": "diff_graph.html",
+  "ai_bundle": "ai_analysis.json",
+  "historical_boundary": "README metadata only; no retained Apache-2.0 LICENSE file is claimed."
+}

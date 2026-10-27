@@ -9,6 +9,7 @@
 | 文件 | 覆盖内容 |
 | --- | --- |
 | `test_real_modelscope_project_fixtures.py` | 完整项目快照的模型覆盖、上游分支、模拟标记、BOM 来源和 Diff 布局 |
+| `test_qwen_image_license_fixtures.py` | Qwen-Image-2.1 历史许可证据、反事实边界、AI 置信度构成、路径证书和可移植性 |
 | `test_snapshot_portability.py` | 已提交快照不包含本机用户目录或机器专属绝对路径 |
 
 ## 测试数据
@@ -16,6 +17,7 @@
 - `tests/fixtures/projects/real_modelscope/full_project/`：受控的多服务项目源码。
 - `tests/fixtures/projects/real_modelscope/snapshots/full/`：项目扫描、AI 证据和变更场景快照。
 - `tests/fixtures/projects/real_modelscope/snapshots/full/scenarios/`：直接模型变更和上游模型变更的 `t0/t1` 数据。
+- `tests/fixtures/projects/qwen_image_license_tightening/`：Qwen-Image-2.1 直接依赖和真实上游传播两套演示项目、BOM、报告与 HTML。
 
 ## 运行方式
 
@@ -29,4 +31,6 @@ python -m pytest tests/scenarios/project_fixtures -q
 - ModelScope 血缘的 `t0` 已冻结为观测快照；测试运行时不重新访问平台。
 - 场景中的 `t1` 许可证变化是人为模拟，文件必须保留 `simulation=true`。
 - AI 验收数据是预录响应，不代表 Qwen 或其他模型当前的真实许可证文本。
+- `qwen_image_license_tightening` 的历史 Apache 口径只来自早期 README 元数据，不包含所谓被改写的 Apache LICENSE 文件。
+- `qwen_image_license_tightening/upstream` 使用当前真实血缘回放历史许可证，因此必须保留 `simulation=true`。
 - 当前范围只审查项目直接使用的模型及其上游，不要求保存全量下游模型名。

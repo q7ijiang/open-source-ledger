@@ -1,0 +1,74 @@
+[
+  {
+    "source": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master",
+    "target": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-unsloth__Qwen-Image-2.1-Turbo-FP8"
+  },
+  {
+    "source": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master",
+    "target": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-unsloth__Qwen-Image-2.1-Turbo-FP8"
+  },
+  {
+    "source": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master",
+    "target": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-unsloth__Qwen-Image-2.1-Turbo-FP8"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+    "target": "model:modelscope/OpenGVLab/InternViT-300M-448px@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+    "target": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+    "target": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+    "edge_type": "derived_from",
+    "evidence_level": "A",
+    "source_field": "Data.BaseModel",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+    "target": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  },
+  {
+    "source": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+    "target": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "edge_type": "derived_from",
+    "evidence_level": "B",
+    "source_field": "lineage.ParentsModels",
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+  }
+]

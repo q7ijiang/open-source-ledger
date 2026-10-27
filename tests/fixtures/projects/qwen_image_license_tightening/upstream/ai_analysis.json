@@ -1,0 +1,859 @@
+{
+  "schema_version": "ai-analysis-bundle/v1",
+  "prompt_version": "modelscope-license-audit-v2",
+  "generated_at": "2026-10-27T11:20:17Z",
+  "provider": {
+    "provider": "mock",
+    "model": "frozen-qwen-image-license-fixture",
+    "base_url": "offline://qwen-image-license-fixture",
+    "timeout": 60.0
+  },
+  "model_analyses": [
+    {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "model_profile",
+      "status": "ok",
+      "subject": {
+        "model_id": "Qwen/Qwen-Image-2.1",
+        "revision": "72900d004951bd845d7a4a77d566562eadd37c3f",
+        "license_fact": "Apache License 2.0",
+        "fact_source": "ModelScope historical README reconstruction",
+        "source_bundle_sha256": "9284c9fb7bfa6367a80e1054abcf3c2a8bec9baa4730251dce2d28a4351b6e0b"
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:06Z",
+      "summary": "该历史快照只能证明 README 元数据曾声明 Apache License 2.0；未保留当时的完整 Apache LICENSE 文件，不能据此补齐全部授权边界。",
+      "claims": [
+        {
+          "claim_id": "claim-641d7d08748c",
+          "dimension": "commercial_use",
+          "dimension_zh": "商业使用",
+          "state": "unknown",
+          "state_zh": "证据不足",
+          "statement": "README 元数据声明 Apache License 2.0，但仅凭该字段不能替代对完整许可原文的核验。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.59,
+          "confidence_factors": {
+            "base": 0.48,
+            "readme": 0.08,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "uncertain_state": -0.12
+          },
+          "evidence": {
+            "source_path": "README.md",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md",
+            "quote": "license: Apache License 2.0",
+            "quote_sha256": "ec5dff827b5f977ee667a3ff57daa447e3d6a443a53d633242a5c7abdbbc95c4",
+            "file_sha256": "69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484",
+            "confidence": 0.59,
+            "confidence_factors": {
+              "base": 0.48,
+              "readme": 0.08,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "README.md",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md",
+              "quote": "license: Apache License 2.0",
+              "quote_sha256": "ec5dff827b5f977ee667a3ff57daa447e3d6a443a53d633242a5c7abdbbc95c4",
+              "file_sha256": "69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484",
+              "confidence": 0.59,
+              "confidence_factors": {
+                "base": 0.48,
+                "readme": 0.08,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        }
+      ],
+      "conflicts": [],
+      "gaps": [
+        {
+          "dimension": "redistribution",
+          "dimension_zh": "再分发",
+          "reason": "历史快照未保存完整许可文本"
+        },
+        {
+          "dimension": "modification",
+          "dimension_zh": "修改与衍生",
+          "reason": "历史快照未保存完整许可文本"
+        },
+        {
+          "dimension": "training_other_models",
+          "dimension_zh": "训练其他模型",
+          "reason": "证据不足：README 元数据无法说明训练其他模型的条件"
+        },
+        {
+          "dimension": "fine_tuned_redistribution",
+          "dimension_zh": "微调版本再分发",
+          "reason": "证据不足"
+        },
+        {
+          "dimension": "commercial_license_request",
+          "dimension_zh": "商用授权申请方式",
+          "reason": "证据不足"
+        }
+      ],
+      "simulation": true,
+      "simulation_note": "当前真实血缘与 Qwen-Image-2.1 历史 README 许可证元数据的反事实重放；Turbo/FP8 在 Apache 标注阶段尚未发布。",
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "historical_reconstruction": true
+    },
+    {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "model_profile",
+      "status": "ok",
+      "subject": {
+        "model_id": "Qwen/Qwen-Image-2.1",
+        "revision": "master",
+        "license_fact": "qwen-research",
+        "fact_source": "ModelScope current source bundle",
+        "source_bundle_sha256": "549e4cb96d541371c578ff94f69d9696cfa4af44a0da6ab8e9483461cfbf5fc8"
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:06Z",
+      "summary": "Qwen Research License 将材料用途限制为非商业目的；商用需要单独授权，再分发、修改、声明保留和模型训练相关发布还附带条件。",
+      "claims": [
+        {
+          "claim_id": "claim-d198c1c27513",
+          "dimension": "commercial_license_request",
+          "dimension_zh": "商用授权申请方式",
+          "state": "conditional",
+          "state_zh": "有条件允许",
+          "statement": "商业使用需要向协议所列联系地址申请单独商业许可证。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.66,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "uncertain_state": -0.12
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+            "quote": "b. You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us. If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com.",
+            "quote_sha256": "604f3cd83aee7258c588f3cd7720a4a85c6c33d5db360ec9119a95a8b8037073",
+            "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+            "confidence": 0.66,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+              "quote": "b. You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us. If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com.",
+              "quote_sha256": "604f3cd83aee7258c588f3cd7720a4a85c6c33d5db360ec9119a95a8b8037073",
+              "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+              "confidence": 0.66,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        },
+        {
+          "claim_id": "claim-7fbfa1849e11",
+          "dimension": "commercial_use",
+          "dimension_zh": "商业使用",
+          "state": "prohibited",
+          "state_zh": "禁止",
+          "statement": "材料仅可用于非商业目的，未取得单独商业许可时不得商用。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.86,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "restriction_wording": 0.08,
+            "source_sha256": 0.03,
+            "quote_context": 0.02
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+            "quote": "a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.",
+            "quote_sha256": "913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6",
+            "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+            "confidence": 0.86,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "restriction_wording": 0.08,
+              "source_sha256": 0.03,
+              "quote_context": 0.02
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+              "quote": "a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.",
+              "quote_sha256": "913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6",
+              "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+              "confidence": 0.86,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "restriction_wording": 0.08,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        },
+        {
+          "claim_id": "claim-0b987c48eb74",
+          "dimension": "fine_tuned_redistribution",
+          "dimension_zh": "微调版本再分发",
+          "state": "conditional",
+          "state_zh": "有条件允许",
+          "statement": "衍生作品可附带不同条款，但仍须遵守原协议。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.66,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "uncertain_state": -0.12
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+            "quote": "d. You may add your own copyright statement to your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of your modifications, or for any such derivative works as a whole, provided your use, reproduction, and distribution of the work otherwise complies with the terms and conditions of this Agreement.",
+            "quote_sha256": "7ebc41ea077fca7ef4fb5d30f9a5b0ba61e00da45669faddf021e4614ce7273b",
+            "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+            "confidence": 0.66,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+              "quote": "d. You may add your own copyright statement to your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of your modifications, or for any such derivative works as a whole, provided your use, reproduction, and distribution of the work otherwise complies with the terms and conditions of this Agreement.",
+              "quote_sha256": "7ebc41ea077fca7ef4fb5d30f9a5b0ba61e00da45669faddf021e4614ce7273b",
+              "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+              "confidence": 0.66,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        },
+        {
+          "claim_id": "claim-74eabd451069",
+          "dimension": "modification",
+          "dimension_zh": "修改与衍生",
+          "state": "conditional",
+          "state_zh": "有条件允许",
+          "statement": "修改文件必须带有醒目的修改声明。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.66,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "uncertain_state": -0.12
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+            "quote": "b. You shall cause any modified files to carry prominent notices stating that you changed the files;",
+            "quote_sha256": "3ca44bbf10976843f30f6b6cbcf6938681b2da23d0e9616125a7d91816f7782e",
+            "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+            "confidence": 0.66,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+              "quote": "b. You shall cause any modified files to carry prominent notices stating that you changed the files;",
+              "quote_sha256": "3ca44bbf10976843f30f6b6cbcf6938681b2da23d0e9616125a7d91816f7782e",
+              "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+              "confidence": 0.66,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        },
+        {
+          "claim_id": "claim-3561d2feace4",
+          "dimension": "notice",
+          "dimension_zh": "许可证与版权声明保留",
+          "state": "conditional",
+          "state_zh": "有条件允许",
+          "statement": "再分发副本需要保留 Notice 文件中的指定声明。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.66,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "uncertain_state": -0.12
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+            "quote": "c. You shall retain in all copies of the Materials that you distribute the following attribution notices within a \"Notice\" text file distributed as a part of such copies: \"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\"; and",
+            "quote_sha256": "dd5271267fd48b7dc69ccea1638ec556744479f1dce2db9bd8f5a94f18b83371",
+            "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+            "confidence": 0.66,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+              "quote": "c. You shall retain in all copies of the Materials that you distribute the following attribution notices within a \"Notice\" text file distributed as a part of such copies: \"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\"; and",
+              "quote_sha256": "dd5271267fd48b7dc69ccea1638ec556744479f1dce2db9bd8f5a94f18b83371",
+              "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+              "confidence": 0.66,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        },
+        {
+          "claim_id": "claim-35c3cce89bb4",
+          "dimension": "redistribution",
+          "dimension_zh": "再分发",
+          "state": "conditional",
+          "state_zh": "有条件允许",
+          "statement": "协议允许在满足第 2 条及后续条件时再分发材料或衍生作品。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.66,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "uncertain_state": -0.12
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+            "quote": "Subject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:",
+            "quote_sha256": "392e11e45e37ac421840f4c69e2bc023e0f0540dc909a603948e9552620a6558",
+            "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+            "confidence": 0.66,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+              "quote": "Subject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:",
+              "quote_sha256": "392e11e45e37ac421840f4c69e2bc023e0f0540dc909a603948e9552620a6558",
+              "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+              "confidence": 0.66,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        },
+        {
+          "claim_id": "claim-cf7635865c4c",
+          "dimension": "training_other_models",
+          "dimension_zh": "训练其他模型",
+          "state": "conditional",
+          "state_zh": "有条件允许",
+          "statement": "使用材料或其输出训练、微调或改进其他 AI 模型并发布时，需要展示指定归属文案。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.66,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "uncertain_state": -0.12
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+            "quote": "b. If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.",
+            "quote_sha256": "b062018cb9c1f37db79dafa82a51516906c39482ac56fd411985fdb47dfccd11",
+            "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+            "confidence": 0.66,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+              "quote": "b. If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.",
+              "quote_sha256": "b062018cb9c1f37db79dafa82a51516906c39482ac56fd411985fdb47dfccd11",
+              "file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+              "confidence": 0.66,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        }
+      ],
+      "conflicts": [],
+      "gaps": [
+        {
+          "dimension": "patent",
+          "dimension_zh": "专利条款",
+          "reason": "证据不足：当前 LICENSE 未形成可独立验证的专利授权条款。"
+        }
+      ],
+      "simulation": false,
+      "simulation_note": "",
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "historical_reconstruction": false
+    }
+  ],
+  "project_context": {
+    "schema_version": "ai-analysis/v2",
+    "analysis_type": "project_context",
+    "status": "ok",
+    "subject": {
+      "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project",
+      "model_count": 0
+    },
+    "provider": {
+      "provider": "mock",
+      "model": "frozen-qwen-image-license-fixture",
+      "base_url": "offline://qwen-image-license-fixture",
+      "timeout": 60.0
+    },
+    "prompt_version": "modelscope-license-audit-v2",
+    "generated_at": "2026-10-27T11:20:17Z",
+    "uses": [
+      {
+        "use_type": "local_inference",
+        "use_type_zh": "本地推理",
+        "statement": "项目源码在本地加载模型并执行推理。",
+        "evidence_level": "C",
+        "confidence": 0.83,
+        "evidence": {
+          "source_path": "app.py",
+          "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)",
+          "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b",
+          "file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc"
+        },
+        "human_review": "pending"
+      }
+    ],
+    "rejected": [],
+    "fact_policy": {
+      "ai_may_change_license": false,
+      "ai_may_change_decision": false,
+      "ai_evidence_level": "C",
+      "human_review_required": true
+    },
+    "simulation": true,
+    "historical_reconstruction": false,
+    "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。"
+  },
+  "semantic_diff": {
+    "schema_version": "ai-analysis/v2",
+    "analysis_type": "semantic_diff",
+    "status": "ok",
+    "ai_available": true,
+    "before_profile_count": 1,
+    "after_profile_count": 1,
+    "simulation": true,
+    "generated_at": "2026-10-27T11:20:17Z",
+    "changes": [
+      {
+        "model_id": "Qwen/Qwen-Image-2.1",
+        "dimension": "commercial_license_request",
+        "dimension_zh": "商用授权申请方式",
+        "before_state": "not_found",
+        "before_state_zh": "未找到明确条款",
+        "after_state": "conditional",
+        "after_state_zh": "有条件允许",
+        "change_type": "evidence_added",
+        "review_priority": "low",
+        "reason": "t1 新增可验证的commercial_license_request条款证据",
+        "before_quote": "",
+        "after_quote": "b. You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us. If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com.",
+        "after_confidence": 0.66,
+        "after_confidence_factors": {
+          "base": 0.48,
+          "license_file": 0.15,
+          "exact_quote": 0.1,
+          "source_sha256": 0.03,
+          "quote_context": 0.02,
+          "uncertain_state": -0.12
+        },
+        "after_evidence_level": "C",
+        "after_source_path": "LICENSE",
+        "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+        "after_quote_sha256": "604f3cd83aee7258c588f3cd7720a4a85c6c33d5db360ec9119a95a8b8037073",
+        "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"
+      },
+      {
+        "model_id": "Qwen/Qwen-Image-2.1",
+        "dimension": "commercial_use",
+        "dimension_zh": "商业使用",
+        "before_state": "unknown",
+        "before_state_zh": "证据不足",
+        "after_state": "prohibited",
+        "after_state_zh": "禁止",
+        "change_type": "tightened",
+        "review_priority": "high",
+        "reason": "许可证名称未变，但commercial_use语义由unknown变为prohibited",
+        "before_quote": "license: Apache License 2.0",
+        "after_quote": "a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.",
+        "before_confidence": 0.59,
+        "before_confidence_factors": {
+          "base": 0.48,
+          "readme": 0.08,
+          "exact_quote": 0.1,
+          "source_sha256": 0.03,
+          "quote_context": 0.02,
+          "uncertain_state": -0.12
+        },
+        "before_evidence_level": "C",
+        "before_source_path": "README.md",
+        "before_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md",
+        "before_quote_sha256": "ec5dff827b5f977ee667a3ff57daa447e3d6a443a53d633242a5c7abdbbc95c4",
+        "before_file_sha256": "69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484",
+        "after_confidence": 0.86,
+        "after_confidence_factors": {
+          "base": 0.48,
+          "license_file": 0.15,
+          "exact_quote": 0.1,
+          "restriction_wording": 0.08,
+          "source_sha256": 0.03,
+          "quote_context": 0.02
+        },
+        "after_evidence_level": "C",
+        "after_source_path": "LICENSE",
+        "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+        "after_quote_sha256": "913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6",
+        "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"
+      },
+      {
+        "model_id": "Qwen/Qwen-Image-2.1",
+        "dimension": "fine_tuned_redistribution",
+        "dimension_zh": "微调版本再分发",
+        "before_state": "not_found",
+        "before_state_zh": "未找到明确条款",
+        "after_state": "conditional",
+        "after_state_zh": "有条件允许",
+        "change_type": "evidence_added",
+        "review_priority": "low",
+        "reason": "t1 新增可验证的fine_tuned_redistribution条款证据",
+        "before_quote": "",
+        "after_quote": "d. You may add your own copyright statement to your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of your modifications, or for any such derivative works as a whole, provided your use, reproduction, and distribution of the work otherwise complies with the terms and conditions of this Agreement.",
+        "after_confidence": 0.66,
+        "after_confidence_factors": {
+          "base": 0.48,
+          "license_file": 0.15,
+          "exact_quote": 0.1,
+          "source_sha256": 0.03,
+          "quote_context": 0.02,
+          "uncertain_state": -0.12
+        },
+        "after_evidence_level": "C",
+        "after_source_path": "LICENSE",
+        "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+        "after_quote_sha256": "7ebc41ea077fca7ef4fb5d30f9a5b0ba61e00da45669faddf021e4614ce7273b",
+        "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"
+      },
+      {
+        "model_id": "Qwen/Qwen-Image-2.1",
+        "dimension": "modification",
+        "dimension_zh": "修改与衍生",
+        "before_state": "not_found",
+        "before_state_zh": "未找到明确条款",
+        "after_state": "conditional",
+        "after_state_zh": "有条件允许",
+        "change_type": "evidence_added",
+        "review_priority": "low",
+        "reason": "t1 新增可验证的modification条款证据",
+        "before_quote": "",
+        "after_quote": "b. You shall cause any modified files to carry prominent notices stating that you changed the files;",
+        "after_confidence": 0.66,
+        "after_confidence_factors": {
+          "base": 0.48,
+          "license_file": 0.15,
+          "exact_quote": 0.1,
+          "source_sha256": 0.03,
+          "quote_context": 0.02,
+          "uncertain_state": -0.12
+        },
+        "after_evidence_level": "C",
+        "after_source_path": "LICENSE",
+        "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+        "after_quote_sha256": "3ca44bbf10976843f30f6b6cbcf6938681b2da23d0e9616125a7d91816f7782e",
+        "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"
+      },
+      {
+        "model_id": "Qwen/Qwen-Image-2.1",
+        "dimension": "notice",
+        "dimension_zh": "许可证与版权声明保留",
+        "before_state": "not_found",
+        "before_state_zh": "未找到明确条款",
+        "after_state": "conditional",
+        "after_state_zh": "有条件允许",
+        "change_type": "evidence_added",
+        "review_priority": "low",
+        "reason": "t1 新增可验证的notice条款证据",
+        "before_quote": "",
+        "after_quote": "c. You shall retain in all copies of the Materials that you distribute the following attribution notices within a \"Notice\" text file distributed as a part of such copies: \"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\"; and",
+        "after_confidence": 0.66,
+        "after_confidence_factors": {
+          "base": 0.48,
+          "license_file": 0.15,
+          "exact_quote": 0.1,
+          "source_sha256": 0.03,
+          "quote_context": 0.02,
+          "uncertain_state": -0.12
+        },
+        "after_evidence_level": "C",
+        "after_source_path": "LICENSE",
+        "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+        "after_quote_sha256": "dd5271267fd48b7dc69ccea1638ec556744479f1dce2db9bd8f5a94f18b83371",
+        "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"
+      },
+      {
+        "model_id": "Qwen/Qwen-Image-2.1",
+        "dimension": "redistribution",
+        "dimension_zh": "再分发",
+        "before_state": "not_found",
+        "before_state_zh": "未找到明确条款",
+        "after_state": "conditional",
+        "after_state_zh": "有条件允许",
+        "change_type": "evidence_added",
+        "review_priority": "low",
+        "reason": "t1 新增可验证的redistribution条款证据",
+        "before_quote": "",
+        "after_quote": "Subject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:",
+        "after_confidence": 0.66,
+        "after_confidence_factors": {
+          "base": 0.48,
+          "license_file": 0.15,
+          "exact_quote": 0.1,
+          "source_sha256": 0.03,
+          "quote_context": 0.02,
+          "uncertain_state": -0.12
+        },
+        "after_evidence_level": "C",
+        "after_source_path": "LICENSE",
+        "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+        "after_quote_sha256": "392e11e45e37ac421840f4c69e2bc023e0f0540dc909a603948e9552620a6558",
+        "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"
+      },
+      {
+        "model_id": "Qwen/Qwen-Image-2.1",
+        "dimension": "training_other_models",
+        "dimension_zh": "训练其他模型",
+        "before_state": "not_found",
+        "before_state_zh": "未找到明确条款",
+        "after_state": "conditional",
+        "after_state_zh": "有条件允许",
+        "change_type": "evidence_added",
+        "review_priority": "low",
+        "reason": "t1 新增可验证的training_other_models条款证据",
+        "before_quote": "",
+        "after_quote": "b. If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.",
+        "after_confidence": 0.66,
+        "after_confidence_factors": {
+          "base": 0.48,
+          "license_file": 0.15,
+          "exact_quote": 0.1,
+          "source_sha256": 0.03,
+          "quote_context": 0.02,
+          "uncertain_state": -0.12
+        },
+        "after_evidence_level": "C",
+        "after_source_path": "LICENSE",
+        "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+        "after_quote_sha256": "b062018cb9c1f37db79dafa82a51516906c39482ac56fd411985fdb47dfccd11",
+        "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"
+      }
+    ],
+    "fact_policy": {
+      "ai_may_change_decision": false,
+      "ai_may_change_delta": false,
+      "ai_evidence_level": "C",
+      "human_review_required": true
+    }
+  },
+  "simulation": true,
+  "historical_reconstruction": true,
+  "simulation_note": "上游 t0 复用当前真实血缘并重放历史许可证元数据，属于反事实模拟。"
+}

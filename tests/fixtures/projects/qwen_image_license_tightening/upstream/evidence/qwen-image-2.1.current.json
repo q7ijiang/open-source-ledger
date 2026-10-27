@@ -1,0 +1,611 @@
+{
+  "schema_version": "modelscope-source-bundle/v1",
+  "source": "modelscope",
+  "model_id": "Qwen/Qwen-Image-2.1",
+  "revision": "master",
+  "retrieved_at": "2026-10-27T11:09:24.981161Z",
+  "facts": {
+    "license": {
+      "value": "qwen-research",
+      "source_field": "Data.LicenseName",
+      "evidence_level": "A"
+    },
+    "detail": {
+      "AigcAttributes": "{\"SubVisionFoundation\": \"QWEN_IMAGE_2_1\"}",
+      "AigcIsTop": 6,
+      "AigcType": "Checkpoint",
+      "AlreadyStar": false,
+      "ApplyMeta": "{}",
+      "ApprovalMode": 1,
+      "ApprovalNotifyEmail": "",
+      "Architectures": [],
+      "Avatar": "https://resources.modelscope.cn/avatar/660b6637-48c7-47b1-ab96-c7a06c23ef9b.png",
+      "Backbone": [],
+      "BackendSupport": {
+        "architectures": null,
+        "backend_info": {
+          "deploy_task": null,
+          "lmdeploy": null,
+          "lmdeploy_turbomind": null,
+          "ollama": null,
+          "sglang": null,
+          "vllm": null
+        },
+        "model_id": "Qwen/Qwen-Image-2.1"
+      },
+      "BaseModel": [
+        ""
+      ],
+      "BaseModelRelation": "finetune",
+      "CardReady": 0,
+      "CardUnreadyReason": "",
+      "CertificationCreateBy": "",
+      "CertificationCreatedTime": -62135596800,
+      "ChineseName": "",
+      "CoverHeight": 0,
+      "CoverImages": [],
+      "CoverWidth": 0,
+      "CreatedBy": "kelseye",
+      "CreatedTime": 1789461232,
+      "DashSdkParameter": "",
+      "Datasets": {},
+      "DemoAvailable": 0,
+      "DemoUnavailableReason": "",
+      "Description": "",
+      "Domain": [],
+      "Downloads": 62664,
+      "ExampleCodeAvailable": 0,
+      "ExampleCodeUnavailableReason": "",
+      "ForbiddenVisibilityUpdate": false,
+      "Frameworks": [
+        ""
+      ],
+      "FromSite": "github",
+      "Id": 1579945,
+      "Integrating": 0,
+      "IntegrationFailureLog": "",
+      "IntegrationFailureReason": "",
+      "IsAccessible": 1,
+      "IsCertification": 4,
+      "IsHot": 0,
+      "IsNewModel": false,
+      "IsOnline": 1,
+      "IsPreTrain": 0,
+      "IsPublished": 1,
+      "IsTop": 90,
+      "Language": [],
+      "LastUpdatedTime": 1791527345,
+      "Libraries": [
+        "pytorch",
+        "diffusers",
+        "safetensors",
+        ""
+      ],
+      "License": "other",
+      "LicenseLink": "LICENSE",
+      "LicenseName": "qwen-research",
+      "Meta": "",
+      "Metrics": [],
+      "ModelDetail": {},
+      "ModelInfos": {
+        "safetensor": {
+          "chat_template": "",
+          "files": [
+            {
+              "name": "text_encoder/model-00001-of-00004.safetensors",
+              "sha256": "dde00291b5f7fb92013895310a3da0ddba78674df9f10d505d375243dc01fc6f",
+              "size": 4998056552
+            },
+            {
+              "name": "text_encoder/model-00002-of-00004.safetensors",
+              "sha256": "9047faccc0a6d98496a52d55f27be1c94a9c259d1e283fbea0128d054a948d42",
+              "size": 4915962464
+            },
+            {
+              "name": "text_encoder/model-00003-of-00004.safetensors",
+              "sha256": "8c54187654c0176b73ae73785bf791dc9a14c9df7fb4310083a09d42048cb57e",
+              "size": 4915962496
+            },
+            {
+              "name": "text_encoder/model-00004-of-00004.safetensors",
+              "sha256": "5311532aaaeae3259eb6a7b2c600636be1159adf7ded35f53579f7d0e7d43cdd",
+              "size": 2704357976
+            },
+            {
+              "name": "transformer/diffusion_pytorch_model-00001-of-00002.safetensors",
+              "sha256": "9e6bc2d641e67bf277895ea8777141044a38f3edb7101bc469b2961dd7c36b4b",
+              "size": 9968332504
+            },
+            {
+              "name": "transformer/diffusion_pytorch_model-00002-of-00002.safetensors",
+              "sha256": "3aaf234dcbe128530479735854a346b5e3e66283b7c11db56f836bbd1c13ebaa",
+              "size": 4261951904
+            },
+            {
+              "name": "vae/diffusion_pytorch_model.safetensors",
+              "sha256": "a07a1b7c4ee2966a1b3bdc37de9b4f983d56937e46619f709a80b6e490675417",
+              "size": 1350989512
+            }
+          ],
+          "model_size": 16219988836,
+          "tensor_type": [
+            "BF16",
+            "F32"
+          ]
+        }
+      },
+      "ModelRevisions": null,
+      "ModelSource": "USER_UPLOAD",
+      "ModelTools": "",
+      "ModelType": [],
+      "MuseInfo": {
+        "genImageCount": 112314,
+        "groupType": "ROOT",
+        "isStar": null,
+        "model": {
+          "cleaned": 0,
+          "commentCount": 0,
+          "deleted": 0,
+          "description": null,
+          "downloadedCount": 5163,
+          "favoriteCount": 1413,
+          "gmtCreate": 1789644689000,
+          "gmtModified": 1793099355000,
+          "id": 184386,
+          "imageGenerateCount": 112314,
+          "imageId": null,
+          "modelName": "Qwen/Qwen-Image-2.1",
+          "modelType": "Checkpoint",
+          "operatorEmpId": "369992",
+          "operatorName": "Qwen",
+          "showName": "Qwen Img 2.1",
+          "stableDiffusionVersion": "QWEN_IMAGE_2_1",
+          "tags": null,
+          "versionCount": 1
+        },
+        "stableDiffusionSubVersion": "QWEN_IMAGE_2_1",
+        "stableDiffusionSubVersionDesc": "Qwen-Image-2.1",
+        "stableDiffusionVersion": "QWEN_IMAGE_2_1",
+        "stableDiffusionVersionDesc": "Qwen-Image-2.1",
+        "tags": null,
+        "uploaderName": "Muse官方团队",
+        "versions": [
+          {
+            "coverImages": [
+              {
+                "csiJobStatus": null,
+                "id": 26865909,
+                "negativePrompt": null,
+                "prompt": null,
+                "url": "https://resources.modelscope.cn/cover-images/84b476d0-2a08-4279-ae1c-d1fc211cdefb.png"
+              }
+            ],
+            "id": 1079253,
+            "inferenceCompanionVersionInfo": null,
+            "modelId": 184386,
+            "modelName": null,
+            "modelShowName": null,
+            "modelType": null,
+            "modelVersion": {
+              "cleaned": 0,
+              "deleted": 0,
+              "description": null,
+              "downloadCount": 0,
+              "format": "safetensors",
+              "genImageCount": 111482,
+              "gmtCreate": 1789644689000,
+              "gmtModified": 1793099355000,
+              "id": 1079253,
+              "imageId": null,
+              "inferenceCompanionModelVersionId": null,
+              "modelId": 184386,
+              "modelUrl": "modelscope://Qwen/Qwen-Image-2.1?revision=master",
+              "openlmUrl": "modelscope://Qwen/Qwen-Image-2.1?revision=master",
+              "operatorEmpId": "369992",
+              "operatorName": "Qwen",
+              "ossUrl": "",
+              "panguUrl": "",
+              "showName": "master",
+              "sourceUrl": "modelscope://Qwen/Qwen-Image-2.1?revision=master",
+              "stableDiffusionSubVersion": "QWEN_IMAGE_2_1",
+              "stableDiffusionVersion": "QWEN_IMAGE_2_1",
+              "stats": "{\"fileList\":[\"transformer/diffusion_pytorch_model-00001-of-00002.safetensors\",\"transformer/diffusion_pytorch_model-00002-of-00002.safetensors\",\"vae/diffusion_pytorch_model.safetensors\",\"text_encoder/model-00001-of-00004.safetensors\",\"text_encoder/model-00002-of-00004.safetensors\",\"text_encoder/model-00003-of-00004.safetensors\",\"text_encoder/model-00004-of-00004.safetensors\"],\"fileSizes\":[9968332504,4261951904,1350989512,4998056552,4915962464,4915962496,2704357976],\"totalSize\":33115613408}",
+              "syncStatus": "MUSE_FINISHED",
+              "syncTaskId": null,
+              "trainRecordId": null,
+              "triggerWords": null,
+              "validateMessage": null,
+              "validateStatus": "PENDING",
+              "versionName": "master",
+              "versionOrder": 1
+            },
+            "stableDiffusionSubVersion": "QWEN_IMAGE_2_1",
+            "stableDiffusionSubVersionDesc": "Qwen-Image-2.1",
+            "stableDiffusionVersion": "QWEN_IMAGE_2_1",
+            "stableDiffusionVersionDesc": "Qwen-Image-2.1",
+            "stats": {
+              "fileList": [
+                "transformer/diffusion_pytorch_model-00001-of-00002.safetensors",
+                "transformer/diffusion_pytorch_model-00002-of-00002.safetensors",
+                "vae/diffusion_pytorch_model.safetensors",
+                "text_encoder/model-00001-of-00004.safetensors",
+                "text_encoder/model-00002-of-00004.safetensors",
+                "text_encoder/model-00003-of-00004.safetensors",
+                "text_encoder/model-00004-of-00004.safetensors"
+              ],
+              "fileSizes": [
+                9968332504,
+                4261951904,
+                1350989512,
+                4998056552,
+                4915962464,
+                4915962496,
+                2704357976
+              ],
+              "totalSize": 33115613408
+            }
+          }
+        ]
+      },
+      "NEXA": {
+        "Catalogues": null,
+        "ModelCover": "",
+        "ScientificField": "",
+        "Source": "",
+        "SubScientificField": null
+      },
+      "Name": "Qwen-Image-2.1",
+      "NewVersion": "",
+      "NickName": "kelseye",
+      "OfficialTags": null,
+      "OpenAiSwingDeployInfo": {
+        "Order": 0,
+        "Recommend": null,
+        "lmdeploy": {
+          "eas": {
+            "Script": "",
+            "requirements": ""
+          },
+          "ens": {
+            "Script": "",
+            "requirements": ""
+          },
+          "fc": {
+            "Script": "",
+            "requirements": ""
+          },
+          "image_tag": ""
+        },
+        "ollama": {
+          "eas": {
+            "Script": "",
+            "requirements": ""
+          },
+          "ens": {
+            "Script": "",
+            "requirements": ""
+          },
+          "fc": {
+            "Script": "",
+            "requirements": ""
+          },
+          "image_tag": ""
+        },
+        "pipeline": {
+          "eas": {
+            "Script": "",
+            "requirements": ""
+          },
+          "ens": {
+            "Script": "",
+            "requirements": ""
+          },
+          "fc": {
+            "Script": "",
+            "requirements": ""
+          },
+          "image_tag": ""
+        },
+        "vllm": {
+          "eas": {
+            "Script": "",
+            "requirements": ""
+          },
+          "ens": {
+            "Script": "",
+            "requirements": ""
+          },
+          "fc": {
+            "Script": "",
+            "requirements": ""
+          },
+          "image_tag": ""
+        }
+      },
+      "Organization": {
+        "ApplyFailureReason": "",
+        "ApplyReason": "",
+        "Avatar": "https://resources.modelscope.cn/avatar/4c40e6ce-1348-43b5-a3bc-6bafec6ac805.jpg",
+        "CreateCompetition": false,
+        "CreatedBy": "Cherrytest",
+        "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"欢迎来到 Qwen 👋 !\"]]],[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"这是 Qwen 的组织，来自阿里的大模型家族。在这个组织中，我们不断发布大型语言模型 (LLM)、大型多模态模型 (LMM) 和其他 AGI 相关项目。快来查看并享受吧！\"]]]]",
+        "DisplayUrl": "",
+        "Email": "",
+        "FromSite": "",
+        "FullName": "千问",
+        "GithubAddress": "https://github.com/QwenLM",
+        "GmtCreated": "2023-08-02T03:48:45Z",
+        "GmtModified": "2026-10-20T07:46:44Z",
+        "Id": 209,
+        "InitAdminMembers": "",
+        "IsApply": false,
+        "IsCertification": "",
+        "Mobile": "",
+        "Name": "Qwen",
+        "Path": "",
+        "Roles": null,
+        "StarCnt": 0,
+        "Status": 0,
+        "SubscribeVo": null,
+        "Type": 2
+      },
+      "PaiModelGalleryUrl": null,
+      "PaiSdkParameter": null,
+      "Path": "Qwen",
+      "ProtectedMode": 2,
+      "ReadMeContent": "\n<p align=\"center\">\n    <img src=\"https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/image2.1/logo.png\" width=\"400\"/>\n</p>\n<p align=\"center\">\n    🤖 <a href=\"https://modelscope.cn/models/Qwen/Qwen-Image-2.1\">ModelScope</a>&nbsp;&nbsp;|\n    &nbsp;&nbsp;🤗 <a href=\"https://huggingface.co/Qwen/Qwen-Image-2.1\">HuggingFace</a>&nbsp;&nbsp;|\n    &nbsp;&nbsp;📑 <a href=\"https://qwen.ai/blog?id=qwen-image-2.1\">Blog</a>&nbsp;&nbsp;|\n    &nbsp;&nbsp;🖥️ <a href=\"https://huggingface.co/spaces/Qwen/Qwen-Image-2.1\">Demo</a>&nbsp;&nbsp;|\n    &nbsp;&nbsp;🫨 <a href=\"https://discord.gg/BEYSk3pkSu\">Discord</a>&nbsp;&nbsp;|\n    &nbsp;&nbsp;💬 <a href=\"https://modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/assets%2Fqr.png\">WeChat</a>\n</p>\n\n## Introduction\n\nWe are excited to open-source **Qwen-Image-2.1**, a unified text-to-image generation and image editing model in the Qwen family. With just **7B parameters in its visual generation component** (32 Single-Stream DiT layers), Qwen-Image-2.1 balances generation quality, inference efficiency, and versatility.\n\nFour key improvements define this release:\n\n- **Compact and Efficient** — A lightweight architecture with mixed-granularity attention and prefix KV cache reuse delivers strong image quality at low computational cost.\n- **Native Transparency, Unified Creation and Editing** — Generate regular or transparent (RGBA) images from text, edit transparent layers, and extract subjects from photographs—all in one model.\n- **Versatile Editing** — Support up to **10 reference images**, specify local edits via circles, painted annotations, or separate masks, and preserve identity for people and products.\n- **Realistic Textures and Refined Aesthetics** — Improved typography, portrait lighting, and fine details for more visually compelling results.\n\n<p align=\"center\">\n    <img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-01.png\" width=\"100%\"/>\n</p>\n\nFor more details, see the [GitHub repo](https://github.com/QwenLM/Qwen-Image-2.1) and [Blog](https://qwen.ai/blog?id=qwen-image-2.1).\n\n## Quick Start\n\n### Installation\n\n```bash\npip install torch>=2.4.0\npip install transformers>=5.17\npip install git+https://github.com/huggingface/diffusers\npip install accelerate pillow\n```\n\n### Text-to-Image\n\n```python\nimport torch\nfrom diffusers import QwenImage21Pipeline\n\npipe = QwenImage21Pipeline.from_pretrained(\n    \"Qwen/Qwen-Image-2.1\", torch_dtype=torch.bfloat16\n).to(\"cuda\")\n\nimage = pipe(\n    prompt=\"A neon shop sign that reads \\\"QWEN IMAGE 2.1\\\", rainy night, reflections on wet pavement\",\n    width=2048, height=2048,\n    num_inference_steps=40,\n    generator=torch.Generator(\"cuda\").manual_seed(42),\n).images[0]\n\nimage.save(\"t2i_example.png\")\n```\n\n### Image Editing\n\n```python\nimport torch\nfrom PIL import Image\nfrom diffusers import QwenImage21Pipeline\n\npipe = QwenImage21Pipeline.from_pretrained(\n    \"Qwen/Qwen-Image-2.1\", torch_dtype=torch.bfloat16\n).to(\"cuda\")\n\ninput_image = Image.open(\"input.png\")\n\nimage = pipe(\n    prompt=\"Change the background to a sunset beach\",\n    image=input_image,\n    num_inference_steps=40,\n    generator=torch.Generator(\"cuda\").manual_seed(42),\n).images[0]\n\nimage.save(\"edit_example.png\")\n```\n\n### Transparent Image Generation (RGBA)\n\nUse the recommended prompt format for transparent images:\n\n```python\nimage = pipe(\n    prompt=\"This is an RGBA image with transparency. A cute cartoon dragon sticker. The image has alpha channel and the background is transparent.\",\n    width=2048, height=2048,\n    num_inference_steps=40,\n    generator=torch.Generator(\"cuda\").manual_seed(42),\n).images[0]\n\nimage.save(\"transparent_example.png\")\n```\n\n### Supported Aspect Ratios\n\n```python\naspect_ratios = {\n    \"1:1\":  (2048, 2048),\n    \"4:3\":  (2400, 1792),\n    \"3:4\":  (1792, 2400),\n    \"3:2\":  (2528, 1696),\n    \"2:3\":  (1696, 2528),\n    \"16:9\": (2752, 1536),\n    \"9:16\": (1536, 2752),\n}\n```\n\n### Memory Optimization\n\n```python\npipe = QwenImage21Pipeline.from_pretrained(\n    \"Qwen/Qwen-Image-2.1\", torch_dtype=torch.bfloat16\n)\npipe.enable_model_cpu_offload()\n```\n\n## Showcase\n\n<p align=\"center\">\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-04.png\" width=\"30%\"/>\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-05.png\" width=\"30%\"/>\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-06.png\" width=\"30%\"/>\n</p>\n<p align=\"center\"><em>Native transparent image generation</em></p>\n\n<p align=\"center\">\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-15.png\" width=\"100%\"/>\n</p>\n<p align=\"center\"><em>Group photograph generated from six portrait references</em></p>\n\n<p align=\"center\">\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-43.png\" width=\"48%\"/>\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-44.png\" width=\"48%\"/>\n</p>\n<p align=\"center\"><em>Text rendering</em></p>\n\n## License\n\nThis model is licensed under the [Qwen Research License Agreement](./LICENSE).\n\n\n",
+      "ReadMeTips": null,
+      "RelatedArxivId": [],
+      "RelatedPaper": [],
+      "Revision": "master",
+      "Stars": 1406,
+      "StorageSize": 33134789600,
+      "Studios": [],
+      "SubVisionFoundation": "QWEN_IMAGE_2_1",
+      "SupportApiInference": false,
+      "SupportDashDeployment": 0,
+      "SupportDashInference": 0,
+      "SupportDashTraining": 0,
+      "SupportDeployment": 0,
+      "SupportExperience": 1,
+      "SupportFinetuning": 0,
+      "SupportFlexTrain": 0,
+      "SupportInference": "txt2img",
+      "SupportPaiModelGallery": null,
+      "SupportPaiSdk": 0,
+      "SupportPivotEval": false,
+      "SwingDeployInfo": null,
+      "Tags": [
+        "diffusers",
+        "qwen",
+        "image-generation",
+        "image-editing",
+        "rgba"
+      ],
+      "Tasks": [
+        {
+          "ChineseName": "图片生成图片",
+          "Description": "",
+          "DomainName": "multi-modal",
+          "Id": 300,
+          "IsExhibition": true,
+          "IsHot": 0,
+          "IsLeaf": true,
+          "IsLoginRequired": true,
+          "IsRetrieval": true,
+          "Level": 1,
+          "Name": "image-to-image",
+          "ParentId": -1,
+          "ParentTask": null,
+          "Sorting": 0,
+          "SupportWidgets": false,
+          "TypicalModel": "",
+          "WidgetConfig": "{}",
+          "WidgetValidator": ""
+        }
+      ],
+      "Tools": [],
+      "TriggerWords": null,
+      "Visibility": 5,
+      "VisionFoundation": "QWEN_IMAGE_2_1",
+      "_": null,
+      "widgets": [
+        {
+          "enable": true,
+          "enabled": false,
+          "examples": [
+            {
+              "inputs": [
+                {
+                  "data": "a lovely cat playing on the grass",
+                  "name": "text"
+                }
+              ],
+              "name": "",
+              "parameters": null,
+              "title": ""
+            }
+          ],
+          "inferencespec": null,
+          "inputs": null,
+          "parameters": null,
+          "task": "text-to-image-synthesis",
+          "template": {
+            "general": true
+          }
+        }
+      ]
+    },
+    "files": [
+      {
+        "path": "LICENSE",
+        "sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+        "size": 7831,
+        "declared_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+        "sha256_match": true
+      },
+      {
+        "path": "README.md",
+        "sha256": "ded95d080464a663dd7aa34bf96397b3b292e200ef13803f9ebb1f61e9f6996f",
+        "size": 5399,
+        "declared_sha256": "ded95d080464a663dd7aa34bf96397b3b292e200ef13803f9ebb1f61e9f6996f",
+        "sha256_match": true
+      },
+      {
+        "path": "configuration.json",
+        "sha256": "049315aecd90cb6b68dba11d203b118183bae4470b84b15a7945a4637b1e05f2",
+        "size": 34,
+        "declared_sha256": "049315aecd90cb6b68dba11d203b118183bae4470b84b15a7945a4637b1e05f2",
+        "sha256_match": true
+      },
+      {
+        "path": "model_index.json",
+        "sha256": "cf1ecd104ea090855d60d8cec0895c1e9d6ee41b2f87e231b678beecd1cf7809",
+        "size": 447,
+        "declared_sha256": "cf1ecd104ea090855d60d8cec0895c1e9d6ee41b2f87e231b678beecd1cf7809",
+        "sha256_match": true
+      },
+      {
+        "path": "processor/added_tokens.json",
+        "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+        "size": 707,
+        "declared_sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+        "sha256_match": true
+      },
+      {
+        "path": "processor/preprocessor_config.json",
+        "sha256": "93585062a80db5e8ca038efc7726a3e6411d9db948472d81d63c6303993be8c5",
+        "size": 782,
+        "declared_sha256": "93585062a80db5e8ca038efc7726a3e6411d9db948472d81d63c6303993be8c5",
+        "sha256_match": true
+      },
+      {
+        "path": "processor/special_tokens_map.json",
+        "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+        "size": 613,
+        "declared_sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+        "sha256_match": true
+      },
+      {
+        "path": "processor/tokenizer_config.json",
+        "sha256": "81ec7bb9530159b326c0bef1d0b6c33d392090524014ea3f0123a3c1eb9c2af5",
+        "size": 5445,
+        "declared_sha256": "81ec7bb9530159b326c0bef1d0b6c33d392090524014ea3f0123a3c1eb9c2af5",
+        "sha256_match": true
+      },
+      {
+        "path": "processor/video_preprocessor_config.json",
+        "sha256": "59c5c9eb52182eb14c06ffb10ca9effd29adce5f238a95de23ca14a38dbd2cb1",
+        "size": 817,
+        "declared_sha256": "59c5c9eb52182eb14c06ffb10ca9effd29adce5f238a95de23ca14a38dbd2cb1",
+        "sha256_match": true
+      }
+    ],
+    "lineage": {
+      "CurrentModel": {
+        "LineAgeType": "Base Model",
+        "LineAgeTypeCh": "基模型",
+        "Name": "Qwen/Qwen-Image-2.1",
+        "Total": 0
+      },
+      "ParentIsSelf": false,
+      "ParentsModels": [],
+      "SonModels": [
+        {
+          "LineAgeType": "Adapters",
+          "LineAgeTypeCh": "适配",
+          "Total": 3228
+        },
+        {
+          "LineAgeType": "Finetunes",
+          "LineAgeTypeCh": "微调",
+          "Total": 23
+        },
+        {
+          "LineAgeType": "Quantizations",
+          "LineAgeTypeCh": "量化",
+          "Total": 29
+        }
+      ]
+    }
+  },
+  "documents": [
+    {
+      "path": "LICENSE",
+      "content": "Qwen RESEARCH LICENSE AGREEMENT\n\nQwen RESEARCH LICENSE AGREEMENT Release Date: September 20, 2026\n\nBy clicking to agree or by using or distributing any portion or element of the Qwen Materials, you will be deemed to have recognized and accepted the content of this Agreement, which is effective immediately.\n\n1. Definitions\n    a. This Qwen RESEARCH LICENSE AGREEMENT (this \"Agreement\") shall mean the terms and conditions for use, reproduction, distribution and modification of the Materials as defined by this Agreement.\n    b. \"We\" (or \"Us\") shall mean Hangzhou Tongyi Laboratory Technology Co., Ltd.\n    c. \"You\" (or \"Your\") shall mean a natural person or legal entity exercising the rights granted by this Agreement and/or using the Materials for any purpose and in any field of use.\n    d. \"Third Parties\" shall mean individuals or legal entities that are not under common control with us or you.\n    e. \"Qwen\" shall mean the large language models, diffusion models, and software and algorithms, consisting of trained model weights, parameters (including optimizer states), machine-learning model code, inference-enabling code, training-enabling code, fine-tuning enabling code and other elements of the foregoing distributed by us.\n    f. \"Materials\" shall mean, collectively, our proprietary Qwen and Documentation (and any portion thereof) made available under this Agreement.\n    g. \"Source\" form shall mean the preferred form for making modifications, including but not limited to model source code, documentation source, and configuration files.\n    h. \"Object\" form shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types.\n    i. \"Non-Commercial\" shall mean for research or evaluation purposes only.\n\n2. Grant of Rights\n    a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY. \n    b. You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us. If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com.\n\n3. Redistribution\nSubject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:\n    a. You shall give any other recipients of the Materials or derivative works a copy of this Agreement;\n    b. You shall cause any modified files to carry prominent notices stating that you changed the files;\n    c. You shall retain in all copies of the Materials that you distribute the following attribution notices within a \"Notice\" text file distributed as a part of such copies: \"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\"; and\n    d. You may add your own copyright statement to your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of your modifications, or for any such derivative works as a whole, provided your use, reproduction, and distribution of the work otherwise complies with the terms and conditions of this Agreement.\n\n4. Rules of use\n    a. The Materials may be subject to export controls or restrictions in China, the United States or other countries or regions. You shall comply with applicable laws and regulations in your use of the Materials.\n    b. If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.\n    c. You shall not use \"Qwen\" as the primary name or identifier of any derivative works or products; reasonable descriptive use (e.g., \"fine-tuned from Qwen Image\") is permitted.\n\n5. Intellectual Property\n    a. We retain ownership of all intellectual property rights in and to the Materials and derivatives made by or for us. Conditioned upon compliance with the terms and conditions of this Agreement, with respect to any derivative works and modifications of the Materials that are made by you, you are and will be the owner of such derivative works and modifications.\n    b. No trademark license is granted to use the trade names, trademarks, service marks, or product names of us, except as required to fulfill notice requirements under this Agreement or as required for reasonable and customary use in describing and redistributing the Materials.\n    c. If you commence a lawsuit or other proceedings (including a cross-claim or counterclaim in a lawsuit) against us or any entity alleging that the Materials or any output therefrom, or any part of the foregoing, infringe any intellectual property or other right owned or licensable by you, then all licenses granted to you under this Agreement shall terminate as of the date such lawsuit or other proceeding is commenced or brought.\n\n6. Disclaimer of Warranty and Limitation of Liability\n    a. We are not obligated to support, update, provide training for, or develop any further version of the Qwen Materials or to grant any license thereto.\n    b. THE MATERIALS ARE PROVIDED \"AS IS\" WITHOUT ANY EXPRESS OR IMPLIED WARRANTY OF ANY KIND INCLUDING WARRANTIES OF MERCHANTABILITY, NONINFRINGEMENT, OR FITNESS FOR A PARTICULAR PURPOSE. WE MAKE NO WARRANTY AND ASSUME NO RESPONSIBILITY FOR THE SAFETY OR STABILITY OF THE MATERIALS AND ANY OUTPUT THEREFROM.\n    c. IN NO EVENT SHALL WE BE LIABLE TO YOU FOR ANY DAMAGES, INCLUDING, BUT NOT LIMITED TO ANY DIRECT, OR INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING FROM YOUR USE OR INABILITY TO USE THE MATERIALS OR ANY OUTPUT OF IT, NO MATTER HOW IT’S CAUSED.\n    d. You will defend, indemnify and hold harmless us from and against any claim by any third party arising out of or related to your use or distribution of the Materials.\n\n7. Survival and Termination.\n    a. The term of this Agreement shall commence upon your acceptance of this Agreement or access to the Materials and will continue in full force and effect until terminated in accordance with the terms and conditions herein.\n    b. We may terminate this Agreement if you breach any of the terms or conditions of this Agreement. Upon termination of this Agreement, you must delete and cease use of the Materials. Sections 6 and 8 shall survive the termination of this Agreement.\n\n8. Governing Law and Jurisdiction.\n    a. This Agreement and any dispute arising out of or relating to it will be governed by the laws of China, without regard to conflict of law principles, and the UN Convention on Contracts for the International Sale of Goods does not apply to this Agreement.\n    b. The People's Courts in Hangzhou City shall have exclusive jurisdiction over any dispute arising out of this Agreement.\n\n9. Other Terms and Conditions.\n    a. Any arrangements, understandings, or agreements regarding the Material not stated herein are separate from and independent of the terms and conditions of this Agreement. You shall request a separate license from us, if you use the Materials in ways not expressly agreed to in this Agreement. \n    b. We shall not be bound by any additional or different terms or conditions communicated by you unless expressly agreed.\n",
+      "sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+      "size": 7831,
+      "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
+      "evidence_level": "A"
+    },
+    {
+      "path": "README.md",
+      "content": "---\nbase_model:\n- \"\"\nframeworks:\n- \"\"\nlicense: other\nlicense_link: LICENSE\nlicense_name: qwen-research\npipeline_tag: image-to-image\ntags:\n- diffusers\n- qwen\n- image-generation\n- image-editing\n- rgba\n---\n\n<p align=\"center\">\n    <img src=\"https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/image2.1/logo.png\" width=\"400\"/>\n</p>\n<p align=\"center\">\n    🤖 <a href=\"https://modelscope.cn/models/Qwen/Qwen-Image-2.1\">ModelScope</a>&nbsp;&nbsp;|\n    &nbsp;&nbsp;🤗 <a href=\"https://huggingface.co/Qwen/Qwen-Image-2.1\">HuggingFace</a>&nbsp;&nbsp;|\n    &nbsp;&nbsp;📑 <a href=\"https://qwen.ai/blog?id=qwen-image-2.1\">Blog</a>&nbsp;&nbsp;|\n    &nbsp;&nbsp;🖥️ <a href=\"https://huggingface.co/spaces/Qwen/Qwen-Image-2.1\">Demo</a>&nbsp;&nbsp;|\n    &nbsp;&nbsp;🫨 <a href=\"https://discord.gg/BEYSk3pkSu\">Discord</a>&nbsp;&nbsp;|\n    &nbsp;&nbsp;💬 <a href=\"https://modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/assets%2Fqr.png\">WeChat</a>\n</p>\n\n## Introduction\n\nWe are excited to open-source **Qwen-Image-2.1**, a unified text-to-image generation and image editing model in the Qwen family. With just **7B parameters in its visual generation component** (32 Single-Stream DiT layers), Qwen-Image-2.1 balances generation quality, inference efficiency, and versatility.\n\nFour key improvements define this release:\n\n- **Compact and Efficient** — A lightweight architecture with mixed-granularity attention and prefix KV cache reuse delivers strong image quality at low computational cost.\n- **Native Transparency, Unified Creation and Editing** — Generate regular or transparent (RGBA) images from text, edit transparent layers, and extract subjects from photographs—all in one model.\n- **Versatile Editing** — Support up to **10 reference images**, specify local edits via circles, painted annotations, or separate masks, and preserve identity for people and products.\n- **Realistic Textures and Refined Aesthetics** — Improved typography, portrait lighting, and fine details for more visually compelling results.\n\n<p align=\"center\">\n    <img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-01.png\" width=\"100%\"/>\n</p>\n\nFor more details, see the [GitHub repo](https://github.com/QwenLM/Qwen-Image-2.1) and [Blog](https://qwen.ai/blog?id=qwen-image-2.1).\n\n## Quick Start\n\n### Installation\n\n```bash\npip install torch>=2.4.0\npip install transformers>=5.17\npip install git+https://github.com/huggingface/diffusers\npip install accelerate pillow\n```\n\n### Text-to-Image\n\n```python\nimport torch\nfrom diffusers import QwenImage21Pipeline\n\npipe = QwenImage21Pipeline.from_pretrained(\n    \"Qwen/Qwen-Image-2.1\", torch_dtype=torch.bfloat16\n).to(\"cuda\")\n\nimage = pipe(\n    prompt=\"A neon shop sign that reads \\\"QWEN IMAGE 2.1\\\", rainy night, reflections on wet pavement\",\n    width=2048, height=2048,\n    num_inference_steps=40,\n    generator=torch.Generator(\"cuda\").manual_seed(42),\n).images[0]\n\nimage.save(\"t2i_example.png\")\n```\n\n### Image Editing\n\n```python\nimport torch\nfrom PIL import Image\nfrom diffusers import QwenImage21Pipeline\n\npipe = QwenImage21Pipeline.from_pretrained(\n    \"Qwen/Qwen-Image-2.1\", torch_dtype=torch.bfloat16\n).to(\"cuda\")\n\ninput_image = Image.open(\"input.png\")\n\nimage = pipe(\n    prompt=\"Change the background to a sunset beach\",\n    image=input_image,\n    num_inference_steps=40,\n    generator=torch.Generator(\"cuda\").manual_seed(42),\n).images[0]\n\nimage.save(\"edit_example.png\")\n```\n\n### Transparent Image Generation (RGBA)\n\nUse the recommended prompt format for transparent images:\n\n```python\nimage = pipe(\n    prompt=\"This is an RGBA image with transparency. A cute cartoon dragon sticker. The image has alpha channel and the background is transparent.\",\n    width=2048, height=2048,\n    num_inference_steps=40,\n    generator=torch.Generator(\"cuda\").manual_seed(42),\n).images[0]\n\nimage.save(\"transparent_example.png\")\n```\n\n### Supported Aspect Ratios\n\n```python\naspect_ratios = {\n    \"1:1\":  (2048, 2048),\n    \"4:3\":  (2400, 1792),\n    \"3:4\":  (1792, 2400),\n    \"3:2\":  (2528, 1696),\n    \"2:3\":  (1696, 2528),\n    \"16:9\": (2752, 1536),\n    \"9:16\": (1536, 2752),\n}\n```\n\n### Memory Optimization\n\n```python\npipe = QwenImage21Pipeline.from_pretrained(\n    \"Qwen/Qwen-Image-2.1\", torch_dtype=torch.bfloat16\n)\npipe.enable_model_cpu_offload()\n```\n\n## Showcase\n\n<p align=\"center\">\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-04.png\" width=\"30%\"/>\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-05.png\" width=\"30%\"/>\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-06.png\" width=\"30%\"/>\n</p>\n<p align=\"center\"><em>Native transparent image generation</em></p>\n\n<p align=\"center\">\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-15.png\" width=\"100%\"/>\n</p>\n<p align=\"center\"><em>Group photograph generated from six portrait references</em></p>\n\n<p align=\"center\">\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-43.png\" width=\"48%\"/>\n<img src=\"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen-Image/image2.1/images/example-44.png\" width=\"48%\"/>\n</p>\n<p align=\"center\"><em>Text rendering</em></p>\n\n## License\n\nThis model is licensed under the [Qwen Research License Agreement](./LICENSE).\n\n",
+      "sha256": "ded95d080464a663dd7aa34bf96397b3b292e200ef13803f9ebb1f61e9f6996f",
+      "size": 5399,
+      "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/README.md",
+      "evidence_level": "A"
+    },
+    {
+      "path": "configuration.json",
+      "content": "{\"task\":\"text-to-image-synthesis\"}",
+      "sha256": "049315aecd90cb6b68dba11d203b118183bae4470b84b15a7945a4637b1e05f2",
+      "size": 34,
+      "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/configuration.json",
+      "evidence_level": "A"
+    },
+    {
+      "path": "model_index.json",
+      "content": "{\n  \"_class_name\": \"QwenImage21Pipeline\",\n  \"_diffusers_version\": \"0.37.0.dev0\",\n  \"processor\": [\n    \"transformers\",\n    \"Qwen3VLProcessor\"\n  ],\n  \"scheduler\": [\n    \"diffusers\",\n    \"FlowMatchEulerDiscreteScheduler\"\n  ],\n  \"text_encoder\": [\n    \"transformers\",\n    \"Qwen3VLForConditionalGeneration\"\n  ],\n  \"transformer\": [\n    \"diffusers\",\n    \"QwenImage21Transformer2DModel\"\n  ],\n  \"vae\": [\n    \"diffusers\",\n    \"AutoencoderKLQwenImage21\"\n  ]\n}",
+      "sha256": "cf1ecd104ea090855d60d8cec0895c1e9d6ee41b2f87e231b678beecd1cf7809",
+      "size": 447,
+      "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/model_index.json",
+      "evidence_level": "A"
+    },
+    {
+      "path": "processor/added_tokens.json",
+      "content": "{\n  \"</think>\": 151668,\n  \"</tool_call>\": 151658,\n  \"</tool_response>\": 151666,\n  \"<think>\": 151667,\n  \"<tool_call>\": 151657,\n  \"<tool_response>\": 151665,\n  \"<|box_end|>\": 151649,\n  \"<|box_start|>\": 151648,\n  \"<|endoftext|>\": 151643,\n  \"<|file_sep|>\": 151664,\n  \"<|fim_middle|>\": 151660,\n  \"<|fim_pad|>\": 151662,\n  \"<|fim_prefix|>\": 151659,\n  \"<|fim_suffix|>\": 151661,\n  \"<|im_end|>\": 151645,\n  \"<|im_start|>\": 151644,\n  \"<|image_pad|>\": 151655,\n  \"<|object_ref_end|>\": 151647,\n  \"<|object_ref_start|>\": 151646,\n  \"<|quad_end|>\": 151651,\n  \"<|quad_start|>\": 151650,\n  \"<|repo_name|>\": 151663,\n  \"<|video_pad|>\": 151656,\n  \"<|vision_end|>\": 151653,\n  \"<|vision_pad|>\": 151654,\n  \"<|vision_start|>\": 151652\n}\n",
+      "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+      "size": 707,
+      "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/processor/added_tokens.json",
+      "evidence_level": "A"
+    },
+    {
+      "path": "processor/preprocessor_config.json",
+      "content": "{\n  \"crop_size\": null,\n  \"data_format\": \"channels_first\",\n  \"default_to_square\": true,\n  \"device\": null,\n  \"disable_grouping\": null,\n  \"do_center_crop\": null,\n  \"do_convert_rgb\": true,\n  \"do_normalize\": true,\n  \"do_pad\": null,\n  \"do_rescale\": true,\n  \"do_resize\": true,\n  \"image_mean\": [\n    0.5,\n    0.5,\n    0.5\n  ],\n  \"image_processor_type\": \"Qwen2VLImageProcessorFast\",\n  \"image_std\": [\n    0.5,\n    0.5,\n    0.5\n  ],\n  \"input_data_format\": null,\n  \"max_pixels\": null,\n  \"merge_size\": 2,\n  \"min_pixels\": null,\n  \"pad_size\": null,\n  \"patch_size\": 16,\n  \"processor_class\": \"Qwen3VLProcessor\",\n  \"resample\": 3,\n  \"rescale_factor\": 0.00392156862745098,\n  \"return_tensors\": null,\n  \"size\": {\n    \"longest_edge\": 16777216,\n    \"shortest_edge\": 65536\n  },\n  \"temporal_patch_size\": 2\n}\n",
+      "sha256": "93585062a80db5e8ca038efc7726a3e6411d9db948472d81d63c6303993be8c5",
+      "size": 782,
+      "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/processor/preprocessor_config.json",
+      "evidence_level": "A"
+    },
+    {
+      "path": "processor/special_tokens_map.json",
+      "content": "{\n  \"additional_special_tokens\": [\n    \"<|im_start|>\",\n    \"<|im_end|>\",\n    \"<|object_ref_start|>\",\n    \"<|object_ref_end|>\",\n    \"<|box_start|>\",\n    \"<|box_end|>\",\n    \"<|quad_start|>\",\n    \"<|quad_end|>\",\n    \"<|vision_start|>\",\n    \"<|vision_end|>\",\n    \"<|vision_pad|>\",\n    \"<|image_pad|>\",\n    \"<|video_pad|>\"\n  ],\n  \"eos_token\": {\n    \"content\": \"<|im_end|>\",\n    \"lstrip\": false,\n    \"normalized\": false,\n    \"rstrip\": false,\n    \"single_word\": false\n  },\n  \"pad_token\": {\n    \"content\": \"<|endoftext|>\",\n    \"lstrip\": false,\n    \"normalized\": false,\n    \"rstrip\": false,\n    \"single_word\": false\n  }\n}\n",
+      "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+      "size": 613,
+      "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/processor/special_tokens_map.json",
+      "evidence_level": "A"
+    },
+    {
+      "path": "processor/tokenizer_config.json",
+      "content": "{\n  \"add_bos_token\": false,\n  \"add_prefix_space\": false,\n  \"added_tokens_decoder\": {\n    \"151643\": {\n      \"content\": \"<|endoftext|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151644\": {\n      \"content\": \"<|im_start|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151645\": {\n      \"content\": \"<|im_end|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151646\": {\n      \"content\": \"<|object_ref_start|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151647\": {\n      \"content\": \"<|object_ref_end|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151648\": {\n      \"content\": \"<|box_start|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151649\": {\n      \"content\": \"<|box_end|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151650\": {\n      \"content\": \"<|quad_start|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151651\": {\n      \"content\": \"<|quad_end|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151652\": {\n      \"content\": \"<|vision_start|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151653\": {\n      \"content\": \"<|vision_end|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151654\": {\n      \"content\": \"<|vision_pad|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151655\": {\n      \"content\": \"<|image_pad|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151656\": {\n      \"content\": \"<|video_pad|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": true\n    },\n    \"151657\": {\n      \"content\": \"<tool_call>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151658\": {\n      \"content\": \"</tool_call>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151659\": {\n      \"content\": \"<|fim_prefix|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151660\": {\n      \"content\": \"<|fim_middle|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151661\": {\n      \"content\": \"<|fim_suffix|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151662\": {\n      \"content\": \"<|fim_pad|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151663\": {\n      \"content\": \"<|repo_name|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151664\": {\n      \"content\": \"<|file_sep|>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151665\": {\n      \"content\": \"<tool_response>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151666\": {\n      \"content\": \"</tool_response>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151667\": {\n      \"content\": \"<think>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    },\n    \"151668\": {\n      \"content\": \"</think>\",\n      \"lstrip\": false,\n      \"normalized\": false,\n      \"rstrip\": false,\n      \"single_word\": false,\n      \"special\": false\n    }\n  },\n  \"additional_special_tokens\": [\n    \"<|im_start|>\",\n    \"<|im_end|>\",\n    \"<|object_ref_start|>\",\n    \"<|object_ref_end|>\",\n    \"<|box_start|>\",\n    \"<|box_end|>\",\n    \"<|quad_start|>\",\n    \"<|quad_end|>\",\n    \"<|vision_start|>\",\n    \"<|vision_end|>\",\n    \"<|vision_pad|>\",\n    \"<|image_pad|>\",\n    \"<|video_pad|>\"\n  ],\n  \"bos_token\": null,\n  \"clean_up_tokenization_spaces\": false,\n  \"eos_token\": \"<|im_end|>\",\n  \"errors\": \"replace\",\n  \"extra_special_tokens\": {},\n  \"model_max_length\": 262144,\n  \"pad_token\": \"<|endoftext|>\",\n  \"processor_class\": \"Qwen3VLProcessor\",\n  \"split_special_tokens\": false,\n  \"tokenizer_class\": \"Qwen2Tokenizer\",\n  \"unk_token\": null\n}\n",
+      "sha256": "81ec7bb9530159b326c0bef1d0b6c33d392090524014ea3f0123a3c1eb9c2af5",
+      "size": 5445,
+      "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/processor/tokenizer_config.json",
+      "evidence_level": "A"
+    },
+    {
+      "path": "processor/video_preprocessor_config.json",
+      "content": "{\n  \"crop_size\": null,\n  \"data_format\": \"channels_first\",\n  \"default_to_square\": true,\n  \"device\": null,\n  \"do_center_crop\": null,\n  \"do_convert_rgb\": true,\n  \"do_normalize\": true,\n  \"do_rescale\": true,\n  \"do_resize\": true,\n  \"do_sample_frames\": true,\n  \"fps\": 2,\n  \"image_mean\": [\n    0.5,\n    0.5,\n    0.5\n  ],\n  \"image_std\": [\n    0.5,\n    0.5,\n    0.5\n  ],\n  \"input_data_format\": null,\n  \"max_frames\": 768,\n  \"merge_size\": 2,\n  \"min_frames\": 4,\n  \"num_frames\": null,\n  \"pad_size\": null,\n  \"patch_size\": 16,\n  \"processor_class\": \"Qwen3VLProcessor\",\n  \"resample\": 3,\n  \"rescale_factor\": 0.00392156862745098,\n  \"return_metadata\": false,\n  \"size\": {\n    \"longest_edge\": 25165824,\n    \"shortest_edge\": 4096\n  },\n  \"temporal_patch_size\": 2,\n  \"video_metadata\": null,\n  \"video_processor_type\": \"Qwen3VLVideoProcessor\"\n}\n",
+      "sha256": "59c5c9eb52182eb14c06ffb10ca9effd29adce5f238a95de23ca14a38dbd2cb1",
+      "size": 817,
+      "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/processor/video_preprocessor_config.json",
+      "evidence_level": "A"
+    }
+  ],
+  "warnings": [
+    "文件未读取或不是文本：processor/merges.txt",
+    "文件未读取或不是文本：processor/tokenizer.json",
+    "文件未读取或不是文本：processor/vocab.json"
+  ]
+}

@@ -1,0 +1,970 @@
+[
+  {
+    "entity_key": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8",
+    "canonical_id": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master",
+    "asset_type": "model",
+    "name": "unsloth/Qwen-Image-2.1-Turbo-FP8",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master"
+    ],
+    "license": "qwen-research",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/unsloth/Qwen-Image-2.1-Turbo-FP8",
+        "source_field": "Data.LicenseName",
+        "retrieved_at": "2026-10-27T11:20:11.351613Z",
+        "status": "ok",
+        "raw_value": "qwen-research"
+      }
+    ],
+    "snapshot_id": "modelscope-unsloth__Qwen-Image-2.1-Turbo-FP8",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/unsloth/Qwen-Image-2.1-Turbo-FP8",
+    "lineage_role": "root",
+    "lineage_depth": 0,
+    "lineage_status": "complete",
+    "lineage_complete": true,
+    "lineage_truncation_reason": null,
+    "unresolved_upstream_models": [],
+    "lineage_cycles": [],
+    "max_upstream_depth": 4,
+    "max_upstream_nodes": 128,
+    "max_depth_seen": 2,
+    "resolved_upstream_count": 2,
+    "include_downstream": false,
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:17Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "项目源码在本地加载模型并执行推理。",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)",
+            "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b",
+            "file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "simulation": true,
+      "historical_reconstruction": false,
+      "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。"
+    },
+    "risk_level": null,
+    "decision": "RISK_POTENTIAL",
+    "decision_zh": "潜在风险（黄）",
+    "license_recognized": false,
+    "risk_note": null
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo",
+    "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen-Image-2.1-Turbo",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen-Image-2.1-Turbo@master"
+    ],
+    "license": "qwen-research",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1-Turbo",
+        "source_field": "Data.LicenseName",
+        "retrieved_at": "2026-10-27T11:20:12.188435Z",
+        "status": "ok",
+        "raw_value": "qwen-research"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "Data.BaseModel",
+        "retrieved_at": "2026-10-27T11:20:13.440319Z",
+        "status": "ok",
+        "raw_value": "Qwen/Qwen-Image-2.1-Turbo"
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-10-27T11:20:13.440324Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 0,
+          "LineAgeType": "Finetuned",
+          "LineAgeTypeCh": "微调",
+          "Name": "Qwen/Qwen-Image-2.1-Turbo"
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-unsloth__Qwen-Image-2.1-Turbo-FP8",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1-Turbo",
+    "lineage_role": "upstream",
+    "lineage_depth": 1,
+    "lineage_status": "resolved",
+    "lineage_type": "Finetuned",
+    "lineage_type_ch": "微调",
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:17Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "项目源码在本地加载模型并执行推理。",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)",
+            "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b",
+            "file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "simulation": true,
+      "historical_reconstruction": false,
+      "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。"
+    },
+    "risk_level": null,
+    "decision": "RISK_POTENTIAL",
+    "decision_zh": "潜在风险（黄）",
+    "license_recognized": false,
+    "risk_note": null
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen-Image-2.1",
+    "canonical_id": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen-Image-2.1",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen-Image-2.1@master"
+    ],
+    "license": "Apache License 2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md",
+        "source_field": "README.md:front_matter.license",
+        "retrieved_at": "2026-10-27T11:09:25Z",
+        "raw_value": "Apache License 2.0",
+        "commit": "72900d004951bd845d7a4a77d566562eadd37c3f",
+        "historical_reconstruction": true
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "Data.BaseModel",
+        "retrieved_at": "2026-10-27T11:20:13.440289Z",
+        "status": "ok",
+        "raw_value": "Qwen/Qwen-Image-2.1"
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-10-27T11:20:13.440311Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 0,
+          "LineAgeType": "Base Model",
+          "LineAgeTypeCh": "基模型",
+          "Name": "Qwen/Qwen-Image-2.1"
+        }
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-10-27T11:20:13.440331Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 1,
+          "LineAgeType": "Base Model",
+          "LineAgeTypeCh": "基模型",
+          "Name": "Qwen/Qwen-Image-2.1"
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-unsloth__Qwen-Image-2.1-Turbo-FP8",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
+    "lineage_role": "upstream",
+    "lineage_depth": 2,
+    "lineage_status": "resolved",
+    "lineage_type": "Base Model",
+    "lineage_type_ch": "基模型",
+    "historical_reconstruction": true,
+    "historical_commit": "72900d004951bd845d7a4a77d566562eadd37c3f",
+    "historical_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md",
+    "ai_analysis": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "model_profile",
+      "status": "ok",
+      "subject": {
+        "model_id": "Qwen/Qwen-Image-2.1",
+        "revision": "72900d004951bd845d7a4a77d566562eadd37c3f",
+        "license_fact": "Apache License 2.0",
+        "fact_source": "ModelScope historical README reconstruction",
+        "source_bundle_sha256": "9284c9fb7bfa6367a80e1054abcf3c2a8bec9baa4730251dce2d28a4351b6e0b"
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:06Z",
+      "summary": "该历史快照只能证明 README 元数据曾声明 Apache License 2.0；未保留当时的完整 Apache LICENSE 文件，不能据此补齐全部授权边界。",
+      "claims": [
+        {
+          "claim_id": "claim-641d7d08748c",
+          "dimension": "commercial_use",
+          "dimension_zh": "商业使用",
+          "state": "unknown",
+          "state_zh": "证据不足",
+          "statement": "README 元数据声明 Apache License 2.0，但仅凭该字段不能替代对完整许可原文的核验。",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.59,
+          "confidence_factors": {
+            "base": 0.48,
+            "readme": 0.08,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "uncertain_state": -0.12
+          },
+          "evidence": {
+            "source_path": "README.md",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md",
+            "quote": "license: Apache License 2.0",
+            "quote_sha256": "ec5dff827b5f977ee667a3ff57daa447e3d6a443a53d633242a5c7abdbbc95c4",
+            "file_sha256": "69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484",
+            "confidence": 0.59,
+            "confidence_factors": {
+              "base": 0.48,
+              "readme": 0.08,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02,
+              "uncertain_state": -0.12
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "README.md",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md",
+              "quote": "license: Apache License 2.0",
+              "quote_sha256": "ec5dff827b5f977ee667a3ff57daa447e3d6a443a53d633242a5c7abdbbc95c4",
+              "file_sha256": "69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484",
+              "confidence": 0.59,
+              "confidence_factors": {
+                "base": 0.48,
+                "readme": 0.08,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02,
+                "uncertain_state": -0.12
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        }
+      ],
+      "conflicts": [],
+      "gaps": [
+        {
+          "dimension": "redistribution",
+          "dimension_zh": "再分发",
+          "reason": "历史快照未保存完整许可文本"
+        },
+        {
+          "dimension": "modification",
+          "dimension_zh": "修改与衍生",
+          "reason": "历史快照未保存完整许可文本"
+        },
+        {
+          "dimension": "training_other_models",
+          "dimension_zh": "训练其他模型",
+          "reason": "证据不足：README 元数据无法说明训练其他模型的条件"
+        },
+        {
+          "dimension": "fine_tuned_redistribution",
+          "dimension_zh": "微调版本再分发",
+          "reason": "证据不足"
+        },
+        {
+          "dimension": "commercial_license_request",
+          "dimension_zh": "商用授权申请方式",
+          "reason": "证据不足"
+        }
+      ],
+      "simulation": true,
+      "simulation_note": "当前真实血缘与 Qwen-Image-2.1 历史 README 许可证元数据的反事实重放；Turbo/FP8 在 Apache 标注阶段尚未发布。",
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "historical_reconstruction": true
+    },
+    "simulation": true,
+    "simulation_reason": "当前真实血缘与 Qwen-Image-2.1 历史 README 许可证元数据的反事实重放；Turbo/FP8 在 Apache 标注阶段尚未发布。",
+    "simulation_original_license": "qwen-research",
+    "simulation_target_license": "Apache License 2.0",
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:17Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "项目源码在本地加载模型并执行推理。",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)",
+            "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b",
+            "file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "simulation": true,
+      "historical_reconstruction": false,
+      "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。"
+    },
+    "risk_level": 2,
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
+    "license_recognized": true,
+    "risk_note": null
+  },
+  {
+    "entity_key": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct",
+    "canonical_id": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+    "asset_type": "model",
+    "name": "OpenGVLab/InternVL3-8B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/OpenGVLab/InternVL3-8B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Instruct",
+        "source_field": "Data.License",
+        "retrieved_at": "2026-10-27T11:20:13.999234Z",
+        "status": "ok",
+        "raw_value": "apache-2.0"
+      }
+    ],
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Instruct",
+    "lineage_role": "root",
+    "lineage_depth": 0,
+    "lineage_status": "complete",
+    "lineage_complete": true,
+    "lineage_truncation_reason": null,
+    "unresolved_upstream_models": [],
+    "lineage_cycles": [],
+    "max_upstream_depth": 4,
+    "max_upstream_nodes": 128,
+    "max_depth_seen": 3,
+    "resolved_upstream_count": 4,
+    "include_downstream": false,
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:17Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "项目源码在本地加载模型并执行推理。",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)",
+            "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b",
+            "file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "simulation": true,
+      "historical_reconstruction": false,
+      "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。"
+    },
+    "risk_level": 2,
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
+    "license_recognized": true,
+    "risk_note": null
+  },
+  {
+    "entity_key": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained",
+    "canonical_id": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+    "asset_type": "model",
+    "name": "OpenGVLab/InternVL3-8B-Pretrained",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Pretrained",
+        "source_field": "Data.License",
+        "retrieved_at": "2026-10-27T11:20:14.806253Z",
+        "status": "ok",
+        "raw_value": "apache-2.0"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "Data.BaseModel",
+        "retrieved_at": "2026-10-27T11:20:17.531671Z",
+        "status": "ok",
+        "raw_value": "OpenGVLab/InternVL3-8B-Pretrained"
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-10-27T11:20:17.531676Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 0,
+          "LineAgeType": "Merge Model",
+          "LineAgeTypeCh": "合并",
+          "Name": "OpenGVLab/InternVL3-8B-Pretrained"
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Pretrained",
+    "lineage_role": "upstream",
+    "lineage_depth": 1,
+    "lineage_status": "resolved",
+    "lineage_type": "Merge Model",
+    "lineage_type_ch": "合并",
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:17Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "项目源码在本地加载模型并执行推理。",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)",
+            "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b",
+            "file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "simulation": true,
+      "historical_reconstruction": false,
+      "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。"
+    },
+    "risk_level": 2,
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
+    "license_recognized": true,
+    "risk_note": null
+  },
+  {
+    "entity_key": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5",
+    "canonical_id": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+    "asset_type": "model",
+    "name": "OpenGVLab/InternViT-300M-448px-V2_5",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master"
+    ],
+    "license": "MIT",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px-V2_5",
+        "source_field": "Data.License",
+        "retrieved_at": "2026-10-27T11:20:15.551723Z",
+        "status": "ok",
+        "raw_value": "mit"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "Data.BaseModel",
+        "retrieved_at": "2026-10-27T11:20:16.735146Z",
+        "status": "ok",
+        "raw_value": "OpenGVLab/InternViT-300M-448px-V2_5"
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-10-27T11:20:16.735148Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 0,
+          "LineAgeType": "Finetuned",
+          "LineAgeTypeCh": "微调",
+          "Name": "OpenGVLab/InternViT-300M-448px-V2_5"
+        }
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-10-27T11:20:17.531685Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 1,
+          "LineAgeType": "Finetuned",
+          "LineAgeTypeCh": "微调",
+          "Name": "OpenGVLab/InternViT-300M-448px-V2_5"
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px-V2_5",
+    "lineage_role": "upstream",
+    "lineage_depth": 2,
+    "lineage_status": "resolved",
+    "lineage_type": "Finetuned",
+    "lineage_type_ch": "微调",
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:17Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "项目源码在本地加载模型并执行推理。",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)",
+            "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b",
+            "file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "simulation": true,
+      "historical_reconstruction": false,
+      "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。"
+    },
+    "risk_level": 1,
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
+    "license_recognized": true,
+    "risk_note": null
+  },
+  {
+    "entity_key": "model:modelscope/OpenGVLab/InternViT-300M-448px",
+    "canonical_id": "model:modelscope/OpenGVLab/InternViT-300M-448px@master",
+    "asset_type": "model",
+    "name": "OpenGVLab/InternViT-300M-448px",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/OpenGVLab/InternViT-300M-448px@master"
+    ],
+    "license": "MIT",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px",
+        "source_field": "Data.License",
+        "retrieved_at": "2026-10-27T11:20:16.447919Z",
+        "status": "ok",
+        "raw_value": "mit"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "Data.BaseModel",
+        "retrieved_at": "2026-10-27T11:20:16.735127Z",
+        "status": "ok",
+        "raw_value": "OpenGVLab/InternViT-300M-448px"
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-10-27T11:20:16.735141Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 0,
+          "LineAgeType": "Base Model",
+          "LineAgeTypeCh": "基模型",
+          "Name": "OpenGVLab/InternViT-300M-448px"
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px",
+    "lineage_role": "upstream",
+    "lineage_depth": 3,
+    "lineage_status": "resolved",
+    "lineage_type": "Base Model",
+    "lineage_type_ch": "基模型",
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:17Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "项目源码在本地加载模型并执行推理。",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)",
+            "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b",
+            "file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "simulation": true,
+      "historical_reconstruction": false,
+      "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。"
+    },
+    "risk_level": 1,
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
+    "license_recognized": true,
+    "risk_note": null
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen2.5-7B",
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-7B@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+        "source_field": "Data.License",
+        "retrieved_at": "2026-10-27T11:20:17.182700Z",
+        "status": "ok",
+        "raw_value": "apache-2.0"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "Data.BaseModel",
+        "retrieved_at": "2026-10-27T11:20:17.531638Z",
+        "status": "ok",
+        "raw_value": "Qwen/Qwen2.5-7B"
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-10-27T11:20:17.531661Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 0,
+          "LineAgeType": "",
+          "LineAgeTypeCh": "",
+          "Name": "Qwen/Qwen2.5-7B"
+        }
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-10-27T11:20:17.531691Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 1,
+          "LineAgeType": "",
+          "LineAgeTypeCh": "",
+          "Name": "Qwen/Qwen2.5-7B"
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-OpenGVLab__InternVL3-8B-Instruct",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+    "lineage_role": "upstream",
+    "lineage_depth": 2,
+    "lineage_status": "resolved",
+    "lineage_type": "merge",
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\upstream\\project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "mock",
+        "model": "frozen-qwen-image-license-fixture",
+        "base_url": "offline://qwen-image-license-fixture",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-10-27T11:20:17Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "项目源码在本地加载模型并执行推理。",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)",
+            "quote_sha256": "738e354fd70fa7433297eb5ddf857b8b437beac1ad3eb060d3be80fa874f832b",
+            "file_sha256": "a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      },
+      "simulation": true,
+      "historical_reconstruction": false,
+      "simulation_note": "项目文件是演示夹具；血缘来自当前 ModelScope，许可证时间点是反事实重放。"
+    },
+    "risk_level": 2,
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
+    "license_recognized": true,
+    "risk_note": null
+  }
+]

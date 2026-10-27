@@ -1,0 +1,80 @@
+{
+  "schema_version": "modelscope-historical-source-bundle/v1",
+  "source": "modelscope",
+  "model_id": "Qwen/Qwen-Image-2.1",
+  "revision": "72900d004951bd845d7a4a77d566562eadd37c3f",
+  "retrieved_at": "2026-10-27T11:09:25Z",
+  "historical_reconstruction": true,
+  "historical_boundary": "This snapshot reconstructs only the README license metadata that ModelScope served before the Qwen Research License was added. It is not a retained copy of an Apache-2.0 LICENSE file.",
+  "facts": {
+    "license": {
+      "value": "Apache License 2.0",
+      "source_field": "README.md:front_matter.license",
+      "evidence_level": "A"
+    },
+    "detail": {
+      "Name": "Qwen-Image-2.1",
+      "Path": "Qwen",
+      "Revision": "72900d004951bd845d7a4a77d566562eadd37c3f"
+    },
+    "files": [
+      {
+        "path": "README.md",
+        "sha256": "69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484",
+        "size": 1396,
+        "revision": "72900d004951bd845d7a4a77d566562eadd37c3f"
+      }
+    ],
+    "lineage": null
+  },
+  "documents": [
+    {
+      "path": "README.md",
+      "content": "---\nlicense: Apache License 2.0\ntags: []\ntasks:\n- text-to-image-synthesis\n\n#model-type:\n##如 gpt、phi、llama、chatglm、baichuan 等\n#- gpt\n\n#domain:\n##如 nlp、cv、audio、multi-modal\n#- nlp\n\n#language:\n##语言代码列表 https://help.aliyun.com/document_detail/215387.html?spm=a2c4g.11186623.0.0.9f8d7467kni6Aa\n#- cn \n\n#metrics:\n##如 CIDEr、Blue、ROUGE 等\n#- CIDEr\n\n#tags:\n##各种自定义，包括 pretrained、fine-tuned、instruction-tuned、RL-tuned 等训练方法和其他\n#- pretrained\n\n#tools:\n##如 vllm、fastchat、llamacpp、AdaSeq 等\n#- vllm\n---\n### 当前模型的贡献者未提供更加详细的模型介绍。模型文件和权重，可浏览“模型文件”页面获取。\n#### 您可以通过如下git clone命令，或者ModelScope SDK来下载模型\n\nSDK下载\n```bash\n#安装ModelScope\npip install modelscope\n```\n```python\n#SDK模型下载\nfrom modelscope import snapshot_download\nmodel_dir = snapshot_download('Qwen/Qwen-Image-2.1')\n```\nGit下载\n```\n#Git模型下载\ngit clone https://www.modelscope.cn/Qwen/Qwen-Image-2.1.git\n```\n\n<p style=\"color: lightgrey;\">如果您是本模型的贡献者，我们邀请您根据<a href=\"https://modelscope.cn/docs/ModelScope%E6%A8%A1%E5%9E%8B%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B%E6%A6%82%E8%A7%88\" style=\"color: lightgrey; text-decoration: underline;\">模型贡献文档</a>，及时完善模型卡片内容。</p>",
+      "sha256": "69219f4d55a4e13fe85ef680011993cda30523250da3cc2dc216445d0ecdd484",
+      "size": 1396,
+      "source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md",
+      "source_field": "README.md front matter",
+      "evidence_level": "A"
+    }
+  ],
+  "commits": {
+    "historical_readme": {
+      "AuthorEmail": "",
+      "AuthorName": "Moymix",
+      "AuthoredDate": 1789639898,
+      "CommittedDate": 1789639898,
+      "CommitterEmail": "",
+      "CommitterName": "Moymix",
+      "CreatedAt": 1789639898,
+      "Id": "72900d004951bd845d7a4a77d566562eadd37c3f",
+      "Message": "System delete file",
+      "Title": "System delete file"
+    },
+    "license_created": {
+      "AuthorEmail": "",
+      "AuthorName": "systemd",
+      "AuthoredDate": 1789733204,
+      "CommittedDate": 1789733204,
+      "CommitterEmail": "",
+      "CommitterName": "systemd",
+      "CreatedAt": 1789733204,
+      "Id": "4b1751dd4e00f6c1a097c5a80d05e6521cea1c39",
+      "Message": "Create LICENSE (batch 1/1)",
+      "Title": "Create LICENSE (batch 1/1)"
+    },
+    "readme_license_changed": {
+      "AuthorEmail": "",
+      "AuthorName": "systemd",
+      "AuthoredDate": 1789903129,
+      "CommittedDate": 1789903129,
+      "CommitterEmail": "",
+      "CommitterName": "systemd",
+      "CreatedAt": 1789903129,
+      "Id": "c64b6eace0507982fa3f4828461b201d836d625a",
+      "Message": "Update README with header, introduction, and usage (batch 1/1)",
+      "Title": "Update README with header, introduction, and usage (batch 1/1)"
+    }
+  },
+  "warnings": []
+}
