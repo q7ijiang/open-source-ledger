@@ -15,8 +15,9 @@
 ## 测试数据
 
 - `tests/fixtures/modelscope/recursive_lineage/`：递归上游查询与异常血缘夹具。
-- `tests/fixtures/modelscope/project_extract/`：项目识别结果夹具。
-- `tests/fixtures/modelscope/model_exports/`：独立模型和受控多模型项目的导出样例。
+- `tests/fixtures/modelscope/scenario_t0_*` / `scenario_t1_*`：血缘、Delta 与传播测试共用的边界场景。
+- `tests/fixtures/projects/`：项目扫描、真实 ModelScope 快照与许可证变更场景夹具。
+- 项目识别和 BOM 导出测试也会在测试临时目录中现场生成输入，避免依赖历史导出文件。
 
 ## 运行方式
 
