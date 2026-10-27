@@ -2,9 +2,10 @@
 """AI 模型血缘许可证风险审计工具 — Streamlit 输入界面（答辩演示用）。
 
 模式：
-  单模型  ：输入 ModelScope 模型名 → main.py --model → 血缘风险图 + 中文报告
-  项目    ：输入项目路径 → main.py --project → 合并血缘风险图 + 中文报告
+  项目    ：选择或输入项目目录 → main.py --project → 合并血缘风险图 + 中文报告
   时间对比：上传 t0 / t1 两个 BOM → main.py --diff + render_diff.py → 时间轴传播图 + 中文报告
+
+单模型扫描仅保留在命令行内部诊断中，不作为 Streamlit 用户入口。
 
 约束（对齐组长要求）：
   - 不重写任何数据管道逻辑，只通过 subprocess 调用 main.py 现有功能
@@ -62,17 +63,35 @@ def _embed_html(html_path: Path, height: int = 620) -> None:
     components.html(html, height=height, scrolling=True)
 
 
-def run_model(model: str, enable_ai: bool = False) -> None:
-    safe = model.strip().strip("/").replace("/", "__")
-    out = ledger_main._model_output_dir(ROOT, model)
-    ai_flag = ["--ai"] if enable_ai else []
-    _run([str(ROOT / "main.py"), "--model", model, *ai_flag])
-    graph, report = out / "graph.json", out / "report.md"
-    _run([str(ROOT / "render_graph.py"), "--input", str(graph), "--output", str(out / "lineage.html"), "--report", str(report), "--title", safe])
-    st.subheader("风险血缘图（交互式）")
-    _embed_html(out / "lineage.html")
-    st.subheader("中文审计报告")
-    _show_report(report)
+def _pick_project_directory(initial_path: str = "") -> str | None:
+    """打开本机目录选择器；服务端无桌面环境时保留手工输入路径。"""
+    root = None
+    try:
+        import tkinter as tk
+        from tkinter import filedialog
+
+        initial = Path(initial_path).expanduser() if initial_path.strip() else ROOT
+        if initial.is_file():
+            initial = initial.parent
+        if not initial.is_dir():
+            initial = ROOT
+
+        root = tk.Tk()
+        root.withdraw()
+        root.attributes("-topmost", True)
+        selected = filedialog.askdirectory(
+            parent=root,
+            initialdir=str(initial),
+            title="选择项目目录",
+            mustexist=True,
+        )
+        return selected or None
+    except Exception as exc:
+        st.warning("无法打开系统目录选择器：%s。你仍可手动输入项目路径。" % exc)
+        return None
+    finally:
+        if root is not None:
+            root.destroy()
 
 
 def run_project(project: Path, enable_ai: bool = False) -> None:
@@ -118,29 +137,35 @@ st.set_page_config(page_title="AI 模型血缘许可证风险审计工具", layo
 st.title("AI 模型血缘许可证风险审计工具")
 st.caption("开源账本 · ModelScope 血缘风险审计（答辩演示）")
 
-mode = st.selectbox("模式", ["单模型", "项目", "时间对比"], index=0)
+mode = st.selectbox("模式", ["项目", "时间对比"], index=0)
 enable_ai = st.checkbox(
     "启用 AI 语义证据（C 级，需人工确认）",
     value=False,
     help="调用配置的 OpenAI-compatible 模型抽取条款；默认关闭，不影响规则主链。",
 )
 
-if mode == "单模型":
-    model = st.text_input("ModelScope 模型名", value="Qwen/Qwen-Image-2.1",
-                          help="例如 Qwen/Qwen-Image-2.1、Qwen/Qwen2.5-7B-Instruct")
-    if st.button("开始扫描", type="primary"):
-        if not model.strip() or "/" not in model:
-            st.error("请输入合法的模型名（命名空间/模型名）")
-        else:
-            with st.spinner("正在扫描 ModelScope 血缘并生成报告…"):
-                run_model(model.strip(), enable_ai)
+if mode == "项目":
+    path_col, browse_col = st.columns([5, 1])
+    project = path_col.text_input(
+        "项目路径",
+        key="project_path",
+        placeholder="请选择或输入项目目录，可填写绝对路径或相对仓库根的路径",
+        help="目录下可包含 config.json、bom.json 或代码中的模型标识。",
+    )
+    if browse_col.button("浏览目录", use_container_width=True):
+        selected = _pick_project_directory(project)
+        if selected:
+            st.session_state["project_path"] = selected
+            st.rerun()
 
-elif mode == "项目":
-    project = st.text_input("项目路径（相对仓库根）", value="example/multi_model_project",
-                            help="例如 example/multi_model_project（目录下含 config.json / bom.json / 代码中的模型标识）")
     if st.button("开始扫描", type="primary"):
-        proj = ROOT / project.strip().strip("/")
-        if not proj.exists():
+        raw_path = project.strip()
+        if not raw_path:
+            st.error("请先选择或输入项目目录")
+            st.stop()
+        candidate = Path(raw_path).expanduser()
+        proj = candidate.resolve() if candidate.is_absolute() else (ROOT / candidate).resolve()
+        if not proj.is_dir():
             st.error("项目路径不存在：%s" % proj)
         else:
             with st.spinner("正在扫描项目模型并生成合并血缘图…"):
@@ -148,12 +173,6 @@ elif mode == "项目":
 
 else:  # 时间对比
     st.info("上传两个 CycloneDX BOM 文件（需含 pedigree.ancestors 固化的血缘边）")
-    include_fixtures = st.checkbox(
-        "包含演示夹具（demo 模式）",
-        value=False,
-        help="演示夹具是标了 is_fixture / display_only 的构造资产。默认按生产模式排除，"
-        "不参与 Delta、风险传播与统计；勾选后保留并参与差异（用于答辩演示）。",
-    )
     f0 = st.file_uploader("t0 BOM（基线）", type=["json"], key="t0")
     f1 = st.file_uploader("t1 BOM（当前）", type=["json"], key="t1")
     if st.button("开始对比", type="primary"):
@@ -166,4 +185,4 @@ else:  # 时间对比
                 p0.write_bytes(f0.getvalue())
                 p1.write_bytes(f1.getvalue())
                 with st.spinner("正在对比血缘变化并生成传播图…"):
-                    run_diff(p0, p1, include_fixtures, enable_ai)
+                    run_diff(p0, p1, enable_ai=enable_ai)

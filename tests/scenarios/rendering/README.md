@@ -12,6 +12,7 @@
 | `test_render_graph_interaction.py` | 项目图聚合节点默认折叠和点击展开 |
 | `test_render_diff_layout.py` | `t0/t1` 共用坐标、节点位置稳定、AI 状态和报告下载入口 |
 | `test_render_diff_decisions.py` | 传播决策优先级、变更目标标注、过滤条件和真实血缘边属性 |
+| `test_render_link_details.py` | 节点详情中的 ModelScope 模型主页与原始 API 证据链接 |
 
 ## 测试数据
 

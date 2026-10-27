@@ -177,6 +177,22 @@ const REPORT_MARKDOWN = {{REPORT_MARKDOWN_JSON}};
 function escapeHtml(value) {
   return String(value == null ? "" : value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 }
+function modelscopeModelPageUrl(raw) {
+  if (!raw || raw.asset_type !== "model") return null;
+  if (raw.aggregate === true || raw.coverage_status === "AGGREGATE_ONLY") return null;
+  const canonical = String(raw.canonical_id || "");
+  if (canonical.includes(":son:") || canonical.includes(":parent:")) return null;
+  const prefix = "model:modelscope/";
+  let modelId = canonical.startsWith(prefix) ? canonical.slice(prefix.length).split("@")[0] : "";
+  if (!modelId) {
+    const purlPrefix = "pkg:modelscope/";
+    const purl = (raw.purls || []).find(value => String(value).startsWith(purlPrefix));
+    if (purl) modelId = String(purl).slice(purlPrefix.length).split("@")[0];
+  }
+  const parts = modelId.split("/");
+  if (parts.length !== 2 || parts.some(part => !part || /\\s/.test(part))) return null;
+  return `https://www.modelscope.cn/models/${parts.map(encodeURIComponent).join("/")}`;
+}
 function aiAnalysis(n) {
   return n && n.ai_analysis && n.ai_analysis.analysis_type === "model_profile" ? n.ai_analysis : null;
 }
@@ -539,11 +555,20 @@ refresh();
 window.addEventListener("resize", () => chart.resize());
 
 function renderNodeDetail(raw) {
+  const pageUrl = modelscopeModelPageUrl(raw);
+  const pageLink = pageUrl
+    ? `<div class="kv"><b>ModelScope 模型主页</b> <a href="${escapeHtml(pageUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(pageUrl)}</a></div>`
+    : "";
   const j = decisionOf(raw.decision);
   const agg = isAggregate(raw);
-  const evs = (raw.evidence_chain || []).map(e =>
-    `<div class="ev"><b>证据 ${escapeHtml(e.evidence_level || "—")}</b> · ${escapeHtml(e.source_api || "")}<br/>字段：${escapeHtml(e.source_field || "—")}<br/><a href="${escapeHtml(e.source_url || "#")}" target="_blank">${escapeHtml(e.source_url || "—")}</a></div>`
-  ).join("") || "<div class='ev'>无证据链</div>";
+  let evs = (raw.evidence_chain || []).map(e => {
+    const sourceUrl = String(e.source_url || "").trim();
+    const sourceLink = sourceUrl
+      ? `<br/><a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">原始 API 证据：${escapeHtml(sourceUrl)}</a>`
+      : `<br/><span class="evidence-missing">原始 API 证据：未提供</span>`;
+    return `<div class="ev"><b>证据 ${escapeHtml(e.evidence_level || "—")}</b> · ${escapeHtml(e.source_api || "")}<br/>字段：${escapeHtml(e.source_field || "—")}${sourceLink}</div>`;
+  }).join("") || "<div class='ev'>无证据链</div>";
+  evs = (pageLink || "") + evs;
   let html = `<div class="kv"><b>名称</b> ${escapeHtml(raw.name || raw.canonical_id)}</div>` +
     `<div class="kv"><b>节点类型</b> ${agg ? "聚合风险域（非具体模型）" : escapeHtml(raw.asset_type || "—")}</div>` +
     `<div class="kv"><b>版本</b> ${escapeHtml(raw.version || "—")}</div>` +

@@ -240,6 +240,24 @@ const REPORT_MARKDOWN = {{REPORT_MARKDOWN_JSON}};
 function escapeHtml(value) {
   return String(value == null ? "" : value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 }
+function modelscopeModelPageUrl(raw) {
+  if (!raw || raw.asset_type !== "model") return null;
+  if (raw.aggregate === true || raw.coverage_status === "AGGREGATE_ONLY") return null;
+  const canonical = String(raw.canonical_id || "");
+  if (canonical.includes(":son:") || canonical.includes(":parent:")) return null;
+  const canonicalPrefix = "model:modelscope/";
+  let modelId = canonical.startsWith(canonicalPrefix)
+    ? canonical.slice(canonicalPrefix.length).split("@")[0]
+    : "";
+  if (!modelId) {
+    const purlPrefix = "pkg:modelscope/";
+    const purl = (raw.purls || []).find(value => String(value).startsWith(purlPrefix));
+    if (purl) modelId = String(purl).slice(purlPrefix.length).split("@")[0];
+  }
+  const parts = modelId.split("/");
+  if (parts.length !== 2 || parts.some(part => !part || /\\s/.test(part))) return null;
+  return `https://www.modelscope.cn/models/${parts.map(encodeURIComponent).join("/")}`;
+}
 function aiAnalysis(n) {
   return n && n.ai_analysis && n.ai_analysis.analysis_type === "model_profile" ? n.ai_analysis : null;
 }
@@ -529,6 +547,10 @@ function renderCerts(eventId, seed) {
 }
 
 function renderNodeDetail(raw, snapshot) {
+  const pageUrl = modelscopeModelPageUrl(raw);
+  const pageLink = pageUrl
+    ? `<div class="kv"><b>ModelScope 模型主页</b> <a href="${escapeHtml(pageUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(pageUrl)}</a></div>`
+    : "";
   const agg = isAgg(raw);
   const j = decisionOf(raw.decision);
   const counts = raw.render_risk_counts || raw.known_risk_counts || {red:0,yellow:0,gray:0};
@@ -548,9 +570,14 @@ function renderNodeDetail(raw, snapshot) {
       html += `<div class="fixture-note">构造测试夹具：该名称用于验证展开与着色逻辑，不代表 ModelScope API 已返回这个真实下游模型。</div>`;
     }
   }
-  const evidence = (raw.evidence_chain || []).map(e =>
-    `<div class="ev"><b>证据 ${escapeHtml(e.evidence_level || "—")}</b> · ${escapeHtml(e.source_api || "")}<br/>字段：${escapeHtml(e.source_field || "—")}</div>`
-  ).join("") || `<div class="ev">无证据链</div>`;
+  let evidence = (raw.evidence_chain || []).map(e => {
+    const sourceUrl = String(e.source_url || "").trim();
+    const sourceLink = sourceUrl
+      ? `<br/><a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">原始 API 证据：${escapeHtml(sourceUrl)}</a>`
+      : `<br/><span class="evidence-missing">原始 API 证据：未提供</span>`;
+    return `<div class="ev"><b>证据 ${escapeHtml(e.evidence_level || "—")}</b> · ${escapeHtml(e.source_api || "")}<br/>字段：${escapeHtml(e.source_field || "—")}${sourceLink}</div>`;
+  }).join("") || `<div class="ev">无证据链</div>`;
+  evidence = (pageLink || "") + evidence;
   document.getElementById("panel-body").innerHTML = html + renderAiDetails(raw) + evidence;
 }
 
@@ -580,9 +607,12 @@ if (DATA.ai_diff && DATA.ai_diff.ai_available === false) {
   aiChanges.forEach(change => {
     const item = document.createElement("div");
     item.className = "ai-diff";
+    const confidence = `${change.before_confidence ?? "—"} → ${change.after_confidence ?? "—"}`;
+    const sourcePath = change.after_source_path || "—";
     item.innerHTML = `<div class="route">${escapeHtml(change.model_id)} · ${escapeHtml(change.dimension_zh || change.dimension)}</div>` +
       `<div>${escapeHtml(change.before_state_zh || change.before_state)} → ${escapeHtml(change.after_state_zh || change.after_state)}</div>` +
-      `<div class="meta">复核优先级 ${escapeHtml(change.review_priority)} · C 级 · 待人工确认</div>` +
+      `<div class="meta">复核优先级 ${escapeHtml(change.review_priority)} · AI 置信度 ${escapeHtml(confidence)} · C 级 · 待人工确认</div>` +
+      `<div class="meta">t1 证据来源 ${escapeHtml(sourcePath)} · 原文 SHA256 ${escapeHtml(change.after_quote_sha256 || "—")}</div>` +
       `<div class="ai-quote">旧：${escapeHtml(change.before_quote || "—")}<br/>新：${escapeHtml(change.after_quote || "—")}</div>`;
     aiDiffList.appendChild(item);
   });
