@@ -108,7 +108,10 @@ def _model_id(value: Any) -> str | None:
             or value.get("Model")
             or value.get("Path")
         )
-    text = ba.clean_text(raw).strip().strip("/")
+    text = ba.clean_text(raw)
+    if not text:
+        return None
+    text = text.strip().strip("/")
     if "@" in text and "/" in text:
         text = text.rsplit("@", 1)[0]
     if not text or "://" in text or not _MODEL_ID_RE.match(text):

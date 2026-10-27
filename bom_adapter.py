@@ -569,7 +569,13 @@ def convert_component(
             asset[flag_name] = _as_bool(ledger_properties[flag_name])
     if "simulation" in ledger_properties:
         asset["simulation"] = _as_bool(ledger_properties["simulation"])
+    if "historical_reconstruction" in ledger_properties:
+        asset["historical_reconstruction"] = _as_bool(
+            ledger_properties["historical_reconstruction"]
+        )
     for property_name, field_name in (
+        ("historical_commit", "historical_commit"),
+        ("historical_source_url", "historical_source_url"),
         ("simulation_reason", "simulation_reason"),
         ("simulation_original_license", "simulation_original_license"),
         ("simulation_target_license", "simulation_target_license"),
