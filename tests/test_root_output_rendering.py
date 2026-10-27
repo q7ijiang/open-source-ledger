@@ -20,8 +20,16 @@ import sys
 from conftest import REPO_ROOT
 
 ECHARTS = REPO_ROOT / "echarts.min.js"
-T0_BOM = REPO_ROOT / "data" / "test_scenarios" / "ms_t0_bom.json"
-T1_BOM = REPO_ROOT / "data" / "test_scenarios" / "ms_t1_bom.json"
+FIXTURE_ROOT = (
+    REPO_ROOT
+    / "tests"
+    / "fixtures"
+    / "projects"
+    / "qwen_image_license_tightening"
+    / "upstream"
+)
+T0_BOM = FIXTURE_ROOT / "t0_bom.json"
+T1_BOM = FIXTURE_ROOT / "t1_bom.json"
 
 
 def _stage(tmp_path, *scripts):

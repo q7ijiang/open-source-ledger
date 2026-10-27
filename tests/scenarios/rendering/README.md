@@ -16,7 +16,8 @@
 
 ## 测试数据
 
-- `data/test_scenarios/`：项目 Diff 的受控输入。
+- `tests/fixtures/projects/qwen_image_license_tightening/upstream/`：当前项目 Diff 主验收输入，含 8 个具体模型与 9 条上游血缘边。
+- 旧的 `data/test_scenarios/` 下游聚合与 Adapter 夹具已退役；渲染测试不再从生产目录读取历史导出文件。
 - `tests/fixtures/projects/real_modelscope/snapshots/full/scenarios/`：直接变更和上游变更验收快照。
 
 ## 运行方式

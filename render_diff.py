@@ -2,8 +2,8 @@
 """--diff 时间轴风险传播图渲染器：左 t0、右 t1，中间标变化事件。
 
 用法：
-  python render_diff.py --before data/test_scenarios/project_t0_bom.json \
-      --after data/test_scenarios/project_t1_bom.json --output outputs/diff.html
+  python render_diff.py --before <t0-bom.json> \
+      --after <t1-bom.json> --output <diff.html>
 
 链路与 main.py --diff 一致（只读 BOM 固化的血缘边，零在线请求）：
   _build_snapshot -> build_graph -> delta_engine.detect_delta -> propagation_engine.propagate

@@ -239,8 +239,8 @@ def test_event_list_annotates_distinct_affected_targets() -> None:
     assert fallback[1]["display_target"] == "a"
 
 
-def test_real_review_fixture_renders_distinct_propagation_targets(tmp_path: Path) -> None:
-    """真实 t0/t1 夹具：五条传播事件必须显示到四个不同聚合域，而不是种子自指。"""
+def test_qwen_upstream_fixture_renders_upstream_propagation_targets(tmp_path: Path) -> None:
+    """Qwen t0/t1 夹具：事件必须沿上游血缘指向 Turbo/FP8，而不是种子自指。"""
 
     out = tmp_path / "diff.html"
     subprocess.run(
@@ -248,9 +248,25 @@ def test_real_review_fixture_renders_distinct_propagation_targets(tmp_path: Path
             sys.executable,
             str(REPO_ROOT / "render_diff.py"),
             "--before",
-            str(REPO_ROOT / "data/test_scenarios/project_t0_bom.json"),
+            str(
+                REPO_ROOT
+                / "tests"
+                / "fixtures"
+                / "projects"
+                / "qwen_image_license_tightening"
+                / "upstream"
+                / "t0_bom.json"
+            ),
             "--after",
-            str(REPO_ROOT / "data/test_scenarios/project_t1_bom.json"),
+            str(
+                REPO_ROOT
+                / "tests"
+                / "fixtures"
+                / "projects"
+                / "qwen_image_license_tightening"
+                / "upstream"
+                / "t1_bom.json"
+            ),
             "--output",
             str(out),
         ],
@@ -264,16 +280,23 @@ def test_real_review_fixture_renders_distinct_propagation_targets(tmp_path: Path
     data = json.loads(match.group(1))
 
     events = data["events"]
-    assert len(events) == 5
-    # 1 条种子事件显示种子自身；其余 4 条必须分别指向四个不同聚合域
+    assert len(events) == 3
+    # 1 条种子事件显示种子自身；其余 2 条沿真实上游边传播。
     self_events = [e for e in events if e["display_target"] == e["display_source"]]
     propagated = [e for e in events if e["display_target"] != e["display_source"]]
     assert len(self_events) == 1
-    assert len(propagated) == 4
+    assert len(propagated) == 2
     targets = {event["display_target"] for event in propagated}
-    assert len(targets) == 4, f"传播目标名重复：{sorted(targets)}"
-    assert all(event["display_target"].endswith("@master") for event in propagated)
-    assert len(data["certificates"]) == 4
+    assert targets == {
+        "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master",
+        "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master",
+    }
+    assert len(data["certificates"]) == 2
+    assert not [
+        node
+        for node in data["nodes_t1"]
+        if node.get("aggregate") or node.get("coverage_status") == "AGGREGATE_ONLY"
+    ]
 
 
 def test_diff_template_uses_snapshot_tabs_and_per_snapshot_expansion() -> None:
