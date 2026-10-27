@@ -620,6 +620,22 @@ def _analysis_index(analyses: Iterable[dict[str, Any]]) -> dict[str, dict[str, A
     return result
 
 
+def _semantic_change_audit(claim: dict[str, Any] | None, prefix: str) -> dict[str, Any]:
+    """Expose frozen claim confidence and evidence provenance in Diff outputs."""
+    if not isinstance(claim, dict):
+        return {}
+    evidence = claim.get("evidence") if isinstance(claim.get("evidence"), dict) else {}
+    return {
+        f"{prefix}_confidence": claim.get("confidence"),
+        f"{prefix}_confidence_factors": dict(claim.get("confidence_factors") or {}),
+        f"{prefix}_evidence_level": _safe_text(claim.get("evidence_level")) or "C",
+        f"{prefix}_source_path": _safe_text(evidence.get("source_path")),
+        f"{prefix}_source_url": _safe_text(evidence.get("source_url")),
+        f"{prefix}_quote_sha256": _safe_text(evidence.get("quote_sha256")),
+        f"{prefix}_file_sha256": _safe_text(evidence.get("file_sha256")),
+    }
+
+
 def semantic_diff(before: Iterable[dict[str, Any]], after: Iterable[dict[str, Any]]) -> dict[str, Any]:
     before_by_model = _analysis_index(before)
     after_by_model = _analysis_index(after)
@@ -648,6 +664,8 @@ def semantic_diff(before: Iterable[dict[str, Any]], after: Iterable[dict[str, An
             after_state = _safe_text(right.get("state")) if right else "not_found"
             before_quote = _safe_text((left.get("evidence") or {}).get("quote")) if left else ""
             after_quote = _safe_text((right.get("evidence") or {}).get("quote")) if right else ""
+            before_audit = _semantic_change_audit(left, "before")
+            after_audit = _semantic_change_audit(right, "after")
             if before_state == after_state:
                 if left and right and before_quote and after_quote and before_quote != after_quote:
                     changes.append(
@@ -664,6 +682,8 @@ def semantic_diff(before: Iterable[dict[str, Any]], after: Iterable[dict[str, An
                             "reason": f"{dimension}状态未变，但原文依据发生变化",
                             "before_quote": before_quote,
                             "after_quote": after_quote,
+                            **before_audit,
+                            **after_audit,
                         }
                     )
                 continue
@@ -696,6 +716,8 @@ def semantic_diff(before: Iterable[dict[str, Any]], after: Iterable[dict[str, An
                     "reason": reason,
                     "before_quote": before_quote,
                     "after_quote": after_quote,
+                    **before_audit,
+                    **after_audit,
                 }
             )
     return {

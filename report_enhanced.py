@@ -434,8 +434,8 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
         L.append("")
         ai_changes = ai_diff.get("changes") or []
         if ai_changes:
-            L.append("| 模型 | 维度 | 语义变化 | 复核优先级 | 旧原文 | 新原文 |")
-            L.append("|---|---|---|---|---|---|")
+            L.append("| 模型 | 维度 | 语义变化 | 复核优先级 | AI 置信度（t0 → t1） | 旧原文 | 新原文 |")
+            L.append("|---|---|---|---|---|---|---|")
             for change in ai_changes:
                 L.append(
                     f"| {_md_cell(change.get('model_id'))} |"
@@ -443,8 +443,31 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
                     f" {_md_cell(change.get('before_state_zh') or change.get('before_state'))} →"
                     f" {_md_cell(change.get('after_state_zh') or change.get('after_state'))} |"
                     f" {_md_cell(change.get('review_priority'))} |"
+                    f" {_md_cell(change.get('before_confidence'))} →"
+                    f" {_md_cell(change.get('after_confidence'))} |"
                     f" {_md_cell(change.get('before_quote'))} |"
                     f" {_md_cell(change.get('after_quote'))} |"
+                )
+            L.append("")
+            L.append("### AI 置信度构成")
+            L.append("")
+            L.append("| 模型 | 维度 | t0 构成 | t1 构成 | t1 原文 SHA256 |")
+            L.append("|---|---|---|---|---|")
+            for change in ai_changes:
+                before_factors = change.get("before_confidence_factors") or {}
+                after_factors = change.get("after_confidence_factors") or {}
+                before_text = " + ".join(
+                    f"{key} {float(value):+.2f}" for key, value in before_factors.items()
+                ) or "—"
+                after_text = " + ".join(
+                    f"{key} {float(value):+.2f}" for key, value in after_factors.items()
+                ) or "—"
+                L.append(
+                    f"| {_md_cell(change.get('model_id'))} |"
+                    f" {_md_cell(change.get('dimension_zh') or change.get('dimension'))} |"
+                    f" {_md_cell(before_text)} |"
+                    f" {_md_cell(after_text)} |"
+                    f" {_md_cell(change.get('after_quote_sha256'))} |"
                 )
         elif ai_diff.get("ai_available") is False:
             L.append("BOM 未固化 AI 条款画像；这里不推断最新许可证语义，规则 Delta 不受影响。")
