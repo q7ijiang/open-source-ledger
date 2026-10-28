@@ -14,6 +14,7 @@
 """
 import base64
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -94,11 +95,20 @@ def _pick_project_directory(initial_path: str = "") -> str | None:
             root.destroy()
 
 
+def _artifacts_root() -> Path:
+    """与 main.py 的 _artifacts_root 保持一致（子进程 cwd 就是 ROOT），避免产物路径错位。"""
+    raw = (os.getenv("OPEN_SOURCE_LEDGER_ARTIFACTS_DIR") or "").strip() or ".open-source-ledger/artifacts"
+    path = Path(raw).expanduser()
+    return path if path.is_absolute() else (ROOT / path).resolve()
+
+
 def run_project(project: Path, enable_ai: bool = False) -> None:
-    proj = project.resolve()
-    out = ledger_main._project_output_dir(ROOT, proj)
+    proj = project if project.is_absolute() else (ROOT / project)
+    proj = proj.resolve()
+    artifacts_root = _artifacts_root()
+    out = ledger_main._project_output_dir(artifacts_root, proj)
     ai_flag = ["--ai"] if enable_ai else []
-    _run([str(ROOT / "main.py"), "--project", str(proj), *ai_flag])
+    _run([str(ROOT / "main.py"), "--project", str(proj), "--artifacts-dir", str(artifacts_root), *ai_flag])
     graph, report = out / "graph.json", out / "report.md"
     _run([str(ROOT / "render_graph.py"), "--input", str(graph), "--output", str(out / "lineage.html"), "--report", str(report), "--title", proj.name])
     st.subheader("风险血缘图（交互式）")
