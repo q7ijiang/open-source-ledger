@@ -9,6 +9,7 @@
 | 文件 | 覆盖内容 |
 | --- | --- |
 | `test_repository_hygiene.py` | Actions 输出变量、Runner 临时目录、AI 端点配置和机器专属主目录检查 |
+| `test_repository_hygiene.py` | 另含 checkout 路径必须位于 `GITHUB_WORKSPACE` 内，以及工具检出后再迁移到 Runner 临时目录的回归检查 |
 
 ## 检查对象
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -7,6 +8,30 @@ ACTION_FILES = (
     REPO_ROOT / "action.yml",
     REPO_ROOT / ".github" / "workflows" / "license-watch.yml",
 )
+
+
+def test_checkout_paths_stay_inside_github_workspace() -> None:
+    workflow = (REPO_ROOT / ".github" / "workflows" / "license-watch.yml").read_text(
+        encoding="utf-8"
+    )
+    steps = re.findall(r"(?ms)^      - name:.*?(?=^      - |\Z)", workflow)
+    checkout_steps = [step for step in steps if "uses: actions/checkout@v4" in step]
+
+    assert checkout_steps
+    for step in checkout_steps:
+        path_lines = [
+            line.strip()
+            for line in step.splitlines()
+            if line.strip().startswith("path:")
+        ]
+        for path_line in path_lines:
+            checkout_path = path_line.removeprefix("path:").strip()
+            assert "${{ runner.temp }}" not in checkout_path
+            assert not checkout_path.startswith("/")
+            assert not checkout_path.startswith("../")
+
+    assert "path: .ci/open-source-ledger-tool" in workflow
+    assert "Move tool checkout outside target workspace" in workflow
 
 
 def test_actions_use_explicit_outputs_and_runner_temp() -> None:

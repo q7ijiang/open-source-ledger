@@ -47,7 +47,20 @@ jobs:
         with:
           repository: q7ijiang/open-source-ledger
           ref: main
-          path: ${{ runner.temp }}/open-source-ledger-tool
+          path: .ci/open-source-ledger-tool
+
+      # actions/checkout rejects paths outside GITHUB_WORKSPACE. Check out
+      # inside the workspace, then move the tool out before scanning so its
+      # own fixtures are not mistaken for target-project model references.
+      - name: Move tool checkout outside target workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          TOOL_CHECKOUT="${GITHUB_WORKSPACE}/.ci/open-source-ledger-tool"
+          TOOL_DIR="${RUNNER_TEMP}/open-source-ledger-tool"
+          rm -rf "$TOOL_DIR"
+          mv "$TOOL_CHECKOUT" "$TOOL_DIR"
+          rmdir "${GITHUB_WORKSPACE}/.ci" 2>/dev/null || true
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
