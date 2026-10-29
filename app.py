@@ -26,8 +26,39 @@ import streamlit.components.v1 as components
 import main as ledger_main
 
 ROOT = Path(__file__).resolve().parent
+ARTIFACTS_ROOT = ROOT / ".open-source-ledger" / "artifacts"
 PY = sys.executable
 ECHARTS_CDN = "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
+
+_DIRECTORY_PICKER_SCRIPT = r"""
+import sys
+import tkinter as tk
+from pathlib import Path
+from tkinter import filedialog
+
+initial = Path(sys.argv[1]).expanduser()
+if not initial.is_dir():
+    initial = Path(sys.argv[2]).expanduser()
+
+root = tk.Tk()
+root.withdraw()
+root.attributes("-topmost", True)
+root.update_idletasks()
+try:
+    selected = filedialog.askdirectory(
+        parent=root,
+        initialdir=str(initial),
+        title="选择项目目录",
+        mustexist=True,
+    )
+    if selected:
+        print(selected, flush=True)
+finally:
+    try:
+        root.destroy()
+    except tk.TclError:
+        pass
+"""
 
 
 def _run(args: list[str]) -> None:
@@ -64,41 +95,56 @@ def _embed_html(html_path: Path, height: int = 620) -> None:
 
 
 def _pick_project_directory(initial_path: str = "") -> str | None:
-    """打开本机目录选择器；服务端无桌面环境时保留手工输入路径。"""
-    root = None
+    """在独立进程中打开系统目录选择器，避免阻塞 Streamlit 脚本线程。"""
+    initial = Path(initial_path).expanduser() if initial_path.strip() else ROOT
+    if initial.is_file():
+        initial = initial.parent
+    if not initial.is_dir():
+        initial = ROOT
+
+    creationflags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
     try:
-        import tkinter as tk
-        from tkinter import filedialog
-
-        initial = Path(initial_path).expanduser() if initial_path.strip() else ROOT
-        if initial.is_file():
-            initial = initial.parent
-        if not initial.is_dir():
-            initial = ROOT
-
-        root = tk.Tk()
-        root.withdraw()
-        root.attributes("-topmost", True)
-        selected = filedialog.askdirectory(
-            parent=root,
-            initialdir=str(initial),
-            title="选择项目目录",
-            mustexist=True,
+        proc = subprocess.run(
+            [PY, "-c", _DIRECTORY_PICKER_SCRIPT, str(initial), str(ROOT)],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=300,
+            creationflags=creationflags,
         )
-        return selected or None
+    except subprocess.TimeoutExpired:
+        st.warning("目录选择器等待超时。你仍可手动输入项目路径。")
+        return None
     except Exception as exc:
         st.warning("无法打开系统目录选择器：%s。你仍可手动输入项目路径。" % exc)
         return None
-    finally:
-        if root is not None:
-            root.destroy()
+
+    if proc.returncode != 0:
+        detail = (proc.stderr or "").strip().splitlines()
+        reason = detail[-1] if detail else "目录选择器异常退出"
+        st.warning("无法打开系统目录选择器：%s。你仍可手动输入项目路径。" % reason)
+        return None
+
+    selected = proc.stdout.strip().splitlines()
+    return selected[-1].strip() if selected else None
 
 
 def run_project(project: Path, enable_ai: bool = False) -> None:
     proj = project.resolve()
-    out = ledger_main._project_output_dir(ROOT, proj)
+    out = ledger_main._project_output_dir(ARTIFACTS_ROOT, proj)
     ai_flag = ["--ai"] if enable_ai else []
-    _run([str(ROOT / "main.py"), "--project", str(proj), *ai_flag])
+    _run(
+        [
+            str(ROOT / "main.py"),
+            "--project",
+            str(proj),
+            "--artifacts-dir",
+            str(ARTIFACTS_ROOT),
+            *ai_flag,
+        ]
+    )
     graph, report = out / "graph.json", out / "report.md"
     _run([str(ROOT / "render_graph.py"), "--input", str(graph), "--output", str(out / "lineage.html"), "--report", str(report), "--title", proj.name])
     st.subheader("风险血缘图（交互式）")
