@@ -1,9 +1,10 @@
 # B 侧评测基准数据（`benchmark/`）
 
 > 归属：**B（算法与评测）**
-> 覆盖任务：B-01（20 候选项目 + 10 模型案例）、B-02（标注规范）、B-03/B-04 雏形、B-05 指标草案
+> 覆盖任务：B-01（20 候选项目 + 12 模型案例）、B-02（标注规范）、B-04 雏形、B-05 指标草案
 > 生成时间：2026-11-13 ｜ Gate 1 截止：2026-11-16
 > 配套文档：[`annotation_spec.md`](annotation_spec.md)
+> **本版不含任何准确率结论**：数据尚未跑过全量评测，准确率一律待 Gate 2 之后按同一份标签重算。
 
 ---
 
@@ -11,9 +12,11 @@
 
 把"工具能跑"升级为"效果可验证"所需的标准答案（gold label）底座：
 
-- `model_cases.json` —— **模型级**事实与期望判定（12 个案例，覆盖 5 类许可证事实）
-- `candidates.csv` —— **项目级**候选池（20 个真实开源项目，固定 commit、具体文件与行号）
-- `annotation_spec.md` —— 标注口径：6 个标签的定义、判别顺序、字段格式
+- `candidates.csv` —— **项目级**候选池（20 个真实开源项目，固定 commit、具体文件、调用段行号）
+- `rejected_candidates.csv` —— **被排除**的候选及其排除证据（25 条，含 A 点名的 13 条）
+- `model_cases.json` —— **模型级**事实与期望判定（12 个案例，覆盖 4 类许可证事实）
+- `annotation_spec.md` —— 标注口径：标签定义、判别顺序、字段格式
+- `validate_benchmark.py` —— 结构、枚举、哈希与一致性自检
 
 所有标签只依据 **ModelScope 官方 API 的 A 级事实 + 规则库**推导，**不参考工具运行输出**，避免标签泄漏。
 
@@ -23,130 +26,182 @@
 
 | 文件 | 用途 | 规模 |
 |---|---|---|
-| `candidates.csv` | 候选项目池（项目 × 使用关系） | 20 个项目 / 7 个模型 |
+| `candidates.csv` | 正样本：项目 × 使用关系 | 20 行 / 20 项目 / 16 个模型家族 |
+| `rejected_candidates.csv` | 负样本：被排除的候选与原因 | 25 行 |
 | `model_cases.json` | 模型案例与期望判定 | 12 个案例 |
-| `annotation_spec.md` | 标注规范 v0.1 | — |
+| `annotation_spec.md` | 标注规范 v0.2 | — |
+| `validate_benchmark.py` | 自检脚本（CI 可跑） | — |
 
 ---
 
-## 2. `candidates.csv` 字段
+## 2. 平台证据：怎么证明"项目真的用了 ModelScope"
 
-| 列 | 含义 | 取值 |
+这是本版最重要的改动。**不能用"文件里出现模型 ID + 文件里有 `import modelscope`"来判定**，必须看模型所在的那条**调用语句本身**由谁发起。判定算法（`bench_strict.py`，一次性采集工具，未入库）：
+
+1. 定位含 `snapshot_download` / `pipeline(` / `from_pretrained` / `AutoModel*` / `AutoTokenizer` 且非注释的行；
+2. 从该行起按括号配平向后累加，得到完整调用段（最多 15 行，跳过字符串内的括号）；
+3. 解析**变量绑定**：`NAME = "<model_id>"`、`def f(self, NAME="<model_id>")` 记入变量表，再在调用段内用 `\bNAME\b` 匹配——否则会漏掉 `snapshot_download(model_id)` 这类间接引用；
+4. 按下方优先级给出 `platform_evidence`。
+
+| `platform_evidence` | 含义 | 能否进正样本 |
 |---|---|---|
-| `case_id` | 案例编号 | `pc-0001` … |
-| `repo` | GitHub 仓库 | `owner/name` |
-| `repo_url` | 仓库地址 | URL |
-| `head_sha` | **固定提交**（默认分支 HEAD，采集时刻） | 40 位 SHA |
-| `model_id` | 被引用的 ModelScope 模型 | `namespace/name` |
-| `source_file` | 出现该模型的**来源文件** | 仓库相对路径 |
-| `line_no` | 命中行号 | 整数 |
-| `use_type` | 项目对模型的使用方式 | `remote_api` / `local_inference` / `weight_distribution` / `fine_tuning` / `derivative_release` / `evaluation_only` / `unknown` |
-| `license_status` | 该模型的事实类别 | `standard` / `nonstandard` / `missing` / `conflict` / `unresolved` |
-| `expected_decision` | 期望判定 | `SAFE` / `RISK_POTENTIAL` / `RISK_CONFIRMED` / `UNDETERMINED` |
-| `needs_human_review` | 是否需人工复核 | `true` / `false` |
-| `usage_evidence` | 命中的源码原文（截断） | 文本 |
-| `annotator` | 标注人 | `B` |
-| `note` | 使用方式判读依据 | 文本 |
+| `modelscope_download` | `snapshot_download(...)` 实际执行，且文件内有 ModelScope 来源 | ✅ 正样本 |
+| `modelscope_api` | `modelscope.pipelines.pipeline(...)` 实际执行 | ✅ 正样本 |
+| `modelscope_source_selected` | `from_pretrained` 的类来自 `from modelscope import ...`（显式选择 MS 源） | ✅ 正样本 |
+| `modelscope_import` | 只有 import，没有可归属的调用 | ❌ 不足 |
+| `modelscope_namespace_only` | 仅出现 `AI-ModelScope/...` 之类命名空间或本地路径 | ❌ 负样本 |
+| `huggingface_import` | 调用方是 `transformers` / `diffusers` / `huggingface_hub` | ❌ 负样本 |
+| `non_modelscope_remote_api` | 走第三方远程 API（如 SiliconFlow） | ❌ 负样本 |
+| `local_path_only` | 只从本地目录加载，路径里带 MS 字样 | ❌ 负样本 |
+| `mapping_only` | 只在映射表 / 常量表 / 模型注册表里声明 | ❌ 负样本 |
+| `ambiguous` / `commented_out` | 证据不足 / 调用被注释 | ❌ 负样本 |
 
-`use_type` 枚举与 `ai_layer/schemas.py::PROJECT_USE_TYPES` 对齐；`license_status` 与 `expected_decision` 的定义见 `annotation_spec.md` §2、§4。
+`platform_confidence`：`high` = 调用段内直接出现模型 ID 或已解析的变量绑定；`low` = 依赖跨文件/跨函数推断。
+
+> 本轮据此把 A 点名的 13 条全部降级并写入 `rejected_candidates.csv`，另外拒绝了 12 条审计不通过的候选。
 
 ---
 
-## 3. `model_cases.json` 字段
+## 3. `candidates.csv` 字段
+
+共 37 列，按用途分五组。
+
+**来源定位**
+
+| 列 | 含义 |
+|---|---|
+| `case_id` | `pc-0001` … |
+| `repo` / `repo_url` | `owner/name` 与仓库地址 |
+| `head_sha` | 固定提交（采集时刻默认分支 HEAD，40 位） |
+| `source_file` / `source_kind` | 命中文件；`code` / `script` / `config` / `docs` |
+| `line_start` / `line_end` | 人类可核对的行号区间：模型 ID 字面行与调用段的并集 |
+| `matched_text` / `matched_text_sha256` | 调用段原文（空白归一后）及其 SHA-256 |
+
+**平台证据**：`platform_evidence`、`platform_confidence`（取值见 §2）
+
+**模型事实**：`model_id`、`model_revision`、`model_source_url`、`model_observed_at`、`raw_response_sha256`
+
+**许可证四段**（A 要求的拆分，见 `annotation_spec.md` §2.1）
+
+| 列 | 含义 |
+|---|---|
+| `license_raw` / `license_name_raw` | `Data.License` / `Data.LicenseName` 原值，不改写 |
+| `license_source_field` | 实际生效字段（`Data.LicenseName` 优先，为空则 `Data.License`） |
+| `license_observed_at` | 抓取日期 |
+| `license_known` / `license_spdx_like` / `license_category` | 规则库是否认识 / 是否 SPDX 式 / 6 类之一 |
+| `canonical_license_id` / `risk_level` | 归一 ID 与风险 1–5（仅在 `known=true` 时非空） |
+| `pipeline_license_state` | 适配器视角：`standard` / `nonstandard` / `missing` |
+| `semantic_license_state` | 语义视角：`standard_spdx` / `recognized_non_spdx` / `nonstandard` / `missing` / `unresolved` |
+| `license_class` | `spdx` / `recognized_non_spdx` / `nonstandard` / `missing` / `unresolved` |
+| `needs_human_review` | 叠加状态 |
+
+**标注与分组**：`use_type`、`expected_decision`、`candidate_status`、`candidate_role`、`project_group`、`family_group`、`usage_evidence`、`annotator`、`note`
+
+`use_type` 枚举对齐 `ai_layer/schemas.py::PROJECT_USE_TYPES`。**`weight_distribution` 只用于第三方发布 / 上传 / 转售 / 对外提供权重**；`snapshot_download` 属于"获取模型"，不是分发，本批不使用该值。
+
+---
+
+## 4. `rejected_candidates.csv` 字段
+
+`reject_id`、`repo`、`repo_url`、`head_sha`、`model_id`、`source_file`、`line_no`、`platform_evidence`、`evidence_text`、`reject_reason`、`note`、`reviewed_at`、`reviewer`。
+
+`reject_reason` 取值：`huggingface_only`(5)、`ambiguous_platform`(5)、`mapping_only`(4)、`local_path_only`(2)、`commented_out`(3)、`non_modelscope_remote_api`(1)、`namespace_only`(5)。
+其中 `commented_out` / `namespace_only` 是在 A 给的四个原因之外补充的，用于描述"调用被注释""只有命名空间"两种情况。
+
+**不删除原始候选的理由**：这些行本身就是"模型 ID 在 ModelScope 上存在，但项目并未从 ModelScope 使用它"的天然负样本，可直接用来测工具会不会误报。
+
+---
+
+## 5. `model_cases.json` 字段
 
 ```json
 {
-  "case_id": "mc-0003",
-  "model_id": "Qwen/Qwen-Image-2.1",
-  "revision": "master",
-  "fact": {
-    "license_status": "nonstandard",
-    "license_name": "qwen-research",
-    "canonical_id": null,
-    "risk_level": null,
-    "category": "unknown",
-    "evidence_level": "A",
-    "evidence_source_field": "Data.LicenseName",
-    "raw_api": {"License": "other", "LicenseName": "qwen-research"},
-    "api_status": 200
-  },
-  "expected_decision": "RISK_POTENTIAL",
+  "case_id": "mc-0007",
+  "model_id": "LLM-Research/gemma-3-4b-it",
+  "source_url": "https://www.modelscope.cn/models/LLM-Research/gemma-3-4b-it",
+  "observed_at": "2026-11-13",
+  "model_revision": "master",
+  "raw_response_sha256": "5b39bf5a…",
+  "source_field": "Data.License",
+  "raw_value": "gemma",
+  "raw_license": "gemma",
+  "raw_license_name": "",
+  "known": true,
+  "spdx_like": false,
+  "category": "ai_restricted",
+  "canonical_license_id": "Gemma-Terms-of-Use",
+  "risk_level": 4,
+  "license_class": "recognized_non_spdx",
+  "pipeline_license_state": "standard",
+  "semantic_license_state": "recognized_non_spdx",
+  "expected_decision": "RISK_CONFIRMED",
   "needs_human_review": true,
-  "review_reason": "规则库未收录 'qwen-research'，保留原值，不臆断映射",
-  "trap": "LicenseName=qwen-research 优先于 License=other，非标协议"
+  "note": "Gemma Terms of Use：已识别的受限 AI 使用条款，未归入 SPDX 标准许可证"
 }
 ```
 
-- `license_name`：**生效原文值**（未归一）；`canonical_id`：归一后的标准标识（仅 `standard` 有值）。
-- `evidence_source_field`：如实记录取自 `Data.LicenseName` 还是 `Data.License`——本批实测中 **`Data.LicenseName` 大多数为空**，真实信号在 `Data.License`。
-- `trap`：该案例专门用来卡住的常见误判，写测试时优先覆盖。
+- `raw_response_sha256` 是整份 API 响应体的 SHA-256，可据此确认"当时抓到的到底是什么"，而不只是断言字段值。
+- Gemma 的表述固定为"**已识别的受限 AI 使用条款**"（`known=true`、`spdx_like=false`、`category=ai_restricted`、`license_class=recognized_non_spdx`），**不得写成"SPDX 标准许可证"**。
 
 ---
 
-## 4. 怎么采的（可复现）
+## 6. 怎么采的（可复现）
 
-1. **模型事实**：ModelScope 官方 API `GET https://www.modelscope.cn/api/v1/models/<ns>/<name>`，取 `Data.LicenseName` / `Data.License` / `Data.Revision`（2026-11-13 实抓，匿名可访问）。
-2. **候选项目**：GitHub 代码检索 `"<model_id>"`，逐个取默认分支 HEAD SHA，再取命中文件原文，定位行号与上下文。
-3. **复核**：人工逐条读上下文判定 `use_type`；剔除 vendored 副本（如仓库内拷贝的 `ms-swift` / `LLaMA-Factory` 示例）、纯 README 提及、纯注释引用。
+1. **模型事实**：`GET https://www.modelscope.cn/api/v1/models/<ns>/<name>`，取 `Data.License` / `Data.LicenseName` / `Data.Revision`，同时保存响应体哈希（2026-11-13 实抓，匿名可访问）。
+2. **候选项目**：GitHub 代码检索 5 组查询（`snapshot_download`、`pipeline`、`AutoModel` 等 + `modelscope`），得到 145 个文件 / 89 个 model+repo 对；对原 45 条候选逐条重抓原文复核。
+3. **调用段审计**：按 §2 的算法判定平台证据，`modelscope/*` 官方仓库不作为依赖项目。
+4. **人工复核**：逐条读上下文判定 `use_type`；剔除 vendored 副本、纯 README 提及、纯注释引用。
 
-> 抓取脚本为任务期一次性工具，未入库；数据本身已在库内，日常评测不联网。
+> 采集脚本为任务期一次性工具，未入库；数据本身已在库内，日常评测与 CI **不联网**。
 
 ---
 
-## 5. 当前统计
+## 7. 当前统计
 
 **项目池（20）**
 
 | 维度 | 分布 |
 |---|---|
-| 使用方式 | `local_inference` 8、`weight_distribution` 7、`fine_tuning` 2、`evaluation_only` 1、`remote_api` 1、`unknown` 1 |
-| 许可证事实 | `standard` 16、`nonstandard` 4 |
-| 期望判定 | `SAFE` 14、`RISK_POTENTIAL` 4、`RISK_CONFIRMED` 2 |
-| 模型 | `AI-ModelScope/bge-large-zh-v1.5` 8、`deepseek-ai/DeepSeek-R1-Distill-Qwen-7B` 4、`Qwen/Qwen-Image-2.1` 2、`LLM-Research/Meta-Llama-3.1-8B-Instruct` 2、`LLM-Research/gemma-3-4b-it` 2、`Qwen/Qwen2.5-Coder-7B-Instruct` 1、`iic/nlp_structbert_sentiment-classification_chinese-base` 1 |
+| 平台证据 | `modelscope_download` 12、`modelscope_api` 6、`modelscope_source_selected` 2 |
+| 使用方式 | `local_inference` 14、`evaluation_only` 2、`fine_tuning` 2、`unknown` 2 |
+| 流水线许可证状态 | `standard` 13、`missing` 6、`nonstandard` 1 |
+| 语义许可证状态 | `standard_spdx` 13、`missing` 5、`unresolved` 1、`nonstandard` 1 |
+| 期望判定 | `SAFE` 12、`UNDETERMINED` 6、`RISK_CONFIRMED` 1、`RISK_POTENTIAL` 1 |
+| 分组 | dev 10、validation 5、sealed test 5 |
 
 **模型案例（12）**
 
 | 许可证事实 | 数量 | 期望判定 |
 |---|---|---|
-| `standard` | 8 | `SAFE` 7、`RISK_CONFIRMED` 1（gemma） |
-| `nonstandard` | 2 | `RISK_POTENTIAL` 2 |
-| `missing` | 1 | `UNDETERMINED` 1 |
-| `unresolved` | 1 | `UNDETERMINED` 1 |
+| `standard_spdx` | 8 | `SAFE` 8（risk 1–2） |
+| `recognized_non_spdx` | 1 | `RISK_CONFIRMED` 1（Gemma，risk 4） |
+| `nonstandard` | 1 | `RISK_POTENTIAL` 1（Llama 3.1） |
+| `missing` | 1 | `UNDETERMINED` 1（glm，`License=other`） |
+| `unresolved` | 1 | `UNDETERMINED` 1（模型 API 404） |
+
+> 本批**未覆盖 `conflict`**（字段 vs LICENSE 文件、跨 revision 冲突），B-03 扩池时专项补充。
 
 ---
 
-## 6. 真实性边界
+## 8. 分组（B-04 雏形）
 
-| 内容 | 是否真实 |
-|---|---|
-| 仓库、commit、来源文件、行号 | ✅ 真实，可 `git checkout <head_sha>` 复现 |
-| 模型 ID 在 ModelScope 上可解析 | ✅ 真实，2026-11-13 实测（1 个故意留作 `unresolved` 的反例） |
-| 模型许可证字段原值 | ✅ 真实，官方 API 原样记录 |
-| `use_type` 判读 | ⚠️ 人工判读，依据 `usage_evidence` 列；`unknown` 表示该文件内无调用证据 |
-| `expected_decision` | ⚠️ 由规范 §4 规则表**推导**，不是工具真实输出 |
-| AI 语义结论（条款级） | ❌ 本批未标注，属 C 级，需 AI 运行后另标 |
+约束：同一项目、其 fork、**同一模型家族**必须同组；t0/t1 同组。家族不可再分，按家族整组填充：
 
----
-
-## 7. 分组草案（B-04，待 A 确认）
-
-约束：同一项目、其 fork、**同一模型家族**必须同组；t0/t1 同组。
-
-| 组 | 项目数 | 模型家族（家族内项目数） |
+| 组 | 行数 | 模型家族 |
 |---|---|---|
-| dev | 10 | `bge-large-zh-v1.5`(8)、`nlp_structbert`(1)、`Qwen2.5-Coder-7B`(1) |
-| validation | 6 | `DeepSeek-R1-Distill-Qwen-7B`(4)、`gemma-3-4b-it`(2) |
-| sealed test | 4 | `Qwen-Image-2.1`(2)、`Meta-Llama-3.1-8B-Instruct`(2) |
+| dev | 10 | `bge-large-zh-v1.5`(4)、`chatglm3-6b`(2)、`chatTTS`、`PDF-Extract-Kit-1.0`、`glm-4-voice-tokenizer`、`unirec-0.1b` |
+| validation | 5 | `MindChat-Qwen2-4B`、`XTTS-v2`、`internlm-chat-7b`、`i2vgen-xl`、`cv_anytext` |
+| sealed test | 5 | `cv_retinafce_recognition`、`punc_ct-transformer`、`mplug-vqa`、`XiYanSQL-QwenCoder-3B`、`nlp_structbert` |
 
-> 7 个模型家族 → 3 组，家族是**不可再分的最小单位**，所以组大小只能是 10/6/4。`Qwen-Image-2.1` 的两个项目必须在同一组（本表放 sealed），不能一边一个。
-> B-03 扩到 ~40 个项目时补足到 8–10 个家族，使 sealed test 达到 8 个项目以上。
+`bge` 的 4 个项目全部在 dev、`chatglm3` 的 2 个项目全部在 dev，满足"家族不跨组"。B-03 扩到 ~40 个项目时，按 6:2:2 补足到 8–10 个家族。
 
 ---
 
-## 8. 指标定义草案（B-05）
+## 9. 指标定义草案（B-05）
 
 | 指标 | 公式 | 分母口径 |
 |---|---|---|
+| 平台识别准确率 | 平台证据判定正确的项目 / 正负样本总数 | 正样本 + `rejected_candidates.csv` |
 | 模型识别率 | 识别正确的案例数 / 可判定案例数 | 排除 `unresolved` |
 | 上游闭包解析率 | 成功解析的上游节点 / 应解析节点 | 按模型案例 |
 | 循环检出率 | 正确标记 `scc_cycle` 的案例 / 含环案例 | 需构造样本 |
@@ -157,10 +212,26 @@
 
 ---
 
-## 9. 已知局限
+## 10. 真实性边界
 
-1. 项目池 **模型家族偏斜**：`bge` 系占 8/20，因该模型在 GitHub 上被大量 RAG 项目引用；扩池时优先补其他家族。
-2. 项目池**星标分布偏斜**：既有 1.9 万星的 `ktransformers`，也有 0–4 星的小仓库；小仓库的价值在于使用方式明确。
-3. `use_type` 单文件判读：同一项目其他文件可能有不同用法，当前每项目只标一处，属可接受的简化。
-4. 未标注 `conflict` 实例：需要字段与 LICENSE 文件不一致的真实样本，B-03 扩池时专项补充。
-5. 许可证事实为 2026-11-13 快照，平台随时可能变更；重跑时须重新抓取并记录 `observed_at`。
+| 内容 | 是否真实 |
+|---|---|
+| 仓库、commit、来源文件、行号、调用段原文 | ✅ 真实，可 `git checkout <head_sha>` 逐字复现 |
+| 模型 ID 在 ModelScope 上可解析 | ✅ 真实，2026-11-13 实测 |
+| 模型许可证字段原值与响应哈希 | ✅ 真实，官方 API 原样记录 |
+| `platform_evidence` | ✅ 由调用段审计规则机械判定，规则见 §2 |
+| `use_type` | ⚠️ 人工判读，依据 `usage_evidence`；`unknown` = 该文件内无调用证据 |
+| `expected_decision` | ⚠️ 由 `annotation_spec.md` §4 规则表**推导**，不是工具真实输出 |
+| 准确率 / 覆盖率结论 | ❌ 本批不下任何结论，待 Gate 2 用同一份标签重算 |
+| AI 语义结论（条款级） | ❌ 本批未标注，属 C 级，需 AI 运行后另标 |
+
+---
+
+## 11. 已知局限
+
+1. **模型家族偏斜**：`bge` 系占 4/20，因该模型在 GitHub 上被大量 RAG 项目引用；扩池时优先补其他家族。
+2. **星标分布偏斜**：从 0 星小仓库到上万星项目都有；小仓库的价值在于调用方式单一、证据干净。
+3. **`use_type` 单文件判读**：同一项目其他文件可能有不同用法，当前每项目只标一处，属可接受的简化。
+4. **未覆盖 `conflict`**：需要字段与 LICENSE 文件不一致的真实样本，B-03 扩池时专项补充。
+5. **平台证据依赖 GitHub 默认分支**：仓库改写历史后行号可能漂移；`head_sha` + `matched_text_sha256` 用于校验漂移。
+6. **许可证事实是 2026-11-13 快照**：平台随时可能变更，重跑须重新抓取并更新 `observed_at` / `raw_response_sha256`。
