@@ -82,6 +82,7 @@
   2. API 字段命中占位符集合 `_GENERIC_LICENSE_VALUES = {"", "other", "none", "unknown", "noassertion", "not found"}`，且无其他来源；
   3. 仓库内无 LICENSE / COPYING 文件，README 中也没有可用声明。
 - **关键约定**：**占位符一律记 `missing`，不记 `nonstandard`。** 理由：`modelscope_adapter.license_name_of()` 在 `Data.LicenseName` 为空时会读 `Data.License`，但命中占位符即返回 `(None, None)`，管线对该模型的实际产出就是"无许可证、无证据链"。标注必须与事实来源一致，不能把适配器已丢弃的值重新算作"非标协议"。
+  > **口径已定（2026-11-13）**：占位符记 `missing`，**不改动适配器**。本批 12 个模型案例按此口径标注。
 - **实例**：`ZhipuAI/glm-4-9b-chat` 当前返回 `Data.License="other"`、`Data.LicenseName=""` → **`missing`**（不是 `nonstandard`）。
 - **禁止**："缺失"不等于"允许使用"。缺失的期望判定是 `UNDETERMINED`，不是 `SAFE`。
 
