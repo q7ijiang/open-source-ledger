@@ -1,0 +1,342 @@
+{
+  "schema_version": "b-benchmark/model-cases/v1",
+  "generated_at": "2026-11-13",
+  "cases": [
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0001",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "standard",
+        "license_name": "apache-2.0",
+        "canonical_id": "Apache-2.0",
+        "risk_level": 2,
+        "category": "permissive",
+        "evidence_level": "A",
+        "evidence_source_field": "Data.License",
+        "raw_api": {
+          "License": "apache-2.0",
+          "LicenseName": ""
+        },
+        "api_status": 200
+      },
+      "expected_decision": "SAFE",
+      "needs_human_review": false,
+      "review_reason": "",
+      "trap": "LicenseName 为空，必须回退到 Data.License",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0002",
+      "model_id": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "standard",
+        "license_name": "apache-2.0",
+        "canonical_id": "Apache-2.0",
+        "risk_level": 2,
+        "category": "permissive",
+        "evidence_level": "A",
+        "evidence_source_field": "Data.License",
+        "raw_api": {
+          "License": "apache-2.0",
+          "LicenseName": ""
+        },
+        "api_status": 200
+      },
+      "expected_decision": "SAFE",
+      "needs_human_review": false,
+      "review_reason": "",
+      "trap": "小写 apache-2.0 需别名归一",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0003",
+      "model_id": "Qwen/Qwen-Image-2.1",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "nonstandard",
+        "license_name": "qwen-research",
+        "canonical_id": null,
+        "risk_level": null,
+        "category": "unknown",
+        "evidence_level": "A",
+        "evidence_source_field": "Data.LicenseName",
+        "raw_api": {
+          "License": "other",
+          "LicenseName": "qwen-research"
+        },
+        "api_status": 200
+      },
+      "expected_decision": "RISK_POTENTIAL",
+      "needs_human_review": true,
+      "review_reason": "规则库未收录 'qwen-research'，保留原值，不臆断映射",
+      "trap": "LicenseName=qwen-research 优先于 License=other，非标协议",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0004",
+      "model_id": "Qwen/Qwen3-8B",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "standard",
+        "license_name": "apache-2.0",
+        "canonical_id": "Apache-2.0",
+        "risk_level": 2,
+        "category": "permissive",
+        "evidence_level": "A",
+        "evidence_source_field": "Data.License",
+        "raw_api": {
+          "License": "apache-2.0",
+          "LicenseName": ""
+        },
+        "api_status": 200
+      },
+      "expected_decision": "SAFE",
+      "needs_human_review": false,
+      "review_reason": "",
+      "trap": "新一代 Qwen 仍为 apache-2.0",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0005",
+      "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "standard",
+        "license_name": "mit",
+        "canonical_id": "MIT",
+        "risk_level": 1,
+        "category": "permissive",
+        "evidence_level": "A",
+        "evidence_source_field": "Data.License",
+        "raw_api": {
+          "License": "mit",
+          "LicenseName": ""
+        },
+        "api_status": 200
+      },
+      "expected_decision": "SAFE",
+      "needs_human_review": false,
+      "review_reason": "",
+      "trap": "小写 mit 需别名归一",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0006",
+      "model_id": "LLM-Research/Meta-Llama-3.1-8B-Instruct",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "nonstandard",
+        "license_name": "llama3.1",
+        "canonical_id": null,
+        "risk_level": null,
+        "category": "unknown",
+        "evidence_level": "A",
+        "evidence_source_field": "Data.License",
+        "raw_api": {
+          "License": "llama3.1",
+          "LicenseName": ""
+        },
+        "api_status": 200
+      },
+      "expected_decision": "RISK_POTENTIAL",
+      "needs_human_review": true,
+      "review_reason": "规则库未收录 'llama3.1'，保留原值，不臆断映射",
+      "trap": "llama3.1 是平台自定义协议，规则库未收录",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0007",
+      "model_id": "LLM-Research/gemma-3-4b-it",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "standard",
+        "license_name": "gemma",
+        "canonical_id": "Gemma-Terms-of-Use",
+        "risk_level": 4,
+        "category": "ai_restricted",
+        "evidence_level": "A",
+        "evidence_source_field": "Data.License",
+        "raw_api": {
+          "License": "gemma",
+          "LicenseName": ""
+        },
+        "api_status": 200
+      },
+      "expected_decision": "RISK_CONFIRMED",
+      "needs_human_review": false,
+      "review_reason": "",
+      "trap": "看起来非标，但规则库有 Gemma-Terms-of-Use（risk 4）",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0008",
+      "model_id": "AI-ModelScope/bge-large-zh-v1.5",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "standard",
+        "license_name": "mit",
+        "canonical_id": "MIT",
+        "risk_level": 1,
+        "category": "permissive",
+        "evidence_level": "A",
+        "evidence_source_field": "Data.License",
+        "raw_api": {
+          "License": "mit",
+          "LicenseName": ""
+        },
+        "api_status": 200
+      },
+      "expected_decision": "SAFE",
+      "needs_human_review": false,
+      "review_reason": "",
+      "trap": "标准 MIT，识别率基准样本",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0009",
+      "model_id": "iic/nlp_structbert_sentiment-classification_chinese-base",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "standard",
+        "license_name": "Apache License 2.0",
+        "canonical_id": "Apache-2.0",
+        "risk_level": 2,
+        "category": "permissive",
+        "evidence_level": "A",
+        "evidence_source_field": "Data.License",
+        "raw_api": {
+          "License": "Apache License 2.0",
+          "LicenseName": ""
+        },
+        "api_status": 200
+      },
+      "expected_decision": "SAFE",
+      "needs_human_review": false,
+      "review_reason": "",
+      "trap": "写法不规范（Apache License 2.0），仍是标准许可",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0010",
+      "model_id": "ZhipuAI/glm-4-9b-chat",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "missing",
+        "license_name": null,
+        "canonical_id": null,
+        "risk_level": null,
+        "category": null,
+        "evidence_level": "A",
+        "evidence_source_field": "Data.License",
+        "raw_api": {
+          "License": "other",
+          "LicenseName": ""
+        },
+        "api_status": 200
+      },
+      "expected_decision": "UNDETERMINED",
+      "needs_human_review": true,
+      "review_reason": "API 仅返回通用占位值，经 _GENERIC_LICENSE_VALUES 过滤后无可用许可证事实",
+      "trap": "License=other 是占位符，按 missing 处理而非 nonstandard",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0011",
+      "model_id": "OpenGVLab/InternVL3-8B-Instruct",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "standard",
+        "license_name": "apache-2.0",
+        "canonical_id": "Apache-2.0",
+        "risk_level": 2,
+        "category": "permissive",
+        "evidence_level": "A",
+        "evidence_source_field": "Data.License",
+        "raw_api": {
+          "License": "apache-2.0",
+          "LicenseName": ""
+        },
+        "api_status": 200
+      },
+      "expected_decision": "SAFE",
+      "needs_human_review": false,
+      "review_reason": "",
+      "trap": "apache-2.0 标准样本",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    },
+    {
+      "schema_version": "b-benchmark/model-case/v1",
+      "case_id": "mc-0012",
+      "model_id": "Shanghai-AI-Laboratory/InternLM2_5-7B-Chat",
+      "revision": "master",
+      "observed_at": "2026-11-13",
+      "fact": {
+        "license_status": "unresolved",
+        "license_name": null,
+        "canonical_id": null,
+        "risk_level": null,
+        "category": null,
+        "evidence_level": null,
+        "evidence_source_field": null,
+        "raw_api": {
+          "License": "",
+          "LicenseName": ""
+        },
+        "api_status": "error:HTTP Error 404: Not Found"
+      },
+      "expected_decision": "UNDETERMINED",
+      "needs_human_review": true,
+      "review_reason": "ModelScope API 未返回可用事实（error:HTTP Error 404: Not Found），属于未解析而非缺失",
+      "trap": "模型 ID 不存在导致 404，属于未解析而非缺失",
+      "annotator": "B",
+      "second_annotator": null,
+      "adjudicated_by": null
+    }
+  ]
+}
