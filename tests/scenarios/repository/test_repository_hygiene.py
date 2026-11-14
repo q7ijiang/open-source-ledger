@@ -76,13 +76,16 @@ def test_runtime_files_do_not_embed_machine_specific_home_paths() -> None:
     assert "/home/" not in combined
 
 
-def test_workflow_scans_dedicated_demo_project() -> None:
+def test_workflow_requires_explicit_project_path() -> None:
     workflow = (REPO_ROOT / ".github" / "workflows" / "license-watch.yml").read_text(
         encoding="utf-8"
     )
 
+    assert "project_path:" in workflow
+    assert "required: true" in workflow
+    assert "LEDGER_PROJECT_PATH" in workflow
+    assert "example/qwen_image_controlled_project" not in workflow
     assert "WATCH_PROJECT_PATH" in workflow
-    assert "example/qwen_image_controlled_project" in workflow
     assert '--project "$PROJECT_PATH"' in workflow
     assert '--project "$GITHUB_WORKSPACE"' not in workflow
 

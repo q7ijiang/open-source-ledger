@@ -4,6 +4,10 @@
 # 上游闭包，不枚举平台上的下游模型。运行目录均由 RUNNER_TEMP 派生，审计证据
 # 统一通过 artifact 上传。
 #
+# 必需配置：
+# - workflow_dispatch 运行时填写 project_path；或设置 Repository variable
+#   LEDGER_PROJECT_PATH，供 schedule / pull_request 复用
+#
 # 可选配置：
 # - Secret MODELSCOPE_API_KEY：私有模型或匿名限流时使用
 # - Repository variable AI_ENABLED=true：启用 AI 语义证据
@@ -19,9 +23,8 @@ on:
   workflow_dispatch:
     inputs:
       project_path:
-        description: '要扫描的项目路径（相对仓库根目录），默认受控演示项目'
-        required: false
-        default: 'example/qwen_image_controlled_project'
+        description: '要扫描的项目路径（相对仓库根目录或绝对路径）'
+        required: true
   pull_request:
 
 permissions:
@@ -43,10 +46,9 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     env:
-      # 本仓库的示例 Workflow 默认扫描独立演示项目，避免把 tests/fixtures、
-      # docs 和 action.yml 里的模型示例误认为目标项目代码。外部仓库应将
-      # LEDGER_PROJECT_PATH 改为自己的项目目录（例如 .）。
-      WATCH_PROJECT_PATH: ${{ github.event.inputs.project_path || vars.LEDGER_PROJECT_PATH || 'example/qwen_image_controlled_project' }}
+      # 手动触发使用 project_path；定时任务和 PR 使用仓库变量。
+      # 两者都没有时，扫描步骤会明确失败，不会猜测或扫描仓库根目录。
+      WATCH_PROJECT_PATH: ${{ github.event.inputs.project_path || vars.LEDGER_PROJECT_PATH }}
 
     steps:
       - name: Check out target repository
@@ -169,7 +171,11 @@ jobs:
           AI_ENABLED_NORMALIZED="$(printf '%s' "${AI_ENABLED_INPUT:-false}" | tr '[:upper:]' '[:lower:]')"
           mkdir -p "${LEDGER_ARTIFACTS_DIR}/project"
 
-          PROJECT_PATH="${WATCH_PROJECT_PATH:-example/qwen_image_controlled_project}"
+          PROJECT_PATH="${WATCH_PROJECT_PATH:-}"
+          if [ -z "$PROJECT_PATH" ]; then
+            echo "::error::未配置项目路径。请在 Run workflow 中填写 project_path，或设置 Repository variable LEDGER_PROJECT_PATH。"
+            exit 1
+          fi
           if [[ "$PROJECT_PATH" != /* ]]; then
             PROJECT_PATH="${GITHUB_WORKSPACE}/${PROJECT_PATH}"
           fi
