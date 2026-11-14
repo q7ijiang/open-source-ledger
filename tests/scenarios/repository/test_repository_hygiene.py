@@ -94,6 +94,32 @@ def test_workflow_requires_explicit_project_path() -> None:
     assert (demo / "config.json").is_file()
 
 
+def test_controlled_baseline_seed_workflow() -> None:
+    workflow = (
+        REPO_ROOT / ".github" / "workflows" / "seed-controlled-baseline.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "workflow_dispatch" in workflow
+    assert "\n  schedule:" not in workflow
+    assert "latest_bom.json" in workflow
+    assert "controlled_baseline" in workflow
+    assert "actions/cache/save@v4" in workflow
+    assert (
+        "prefix=license-watch-${GITHUB_REPOSITORY_ID:-local}-${SAFE_REF}"
+        in workflow
+    )
+
+
+def test_license_watch_preserves_controlled_baseline_metadata() -> None:
+    workflow = (REPO_ROOT / ".github" / "workflows" / "license-watch.yml").read_text(
+        encoding="utf-8"
+    )
+
+    assert "baseline_metadata.json" in workflow
+    assert "controlled_baseline" in workflow
+    assert "受控基线声明" in workflow
+
+
 def test_snapshot_cache_prefix_is_stable_across_days() -> None:
     for path in ACTION_FILES:
         text = path.read_text(encoding="utf-8")

@@ -174,6 +174,21 @@ Action 的特征：
     ai_api_key: ${{ secrets.AI_API_KEY }}
 ```
 
+### 受控 t0 演示
+
+当现实中还没有发生许可证变更时，可以手动把一份冻结的受控 t0 写入 Actions Cache：
+
+1. 运行 `Seed Controlled Baseline`，默认使用
+   `tests/fixtures/projects/qwen_image_license_tightening/upstream/t0_bom.json`；
+2. 立即运行 `ModelScope License Risk Watch`，`project_path` 填
+   `example/qwen_image_controlled_project`；
+3. 第二次运行会恢复受控 t0，扫描真实 t1，并生成许可证变更、传播路径和路径证书。
+
+受控 t0 会在 Artifact 的 `baseline_metadata.json` 中标记
+`controlled_baseline=true`、`simulation=true`。t1 是真实 ModelScope 扫描结果；
+t0 是受控反事实，不是对现实许可证变更的声明。Seed 与 scan 之间不要插入其他
+会保存缓存的成功运行，否则可能恢复较新的真实基线。
+
 ## 离线验收
 
 ```powershell

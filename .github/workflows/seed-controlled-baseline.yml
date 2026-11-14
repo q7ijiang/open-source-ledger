@@ -1,0 +1,93 @@
+# 手动把受控 t0 写入 Actions Cache。
+#
+# 只在 workflow_dispatch 中运行，不参与 schedule / PR。
+# 运行后，下一次 license-watch 会用 restore-keys 找到这份基线，
+# 与真实扫描得到的 t1 做 Diff。
+
+name: Seed Controlled Baseline
+
+on:
+  workflow_dispatch:
+    inputs:
+      baseline_bom:
+        description: '受控 t0 BOM 路径（相对仓库根目录或绝对路径）'
+        required: true
+        default: 'tests/fixtures/projects/qwen_image_license_tightening/upstream/t0_bom.json'
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    name: Write controlled BOM to cache
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Prepare controlled baseline
+        id: baseline
+        env:
+          BASELINE_SOURCE: ${{ inputs.baseline_bom }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASELINE_PATH="${BASELINE_SOURCE}"
+          if [[ "$BASELINE_PATH" != /* ]]; then
+            BASELINE_PATH="${GITHUB_WORKSPACE}/${BASELINE_PATH}"
+          fi
+          if [ ! -s "$BASELINE_PATH" ]; then
+            echo "::error::受控基线 BOM 不存在或为空：$BASELINE_PATH"
+            exit 1
+          fi
+
+          CACHE_DIR="${RUNNER_TEMP}/license-watch/cache"
+          mkdir -p "$CACHE_DIR"
+          cp "$BASELINE_PATH" "${CACHE_DIR}/latest_bom.json"
+
+          python - "$BASELINE_PATH" "$CACHE_DIR/baseline_metadata.json" <<'PY'
+          import datetime
+          import hashlib
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          source = Path(sys.argv[1])
+          target = Path(sys.argv[2])
+          metadata = {
+              "schema_version": "license-watch-baseline/v1",
+              "controlled_baseline": True,
+              "simulation": True,
+              "not_a_real_license_change": True,
+              "source_path": os.environ.get("BASELINE_SOURCE", ""),
+              "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+              "commit_sha": os.environ.get("GITHUB_SHA", ""),
+              "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(
+                  timespec="seconds"
+              ).replace("+00:00", "Z"),
+              "note": "Controlled t0 for license-watch demo; not a real historical license change.",
+          }
+          target.write_text(
+              json.dumps(metadata, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+          SAFE_REF="${GITHUB_REF_NAME//\//-}"
+          echo "prefix=license-watch-${GITHUB_REPOSITORY_ID:-local}-${SAFE_REF}" >> "$GITHUB_OUTPUT"
+          echo "controlled_bom=${CACHE_DIR}/latest_bom.json" >> "$GITHUB_OUTPUT"
+
+      - name: Save controlled baseline to Actions Cache
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/license-watch/cache
+          key: ${{ steps.baseline.outputs.prefix }}-controlled-${{ github.run_id }}
+
+      - name: Upload controlled baseline metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: controlled-baseline-metadata
+          path: ${{ runner.temp }}/license-watch/cache/baseline_metadata.json
+          retention-days: 14

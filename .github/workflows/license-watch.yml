@@ -145,6 +145,9 @@ jobs:
           PREVIOUS_BOM="${LEDGER_CACHE_DIR}/latest_bom.json"
           if [ -f "$PREVIOUS_BOM" ]; then
             cp "$PREVIOUS_BOM" "${LEDGER_REPORTS_DIR}/previous_bom.json"
+            if [ -f "${LEDGER_CACHE_DIR}/baseline_metadata.json" ]; then
+              cp "${LEDGER_CACHE_DIR}/baseline_metadata.json" "${LEDGER_REPORTS_DIR}/baseline_metadata.json"
+            fi
             echo "found=true" >> "$GITHUB_OUTPUT"
             echo "已恢复历史 BOM：${LEDGER_REPORTS_DIR}/previous_bom.json"
           else
@@ -211,6 +214,35 @@ jobs:
           fi
           cp "$BOM_PATH" "${LEDGER_CACHE_DIR}/latest_bom.json"
 
+          python - "$BOM_PATH" "${LEDGER_CACHE_DIR}/baseline_metadata.json" <<'PY'
+          import datetime
+          import hashlib
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          source = Path(sys.argv[1])
+          target = Path(sys.argv[2])
+          metadata = {
+              "schema_version": "license-watch-baseline/v1",
+              "controlled_baseline": False,
+              "simulation": False,
+              "not_a_real_license_change": False,
+              "source_path": "current_bom.json",
+              "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+              "commit_sha": os.environ.get("GITHUB_SHA", ""),
+              "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(
+                  timespec="seconds"
+              ).replace("+00:00", "Z"),
+          }
+          target.write_text(
+              json.dumps(metadata, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+          cp "${LEDGER_CACHE_DIR}/baseline_metadata.json" "${LEDGER_REPORTS_DIR}/current_baseline_metadata.json"
+
       - name: Create first-run baseline report
         if: steps.previous-snapshot.outputs.found != 'true'
         shell: bash
@@ -238,6 +270,21 @@ jobs:
             --after "${LEDGER_REPORTS_DIR}/current_bom.json" \
             --output "${LEDGER_REPORTS_DIR}/diff_report.md"
           grep -q '^> 对比区间：' "${LEDGER_REPORTS_DIR}/diff_report.md"
+
+      - name: Annotate controlled baseline
+        if: steps.previous-snapshot.outputs.found == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          META="${LEDGER_REPORTS_DIR}/baseline_metadata.json"
+          REPORT="${LEDGER_REPORTS_DIR}/diff_report.md"
+          if [ -f "$META" ] && grep -q '"controlled_baseline": true' "$META"; then
+            {
+              printf '%s\n\n' '> **受控基线声明**：本次 t0 是冻结的受控快照（simulation=true），t1 是真实 ModelScope 扫描结果；本报告不声称现实中发生了该许可证变更。'
+              cat "$REPORT"
+            } > "${REPORT}.controlled"
+            mv "${REPORT}.controlled" "$REPORT"
+          fi
 
       - name: Detect confirmed license risk
         shell: bash
