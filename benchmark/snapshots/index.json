@@ -1,0 +1,303 @@
+{
+  "observed_at": "2026-11-14",
+  "api": "https://www.modelscope.cn/api/v1/models/",
+  "models": [
+    {
+      "model_id": "pzc163/chatTTS",
+      "http_code": 200,
+      "license": "Apache License 2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/pzc163__chatTTS.json",
+      "snapshot_sha256": "4dbde9ebee671f5bdc6b5f49dad104c2df953988b03e2654734f0be5f0636643",
+      "bytes": 6183,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "opendatalab/PDF-Extract-Kit-1.0",
+      "http_code": 200,
+      "license": "",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/opendatalab__PDF-Extract-Kit-1.0.json",
+      "snapshot_sha256": "490c43075efc1ffd062a49cc8ecdbe3fb8a55ab04c4aaaaa9a9040a08246c062",
+      "bytes": 9214,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "ZhipuAI/glm-4-voice-tokenizer",
+      "http_code": 200,
+      "license": "",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/ZhipuAI__glm-4-voice-tokenizer.json",
+      "snapshot_sha256": "723806dc09e048eeaa0181ae55b9972bfa4aa113ba3bb8d2975f7fad0dbe603b",
+      "bytes": 8241,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "ZhipuAI/chatglm3-6b",
+      "http_code": 200,
+      "license": "",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/ZhipuAI__chatglm3-6b.json",
+      "snapshot_sha256": "683b95111a8458bf52254b923cec88006ec70f7e2177f8c65092bd5ed8706147",
+      "bytes": 18740,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "X-D-Lab/MindChat-Qwen2-4B",
+      "http_code": 200,
+      "license": "GPL-3.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/X-D-Lab__MindChat-Qwen2-4B.json",
+      "snapshot_sha256": "25e187dee4c12c7e4df808b0c20385545fda34a5c5d268f09a7e92fc366b0877",
+      "bytes": 25560,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "topdktu/unirec-0.1b",
+      "http_code": 200,
+      "license": "Apache License 2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/topdktu__unirec-0.1b.json",
+      "snapshot_sha256": "1d8d109e8be08dcd3043416e530d57973deda9613cfb683018fa780be7b94cff",
+      "bytes": 13669,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "AI-ModelScope/XTTS-v2",
+      "http_code": 200,
+      "license": "other",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/AI-ModelScope__XTTS-v2.json",
+      "snapshot_sha256": "5a5ae3fec131defc1f5cc172172c8b1b622d4cf7672513903bd9e3944712187c",
+      "bytes": 9631,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "Shanghai_AI_Laboratory/internlm-chat-7b",
+      "http_code": 200,
+      "license": "",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/Shanghai_AI_Laboratory__internlm-chat-7b.json",
+      "snapshot_sha256": "ec684379820bb99593a48cd6f6155612804561205818acf83651b229d3a58399",
+      "bytes": 19783,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "damo/i2vgen-xl",
+      "http_code": 200,
+      "license": "CC-BY-NC-ND",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/damo__i2vgen-xl.json",
+      "snapshot_sha256": "ce918175a4d839f2ca76e3ead686f1cd1386cdec56f7b48605a25bd68fb2372c",
+      "bytes": 15395,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "damo/cv_anytext_text_generation_editing",
+      "http_code": 200,
+      "license": "Apache License 2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/damo__cv_anytext_text_generation_editing.json",
+      "snapshot_sha256": "92271739c148c720a2b151a6a30ed614f2d54e966af2014122eca303271520f9",
+      "bytes": 15323,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "bubbliiiing/cv_retinafce_recognition",
+      "http_code": 200,
+      "license": "Apache License 2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/bubbliiiing__cv_retinafce_recognition.json",
+      "snapshot_sha256": "6bd9c2a8d06cb294949af39111bea109f5dd4d428aa9a9f8d55456f3810d270a",
+      "bytes": 8484,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "iic/punc_ct-transformer_cn-en-common-vocab471067-large",
+      "http_code": 200,
+      "license": "Apache License 2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/iic__punc_ct-transformer_cn-en-common-vocab471067-large.json",
+      "snapshot_sha256": "e7701f625ac1d9f722531dd259c4a287e759b8558dd2f829f271652381e7015c",
+      "bytes": 17913,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "damo/mplug_visual-question-answering_coco_large_en",
+      "http_code": 200,
+      "license": "Apache License 2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/damo__mplug_visual-question-answering_coco_large_en.json",
+      "snapshot_sha256": "f9c98fec5b250751dc2de806efa6d3386cc2a0c622d01cf2ee4ac539c75e5dae",
+      "bytes": 13409,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "XGenerationLab/XiYanSQL-QwenCoder-3B-2502",
+      "http_code": 200,
+      "license": "Apache License 2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/XGenerationLab__XiYanSQL-QwenCoder-3B-2502.json",
+      "snapshot_sha256": "8b512889a020cc7fa5b96588f2e87db0b65c78edbd47d12e33c250c8294eaa36",
+      "bytes": 16647,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "AI-ModelScope/bge-large-zh-v1.5",
+      "http_code": 200,
+      "license": "mit",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/AI-ModelScope__bge-large-zh-v1.5.json",
+      "snapshot_sha256": "7b1176537ddaa6680f64408cc6773c205f310d83c714d7162b0f74675a32c492",
+      "bytes": 34385,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "iic/nlp_structbert_sentiment-classification_chinese-base",
+      "http_code": 200,
+      "license": "Apache License 2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/iic__nlp_structbert_sentiment-classification_chinese-base.json",
+      "snapshot_sha256": "b2ae63b6d221add881b628344d564301e36807deab683ec9a83f248e74af5870",
+      "bytes": 12808,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "http_code": 200,
+      "license": "apache-2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/Qwen__Qwen2.5-7B-Instruct.json",
+      "snapshot_sha256": "a8ccd6c201d49197e0c677a73c01930b4e370c9c776a4f57f54a38f6f65522a0",
+      "bytes": 17682,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "http_code": 200,
+      "license": "apache-2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/Qwen__Qwen2.5-Coder-7B-Instruct.json",
+      "snapshot_sha256": "3dfc6b7e33477a64705d8a94b56b44c79d3596cf8a9df21b981a8c7d39a64d1f",
+      "bytes": 18055,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "Qwen/Qwen-Image",
+      "http_code": 200,
+      "license": "apache-2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/Qwen__Qwen-Image.json",
+      "snapshot_sha256": "3f8d4b0d9b76b79cc1f925bd1fe791c259dd4e761f8610116d8d6a97630911d0",
+      "bytes": 16439,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "Qwen/Qwen-Image-2.1",
+      "http_code": 200,
+      "license": "other",
+      "license_name": "qwen-research",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/Qwen__Qwen-Image-2.1.json",
+      "snapshot_sha256": "1215dddb342828b5a4c0edb59a4b145b84e3789a54e746a6884c38075fee68a0",
+      "bytes": 16980,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "Qwen/Qwen3-8B",
+      "http_code": 200,
+      "license": "apache-2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/Qwen__Qwen3-8B.json",
+      "snapshot_sha256": "9b92679608b5720d302990d9f8cc55b7c267a1bfbf036461ee17d3be0d83f932",
+      "bytes": 30413,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+      "http_code": 200,
+      "license": "mit",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/deepseek-ai__DeepSeek-R1-Distill-Qwen-7B.json",
+      "snapshot_sha256": "2f11c13f33c1a621dd5de882612e7ebc79b49948f24ab5b5b951004fe3953df4",
+      "bytes": 27227,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "LLM-Research/Meta-Llama-3.1-8B-Instruct",
+      "http_code": 200,
+      "license": "llama3.1",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/LLM-Research__Meta-Llama-3.1-8B-Instruct.json",
+      "snapshot_sha256": "f412f0cf81d2cc618149d2ddf23221f14cd47abd1b4f13c1e6c3ea4613d2bc25",
+      "bytes": 44076,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "LLM-Research/gemma-3-4b-it",
+      "http_code": 200,
+      "license": "gemma",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/LLM-Research__gemma-3-4b-it.json",
+      "snapshot_sha256": "57870680709a461b9ed806198aa09c7fc4bc7119921cbb37ac1a555bf5944a4d",
+      "bytes": 34821,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "ZhipuAI/glm-4-9b-chat",
+      "http_code": 200,
+      "license": "other",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/ZhipuAI__glm-4-9b-chat.json",
+      "snapshot_sha256": "c24f2abc5c374b3fe5ee47411ad7ba87b71d9ad0ad9c3cd3a84c084aaf1439ed",
+      "bytes": 21823,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "OpenGVLab/InternVL3-8B",
+      "http_code": 200,
+      "license": "apache-2.0",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/OpenGVLab__InternVL3-8B.json",
+      "snapshot_sha256": "0316339ca044bb4b2159abcb8fe142adbec99561a154a42e38cbca7b99f311a6",
+      "bytes": 44231,
+      "observed_at": "2026-11-14"
+    },
+    {
+      "model_id": "Shanghai_AI_Laboratory/internlm2_5-7b-chat",
+      "http_code": 200,
+      "license": "other",
+      "license_name": "",
+      "revision": "master",
+      "snapshot": "benchmark/snapshots/Shanghai_AI_Laboratory__internlm2_5-7b-chat.json",
+      "snapshot_sha256": "b61b6e2dddad2c0599c120d7a71ec9773e30f263d340c9b6061ec5576c51b989",
+      "bytes": 27441,
+      "observed_at": "2026-11-14"
+    }
+  ]
+}

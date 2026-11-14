@@ -1,0 +1,295 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "Qwen2ForCausalLM"
+  ],
+  "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": [
+    "Qwen2ForCausalLM"
+   ],
+   "backend_info": {
+    "deploy_task": [
+     "text",
+     "emb"
+    ],
+    "lmdeploy": {
+     "text": "0.9.1"
+    },
+    "lmdeploy_turbomind": {
+     "text": "0.9.1"
+    },
+    "ollama": null,
+    "sglang": {
+     "text": "0.5.2"
+    },
+    "vllm": {
+     "emb": "0.9.2",
+     "text": "0.9.2"
+    }
+   },
+   "model_id": "XGenerationLab/XiYanSQL-QwenCoder-3B-2502"
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "XGenerationLab",
+  "CreatedTime": 1740495230,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "by XiYan-SQL",
+  "Domain": [],
+  "Downloads": 2336107,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "Pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 433962,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1776081861,
+  "Libraries": [
+   "pytorch",
+   "transformer",
+   "safetensors"
+  ],
+  "License": "Apache License 2.0",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "{%- if tools %}\n    {{- '<|im_start|>system\\n' }}\n    {%- if messages[0]['role'] == 'system' %}\n        {{- messages[0]['content'] }}\n    {%- else %}\n        {{- 'You are Qwen, created by Alibaba Cloud. You are a helpful assistant.' }}\n    {%- endif %}\n    {{- \"\\n\\n# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- \"\\n</tools>\\n\\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\\n<tool_call>\\n{\\\"name\\\": <function-name>, \\\"arguments\\\": <args-json-object>}\\n</tool_call><|im_end|>\\n\" }}\n{%- else %}\n    {%- if messages[0]['role'] == 'system' %}\n        {{- '<|im_start|>system\\n' + messages[0]['content'] + '<|im_end|>\\n' }}\n    {%- else %}\n        {{- '<|im_start|>system\\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\\n' }}\n    {%- endif %}\n{%- endif %}\n{%- for message in messages %}\n    {%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) or (message.role == \"assistant\" and not message.tool_calls) %}\n        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>' + '\\n' }}\n    {%- elif message.role == \"assistant\" %}\n        {{- '<|im_start|>' + message.role }}\n        {%- if message.content %}\n            {{- '\\n' + message.content }}\n        {%- endif %}\n        {%- for tool_call in message.tool_calls %}\n            {%- if tool_call.function is defined %}\n                {%- set tool_call = tool_call.function %}\n            {%- endif %}\n            {{- '\\n<tool_call>\\n{\"name\": \"' }}\n            {{- tool_call.name }}\n            {{- '\", \"arguments\": ' }}\n            {{- tool_call.arguments | tojson }}\n            {{- '}\\n</tool_call>' }}\n        {%- endfor %}\n        {{- '<|im_end|>\\n' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != \"tool\") %}\n            {{- '<|im_start|>user' }}\n        {%- endif %}\n        {{- '\\n<tool_response>\\n' }}\n        {{- message.content }}\n        {{- '\\n</tool_response>' }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}\n            {{- '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|im_start|>assistant\\n' }}\n{%- endif %}\n",
+    "files": [
+     {
+      "name": "model.safetensors.index.json",
+      "sha256": "b16893349fcc70e86aed42f02678cadf76d157086294b9bd275de7a9d4b9625e",
+      "size": 35639
+     },
+     {
+      "name": "model-00001-of-00002.safetensors",
+      "sha256": "d30cab0b3eed73f50b16b43939abb0f0af008d6ed1b1bd5890efe769458cd52a",
+      "size": 4957560304
+     },
+     {
+      "name": "model-00002-of-00002.safetensors",
+      "sha256": "7b339d52f481830f2ba9118ba2452369be8d1f65ef369c5a120488dbb720227f",
+      "size": 1836696752
+     }
+    ],
+    "model_size": 3397103616,
+    "tensor_type": [
+     "BF16"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "qwen2"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "XiYanSQL-QwenCoder-3B-2502",
+  "NewVersion": "",
+  "NickName": "",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "",
+   "CreateCompetition": false,
+   "CreatedBy": "",
+   "Description": "",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "",
+   "GithubAddress": "",
+   "GmtCreated": null,
+   "GmtModified": null,
+   "Id": 0,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 0
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "XGenerationLab",
+  "ProtectedMode": 2,
+  "ReadMeContent": "### Important Links\n\n🤖[Github](https://github.com/XGenerationLab/XiYanSQL-QwenCoder) |\n💻[HuggingFace](https://huggingface.co/collections/XGenerationLab/xiyansql-models-67c9844307b49f87436808fc) |\n📖[XiYan-SQL](https://github.com/XGenerationLab/XiYan-SQL) |\n🌕[析言GBI](https://bailian.console.aliyun.com/xiyan) |\n🤗[Modelscope Space](https://www.modelscope.cn/studios/XGenerationLab/XiYanSQL-QwenCoder-32B)\n\n\n## Introduction\nWe are excited to open source the XiYanSQL-QwenCoder series model, dedicated to advancing the development of LLMs in the text-to-SQL domain. As of now, XiYanSQL-QwenCoder covers four mainstream model sizes: 3B, 7B, 14B, and 32B parameters, to meet the needs of different developers.\n- The XiYanSQL-QwenCoder model demonstrates strong performance in SQL generation, with the XiYanSQL-QwenCoder-32B achieving a 69.03% EX score on the BIRD TEST set, setting a new SOTA with a single fine-tuned model. Other models in the series also maintain a leading position at their respective sizes.\n- The XiYanSQL-QwenCoder model supports multiple SQL dialects, such as SQLite, PostgreSQL, and MySQL.\n- The XiYanSQL-QwenCoder model can be used directly for text-to-SQL tasks or serve as a better starting point for fine-tuning SQL models.\n\n\n## Model Downloads\n\n\n| **Model** | **Download Latest** |\n|-----------|------------------|\n|XiYanSQL-QwenCoder-3B  |💻[HuggingFace](https://huggingface.co/XGenerationLab/XiYanSQL-QwenCoder-3B-2502) 🤗[Modelscope](https://www.modelscope.cn/models/XGenerationLab/XiYanSQL-QwenCoder-3B-2502)|\n|XiYanSQL-QwenCoder-7B  |💻[HuggingFace](https://huggingface.co/XGenerationLab/XiYanSQL-QwenCoder-7B-2502) 🤗[Modelscope](https://www.modelscope.cn/models/XGenerationLab/XiYanSQL-QwenCoder-7B-2502)|\n|XiYanSQL-QwenCoder-14B |💻[HuggingFace](https://huggingface.co/XGenerationLab/XiYanSQL-QwenCoder-14B-2502) 🤗[Modelscope](https://www.modelscope.cn/models/XGenerationLab/XiYanSQL-QwenCoder-14B-2502)|\n|XiYanSQL-QwenCoder-32B |💻[HuggingFace](https://huggingface.co/XGenerationLab/XiYanSQL-QwenCoder-32B-2412) 🤗[Modelscope](https://www.modelscope.cn/models/XGenerationLab/XiYanSQL-QwenCoder-32B-2412)|\n\n\n## Performance\nThe XiYanSQL-QwenCoder models, as multi-dialect SQL base models, demonstrating robust SQL generation capabilities. The following presents the evaluation results at the time of release. We conducted a comprehensive evaluation of the model's performance under two schema formats, M-Schema, and original DDL, using the BIRD and Spider benchmarks in the Text-to-SQL domain.\n\n| Model name|BIRD Dev@M-Schema |BIRD Dev@DDL|Spider Test@M-Schema|Spider Test@DDL|\n|-----------|:------------------:|:---------------:|:-------------------:|:---------------:|\n|Codellama-34b              | 33.05%     | -          | 67.74%      | -           |\n|Deepseek-coder-33b         | 47.52%     | 44.72%     | 72.39%      | -           |\n|TableGPT2                  | 46.35%     | 47.07%     | 74.76%      | 77.28%      |\n|Codestral 22b              | 50.52%     | 47.00%     | 78.45%      | 75.47%      |\n|GLM-4-plus                 | 54.37%     | -          | 79.40%      | -           |\n|Claude35_sonnet-1022       | 53.32%     | 50.46%     | 76.27%      | 73.04%      |\n|Deepseek(v2.5-1210)        | 55.74%     | 55.61%     | 82.08%      | 80.57%      |\n|Gemini-1.5-pro             | 61.34%     | 57.89%     | 85.11%      | 84.00%      |\n|GPT-4o-0806                | 58.47%     | 54.82%     | 82.89%      | 78.45%      |\n|XiYanSQL-QwenCoder-3B      | 54.11%     | 53.19%     | 82.69%      | 78.85%      |\n|XiYanSQL-QwenCoder-7B      | 59.78%     | 56.58%     | 84.86%      | 80.31%      |\n|XiYanSQL-QwenCoder-14B     | 63.10%     | 60.37%     | 85.76%      | 82.79%      |\n|XiYanSQL-QwenCoder-32B     | 67.01%     | 63.04%     | 88.39%      | 85.46%      |\n\n\n## Requirements\n\ntransformers >= 4.37.0\n\n## Quickstart\n\nHere is a simple code snippet for quickly using **XiYanSQL-QwenCoder** model. We provide a Chinese version of the prompt, and you just need to replace the placeholders for \"question,\" \"db_schema,\" and \"evidence\" to get started. We recommend using our [M-Schema](https://github.com/XGenerationLab/M-Schema) format for the schema; other formats such as DDL are also acceptable, but they may affect performance.\nCurrently, we mainly support mainstream dialects like SQLite, PostgreSQL, and MySQL.\n\n```python\n\nnl2sqlite_template_cn = \"\"\"你是一名{dialect}专家，现在需要阅读并理解下面的【数据库schema】描述，以及可能用到的【参考信息】，并运用{dialect}知识生成sql语句回答【用户问题】。\n【用户问题】\n{question}\n\n【数据库schema】\n{db_schema}\n\n【参考信息】\n{evidence}\n\n【用户问题】\n{question}\n\n```sql\"\"\"\n\nimport torch\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\n\nmodel_name = \"XGenerationLab/XiYanSQL-QwenCoder-3B-2502\"\nmodel = AutoModelForCausalLM.from_pretrained(\n    model_name,\n    torch_dtype=torch.bfloat16,\n    device_map=\"auto\"\n)\n\ntokenizer = AutoTokenizer.from_pretrained(model_name)\n\n## dialects -> ['SQLite', 'PostgreSQL', 'MySQL']\nprompt = nl2sqlite_template_cn.format(dialect=\"\", db_schema=\"\", question=\"\", evidence=\"\")\nmessage = [{'role': 'user', 'content': prompt}]\n\ntext = tokenizer.apply_chat_template(\n    message,\n    tokenize=False,\n    add_generation_prompt=True\n)\nmodel_inputs = tokenizer([text], return_tensors=\"pt\").to(model.device)\n\ngenerated_ids = model.generate(\n    **model_inputs,\n    pad_token_id=tokenizer.pad_token_id,\n    eos_token_id=tokenizer.eos_token_id,\n    max_new_tokens=1024,\n    temperature=0.1,\n    top_p=0.8,\n    do_sample=True,\n)\ngenerated_ids = [\n    output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)\n]\nresponse = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]\n\n```\n\n### Inference with vLLM\n```python\nfrom vllm import LLM, SamplingParams\nfrom transformers import AutoTokenizer\nmodel_path = \"XGenerationLab/XiYanSQL-QwenCoder-3B-2502\"\nllm = LLM(model=model_path, tensor_parallel_size=8)\ntokenizer = AutoTokenizer.from_pretrained(model_path)\nsampling_params = SamplingParams(\n    n=1,\n    temperature=0.1,\n    max_tokens=1024\n)\n\n## dialects -> ['SQLite', 'PostgreSQL', 'MySQL']\nprompt = nl2sqlite_template_cn.format(dialect=\"\", db_schema=\"\", question=\"\", evidence=\"\")\nmessage = [{'role': 'user', 'content': prompt}]\ntext = tokenizer.apply_chat_template(\n    message,\n    tokenize=False,\n    add_generation_prompt=True\n)\noutputs = llm.generate([text], sampling_params=sampling_params)\nresponse = outputs[0].outputs[0].text\n```\n\n\n## Contact us:\n\nIf you are interested in our research or products, please feel free to contact us.\n\n#### Contact Information:\n\nYifu Liu, zhencang.lyf@alibaba-inc.com\n\n#### Join Our DingTalk Group\n\n<a href=\"https://github.com/XGenerationLab/XiYan-SQL/blob/main/xiyansql_dingding.png\">Ding Group钉钉群</a> \n\n\n\n## Acknowledgments\nIf you find our work useful, please give us a citation or a like, so we can make a greater contribution to the open-source community!\n```bibtex\n@article{XiYanSQL,\n  author={Liu, Yifu and Zhu, Yin and Gao, Yingqi and Luo, Zhiling and Li, Xiaoxia and Shi, Xiaorong and Hong, Yuntao and Gao, Jinyang and Li, Yu and Ding, Bolin and Zhou, Jingren},\n  journal={IEEE Transactions on Knowledge and Data Engineering}, \n  title={XiYan-SQL: A Novel Multi-Generator Framework for Text-to-SQL}, \n  year={2026},\n  volume={},\n  number={},\n  pages={1-14},\n  doi={10.1109/TKDE.2026.3657851}\n}\n```\n\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [],
+  "RelatedPaper": [],
+  "Revision": "master",
+  "Stars": 27,
+  "StorageSize": 6806453236,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [
+   "NL2SQL",
+   "SQL",
+   "Text-to-SQL"
+  ],
+  "Tasks": [
+   {
+    "ChineseName": "文本生成",
+    "Description": "",
+    "DomainName": "nlp",
+    "Id": 22,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "text-generation",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"text-generation\", \"inputs\": [{\"type\": \"text\", \"validator\": {\"max_words\": \"1000\"}, \"displayType\": \"OnlyTextArea\"}], \"output\": {\"displayType\": \"ReadonlyText\", \"transformOutputs\": [{\"outputKey\": \"text\"}], \"displayOutputMapping\": \"text\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "c7c85511-c42d-4ee1-8d5b-224a1a1843a9",
+ "Success": true
+}

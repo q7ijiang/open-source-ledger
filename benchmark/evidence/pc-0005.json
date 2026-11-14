@@ -1,0 +1,94 @@
+{
+ "case_id": "pc-0005",
+ "repo": "X-D-Lab/MindChat",
+ "repo_url": "https://github.com/X-D-Lab/MindChat",
+ "head_sha": "8309768d156a3c0e719381705a4058fa1ec554d3",
+ "source_file": "qwen2_weui_demo.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 8,
+    "text": "from modelscope.hub.snapshot_download import snapshot_download",
+    "sha256": "37e99664f69c0d295bf2aad2897b1965074d3821635534dcc9d39bfc909b42af"
+   }
+  ],
+  "imports_sha256": "37e99664f69c0d295bf2aad2897b1965074d3821635534dcc9d39bfc909b42af",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "X-D-Lab/MindChat-Qwen2-4B",
+ "model_binding": {
+  "name": "model_id",
+  "line": 16,
+  "text": "model_id = \"X-D-Lab/MindChat-Qwen2-4B\"",
+  "sha256": "cf4af384c490b78696404a833669b3b629398fbf129882f3e4ac6cb93be07c98"
+ },
+ "model_literals": [
+  {
+   "line": 16,
+   "text": "model_id = \"X-D-Lab/MindChat-Qwen2-4B\"",
+   "sha256": "cf4af384c490b78696404a833669b3b629398fbf129882f3e4ac6cb93be07c98"
+  }
+ ],
+ "call": {
+  "start": 18,
+  "end": 18,
+  "text": "snapshot_download(model_id, cache_dir=cache_dir)",
+  "sha256": "0212867d8ad7da282a2a753be2a817b946c9b31bafcef16c946ecefca034c0f8"
+ },
+ "revision": {
+  "revision": "",
+  "source": "unspecified"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 7,
+   "text": "import torch"
+  },
+  {
+   "line": 8,
+   "text": "from modelscope.hub.snapshot_download import snapshot_download"
+  },
+  {
+   "line": 9,
+   "text": "from transformers import AutoModelForCausalLM, AutoTokenizer"
+  },
+  {
+   "line": 10,
+   "text": "from transformers.generation.utils import GenerationConfig"
+  },
+  {
+   "line": 11,
+   "text": ""
+  },
+  {
+   "line": 12,
+   "text": "device = \"cuda\" # the device to load the model onto"
+  },
+  {
+   "line": 13,
+   "text": ""
+  },
+  {
+   "line": 14,
+   "text": "cache_dir = './'"
+  },
+  {
+   "line": 15,
+   "text": ""
+  },
+  {
+   "line": 16,
+   "text": "model_id = \"X-D-Lab/MindChat-Qwen2-4B\""
+  },
+  {
+   "line": 17,
+   "text": ""
+  }
+ ]
+}

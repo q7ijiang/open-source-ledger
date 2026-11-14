@@ -1,0 +1,316 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [],
+  "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": null,
+   "backend_info": {
+    "deploy_task": null,
+    "lmdeploy": null,
+    "lmdeploy_turbomind": null,
+    "ollama": null,
+    "sglang": null,
+    "vllm": null
+   },
+   "model_id": "OpenDataLab/PDF-Extract-Kit-1.0"
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "PDF-Extract-Kit-1.0 模型仓库 (MinerU使用仓库)",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "wanderkid",
+  "CreatedTime": 1728628309,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "PDF-Extract-Kit 是一款功能强大的开源工具箱，旨在从复杂多样的 PDF 文档中高效提取高质量内容。使用方法请参考 [PDF-Extract-Kit-1.0](https://github.com/opendatalab/PDF-Extract-Kit)和[MinerU](https://github.com/opendatalab/MinerU)",
+  "Domain": [],
+  "Downloads": 82423339,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "Pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 344947,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1781595122,
+  "Libraries": [
+   "safetensors",
+   "onnx",
+   "pytorch"
+  ],
+  "License": "",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "",
+    "files": [
+     {
+      "name": "models/Layout/PP-DocLayoutV2/model.safetensors",
+      "sha256": "e60f3725aeedc88fd319416ef166bda79171a41516a301c27cab9132dc2739d2",
+      "size": 214798436
+     },
+     {
+      "name": "models/MFR/unimernet_hf_small_2503/model.safetensors",
+      "sha256": "9244e2565585c0f89bc3a6eeeea080ef3c588375fc0d536074fe88e80b917cda",
+      "size": 810036696
+     },
+     {
+      "name": "models/OCR/paddleocr_torch/ch_PP-OCRv6_medium_rec_infer.safetensors",
+      "sha256": "5f43c16f2a684b1d2284662178bdb604febd3d6bfdb5ca73828d08d0f7c0c3e9",
+      "size": 76741720
+     },
+     {
+      "name": "models/OCR/paddleocr_torch/ch_PP-OCRv6_small_det_infer.safetensors",
+      "sha256": "89a96a8adc4e9cd0c994098edc76022e496d35844392562b4694c8fbc583f2da",
+      "size": 9938124
+     },
+     {
+      "name": "models/OCR/paddleocr_torch/ch_PP-OCRv6_small_rec_infer.safetensors",
+      "sha256": "f65a332afe5aa663f0b9d5706f4ae8457b5b4058a842d5c1eb22df505c27d642",
+      "size": 21204736
+     },
+     {
+      "name": "models/ReadingOrder/layout_reader/model.safetensors",
+      "sha256": "9df7c046b212c1892a649cbf98f2a521bbb32741e8cbc06f10ffd4247b53c451",
+      "size": 713217212
+     },
+     {
+      "name": "models/TabRec/StructEqTable/model.safetensors",
+      "sha256": "e16caef36733e9f43421450f6d4d220017a40c4ac2e8a65f86407059a049c930",
+      "size": 1876395376
+     }
+    ],
+    "model_size": 1577824321,
+    "tensor_type": [
+     "F32",
+     "BF16",
+     "I64"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "PDF-Extract-Kit-1.0",
+  "NewVersion": "",
+  "NickName": "",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/83592620-895e-4a2b-8dd2-219994d023d7.png",
+   "CreateCompetition": false,
+   "CreatedBy": "nanhongchuan",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"OpenDataLab浦数 人工智能开放数据平台，是上海人工智能实验室在WAIC 2022科学前沿全体会议上发布“OpenXLab浦源”人工智能开源开放体系的核心项目之一。\"]]],[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"OpenDataLab作为人工智能数据领域的探路者和开源数据社区的倡导者，围绕大模型数据开展多项前沿技术探索，构建面向大模型研发全流程的数据平台及大模型时代数据管理体系。\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "OpenDataLab",
+   "GithubAddress": "https://opendatalab.com/",
+   "GmtCreated": "2024-06-28T07:00:33Z",
+   "GmtModified": "2025-02-27T06:56:20Z",
+   "Id": 854,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "OpenDataLab",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 1
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "OpenDataLab",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n## PDF-Extract-Kit-1.0 Model Repository\n\nThis is the model repository corresponding to version 1.0 of PDF-Extract-Kit. For usage, please refer to:\n\n- [PDF-Extract-Kit-1.0](https://github.com/opendatalab/PDF-Extract-Kit)\n- [MinerU](https://github.com/opendatalab/MinerU)\n\n\n### SDK Download\n\n```bash\n# First, install the ModelScope library using pip:\npip install modelscope\n```\n\n```python\n# Use the following Python code to download the model using the ModelScope SDK:\nfrom modelscope import snapshot_download\nmodel_dir = snapshot_download('opendatalab/PDF-Extract-Kit-1.0')\n```\n\n### Git Download\nAlternatively, you can use Git to clone the model repository from ModelScope:\n\n```bash\ngit clone https://www.modelscope.cn/opendatalab/PDF-Extract-Kit-1.0.git\n```\n\n---\nlicense: apache-2.0\n---\n\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [],
+  "RelatedPaper": [],
+  "Revision": "master",
+  "Stars": 79,
+  "StorageSize": 15117630564,
+  "Studios": [
+   "OpenDataLab/MinerU"
+  ],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [],
+  "Tasks": [
+   {
+    "ChineseName": "文字检测",
+    "Description": "",
+    "DomainName": "cv",
+    "Id": 12,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": false,
+    "IsRetrieval": true,
+    "Level": 2,
+    "Name": "ocr-detection",
+    "ParentId": 176,
+    "ParentTask": {
+     "ChineseName": "光学字符识别",
+     "Description": "",
+     "DomainName": "cv",
+     "Id": 176,
+     "IsExhibition": true,
+     "IsHot": 0,
+     "IsLeaf": false,
+     "IsLoginRequired": false,
+     "IsRetrieval": true,
+     "Level": 1,
+     "Name": "ocr",
+     "ParentId": -1,
+     "ParentTask": null,
+     "Sorting": 0,
+     "SupportWidgets": false,
+     "TypicalModel": "",
+     "WidgetConfig": "{}",
+     "WidgetValidator": ""
+    },
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"ocr-detection\", \"inputs\": [{\"type\": \"image\", \"validator\": {\"max_size\": \"3M\", \"max_resolution\": \"2000*2000\"}, \"displayType\": \"ImgUpload\"}], \"output\": {\"displayType\": \"ImageWithPath\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "afb81385-80d0-4503-af0c-0b48f1991a6d",
+ "Success": true
+}

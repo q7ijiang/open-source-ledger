@@ -1,0 +1,94 @@
+{
+ "case_id": "pc-0003",
+ "repo": "Henry-23/VideoChat",
+ "repo_url": "https://github.com/Henry-23/VideoChat",
+ "head_sha": "303681e69ef1e29c7de5ca1a56435c89ea6f7f67",
+ "source_file": "app.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 6,
+    "text": "import modelscope_studio as mgr",
+    "sha256": "ca69ae4c35646595443af259c7d7d0f853adc3a45f1d1860c693a38f5c356e8d"
+   },
+   {
+    "line": 9,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   }
+  ],
+  "imports_sha256": "e318326665bd6a4b0337dfd01bc6e21e8fa46225befd07be92976ef3dcec6ffe",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "ZhipuAI/glm-4-voice-tokenizer",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 42,
+   "text": "snapshot_download('ZhipuAI/glm-4-voice-tokenizer',cache_dir='./weights')",
+   "sha256": "405d4b539bc8f3459cc65020837826f6e2e15a2804315eaf28ace61a25da4d3f"
+  }
+ ],
+ "call": {
+  "start": 42,
+  "end": 42,
+  "text": "snapshot_download('ZhipuAI/glm-4-voice-tokenizer',cache_dir='./weights')",
+  "sha256": "405d4b539bc8f3459cc65020837826f6e2e15a2804315eaf28ace61a25da4d3f"
+ },
+ "revision": {
+  "revision": "",
+  "source": "unspecified"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 31,
+   "text": "os.system('mim install \"mmcv==2.1.0\"')"
+  },
+  {
+   "line": 32,
+   "text": "os.system('mim install \"mmdet==3.2.0\"')"
+  },
+  {
+   "line": 33,
+   "text": "# os.system('mim install \"mmpose==1.2.0\"') # for torch 2.1.2"
+  },
+  {
+   "line": 34,
+   "text": "os.system('mim install \"mmpose==1.3.2\"') # for torch 2.3.0"
+  },
+  {
+   "line": 35,
+   "text": "shutil.rmtree('./workspaces/results', ignore_errors= True)"
+  },
+  {
+   "line": 36,
+   "text": ""
+  },
+  {
+   "line": 37,
+   "text": "# GLM-4-Voice 配置"
+  },
+  {
+   "line": 38,
+   "text": "sys.path.insert(0, \"./src/GLM_4_Voice\")"
+  },
+  {
+   "line": 39,
+   "text": "sys.path.insert(0, \"./src/GLM_4_Voice/cosyvoice\")"
+  },
+  {
+   "line": 40,
+   "text": "sys.path.insert(0, \"./src/GLM_4_Voice//third_party/Matcha-TTS\")"
+  },
+  {
+   "line": 41,
+   "text": ""
+  }
+ ]
+}

@@ -1,0 +1,266 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "WhisperVQEncoder"
+  ],
+  "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": null,
+   "backend_info": {
+    "deploy_task": null,
+    "lmdeploy": null,
+    "lmdeploy_turbomind": null,
+    "ollama": null,
+    "sglang": null,
+    "vllm": null
+   },
+   "model_id": "ZhipuAI/glm-4-voice-tokenizer"
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "duzx16",
+  "CreatedTime": 1729825114,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "",
+  "Domain": [],
+  "Downloads": 738921,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "Pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 355591,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1729826962,
+  "Libraries": [
+   "safetensors",
+   "pytorch"
+  ],
+  "License": "",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "",
+    "files": [
+     {
+      "name": "model.safetensors",
+      "sha256": "2800bd503f52b51e45f0c53cfd5c31dcfe8ef7f13d22b396aa3d53e0280dd1e4",
+      "size": 1458374480
+     }
+    ],
+    "model_size": 364587264,
+    "tensor_type": [
+     "F32"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "whisper"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "glm-4-voice-tokenizer",
+  "NewVersion": "",
+  "NickName": "",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/0087d595-e6b3-4a6e-bc23-12d62209f0df.webp",
+   "CreateCompetition": false,
+   "CreatedBy": "maasadmin",
+   "Description": "[\"root\",{},[\"p\",{\"ind\":{},\"spacing\":{}},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"color\":\"rgb(0, 0, 0)\",\"fonts\":{\"ascii\":\"-webkit-standard\",\"hAnsi\":\"-webkit-standard\",\"cs\":\"-webkit-standard\",\"eastAsia\":\"-webkit-standard\"},\"highlight\":\"rgba(0, 0, 0, 0)\",\"sz\":12,\"szUnit\":\"pt\",\"data-type\":\"leaf\"},\"智谱AI由清华大学计算机系的技术成果转化而来。公司主导研发了多语言千亿级超大规模预训练模型，构建了高精度通用知识图谱，并把两者有机融合打造了数据与知识双轮驱动的认知引擎。公司核心技术获得国家科学进步二等奖、北京市发明专利一等奖。智谱提出全新Model as a Service（MaaS）的市场理念，打造了认知大模型平台以及数字人和科技情报产品，应用单位包括：中国科协、北京市科委、华为、腾讯等1000余家企事业单位。智谱AI也秉承着肩负企业社会责任，研发了面向疫情的知识疫图、面向无障碍沟通的手语数字人技术等，促进社会平等和进步。\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "智谱.AI",
+   "GithubAddress": "https://www.zhipu.ai",
+   "GmtCreated": "2022-10-22T03:50:15Z",
+   "GmtModified": "2026-11-09T08:59:17Z",
+   "Id": 13,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "ZhipuAI",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 2
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "ZhipuAI",
+  "ProtectedMode": 2,
+  "ReadMeContent": "# GLM-4-Voice-Tokenizer\n\nGLM-4-Voice 是智谱 AI 推出的端到端语音模型。GLM-4-Voice 能够直接理解和生成中英文语音，进行实时语音对话，并且能够根据用户的指令改变语音的情感、语调、语速、方言等属性。\n\nGLM-4-Voice is an end-to-end voice model launched by Zhipu AI. GLM-4-Voice can directly understand and generate Chinese and English speech, engage in real-time voice conversations, and change attributes such as emotion, intonation, speech rate, and dialect based on user instructions.\n\n本仓库是 GLM-4-Voice 的 speech tokenizer 部分。通过在 [Whisper](https://github.com/openai/whisper) 的 encoder 部分增加 vector quantization 进行训练，将连续的语音输入转化为离散的 token。每秒音频转化为 12.5 个离散 token。\n\nThe repo provides the speech tokenzier of GLM-4-Voice, which is trained by adding vector quantization to the encoder part of [Whisper](https://github.com/openai/whisper) and converts continuous speech input into discrete tokens. Each second of audio is converted into 12.5 discrete tokens.\n\n更多信息请参考我们的仓库 [GLM-4-Voice](https://github.com/THUDM/GLM-4-Voice).\n\nFor more information please refer to our repo [GLM-4-Voice](https://github.com/THUDM/GLM-4-Voice).\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [],
+  "RelatedPaper": [],
+  "Revision": "master",
+  "Stars": 34,
+  "StorageSize": 1458386186,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [],
+  "Tasks": [
+   {
+    "ChineseName": "语音识别",
+    "Description": "",
+    "DomainName": "audio",
+    "Id": 31,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": false,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "auto-speech-recognition",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": true,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"auto-speech-recognition\", \"inputs\": [{\"type\": \"audio\", \"fileType\": \"pcm\", \"validator\": {\"max_size\": \"10M\"}, \"displayType\": \"AudioTransformer\", \"displayProps\": {\"enableRecording\": true}}], \"output\": {\"displayType\": \"ReadonlyText\", \"displayOutputMapping\": \"text\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "b3a3cf80-d481-45be-b9ab-9961412a6c01",
+ "Success": true
+}

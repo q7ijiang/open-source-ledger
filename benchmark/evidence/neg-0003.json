@@ -1,0 +1,86 @@
+{
+ "case_id": "neg-0003",
+ "repo": "muzishen/IMAGDressing",
+ "repo_url": "https://github.com/muzishen/IMAGDressing",
+ "head_sha": "2e8a2bdc1ef46a6c07e6e30f71d70d85d10558d2",
+ "source_file": "app.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 1,
+    "text": "import sys",
+    "sha256": "9e77b3746ea081eb4c557e71cc84ca29dc66a89d18a07e85dba66a336e7310ae"
+   },
+   {
+    "line": 2,
+    "text": "from PIL import Image",
+    "sha256": "e66b379369fd5a6f31cb4d78e8c2435bcf73781984d2a8e78e7d44cc67f35d3b"
+   },
+   {
+    "line": 3,
+    "text": "import gradio as gr",
+    "sha256": "3d2dde17d64ad0bfbd874286946f9a68e3254380cc3b1a389ed5441dc9e271e8"
+   },
+   {
+    "line": 4,
+    "text": "import numpy as np",
+    "sha256": "6f11581db2b4487aaaf6eb8704a9acbe89cddd1ccde4652211c1a838bc70efde"
+   },
+   {
+    "line": 5,
+    "text": "import cv2",
+    "sha256": "7e8fceb2005a88e399a3acb99b0a86c63115d133cd7739226eada9f08b57e092"
+   },
+   {
+    "line": 6,
+    "text": "from modelscope.outputs import OutputKeys",
+    "sha256": "9717770a65dfbd859effef8a0e985f0e23dcb4dc5bbf2979727d5ca71fd28f1d"
+   },
+   {
+    "line": 7,
+    "text": "from modelscope.pipelines import pipeline",
+    "sha256": "23bca4f238f8ae2abb0c07225a7a7559f9cfff55c627c1f0bdc2da4dc80033f1"
+   },
+   {
+    "line": 8,
+    "text": "from modelscope.utils.constant import Tasks",
+    "sha256": "f89e366822b2602d40623a3b0d0e7026c9d9640482bcb392c7c31184439eee26"
+   },
+   {
+    "line": 9,
+    "text": "from dressing_sd.pipelines.IMAGDressing_v1_pipeline_ipa_controlnet import IMAGDressing_v1",
+    "sha256": "5d1df5e176260bae8f350298b323d653571689af725f7b6271f496113bbba1ea"
+   },
+   {
+    "line": 10,
+    "text": "from diffusers.pipelines.stable_diffusion import StableDiffusionSafetyChecker",
+    "sha256": "aaf85e939c66352757eac9a533cc406b8288ba33f15f53f901cb43e363314d0b"
+   },
+   {
+    "line": 11,
+    "text": "from torchvision import transforms",
+    "sha256": "b93b2e6244d61128a76b2777f9f85dbb7e18b200c5d4a6c053c4c7f6b7febc03"
+   },
+   {
+    "line": 12,
+    "text": "import cv2",
+    "sha256": "7e8fceb2005a88e399a3acb99b0a86c63115d133cd7739226eada9f08b57e092"
+   }
+  ],
+  "kind": "huggingface_import"
+ },
+ "model_id": "stabilityai/sd-vae-ft-mse",
+ "call": {
+  "start": 52,
+  "end": 52,
+  "text": "vae = AutoencoderKL.from_pretrained('stabilityai/sd-vae-ft-mse').to(dtype=torch.float16, device=args.device)",
+  "sha256": "ea49a659f3752d72fbe4dadec8429198ac856770bc8d52197da309f709aafee6"
+ },
+ "negative": {
+  "basis": "other_platform_explicit",
+  "scope": "repo_platform",
+  "note": "diffusers 的 AutoencoderKL.from_pretrained 直接加载 HF 模型 ID"
+ }
+}

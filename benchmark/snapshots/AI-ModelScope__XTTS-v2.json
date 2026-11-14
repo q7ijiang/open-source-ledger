@@ -1,0 +1,246 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": null,
+  "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": null,
+   "backend_info": {
+    "deploy_task": null,
+    "lmdeploy": null,
+    "lmdeploy_turbomind": null,
+    "ollama": null,
+    "sglang": null,
+    "vllm": null
+   },
+   "model_id": ""
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "mushenL",
+  "CreatedTime": 1699941410,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "",
+  "Domain": [],
+  "Downloads": 8514,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "Pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 233180,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1699941877,
+  "Libraries": [
+   "pytorch"
+  ],
+  "License": "other",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {},
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "XTTS-v2",
+  "NewVersion": "",
+  "NickName": "weiyuanhu",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/3469e540-6383-4d34-87c8-3e5406a0b567.png",
+   "CreateCompetition": false,
+   "CreatedBy": "Cherrytest",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"开发者联盟，欢迎加盟。\"]]],[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "为AI成魔",
+   "GithubAddress": "",
+   "GmtCreated": "2023-03-22T13:56:58Z",
+   "GmtModified": "2026-11-05T11:44:07Z",
+   "Id": 66,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "AI-ModelScope",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 1
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "AI-ModelScope",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n# ⓍTTS\nⓍTTS is a Voice generation model that lets you clone voices into different languages by using just a quick 6-second audio clip. There is no need for an excessive amount of training data that spans countless hours.\n\nThis is the same or similar model to what powers [Coqui Studio](https://coqui.ai/) and [Coqui API](https://docs.coqui.ai/docs).\n\n### Features\n- Supports 16 languages. \n- Voice cloning with just a 6-second audio clip.\n- Emotion and style transfer by cloning. \n- Cross-language voice cloning.\n- Multi-lingual speech generation.\n- 24khz sampling rate.\n\n### Updates over XTTS-v1\n- 2 new languages; Hungarian and Korean\n- Architectural improvements for speaker conditioning.\n- Enables the use of multiple speaker references and interpolation between speakers.\n- Stability improvements.\n- Better prosody and audio quality across the board.\n\n### Languages\nXTTS-v2 supports 16 languages: **English (en), Spanish (es), French (fr), German (de), Italian (it), Portuguese (pt),\nPolish (pl), Turkish (tr), Russian (ru), Dutch (nl), Czech (cs), Arabic (ar), Chinese (zh-cn), Japanese (ja), Hungarian (hu) and Korean (ko)**.\n\nStay tuned as we continue to add support for more languages. If you have any language requests, feel free to reach out!\n\n### Code\nThe [code-base](https://github.com/coqui-ai/TTS) supports inference and [fine-tuning](https://tts.readthedocs.io/en/latest/models/xtts.html#training).\n\n### Demo Spaces\n- [XTTS Space](https://huggingface.co/spaces/coqui/xtts)  :  You can see how model performs on supported languages, and try with your own reference or microphone input\n- [XTTS Voice Chat with Mistral or Zephyr](https://huggingface.co/spaces/coqui/voice-chat-with-mistral) : You can experience streaming voice chat with Mistral 7B Instruct or Zephyr 7B Beta\n\n### License\nThis model is licensed under [Coqui Public Model License](https://coqui.ai/cpml). There's a lot that goes into a license for generative models, and you can read more of [the origin story of CPML here](https://coqui.ai/blog/tts/cpml).\n\n### Contact\nCome and join in our 🐸Community. We're active on [Discord](https://discord.gg/fBC58unbKE) and [Twitter](https://twitter.com/coqui_ai).\nYou can also mail us at info@coqui.ai.\n\nUsing 🐸TTS API:\n\n```python\nfrom TTS.api import TTS\ntts = TTS(\"tts_models/multilingual/multi-dataset/xtts_v2\", gpu=True)\n\n# generate speech by cloning a voice using default settings\ntts.tts_to_file(text=\"It took me quite a long time to develop a voice, and now that I have it I'm not going to be silent.\",\n                file_path=\"output.wav\",\n                speaker_wav=\"/path/to/target/speaker.wav\",\n                language=\"en\")\n\n# generate speech by cloning a voice using custom settings\ntts.tts_to_file(text=\"It took me quite a long time to develop a voice, and now that I have it I'm not going to be silent.\",\n                file_path=\"output.wav\",\n                speaker_wav=\"/path/to/target/speaker.wav\",\n                language=\"en\",\n                decoder_iterations=30)\n```\n\nUsing 🐸TTS Command line:\n\n```console\n tts --model_name tts_models/multilingual/multi-dataset/xtts_v2 \\\n     --text \"Bugün okula gitmek istemiyorum.\" \\\n     --speaker_wav /path/to/target/speaker.wav \\\n     --language_idx tr \\\n     --use_cuda true\n```\n\nUsing the model directly:\n\n```python\nfrom TTS.tts.configs.xtts_config import XttsConfig\nfrom TTS.tts.models.xtts import Xtts\n\nconfig = XttsConfig()\nconfig.load_json(\"/path/to/xtts/config.json\")\nmodel = Xtts.init_from_config(config)\nmodel.load_checkpoint(config, checkpoint_dir=\"/path/to/xtts/\", eval=True)\nmodel.cuda()\n\noutputs = model.synthesize(\n    \"It took me quite a long time to develop a voice and now that I have it I am not going to be silent.\",\n    config,\n    speaker_wav=\"/data/TTS-public/_refclips/3.wav\",\n    gpt_cond_len=3,\n    language=\"en\",\n)\n```\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [],
+  "RelatedPaper": [],
+  "Revision": "master",
+  "Stars": 14,
+  "StorageSize": 2077213444,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [],
+  "Tasks": [
+   {
+    "ChineseName": "语音合成",
+    "Description": "",
+    "DomainName": "audio",
+    "Id": 32,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "text-to-speech",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": true,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"text-to-speech\", \"inputs\": [{\"type\": \"text\", \"validator\": {\"max_words\": 300}, \"displayType\": \"OnlyTextArea\"}], \"output\": {\"displayType\": \"AudioPlayer\", \"transformOutputs\": [{\"fileType\": \"pcm\", \"outputKey\": \"output_pcm\"}], \"displayOutputMapping\": \"output_pcm\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "1d4102cf-0908-4d52-9d23-0e7b6b023590",
+ "Success": true
+}

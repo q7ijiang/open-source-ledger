@@ -1,0 +1,89 @@
+{
+ "case_id": "pc-0002",
+ "repo": "LYiHub/mad-professor-public",
+ "repo_url": "https://github.com/LYiHub/mad-professor-public",
+ "head_sha": "d910872e8ee2de3780b3f0881cde1686e6a16701",
+ "source_file": "download_models.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 6,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   }
+  ],
+  "imports_sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "opendatalab/PDF-Extract-Kit-1.0",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 44,
+   "text": "model_dir = snapshot_download('opendatalab/PDF-Extract-Kit-1.0', allow_patterns=mineru_patterns)",
+   "sha256": "e4d98ed3ce042f7bc84b5c30891fdd5f7e11c9c518c3552b024e751416d9a967"
+  }
+ ],
+ "call": {
+  "start": 44,
+  "end": 44,
+  "text": "    model_dir = snapshot_download('opendatalab/PDF-Extract-Kit-1.0', allow_patterns=mineru_patterns)",
+  "sha256": "e4d98ed3ce042f7bc84b5c30891fdd5f7e11c9c518c3552b024e751416d9a967"
+ },
+ "revision": {
+  "revision": "",
+  "source": "unspecified"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 33,
+   "text": ""
+  },
+  {
+   "line": 34,
+   "text": "if __name__ == '__main__':"
+  },
+  {
+   "line": 35,
+   "text": "mineru_patterns = ["
+  },
+  {
+   "line": 36,
+   "text": "# \"models/Layout/LayoutLMv3/*\","
+  },
+  {
+   "line": 37,
+   "text": "\"models/Layout/YOLO/*\","
+  },
+  {
+   "line": 38,
+   "text": "\"models/MFD/YOLO/*\","
+  },
+  {
+   "line": 39,
+   "text": "\"models/MFR/unimernet_hf_small_2503/*\","
+  },
+  {
+   "line": 40,
+   "text": "\"models/OCR/paddleocr_torch/*\","
+  },
+  {
+   "line": 41,
+   "text": "# \"models/TabRec/TableMaster/*\","
+  },
+  {
+   "line": 42,
+   "text": "# \"models/TabRec/StructEqTable/*\","
+  },
+  {
+   "line": 43,
+   "text": "]"
+  }
+ ]
+}

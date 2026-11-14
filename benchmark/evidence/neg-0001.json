@@ -1,0 +1,51 @@
+{
+ "case_id": "neg-0001",
+ "repo": "liuliu/swift-diffusion",
+ "repo_url": "https://github.com/liuliu/swift-diffusion",
+ "head_sha": "7f1549d00033f8436177e8726b99a1bb6b5b9f05",
+ "source_file": "examples/qwen_image21/setup.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 2,
+    "text": "import argparse",
+    "sha256": "f534a72c58d199602723840a24761409f227f4238759b1f6b1982afb8956b460"
+   },
+   {
+    "line": 3,
+    "text": "import json",
+    "sha256": "ff3e4d4dcf7250cae8d622d77c9a6d69aefcf4ab04ef9920218fafe93c0f1991"
+   },
+   {
+    "line": 4,
+    "text": "from pathlib import Path",
+    "sha256": "6d69f2ac09017b8a49d050ab336e953b8fa02ae08c24396916ea7ea42418e627"
+   },
+   {
+    "line": 5,
+    "text": "import urllib.request",
+    "sha256": "84cdb92b47ddeda39504b1df0be4a17879c2cde3a21c65ab4215ec590e051270"
+   },
+   {
+    "line": 7,
+    "text": "from huggingface_hub import snapshot_download",
+    "sha256": "49d644c580f840587a1cffb8330bf8d16a183e9c0d7e8bed50a897e819eaa8eb"
+   }
+  ],
+  "kind": "huggingface_import"
+ },
+ "model_id": "Qwen/Qwen-Image-2.1",
+ "call": {
+  "start": 31,
+  "end": 31,
+  "text": "    snapshot_download(\"Qwen/Qwen-Image-2.1\", revision=MODEL_REVISION, local_dir=ROOT / \"artifacts/model\", allow_patterns=patterns, max_workers=4)",
+  "sha256": "26072852b9a464fe2ba1a1d0a083ce2e3e27a818f5cbe4eccdf21ffbc6e23f4a"
+ },
+ "negative": {
+  "basis": "other_platform_explicit",
+  "scope": "repo_platform",
+  "note": "from huggingface_hub import snapshot_download 且调用处直接下载 HF 仓库"
+ }
+}

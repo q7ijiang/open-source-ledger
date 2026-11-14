@@ -1,0 +1,381 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "ChatGLMModel"
+  ],
+  "Avatar": "https://resouces.modelscope.cn/avatar/df2dffd7-56be-46c9-8877-db135b995954.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": [
+    "ChatGLMModel"
+   ],
+   "backend_info": {
+    "deploy_task": [
+     "text",
+     "emb"
+    ],
+    "lmdeploy": {
+     "text": "0.9.1"
+    },
+    "lmdeploy_turbomind": {
+     "text": "0.9.1"
+    },
+    "ollama": null,
+    "sglang": {
+     "text": "0.5.2"
+    },
+    "vllm": {
+     "emb": "0.9.2",
+     "text": "0.9.2"
+    }
+   },
+   "model_id": "ZhipuAI/glm-4-9b-chat"
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "zRzRzRzRzRzRzR",
+  "CreatedTime": 1717491900,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "",
+  "Domain": [],
+  "Downloads": 542964,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "Pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 287746,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [
+   "zh",
+   "en"
+  ],
+  "LastUpdatedTime": 1768877846,
+  "Libraries": [
+   "pytorch",
+   "transformer",
+   "safetensors"
+  ],
+  "License": "other",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "[gMASK]<sop>{% for item in messages %}{% if item['tools'] is defined %}<|system|>\n你是一个名为 ChatGLM 的人工智能助手。你是基于智谱AI训练的语言模型 GLM-4 模型开发的，你的任务是针对用户的问题和要求提供适当的答复和支持。\n\n# 可用工具{% set tools = item['tools'] %}{% for tool in tools %}{% if tool['type'] == 'function' %}\n\n## {{ tool['function']['name'] }}\n\n{{ tool['function'] | tojson(indent=4) }}\n在调用上述函数时，请使用 Json 格式表示调用的参数。{% elif tool['type'] == 'python' %}\n\n## python\n\n当你向 `python` 发送包含 Python 代码的消息时，该代码将会在一个有状态的 Jupyter notebook 环境中执行。\n`python` 返回代码执行的输出，或在执行 60 秒后返回超时。\n`/mnt/data` 将会持久化存储你的文件。在此会话中，`python` 无法访问互联网。不要使用 `python` 进行任何网络请求或者在线 API 调用，这些在线内容的访问将不会成功。{% elif tool['type'] == 'simple_browser' %}\n\n## simple_browser\n\n你可以使用 `simple_browser` 工具。该工具支持以下函数：\n`search(query: str, recency_days: int)`：使用搜索引擎进行查询并显示结果，可以使用 `recency_days` 参数控制搜索内容的时效性。\n`mclick(ids: list[int])`：获取一系列指定 id 的页面内容。每次调用时，须选择3-10个页面。选择多个角度的页面，同时尽可能选择可信任的信息来源。考虑到部分页面是无法加载的，你也可以多打开一些可能有用的页面而不用担心内容过多。\n`open_url(url: str)`：打开指定的 URL。\n\n使用 `【{引用 id}†{引用文本}】` 来引用内容。\n\n操作步骤：1. 使用 `search` 来获得信息列表; 2. 使用 `mclick` 来获取指定 ID 页面的内容; 3. 根据获得的内容进行回复。在回复中应当引用信息来源。\n 如果用户提供了 URL，也可以用 `open_url` 直接打开页面。\n如果初次搜索结果没有找到合适的信息，也可以再次使用 `search` 进行搜索。{% elif tool['type'] == 'cogview' %}\n\n## cogview\n\n如果用户的请求中包含了对图像的描述，你可以使用 `cogview` 来生成图像并展示给用户。你需要向 `cogview` 发送图像描述，规则：\n- 发送给 `cogview` 的消息必须使用英语。用户的中文描述必须完全翻译为英语。\n- 应当尽可能详细地描述图像生成的需求，需求描述约 100 英文单词。\n- 保持用户原始描述的意图。不要虚构内容或者没见过的人物。\n- 如无特殊说明，所在地为中国，持有中国立场并遵循中国社会主义价值观。{% endif %}{% endfor %}{% endif %}{% if item['content'] %}<|{{ item['role'] }}|>{{ item['metadata'] }}\n{{ item['content'] }}{% endif %}{% endfor %}{% if add_generation_prompt %}<|assistant|>{% endif %}",
+    "files": [
+     {
+      "name": "model.safetensors.index.json",
+      "sha256": "d153206225f09b11759dce2b36d32a7d65f36f00818535853bb0e3905038401a",
+      "size": 29054
+     },
+     {
+      "name": "model-00001-of-00010.safetensors",
+      "sha256": "d0040c9cf0d4d0553c4156dbd890437788ba43237037e1f9c4a3c1a3ddfad1f6",
+      "size": 1945161760
+     },
+     {
+      "name": "model-00002-of-00010.safetensors",
+      "sha256": "f9163d47c6e1073d68fb03f933122e2ece0b30ce43b5309da15b783e93a34ad4",
+      "size": 1815217640
+     },
+     {
+      "name": "model-00003-of-00010.safetensors",
+      "sha256": "28031e88b92dc942b47ac4dd0e73b2ce749fc87fc692a3ed72e1bdec74996968",
+      "size": 1968291912
+     },
+     {
+      "name": "model-00004-of-00010.safetensors",
+      "sha256": "708ef7836140bd1822253cae05f5891ea02cedbe4c8ef8b096f712cdfdc9b01e",
+      "size": 1927406992
+     },
+     {
+      "name": "model-00005-of-00010.safetensors",
+      "sha256": "c390a67a568f7f3d440a3c3357b4d08c0539435ea6d7a36baa4a4f0274740ae5",
+      "size": 1815217672
+     },
+     {
+      "name": "model-00006-of-00010.safetensors",
+      "sha256": "32e0d285c514e750e78ae42630a498ec526db4caba993fc2ea7226069410d1e7",
+      "size": 1968291952
+     },
+     {
+      "name": "model-00007-of-00010.safetensors",
+      "sha256": "165687aa1873e91d13bf404ff91a4d702f79c5301f43c2645eabb45f17808cb2",
+      "size": 1927406992
+     },
+     {
+      "name": "model-00008-of-00010.safetensors",
+      "sha256": "5388bffb210043271cded04b28a5fae2eeeb31b64b695b62638d9b856e322033",
+      "size": 1815217672
+     },
+     {
+      "name": "model-00009-of-00010.safetensors",
+      "sha256": "449241babb7ce69a835c121efa26d9fd8823554ed0c8acd2af6666f482dd6809",
+      "size": 1968291952
+     },
+     {
+      "name": "model-00010-of-00010.safetensors",
+      "sha256": "2544b92fc4f1cb511b31a6b06021a3136de0705436db6731d30ec5b8a2be80f6",
+      "size": 1649436712
+     }
+    ],
+    "model_size": 9399951392,
+    "tensor_type": [
+     "BF16"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "chatglm"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "glm-4-9b-chat",
+  "NewVersion": "",
+  "NickName": "zRzRzRzRzRzRzR",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 999999,
+   "Recommend": [
+    {
+     "Backend": [
+      "vllm"
+     ],
+     "Channel": "fc",
+     "GpuMemory": "0",
+     "ImageTag": [
+      "ubuntu22.04-cuda12.4.0-py311-torch2.6.0-1.27.0-LLM"
+     ],
+     "InstanceType": "fc.gpu.tesla.1",
+     "Memory": "32768",
+     "ModelFamily": "",
+     "Version": "v1.0.0",
+     "deploy_task": [
+      "text"
+     ]
+    },
+    {
+     "Backend": [
+      "vllm"
+     ],
+     "Channel": "eas",
+     "GpuMemory": "0",
+     "ImageTag": [
+      "ubuntu22.04-cuda12.4.0-py310-torch2.5.1-1.23.1-LLM"
+     ],
+     "InstanceType": "ecs.gn6i-c40g1.10xlarge",
+     "Memory": "32768",
+     "ModelFamily": "",
+     "Version": "v1.0.0",
+     "deploy_task": [
+      "text"
+     ]
+    }
+   ],
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/0087d595-e6b3-4a6e-bc23-12d62209f0df.webp",
+   "CreateCompetition": false,
+   "CreatedBy": "maasadmin",
+   "Description": "[\"root\",{},[\"p\",{\"ind\":{},\"spacing\":{}},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"color\":\"rgb(0, 0, 0)\",\"fonts\":{\"ascii\":\"-webkit-standard\",\"hAnsi\":\"-webkit-standard\",\"cs\":\"-webkit-standard\",\"eastAsia\":\"-webkit-standard\"},\"highlight\":\"rgba(0, 0, 0, 0)\",\"sz\":12,\"szUnit\":\"pt\",\"data-type\":\"leaf\"},\"智谱AI由清华大学计算机系的技术成果转化而来。公司主导研发了多语言千亿级超大规模预训练模型，构建了高精度通用知识图谱，并把两者有机融合打造了数据与知识双轮驱动的认知引擎。公司核心技术获得国家科学进步二等奖、北京市发明专利一等奖。智谱提出全新Model as a Service（MaaS）的市场理念，打造了认知大模型平台以及数字人和科技情报产品，应用单位包括：中国科协、北京市科委、华为、腾讯等1000余家企事业单位。智谱AI也秉承着肩负企业社会责任，研发了面向疫情的知识疫图、面向无障碍沟通的手语数字人技术等，促进社会平等和进步。\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "智谱.AI",
+   "GithubAddress": "https://www.zhipu.ai",
+   "GmtCreated": "2022-10-22T03:50:15Z",
+   "GmtModified": "2026-11-09T08:59:17Z",
+   "Id": 13,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "ZhipuAI",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 2
+  },
+  "PaiModelGalleryUrl": {
+   "deploy": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/models/glm-4-9b-chat/intro%3FviewType%3DDeploy%26from%3DModelScope&lang=zh",
+   "evaluation": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/evaluations/create%3FmodelName%3Dglm-4-9b-chat%26modelOrigin%3DPAI&lang=zh",
+   "train": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/models/glm-4-9b-chat/intro%3FviewType%3DTrain%26from%3DModelScope&lang=zh"
+  },
+  "PaiSdkParameter": null,
+  "Path": "ZhipuAI",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n# GLM-4-9B-Chat\n\nRead this in [English](README_en.md).\n\n**2024/11/25**, 我们建议使用从 `transformers>=4.46.0` 开始，使用 [glm-4-9b-chat-hf](https://huggingface.co/THUDM/glm-4-9b-chat-hf) 以减少后续 transformers 升级导致的兼容性问题。\n\n**2024/08/12, 本仓库代码已更新并使用 `transformers>=4.44.0`, 请及时更新依赖。**\n\n**2024/07/24，我们发布了与长文本相关的最新技术解读，关注 [这里](https://medium.com/@ChatGLM/glm-long-scaling-pre-trained-model-contexts-to-millions-caa3c48dea85) 查看我们在训练 GLM-4-9B 开源模型中关于长文本技术的技术报告**\n\n## 模型介绍\nGLM-4-9B 是智谱 AI 推出的最新一代预训练模型 GLM-4 系列中的开源版本。\n在语义、数学、推理、代码和知识等多方面的数据集测评中，GLM-4-9B 及其人类偏好对齐的版本 GLM-4-9B-Chat 均表现出较高的性能。\n除了能进行多轮对话，GLM-4-9B-Chat 还具备网页浏览、代码执行、自定义工具调用（Function Call）和长文本推理（支持最大 128K\n上下文）等高级功能。\n本代模型增加了多语言支持，支持包括日语，韩语，德语在内的 26 种语言。我们还推出了支持 1M 上下文长度（约 200 万中文字符）的模型。\n\n## 评测结果\n\n我们在一些经典任务上对 GLM-4-9B-Chat 模型进行了评测,并得到了如下的结果:\n\n| Model               | AlignBench-v2 | MT-Bench | IFEval | MMLU | C-Eval | GSM8K | MATH | HumanEval | NCB  |\n|:--------------------|:-------------:|:--------:|:------:|:----:|:------:|:-----:|:----:|:---------:|:----:|\n| Llama-3-8B-Instruct |     5.12      |   8.00   | 68.58  | 68.4 |  51.3  | 79.6  | 30.0 |   62.2    | 24.7 |\n| ChatGLM3-6B         |     3.97      |   5.50   |  28.1  | 66.4 |  69.0  | 72.3  | 25.7 |   58.5    | 11.3 |\n| GLM-4-9B-Chat       |     6.61      |   8.35   |  69.0  | 72.4 |  75.6  | 79.6  | 50.6 |   71.8    | 32.2 |\n\n### 长文本\n\n在 1M 的上下文长度下进行[大海捞针实验](https://github.com/LargeWorldModel/LWM/blob/main/scripts/eval_needle.py)，结果如下：\n\n![needle](https://raw.githubusercontent.com/THUDM/GLM-4/main/resources/eval_needle.jpeg)\n\n在 LongBench-Chat 上对长文本能力进行了进一步评测，结果如下:\n\n![leaderboard](https://raw.githubusercontent.com/THUDM/GLM-4/main/resources/longbench.png)\n\n### 多语言能力\n\n在六个多语言数据集上对 GLM-4-9B-Chat 和 Llama-3-8B-Instruct 进行了测试，测试结果及数据集对应选取语言如下表\n\n| Dataset     | Llama-3-8B-Instruct | GLM-4-9B-Chat |                                           Languages                                            \n|:------------|:-------------------:|:-------------:|:----------------------------------------------------------------------------------------------:|\n| M-MMLU      |        49.6         |     56.6      |                                              all                                               \n| FLORES      |        25.0         |     28.8      | ru, es, de, fr, it, pt, pl, ja, nl, ar, tr, cs, vi, fa, hu, el, ro, sv, uk, fi, ko, da, bg, no \n| MGSM        |        54.0         |     65.3      |                           zh, en, bn, de, es, fr, ja, ru, sw, te, th                           \n| XWinograd   |        61.7         |     73.1      |                                     zh, en, fr, jp, ru, pt                                     \n| XStoryCloze |        84.7         |     90.7      |                           zh, en, ar, es, eu, hi, id, my, ru, sw, te                           \n| XCOPA       |        73.3         |     80.1      |                           zh, et, ht, id, it, qu, sw, ta, th, tr, vi                           \n\n### 工具调用能力\n\n我们在 [Berkeley Function Calling Leaderboard](https://github.com/ShishirPatil/gorilla/tree/main/berkeley-function-call-leaderboard)\n上进行了测试并得到了以下结果：\n\n| Model                  | Overall Acc. | AST Summary | Exec Summary | Relevance |\n|:-----------------------|:------------:|:-----------:|:------------:|:---------:|\n| Llama-3-8B-Instruct    |    58.88     |    59.25    |    70.01     |   45.83   |\n| gpt-4-turbo-2024-04-09 |    81.24     |    82.14    |    78.61     |   88.75   |\n| ChatGLM3-6B            |    57.88     |    62.18    |    69.78     |   5.42    |\n| GLM-4-9B-Chat          |    81.00     |    80.26    |    84.40     |   87.92   |\n\n**本仓库是 GLM-4-9B-Chat 的模型仓库，支持`128K`上下文长度。**\n\n## 运行模型\n\n**更多推理代码和依赖信息，请访问我们的 [github](https://github.com/THUDM/GLM-4)。**\n\n**请严格按照[依赖](https://github.com/THUDM/GLM-4/blob/main/basic_demo/requirements.txt)安装，否则无法正常运行。**\n\n### 使用 transformers 后端进行推理:\n\n\n```python\nimport torch\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\n\ndevice = \"cuda\"\n\ntokenizer = AutoTokenizer.from_pretrained(\"THUDM/glm-4-9b-chat\", trust_remote_code=True)\n\nquery = \"你好\"\n\ninputs = tokenizer.apply_chat_template([{\"role\": \"user\", \"content\": query}],\n                                       add_generation_prompt=True,\n                                       tokenize=True,\n                                       return_tensors=\"pt\",\n                                       return_dict=True\n                                       )\n\ninputs = inputs.to(device)\nmodel = AutoModelForCausalLM.from_pretrained(\n    \"THUDM/glm-4-9b-chat\",\n    torch_dtype=torch.bfloat16,\n    low_cpu_mem_usage=True,\n    trust_remote_code=True\n).to(device).eval()\n\ngen_kwargs = {\"max_length\": 2500, \"do_sample\": True, \"top_k\": 1}\nwith torch.no_grad():\n    outputs = model.generate(**inputs, **gen_kwargs)\n    outputs = outputs[:, inputs['input_ids'].shape[1]:]\n    print(tokenizer.decode(outputs[0], skip_special_tokens=True))\n```\n\n使用 vLLM后端进行推理:\n\n```python\nfrom transformers import AutoTokenizer\nfrom vllm import LLM, SamplingParams\n\n# GLM-4-9B-Chat-1M\n# max_model_len, tp_size = 1048576, 4\n\n# GLM-4-9B-Chat\n# 如果遇见 OOM 现象，建议减少max_model_len，或者增加tp_size\nmax_model_len, tp_size = 131072, 1\nmodel_name = \"THUDM/glm-4-9b-chat\"\nprompt = [{\"role\": \"user\", \"content\": \"你好\"}]\n\ntokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)\nllm = LLM(\n    model=model_name,\n    tensor_parallel_size=tp_size,\n    max_model_len=max_model_len,\n    trust_remote_code=True,\n    enforce_eager=True,\n    # GLM-4-9B-Chat-1M 如果遇见 OOM 现象，建议开启下述参数\n    # enable_chunked_prefill=True,\n    # max_num_batched_tokens=8192\n)\nstop_token_ids = [151329, 151336, 151338]\nsampling_params = SamplingParams(temperature=0.95, max_tokens=1024, stop_token_ids=stop_token_ids)\n\ninputs = tokenizer.apply_chat_template(prompt, tokenize=False, add_generation_prompt=True)\noutputs = llm.generate(prompts=inputs, sampling_params=sampling_params)\n\nprint(outputs[0].outputs[0].text)\n```\n\n## 协议\n\nGLM-4 模型的权重的使用则需要遵循 [LICENSE](LICENSE)。\n\n## 引用\n\n如果你觉得我们的工作有帮助的话，请考虑引用下列论文。\n\n```\n@misc{glm2024chatglm,\n      title={ChatGLM: A Family of Large Language Models from GLM-130B to GLM-4 All Tools}, \n      author={Team GLM and Aohan Zeng and Bin Xu and Bowen Wang and Chenhui Zhang and Da Yin and Diego Rojas and Guanyu Feng and Hanlin Zhao and Hanyu Lai and Hao Yu and Hongning Wang and Jiadai Sun and Jiajie Zhang and Jiale Cheng and Jiayi Gui and Jie Tang and Jing Zhang and Juanzi Li and Lei Zhao and Lindong Wu and Lucen Zhong and Mingdao Liu and Minlie Huang and Peng Zhang and Qinkai Zheng and Rui Lu and Shuaiqi Duan and Shudan Zhang and Shulin Cao and Shuxun Yang and Weng Lam Tam and Wenyi Zhao and Xiao Liu and Xiao Xia and Xiaohan Zhang and Xiaotao Gu and Xin Lv and Xinghan Liu and Xinyi Liu and Xinyue Yang and Xixuan Song and Xunkai Zhang and Yifan An and Yifan Xu and Yilin Niu and Yuantao Yang and Yueyan Li and Yushi Bai and Yuxiao Dong and Zehan Qi and Zhaoyu Wang and Zhen Yang and Zhengxiao Du and Zhenyu Hou and Zihan Wang},\n      year={2024},\n      eprint={2406.12793},\n      archivePrefix={arXiv},\n      primaryClass={id='cs.CL' full_name='Computation and Language' is_active=True alt_name='cmp-lg' in_archive='cs' is_general=False description='Covers natural language processing. Roughly includes material in ACM Subject Class I.2.7. Note that work on artificial languages (programming languages, logics, formal systems) that does not explicitly address natural-language issues broadly construed (natural-language processing, computational linguistics, speech, text retrieval, etc.) is not appropriate for this area.'}\n}\n```\n\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [],
+  "RelatedPaper": [],
+  "Revision": "master",
+  "Stars": 262,
+  "StorageSize": 18802687417,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": [
+   "deploy",
+   "train",
+   "evaluation"
+  ],
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [
+   "glm",
+   "chatglm",
+   "thudm"
+  ],
+  "Tasks": [
+   {
+    "ChineseName": "自然语言推理",
+    "Description": "",
+    "DomainName": "nlp",
+    "Id": 30,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": false,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "nli",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "1fca2e84-b420-417a-a033-886108083362",
+ "Success": true
+}

@@ -1,0 +1,89 @@
+{
+ "case_id": "pc-0019",
+ "repo": "huashoupopi/rework",
+ "repo_url": "https://github.com/huashoupopi/rework",
+ "head_sha": "b18be2a4ba717884f51f8aeded701cbab8d142b5",
+ "source_file": "backend/down_embd.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 4,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   }
+  ],
+  "imports_sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "AI-ModelScope/bge-large-zh-v1.5",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 16,
+   "text": "model_path = snapshot_download(\"AI-ModelScope/bge-large-zh-v1.5\", local_dir=target_dir)",
+   "sha256": "bff01fbcc1dea6ed3c305756bf847e6301b89c94e98ae6279a10fce458803499"
+  }
+ ],
+ "call": {
+  "start": 16,
+  "end": 16,
+  "text": "    model_path = snapshot_download(\"AI-ModelScope/bge-large-zh-v1.5\", local_dir=target_dir)",
+  "sha256": "bff01fbcc1dea6ed3c305756bf847e6301b89c94e98ae6279a10fce458803499"
+ },
+ "revision": {
+  "revision": "",
+  "source": "unspecified"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 5,
+   "text": ""
+  },
+  {
+   "line": 6,
+   "text": "# 1. 设定目标目录 (直接下载到项目里的 models 文件夹)"
+  },
+  {
+   "line": 7,
+   "text": "# 这样下载完就在正确的位置，不用手动复制粘贴了"
+  },
+  {
+   "line": 8,
+   "text": "target_dir = os.path.join(os.getcwd(), \"models\", \"bge-large-zh-v1.5\")"
+  },
+  {
+   "line": 9,
+   "text": ""
+  },
+  {
+   "line": 10,
+   "text": "print(\"🚀 正在通过 ModelScope 高速下载 Embedding 模型...\")"
+  },
+  {
+   "line": 11,
+   "text": "print(f\"📂 目标路径: {target_dir}\")"
+  },
+  {
+   "line": 12,
+   "text": ""
+  },
+  {
+   "line": 13,
+   "text": "# 2. 开始下载"
+  },
+  {
+   "line": 14,
+   "text": "try:"
+  },
+  {
+   "line": 15,
+   "text": "# model_id 是魔搭社区对应的 ID"
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+{
+ "case_id": "neg-0004",
+ "repo": "datawhalechina/tiny-universe",
+ "repo_url": "https://github.com/datawhalechina/tiny-universe",
+ "head_sha": "a5ae08d56bbefb20b1cf56fa34ed5a3157cdd2c2",
+ "source_file": "content/download.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 1,
+    "text": "import torch",
+    "sha256": "cf1070d3a16f24b230d83777452aa96250d11504c641f4eb878cc10f347d1afa"
+   },
+   {
+    "line": 2,
+    "text": "from modelscope.msdatasets import MsDataset",
+    "sha256": "ad322cfec66e926c3441b778e75dd518f31f6089d39e50980eb96edc37a32174"
+   },
+   {
+    "line": 3,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   },
+   {
+    "line": 4,
+    "text": "import os",
+    "sha256": "de2abade832c8e350a1bdc98cfcdb1e202ac4749c5fc51a4a970d41736b6df5c"
+   }
+  ],
+  "kind": "commented_out"
+ },
+ "model_id": "Qwen/Qwen2.5-Omni-3B",
+ "call": {
+  "start": 7,
+  "end": 7,
+  "text": "# model_dir = MsDataset.load('Qwen/Qwen2.5-Omni-3B', cache_dir='/share/workspace/shared_models/02_S2S_Model/Qwen2.5-Omni-3B', subset_name='master')",
+  "sha256": "cda0570f62c99adc2ad05bf7d94d923625c1b1b6222b7b6e61fea424a0260c14"
+ },
+ "negative": {
+  "basis": "modelscope_call_commented_out",
+  "scope": "call_site",
+  "note": "唯一的 ModelScope 引用（MsDataset.load）被注释，运行时不生效"
+ }
+}

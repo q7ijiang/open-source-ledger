@@ -1,237 +1,231 @@
-# B 侧评测基准数据（`benchmark/`）
+# Gate 1 基准数据（B 组：候选池 / 标注 / 指标）
 
-> 归属：**B（算法与评测）**
-> 覆盖任务：B-01（20 候选项目 + 12 模型案例）、B-02（标注规范）、B-04 雏形、B-05 指标草案
-> 生成时间：2026-11-13 ｜ Gate 1 截止：2026-11-16
-> 配套文档：[`annotation_spec.md`](annotation_spec.md)
-> **本版不含任何准确率结论**：数据尚未跑过全量评测，准确率一律待 Gate 2 之后按同一份标签重算。
+本目录是 Gate 1（11/16 口径冻结）要交的东西：**20 个正样本、5 个负样本、20 条排除记录、13 个模型案例**，以及每条的**调用级证据包**和**平台原始 JSON 快照**。
 
----
+需要说清楚两件事：
 
-## 0. 这是什么
+1. 这批数据的用途是"口径 + 可复现证据"，**不是**准确率结论。样本量 20，且均为人工挑选的可用案例，任何准确率数字都不具备统计意义。
+2. 正样本的判定单位已经从"文件"下沉到"调用段"。文件里出现模型 ID、或文件顶部有 `import modelscope`，都不足以证明这个模型是通过 ModelScope 加载的。
 
-把"工具能跑"升级为"效果可验证"所需的标准答案（gold label）底座：
+## 1. 交付物
 
-- `candidates.csv` —— **项目级**候选池（20 个真实开源项目，固定 commit、具体文件、调用段行号）
-- `rejected_candidates.csv` —— **被排除**的候选及其排除证据（25 条，含 A 点名的 13 条）
-- `model_cases.json` —— **模型级**事实与期望判定（12 个案例，覆盖 4 类许可证事实）
-- `annotation_spec.md` —— 标注口径：标签定义、判别顺序、字段格式
-- `validate_benchmark.py` —— 结构、枚举、哈希与一致性自检
-
-所有标签只依据 **ModelScope 官方 API 的 A 级事实 + 规则库**推导，**不参考工具运行输出**，避免标签泄漏。
-
----
-
-## 1. 文件清单
-
-| 文件 | 用途 | 规模 |
+| 文件 | 内容 | 规模 |
 |---|---|---|
-| `candidates.csv` | 正样本：项目 × 使用关系 | 20 行 / 20 项目 / 16 个模型家族 |
-| `rejected_candidates.csv` | 负样本：被排除的候选与原因 | 25 行 |
-| `model_cases.json` | 模型案例与期望判定 | 12 个案例 |
-| `annotation_spec.md` | 标注规范 v0.2 | — |
-| `validate_benchmark.py` | 自检脚本（CI 可跑） | — |
+| `candidates.csv` | 正样本：源码中确有用 ModelScope 取用模型的调用段 | 20 行 × 50 列 |
+| `negative_cases.csv` | 负样本：**可进指标分母**的"看起来像但其实不是"的调用点 | 5 行 × 21 列 |
+| `excluded_candidates.csv` | 审计记录：证据不足、无法判定平台归属的候选，**不进分母** | 20 行 × 14 列 |
+| `model_cases.json` | 模型案例：平台许可证事实 + 两层判定 | 13 条 |
+| `evidence/*.json` | 每个正/负样本一条证据包（import / 绑定 / 调用 / 分支 / 版本） | 25 个 |
+| `snapshots/*.json` + `snapshots/index.json` | ModelScope 模型接口原始响应与哈希索引 | 27 个 |
+| `annotation_spec.md` | 标注规范 v0.3 | — |
+| `validate_benchmark.py` | 结构、枚举、哈希与一致性自检（CI 可跑） | — |
 
----
+## 2. 判定方法：调用段级证据
 
-## 2. 平台证据：怎么证明"项目真的用了 ModelScope"
+对候选仓库的指定文件，按下面的顺序抽证据（`bench_evidence.py`，工作区脚本，不随仓库发布）：
 
-这是本版最重要的改动。**不能用"文件里出现模型 ID + 文件里有 `import modelscope`"来判定**，必须看模型所在的那条**调用语句本身**由谁发起。判定算法（`bench_strict.py`，一次性采集工具，未入库）：
+1. **定位模型 ID 的字面行**；
+2. 找到包含 `snapshot_download|pipeline|from_pretrained|AutoModel*` 的那一行，**按括号配平**向后取完整调用段（最多 15 行），得到 `(start, end)`；
+3. 记录**变量绑定**：`NAME = "<model_id>"` 或 `def f(self, NAME="<model_id>")`；
+4. 记录**平台 import 的行号**（必须早于调用行）；
+5. 记录**条件分支**：该调用是否处在 `try/except`、`if not is_connect_hf()` 之类的分支里。
 
-1. 定位含 `snapshot_download` / `pipeline(` / `from_pretrained` / `AutoModel*` / `AutoTokenizer` 且非注释的行；
-2. 从该行起按括号配平向后累加，得到完整调用段（最多 15 行，跳过字符串内的括号）；
-3. 解析**变量绑定**：`NAME = "<model_id>"`、`def f(self, NAME="<model_id>")` 记入变量表，再在调用段内用 `\bNAME\b` 匹配——否则会漏掉 `snapshot_download(model_id)` 这类间接引用；
-4. 按下方优先级给出 `platform_evidence`。
+`platform_evidence` 的判定优先级：
 
-| `platform_evidence` | 含义 | 能否进正样本 |
-|---|---|---|
-| `modelscope_download` | `snapshot_download(...)` 实际执行，且文件内有 ModelScope 来源 | ✅ 正样本 |
-| `modelscope_api` | `modelscope.pipelines.pipeline(...)` 实际执行 | ✅ 正样本 |
-| `modelscope_source_selected` | `from_pretrained` 的类来自 `from modelscope import ...`（显式选择 MS 源） | ✅ 正样本 |
-| `modelscope_import` | 只有 import，没有可归属的调用 | ❌ 不足 |
-| `modelscope_namespace_only` | 仅出现 `AI-ModelScope/...` 之类命名空间或本地路径 | ❌ 负样本 |
-| `huggingface_import` | 调用方是 `transformers` / `diffusers` / `huggingface_hub` | ❌ 负样本 |
-| `non_modelscope_remote_api` | 走第三方远程 API（如 SiliconFlow） | ❌ 负样本 |
-| `local_path_only` | 只从本地目录加载，路径里带 MS 字样 | ❌ 负样本 |
-| `mapping_only` | 只在映射表 / 常量表 / 模型注册表里声明 | ❌ 负样本 |
-| `ambiguous` / `commented_out` | 证据不足 / 调用被注释 | ❌ 负样本 |
-
-`platform_confidence`：`high` = 调用段内直接出现模型 ID 或已解析的变量绑定；`low` = 依赖跨文件/跨函数推断。
-
-> 本轮据此把 A 点名的 13 条全部降级并写入 `rejected_candidates.csv`，另外拒绝了 12 条审计不通过的候选。
-
----
-
-## 3. `candidates.csv` 字段
-
-共 37 列，按用途分五组。
-
-**来源定位**
-
-| 列 | 含义 |
+| 证据 | 含义 |
 |---|---|
-| `case_id` | `pc-0001` … |
-| `repo` / `repo_url` | `owner/name` 与仓库地址 |
-| `head_sha` | 固定提交（采集时刻默认分支 HEAD，40 位） |
-| `source_file` / `source_kind` | 命中文件；`code` / `script` / `config` / `docs` |
-| `line_start` / `line_end` | 人类可核对的行号区间：模型 ID 字面行与调用段的并集 |
-| `matched_text` / `matched_text_sha256` | 调用段原文（空白归一后）及其 SHA-256 |
+| `modelscope_download` | `snapshot_download(...)` 且本文件有 modelscope import |
+| `modelscope_api` | `pipeline(..., model='<damo/iic 模型>')` 且本文件有 modelscope import |
+| `modelscope_source_selected` | `AutoModel*/AutoTokenizer.from_pretrained` 的类来自 `from modelscope import ...` |
+| `huggingface_import` | 调用方是 `huggingface_hub` / `transformers` / `diffusers` |
+| `commented_out` | 唯一相关调用被注释 |
+| `local_path_only` / `mapping_only` / `namespace_only` / `ambiguous` | 不构成使用证据 |
 
-**平台证据**：`platform_evidence`、`platform_confidence`（取值见 §2）
+只有前三种能进正样本。`platform_role` 只有两个值：`primary`（直接使用）和 `conditional_fallback`（有条件的回退路径，本批仅 pc-0001）。
 
-**模型事实**：`model_id`、`model_revision`、`model_source_url`、`model_observed_at`、`raw_response_sha256`
+### pc-0001 为什么是 conditional_fallback
 
-**许可证四段**（A 要求的拆分，见 `annotation_spec.md` §2.1）
+`jianchang512/ChatTTS-ui` 的 `app.py:52-65`：
 
-| 列 | 含义 |
-|---|---|
-| `license_raw` / `license_name_raw` | `Data.License` / `Data.LicenseName` 原值，不改写 |
-| `license_source_field` | 实际生效字段（`Data.LicenseName` 优先，为空则 `Data.License`） |
-| `license_observed_at` | 抓取日期 |
-| `license_known` / `license_spdx_like` / `license_category` | 规则库是否认识 / 是否 SPDX 式 / 6 类之一 |
-| `canonical_license_id` / `risk_level` | 归一 ID 与风险 1–5（仅在 `known=true` 时非空） |
-| `pipeline_license_state` | 适配器视角：`standard` / `nonstandard` / `missing` |
-| `semantic_license_state` | 语义视角：`standard_spdx` / `recognized_non_spdx` / `nonstandard` / `missing` / `unresolved` |
-| `license_class` | `spdx` / `recognized_non_spdx` / `nonstandard` / `missing` / `unresolved` |
-| `needs_human_review` | 叠加状态 |
-
-**标注与分组**：`use_type`、`expected_decision`、`candidate_status`、`candidate_role`、`project_group`、`family_group`、`usage_evidence`、`annotator`、`note`
-
-`use_type` 枚举对齐 `ai_layer/schemas.py::PROJECT_USE_TYPES`。**`weight_distribution` 只用于第三方发布 / 上传 / 转售 / 对外提供权重**；`snapshot_download` 属于"获取模型"，不是分发，本批不使用该值。
-
----
-
-## 4. `rejected_candidates.csv` 字段
-
-`reject_id`、`repo`、`repo_url`、`head_sha`、`model_id`、`source_file`、`line_no`、`platform_evidence`、`evidence_text`、`reject_reason`、`note`、`reviewed_at`、`reviewer`。
-
-`reject_reason` 取值：`huggingface_only`(5)、`ambiguous_platform`(5)、`mapping_only`(4)、`local_path_only`(2)、`commented_out`(3)、`non_modelscope_remote_api`(1)、`namespace_only`(5)。
-其中 `commented_out` / `namespace_only` 是在 A 给的四个原因之外补充的，用于描述"调用被注释""只有命名空间"两种情况。
-
-**不删除原始候选的理由**：这些行本身就是"模型 ID 在 ModelScope 上存在，但项目并未从 ModelScope 使用它"的天然负样本，可直接用来测工具会不会误报。
-
----
-
-## 5. `model_cases.json` 字段
-
-```json
-{
-  "case_id": "mc-0007",
-  "model_id": "LLM-Research/gemma-3-4b-it",
-  "source_url": "https://www.modelscope.cn/models/LLM-Research/gemma-3-4b-it",
-  "observed_at": "2026-11-13",
-  "model_revision": "master",
-  "raw_response_sha256": "5b39bf5a…",
-  "source_field": "Data.License",
-  "raw_value": "gemma",
-  "raw_license": "gemma",
-  "raw_license_name": "",
-  "known": true,
-  "spdx_like": false,
-  "category": "ai_restricted",
-  "canonical_license_id": "Gemma-Terms-of-Use",
-  "risk_level": 4,
-  "license_class": "recognized_non_spdx",
-  "pipeline_license_state": "standard",
-  "semantic_license_state": "recognized_non_spdx",
-  "expected_decision": "RISK_CONFIRMED",
-  "needs_human_review": true,
-  "note": "Gemma Terms of Use：已识别的受限 AI 使用条款，未归入 SPDX 标准许可证"
-}
+```python
+try:
+    # 优先使用本地模型，不存在再联网检测下载
+    huggingface_hub.snapshot_download(repo_id="2Noise/ChatTTS", local_dir=CHATTTS_DIR,
+                                      etag_timeout=5, local_files_only=True)
+except LocalEntryNotFoundError:
+    if not is_connect_hf():
+        print("当前从阿里魔塔下载模型...")
+        os.environ['HF_ENDPOINT'] = "https://hf-mirror.com"
+        from modelscope import snapshot_download
+        snapshot_download(model_id='pzc163/chatTTS', local_dir=CHATTTS_DIR)
 ```
 
-- `raw_response_sha256` 是整份 API 响应体的 SHA-256，可据此确认"当时抓到的到底是什么"，而不只是断言字段值。
-- Gemma 的表述固定为"**已识别的受限 AI 使用条款**"（`known=true`、`spdx_like=false`、`category=ai_restricted`、`license_class=recognized_non_spdx`），**不得写成"SPDX 标准许可证"**。
+真实逻辑是 **HF 缓存优先 → 本地缓存缺失（`LocalEntryNotFoundError`）且 HF 不可达（`is_connect_hf()` 为假）才回退 ModelScope**，不是"国内走魔搭、海外走 HF"。所以它保留为正样本，但标 `conditional_fallback`，证据包里带完整的 `try/except` 段落。
 
----
+## 3. 正样本（20 条）
 
-## 6. 怎么采的（可复现）
+| case | repo | model | platform | role | revision | license | state | decision | group |
+|---|---|---|---|---|---|---|---|---|---|
+| pc-0001 | jianchang512/ChatTTS-ui | pzc163/chatTTS | MS download | conditional_fallback | — | Apache-2.0 | standard_spdx | SAFE | dev |
+| pc-0002 | LYiHub/mad-professor-public | opendatalab/PDF-Extract-Kit-1.0 | MS download | primary | — | — | missing | UNDETERMINED | dev |
+| pc-0003 | Henry-23/VideoChat | ZhipuAI/glm-4-voice-tokenizer | MS download | primary | — | — | missing | UNDETERMINED | dev |
+| pc-0004 | duma-repo/ai_code_reader | ZhipuAI/chatglm3-6b | MS download | primary | v1.0.0 | — | missing | UNDETERMINED | dev |
+| pc-0005 | X-D-Lab/MindChat | X-D-Lab/MindChat-Qwen2-4B | MS download | primary | — | GPL-3.0 | standard_spdx | RISK_CONFIRMED | validation |
+| pc-0006 | opendatalab/OmniDocBench | topdktu/unirec-0.1b | MS download | primary | — | Apache-2.0 | standard_spdx | SAFE | dev |
+| pc-0007 | Kedreamix/Linly-Dubbing | AI-ModelScope/XTTS-v2 | MS download | primary | — | — | unresolved | UNDETERMINED | validation |
+| pc-0008 | xxw1995/chatglm3-finetune | ZhipuAI/chatglm3-6b | MS download | primary | v1.0.0 | — | missing | UNDETERMINED | dev |
+| pc-0009 | ZJU-OmniAI/Data-Copilot | Shanghai_AI_Laboratory/internlm-chat-7b | MS download | primary | v1.0.2 | — | missing | UNDETERMINED | validation |
+| pc-0010 | ali-vilab/VGen | damo/i2vgen-xl | MS api | primary | v1.1.3 | CC-BY-NC-ND | recognized_family_unresolved | RISK_POTENTIAL | validation |
+| pc-0011 | tyxsspa/AnyText | damo/cv_anytext_text_generation_editing | MS api | primary | v1.1.3 | Apache-2.0 | standard_spdx | SAFE | validation |
+| pc-0012 | aigc-apps/sd-webui-EasyPhoto | bubbliiiing/cv_retinafce_recognition | MS api | primary | v1.0.3 | Apache-2.0 | standard_spdx | SAFE | sealed_test |
+| pc-0013 | yeyupiaoling/Whisper-Finetune | iic/punc_ct-transformer_cn-en-common-vocab471067-large | MS api | primary | v2.0.4 | Apache-2.0 | standard_spdx | SAFE | sealed_test |
+| pc-0014 | TencentQQGYLab/ELLA | damo/mplug_visual-question-answering_coco_large_en | MS api | primary | — | Apache-2.0 | standard_spdx | SAFE | sealed_test |
+| pc-0015 | XGenerationLab/xiyan_mcp_server | XGenerationLab/XiYanSQL-QwenCoder-3B-2502 | MS source_selected | primary | — | Apache-2.0 | standard_spdx | SAFE | sealed_test |
+| pc-0016 | datawhalechina/easy-vecdb | AI-ModelScope/bge-large-zh-v1.5 | MS source_selected | primary | — | MIT | standard_spdx | SAFE | dev |
+| pc-0017 | gzhuuser/fortune_teller | AI-ModelScope/bge-large-zh-v1.5 | MS download | primary | master | MIT | standard_spdx | SAFE | dev |
+| pc-0018 | shehuiwojiege/open-llms-next-web | AI-ModelScope/bge-large-zh-v1.5 | MS download | primary | — | MIT | standard_spdx | SAFE | dev |
+| pc-0019 | huashoupopi/rework | AI-ModelScope/bge-large-zh-v1.5 | MS download | primary | — | MIT | standard_spdx | SAFE | dev |
+| pc-0020 | Jiturine/web_crawler | iic/nlp_structbert_sentiment-classification_chinese-base | MS api | primary | — | Apache-2.0 | standard_spdx | SAFE | sealed_test |
 
-1. **模型事实**：`GET https://www.modelscope.cn/api/v1/models/<ns>/<name>`，取 `Data.License` / `Data.LicenseName` / `Data.Revision`，同时保存响应体哈希（2026-11-13 实抓，匿名可访问）。
-2. **候选项目**：GitHub 代码检索 5 组查询（`snapshot_download`、`pipeline`、`AutoModel` 等 + `modelscope`），得到 145 个文件 / 89 个 model+repo 对；对原 45 条候选逐条重抓原文复核。
-3. **调用段审计**：按 §2 的算法判定平台证据，`modelscope/*` 官方仓库不作为依赖项目。
-4. **人工复核**：逐条读上下文判定 `use_type`；剔除 vendored 副本、纯 README 提及、纯注释引用。
+分布：
 
-> 采集脚本为任务期一次性工具，未入库；数据本身已在库内，日常评测与 CI **不联网**。
+- 平台证据：`modelscope_download` 12 / `modelscope_api` 6 / `modelscope_source_selected` 2
+- 使用方式：`local_inference` 15 / `unknown` 3 / `evaluation_only` 2
+- 版本：`call_literal` 8 / `unspecified` 11 / `call_variable_resolved_none` 1
+- 许可证（gold）：`standard_spdx` 13 / `missing` 5 / `unresolved` 1 / `recognized_family_unresolved` 1
+- 决策：`SAFE` 12 / `UNDETERMINED` 6 / `RISK_CONFIRMED` 1 / `RISK_POTENTIAL` 1
+- 分组：dev 10 / validation 5 / sealed_test 5
 
----
+## 4. 负样本（5 条，可进指标分母）
 
-## 7. 当前统计
+| case | repo | model | 位置 | basis | scope |
+|---|---|---|---|---|---|
+| neg-0001 | liuliu/swift-diffusion | Qwen/Qwen-Image-2.1 | `examples/qwen_image21/setup.py:31` | other_platform_explicit | repo_platform |
+| neg-0002 | john-rocky/coreai-model-zoo | Qwen/Qwen-Image-2.1 | `conversion/qwenimage21/perturb_ref.py:18` | other_platform_explicit | repo_platform |
+| neg-0003 | muzishen/IMAGDressing | stabilityai/sd-vae-ft-mse | `app.py:52` | other_platform_explicit | repo_platform |
+| neg-0004 | datawhalechina/tiny-universe | Qwen/Qwen2.5-Omni-3B | `content/download.py:7` | modelscope_call_commented_out | call_site |
+| neg-0005 | langjinyi/Ada-AI-Assistant | AI-ModelScope/bge-large-zh-v1.5 | `models/downloader.py:22` | modelscope_call_commented_out | call_site |
 
-**项目池（20）**
+只有这 5 条进指标分母，原因是它们都满足"**能指出一行代码，且这一行确实不用 ModelScope**"：
 
-| 维度 | 分布 |
-|---|---|
-| 平台证据 | `modelscope_download` 12、`modelscope_api` 6、`modelscope_source_selected` 2 |
-| 使用方式 | `local_inference` 14、`evaluation_only` 2、`fine_tuning` 2、`unknown` 2 |
-| 流水线许可证状态 | `standard` 13、`missing` 6、`nonstandard` 1 |
-| 语义许可证状态 | `standard_spdx` 13、`missing` 5、`unresolved` 1、`nonstandard` 1 |
-| 期望判定 | `SAFE` 12、`UNDETERMINED` 6、`RISK_CONFIRMED` 1、`RISK_POTENTIAL` 1 |
-| 分组 | dev 10、validation 5、sealed test 5 |
+- neg-0001/0002 用 `huggingface_hub.snapshot_download` / 自封装的 `hf_snapshot()` 从 HF 取；
+- neg-0003 用 diffusers 的 `AutoencoderKL.from_pretrained` 直接吃 HF 模型 ID；
+- neg-0004 唯一的 ModelScope 引用被注释；
+- neg-0005 同文件里 bge 的 `snapshot_download` 被注释，实际运行的是下一行下载 chatTTS 的调用。
 
-**模型案例（12）**
+`negative_scope` 区分两种负样本：`repo_platform`（整个仓库用别的平台）和 `call_site`（同一仓库里有 ModelScope，但**这个模型**的调用点已失效）。后者才是最容易骗过"文件级"判定的情况。
 
-| 许可证事实 | 数量 | 期望判定 |
+## 5. 排除记录（20 条，只用于审计，不进分母）
+
+| reason | 数量 | 含义 |
 |---|---|---|
-| `standard_spdx` | 8 | `SAFE` 8（risk 1–2） |
-| `recognized_non_spdx` | 1 | `RISK_CONFIRMED` 1（Gemma，risk 4） |
-| `nonstandard` | 1 | `RISK_POTENTIAL` 1（Llama 3.1） |
-| `missing` | 1 | `UNDETERMINED` 1（glm，`License=other`） |
-| `unresolved` | 1 | `UNDETERMINED` 1（模型 API 404） |
+| `ambiguous` | 5 | 模型 ID 出现，但无法判定由哪个平台发起加载 |
+| `mapping_only` | 4 | 只出现在下载源/模型映射表里，不是调用 |
+| `namespace_only` | 5 | 只有 ModelScope 命名空间下的模型名，未见调用 |
+| `local_path_only` | 3 | 只有本地路径（路径名里恰好含 `AI-ModelScope`） |
+| `commented_out` | 2 | 相关调用被注释，且同文件另有其它平台逻辑，归属无法排除 |
+| `non_modelscope_remote_api` | 1 | 只在 config 里出现 SiliconFlow 模型名，未定位调用点 |
 
-> 本批**未覆盖 `conflict`**（字段 vs LICENSE 文件、跨 revision 冲突），B-03 扩池时专项补充。
+其中 `exc-0015`（`macaqueedmai-wq/Hear-You-Are---Software`）在缓存里定位不到具体文件行，`location_status=unlocated`，行号留空——**不留 0**，避免和"第 0 行"混淆。
 
----
+## 6. 模型案例（13 条）
 
-## 8. 分组（B-04 雏形）
+在 12 条基础上补了 **mc-0013 `Qwen/Qwen-Image-2.1`**：平台 `Data.License=other`、`Data.LicenseName=qwen-research`，用于覆盖"平台给了自定义许可名"的情况。
 
-约束：同一项目、其 fork、**同一模型家族**必须同组；t0/t1 同组。家族不可再分，按家族整组填充：
+每条案例都有：`source_url`、`observed_at`、`api_revision`、`snapshot_path` + `snapshot_sha256`（原始 JSON 落盘）、`raw_license` / `raw_license_name`、`semantic_*`（gold）、`pipeline_*`（当前适配器会输出什么）。
 
-| 组 | 行数 | 模型家族 |
+## 7. 许可证判定：三层，互不覆盖
+
+| 层 | 字段 | 谁决定 |
 |---|---|---|
-| dev | 10 | `bge-large-zh-v1.5`(4)、`chatglm3-6b`(2)、`chatTTS`、`PDF-Extract-Kit-1.0`、`glm-4-voice-tokenizer`、`unirec-0.1b` |
-| validation | 5 | `MindChat-Qwen2-4B`、`XTTS-v2`、`internlm-chat-7b`、`i2vgen-xl`、`cv_anytext` |
-| sealed test | 5 | `cv_retinafce_recognition`、`punc_ct-transformer`、`mplug-vqa`、`XiYanSQL-QwenCoder-3B`、`nlp_structbert` |
+| 原始层 | `license_raw`、`license_name_raw` | ModelScope 接口原样返回 |
+| 管道层 | `pipeline_known/spdx_like/category/canonical_license_id/risk_level/license_state/decision` | 当前 `licenses.json` + 适配器 |
+| 语义层（gold） | `semantic_license_family/version/state/class/risk_level` | 人工按下面的表判定 |
 
-`bge` 的 4 个项目全部在 dev、`chatglm3` 的 2 个项目全部在 dev，满足"家族不跨组"。B-03 扩到 ~40 个项目时，按 6:2:2 补足到 8–10 个家族。
+**gold 只看平台原始字符串，不看规则库是否收录。** 判定表：
 
----
+| 平台原值 | family | state | class | risk |
+|---|---|---|---|---|
+| `apache-2.0` / `Apache License 2.0` | Apache-2.0 | standard_spdx | permissive | 2 |
+| `mit` | MIT | standard_spdx | permissive | 1 |
+| `GPL-3.0` | GPL-3.0 | standard_spdx | strong_copyleft | 4 |
+| `CC-BY-NC-ND`（无版本） | CC-BY-NC-ND | **recognized_family_unresolved** | non_commercial | 4 |
+| `gemma` | Gemma-Terms-of-Use | recognized_non_spdx | ai_restricted | 4 |
+| `llama3.1` | Llama-3.1-Community-License | recognized_non_spdx | ai_restricted | 4 |
+| `other` + `qwen-research` | Qwen-Research-License | recognized_non_spdx | ai_restricted | 4 |
+| `other`（无 name） | — | unresolved | unknown | — |
+| 字段为空 | — | missing | unknown | — |
 
-## 9. 指标定义草案（B-05）
+三条口径（对应 A 的意见）：
 
-| 指标 | 公式 | 分母口径 |
+1. **`CC-BY-NC-ND` 不是"非标准许可"**：它是已识别的许可族，只是平台没给版本号，所以新增 `recognized_family_unresolved` 状态，决策为 `RISK_POTENTIAL`，并单独保留 `semantic_license_version=""`。
+2. **`other` 不能直接当 missing**：`other` 是"平台把许可放在别的字段里"，`glm-4-9b-chat` / `XTTS-v2` / `internlm2_5-7b-chat` 记 `unresolved`（需人工看上游原文），`internlm-chat-7b` 才是 `missing`（平台字段确实为空）。管道层仍按现状输出 `missing`，两者分开记录。
+3. **Gemma 与 Llama 3.1 同口径**：都是"已识别的受限 AI 条款"，`recognized_non_spdx / ai_restricted / risk 4`，都不当 SPDX 标准许可。
+
+`expected_decision` 由语义层唯一推出：`missing/unresolved` → `UNDETERMINED`；`recognized_family_unresolved/nonstandard` → `RISK_POTENTIAL`；risk ≤ 2 → `SAFE`；其余 → `RISK_CONFIRMED`。
+
+## 8. 版本（revision）口径
+
+`requested_revision` **只来自项目调用本身**，并配 `revision_source`：
+
+| revision_source | 含义 | 本批 |
 |---|---|---|
-| 平台识别准确率 | 平台证据判定正确的项目 / 正负样本总数 | 正样本 + `rejected_candidates.csv` |
-| 模型识别率 | 识别正确的案例数 / 可判定案例数 | 排除 `unresolved` |
-| 上游闭包解析率 | 成功解析的上游节点 / 应解析节点 | 按模型案例 |
-| 循环检出率 | 正确标记 `scc_cycle` 的案例 / 含环案例 | 需构造样本 |
-| 条款分类准确率 | 分类正确的 claim / 有标注的 claim | 仅 C 级 AI 结论 |
-| 引文命中率 | 逐字命中原文的引文数 / 引文总数 | AI 输出 |
-| Delta 准确率 | 事件类型与方向均正确的 / 事件总数 | dev 集 |
-| 拒答率 | 输出 `UNDETERMINED` 且人工认定"本可判定"的 / 可判定总数 | 与"证据不足"分开统计 |
+| `call_literal` | 调用参数里直接写死的版本，如 `revision='v1.0.2'` | 8 |
+| `call_variable_resolved_none` | 传的是变量，已回溯到函数默认值 `None`（即不锁版本） | 1（pc-0018） |
+| `unspecified` | 调用没有版本参数，项目不锁版本 | 11 |
 
----
+`api_revision` 是**平台接口返回的默认分支**（ModelScope 全部是 `master`），不代表项目请求的版本，两者不能混用。上一版把 `master` 填进 `requested_revision` 是错的，本批已全部改掉；唯一保留 `master` 的是 pc-0017，因为它的源码里确实写了 `revision="master"`。
 
-## 10. 真实性边界
+pc-0018 的回溯：`shehuiwojiege/open-llms-next-web` 的 `utils.py:19` 是 `def auto_download(model_type: str, revision: str = None, ...)`，`utils.py:46` 调用 `snapshot_download(model_id, revision=revision, cache_dir=cache_dir)`，默认 `None` → 不锁版本。
 
-| 内容 | 是否真实 |
-|---|---|
-| 仓库、commit、来源文件、行号、调用段原文 | ✅ 真实，可 `git checkout <head_sha>` 逐字复现 |
-| 模型 ID 在 ModelScope 上可解析 | ✅ 真实，2026-11-13 实测 |
-| 模型许可证字段原值与响应哈希 | ✅ 真实，官方 API 原样记录 |
-| `platform_evidence` | ✅ 由调用段审计规则机械判定，规则见 §2 |
-| `use_type` | ⚠️ 人工判读，依据 `usage_evidence`；`unknown` = 该文件内无调用证据 |
-| `expected_decision` | ⚠️ 由 `annotation_spec.md` §4 规则表**推导**，不是工具真实输出 |
-| 准确率 / 覆盖率结论 | ❌ 本批不下任何结论，待 Gate 2 用同一份标签重算 |
-| AI 语义结论（条款级） | ❌ 本批未标注，属 C 级，需 AI 运行后另标 |
+## 9. 使用方式（use_type）
 
----
+只按**这一处调用**能证明的行为来标，不外推：
 
-## 11. 已知局限
+- `download_only` + 本地加载证据不足 → `unknown`（pc-0003 / pc-0007 / pc-0008）
+- `download_only` 但同仓库有加载逻辑 → `local_inference`
+- `snapshot_download` 本身**不是** `weight_distribution`；`weight_distribution` 只指"对外分发/上传/转售权重"
+- pc-0013 是标点模型的本地推理，**不是** fine_tuning；fine_tuning 必须要有训练调用证据（本批没有，故该类别为 0）
 
-1. **模型家族偏斜**：`bge` 系占 4/20，因该模型在 GitHub 上被大量 RAG 项目引用；扩池时优先补其他家族。
-2. **星标分布偏斜**：从 0 星小仓库到上万星项目都有；小仓库的价值在于调用方式单一、证据干净。
-3. **`use_type` 单文件判读**：同一项目其他文件可能有不同用法，当前每项目只标一处，属可接受的简化。
-4. **未覆盖 `conflict`**：需要字段与 LICENSE 文件不一致的真实样本，B-03 扩池时专项补充。
-5. **平台证据依赖 GitHub 默认分支**：仓库改写历史后行号可能漂移；`head_sha` + `matched_text_sha256` 用于校验漂移。
-6. **许可证事实是 2026-11-13 快照**：平台随时可能变更，重跑须重新抓取并更新 `observed_at` / `raw_response_sha256`。
+## 10. 分组
+
+同一项目、同一 fork、同一模型家族必须同组；t0/t1 必须同组。
+
+- dev 10：bge 家族 4 条 + ChatTTS / PDF-Extract-Kit / glm-voice / chatglm3 两条 / unirec
+- validation 5：MindChat / XTTS-v2 / internlm / i2vgen-xl / anytext
+- sealed_test 5：retinaface / punc-ct / mplug-vqa / XiYanSQL / structbert
+
+## 11. 自检
+
+```bash
+python benchmark/validate_benchmark.py
+# OK: 20 个正样本、5 个负样本、20 条排除记录、13 个模型案例，共 58 条记录全部通过
+```
+
+`validate_benchmark.py` 检查的项目：
+
+1. 列与枚举完整（50 列全在）；
+2. 证据包四段齐全：platform import、模型 ID 绑定（或字面行）、调用表达式、（条件回退时）try/except 分支，且各自哈希可复算；
+3. `requested_revision` 与调用证据一致（`call_literal` 必须能在证据里找到该字面值；除 pc-0017 外不允许 `master`）；
+4. 快照落盘且 `snapshot_sha256` 与文件一致，`license_raw` / `license_name_raw` 与快照原文一致；
+5. 同一模型的多条记录共享同一份快照事实（`snapshot_sha256`、许可原值、语义状态）；
+6. gold 由 `LICENSE_GOLD` 表推出（不看规则库收录），`expected_decision` 唯一推出，风险等级与许可类型匹配；
+7. 正样本必须是 `modelscope_*` 三种证据之一，负样本不能是，排除记录与两者互斥；
+8. 负样本行号 ≥ 1，正负样本调用点区间不重叠；
+9. 同一模型家族不跨组；
+10. Gemma 与 Llama 3.1 语义口径一致（管道层允许不同，见 §12）。
+
+另外做过**变异测试**（`_mut_test.py`，10 个用例）：基线通过；分别改坏 platform_evidence、revision、快照哈希、负样本行号、Gemma 分类、同模型一致性、条件回退分支、正负调用点重叠、Qwen-Image-2.1 的 LicenseName，校验器全部报错并指出具体行。
+
+## 12. 已知缺口（不藏着）
+
+- **管道层还跟不上 gold**：Llama 3.1 的 `llama3.1` 在 `licenses.json` 里没有规则，管道输出 `nonstandard`，而 gold 是 `recognized_non_spdx / ai_restricted`；Gemma 在规则库里，管道输出 `standard / ai_restricted`。两边对"是不是 SPDX"的判断不一致，这是要报给 A 的 pipeline 缺口，不是 gold 的问题。
+- **`CC-BY-NC-ND` 没有版本号**，只能记到许可族，不能记成 `CC-BY-NC-ND-4.0`。
+- **`other` 的三个模型仍需人工看上游原文**（`needs_human_review=true`）。
+- **负样本只有 5 条**：其余 20 条候选根本无法定位到具体调用行，硬凑会把"证据不足"混进"负样本"，所以进 `excluded_candidates.csv`。
+- **排除记录里有 1 条未定位**（exc-0015），保留 `unlocated` 状态而不是编一个行号。
+- **样本量**：20 正 / 5 负，不够做任何准确率结论；指标要等 B-03 扩池到 40 个项目后再算。
+
+## 13. 下一步
+
+按 A 的要求，**没有先扩到 40 条**。这份材料交上去确认口径后，再做 B-03（扩池）与 B-04（dev/validation/sealed 重新切分）。扩池时会复用 `bench_evidence.py` + `bench_build_v2.py` 的流水线，新增的候选必须先过"调用段级"判定才进正样本。

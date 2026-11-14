@@ -1,0 +1,334 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "ChatGLMModel"
+  ],
+  "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": [
+    "ChatGLMModel"
+   ],
+   "backend_info": {
+    "deploy_task": [
+     "text",
+     "emb"
+    ],
+    "lmdeploy": {
+     "text": "0.9.1"
+    },
+    "lmdeploy_turbomind": {
+     "text": "0.9.1"
+    },
+    "ollama": null,
+    "sglang": {
+     "text": "0.5.2"
+    },
+    "vllm": {
+     "emb": "0.9.2",
+     "text": "0.9.2"
+    }
+   },
+   "model_id": "ZhipuAI/chatglm3-6b"
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "lambdax",
+  "CreatedTime": 1698337442,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "ChatGLM 是智谱AI和清华大学 KEG 实验室联合发布的对话预训练模型。ChatGLM3-6B 是 ChatGLM 系列最新一代的开源模型，在保留了前两代模型对话流畅、部署门槛低等众多优秀特性的基础上，ChatGLM3-6B 引入了如下特性：更强大的基础模型： ChatGLM3-6B 的基础模型 ChatGLM3-6B-Base 采用了更多样的训练数据、更充分的训练步数和更合理的训练策略。在语义、数学、推理、代码、知识等不同角度的数据集上测评显示，ChatGLM3-6B-Base 具有在 10B 以下的预训练模型中最强的性能。更完整的功能支持： ChatGLM3-6B 采用了全新设计的 Prompt 格式，除正常的多轮对话外。同时原生支持工具调用（Function Call）、代码执行（Code Interpreter）和 Agent 任务等复杂场景。更全面的开源序列： 除了对话模型 ChatGLM3-6B 外，还开源了基础模型 ChatGLM-6B-Base、长文本对话模型 ChatGLM3-6B-32K。以上所有权重对学术研究完全开放，在填写问卷进行登记后亦允许免费商业使用。",
+  "Domain": [],
+  "Downloads": 1593301,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 229032,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [
+   "zh",
+   "en"
+  ],
+  "LastUpdatedTime": 1768877630,
+  "Libraries": [
+   "transformer",
+   "safetensors",
+   "pytorch"
+  ],
+  "License": "",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "{% for message in messages %}{% if loop.first %}[gMASK]sop<|{{ message['role'] }}|>\n {{ message['content'] }}{% else %}<|{{ message['role'] }}|>\n {{ message['content'] }}{% endif %}{% endfor %}{% if add_generation_prompt %}<|assistant|>{% endif %}",
+    "files": [
+     {
+      "name": "model.safetensors.index.json",
+      "sha256": "63cd9abcecf941726abbe11d2d4bd9714639095bb6a5a2876ee3d1e50ff61312",
+      "size": 21249
+     },
+     {
+      "name": "model-00001-of-00007.safetensors",
+      "sha256": "b1052386eac358a18add3d0f92521c85ab338979da8eeb08a6499555b857f80d",
+      "size": 1827774160
+     },
+     {
+      "name": "model-00002-of-00007.safetensors",
+      "sha256": "f88d7f69a3940711b87308eb20dd0544df22aff81134fa0d5160d3c859f5d321",
+      "size": 1968291888
+     },
+     {
+      "name": "model-00003-of-00007.safetensors",
+      "sha256": "447d41b7c5e7b2558905c98733469aa9e132540c91e13c4cdd7bfc58b60cc650",
+      "size": 1927406936
+     },
+     {
+      "name": "model-00004-of-00007.safetensors",
+      "sha256": "386305288e2bcc4a26fcffef433c94592d155bf36e365f054f63d3e6b55a1429",
+      "size": 1815217640
+     },
+     {
+      "name": "model-00005-of-00007.safetensors",
+      "sha256": "6c304e2821774d649997d1f5ae5fa12afd4d1dc5fea2bf6e8b829405b81fa7f2",
+      "size": 1968291920
+     },
+     {
+      "name": "model-00006-of-00007.safetensors",
+      "sha256": "ef45bbd33d6d540d3d3523bb169b52b91b9e265176ab7efc6838233bc3b7e95d",
+      "size": 1927406960
+     },
+     {
+      "name": "model-00007-of-00007.safetensors",
+      "sha256": "6eb545c6aa8a839c56a78b80331fcb4fa403341925f79fb6a761e2e847bf1e40",
+      "size": 1052805400
+     }
+    ],
+    "model_size": 6243584032,
+    "tensor_type": [
+     "F16"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "chatglm"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "chatglm3-6b",
+  "NewVersion": "",
+  "NickName": "",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/0087d595-e6b3-4a6e-bc23-12d62209f0df.webp",
+   "CreateCompetition": false,
+   "CreatedBy": "maasadmin",
+   "Description": "[\"root\",{},[\"p\",{\"ind\":{},\"spacing\":{}},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"color\":\"rgb(0, 0, 0)\",\"fonts\":{\"ascii\":\"-webkit-standard\",\"hAnsi\":\"-webkit-standard\",\"cs\":\"-webkit-standard\",\"eastAsia\":\"-webkit-standard\"},\"highlight\":\"rgba(0, 0, 0, 0)\",\"sz\":12,\"szUnit\":\"pt\",\"data-type\":\"leaf\"},\"智谱AI由清华大学计算机系的技术成果转化而来。公司主导研发了多语言千亿级超大规模预训练模型，构建了高精度通用知识图谱，并把两者有机融合打造了数据与知识双轮驱动的认知引擎。公司核心技术获得国家科学进步二等奖、北京市发明专利一等奖。智谱提出全新Model as a Service（MaaS）的市场理念，打造了认知大模型平台以及数字人和科技情报产品，应用单位包括：中国科协、北京市科委、华为、腾讯等1000余家企事业单位。智谱AI也秉承着肩负企业社会责任，研发了面向疫情的知识疫图、面向无障碍沟通的手语数字人技术等，促进社会平等和进步。\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "智谱.AI",
+   "GithubAddress": "https://www.zhipu.ai",
+   "GmtCreated": "2022-10-22T03:50:15Z",
+   "GmtModified": "2026-11-09T08:59:17Z",
+   "Id": 13,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "ZhipuAI",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 2
+  },
+  "PaiModelGalleryUrl": {
+   "deploy": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/models/chatglm3-6b/intro%3FviewType%3DDeploy%26from%3DModelScope&lang=zh",
+   "evaluation": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/evaluations/create%3FmodelName%3Dchatglm3-6b%26modelOrigin%3DPAI&lang=zh",
+   "train": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/models/chatglm3-6b/intro%3FviewType%3DTrain%26from%3DModelScope&lang=zh"
+  },
+  "PaiSdkParameter": null,
+  "Path": "ZhipuAI",
+  "ProtectedMode": 2,
+  "ReadMeContent": "# ChatGLM3-6B\n<p align=\"center\">\n  💻 <a href=\"https://github.com/THUDM/ChatGLM\" target=\"_blank\">Github Repo</a> • 🐦 <a href=\"https://twitter.com/thukeg\" target=\"_blank\">Twitter</a> • 📃 <a href=\"https://arxiv.org/abs/2103.10360\" target=\"_blank\">[GLM@ACL 22]</a> <a href=\"https://github.com/THUDM/GLM\" target=\"_blank\">[GitHub]</a> • 📃 <a href=\"https://arxiv.org/abs/2210.02414\" target=\"_blank\">[GLM-130B@ICLR 23]</a> <a href=\"https://github.com/THUDM/GLM-130B\" target=\"_blank\">[GitHub]</a> <br>\n</p>\n\n<p align=\"center\">\n    👋 Join our <a href=\"https://join.slack.com/t/chatglm/shared_invite/zt-25ti5uohv-A_hs~am_D3Q8XPZMpj7wwQ\" target=\"_blank\">Slack</a> and <a href=\"https://github.com/THUDM/ChatGLM/blob/main/resources/WECHAT.md\" target=\"_blank\">WeChat</a>\n</p>\n<p align=\"center\">\n📍Experience the larger-scale ChatGLM model at <a href=\"https://www.chatglm.cn\">chatglm.cn</a>\n</p>\n\n## GLM-4 开源模型\n\n我们已经发布最新的 **GLM-4** 模型，该模型在多个指标上有了新的突破，您可以在以下两个渠道体验我们的最新模型。\n+ [GLM-4 开源模型](https://huggingface.co/THUDM/glm-4-9b-chat) 我们已经开源了 GLM-4-9B 系列模型，在各项指标的测试上有明显提升，欢迎尝试。\n\n## 介绍 (Introduction)\nChatGLM3-6B 是 ChatGLM 系列最新一代的开源模型，在保留了前两代模型对话流畅、部署门槛低等众多优秀特性的基础上，ChatGLM3-6B 引入了如下特性：\n\n1. **更强大的基础模型：** ChatGLM3-6B 的基础模型 ChatGLM3-6B-Base 采用了更多样的训练数据、更充分的训练步数和更合理的训练策略。在语义、数学、推理、代码、知识等不同角度的数据集上测评显示，ChatGLM3-6B-Base 具有在 10B 以下的预训练模型中最强的性能。\n2. **更完整的功能支持：** ChatGLM3-6B 采用了全新设计的 [Prompt 格式](https://github.com/THUDM/ChatGLM3/blob/main/PROMPT.md)，除正常的多轮对话外。同时原生支持[工具调用](https://github.com/THUDM/ChatGLM3/blob/main/tool_using/README.md)（Function Call）、代码执行（Code Interpreter）和 Agent 任务等复杂场景。\n3. **更全面的开源序列：** 除了对话模型 ChatGLM3-6B 外，还开源了基础模型 ChatGLM-6B-Base、长文本对话模型 ChatGLM3-6B-32K。以上所有权重对学术研究**完全开放**，在填写[问卷](https://open.bigmodel.cn/mla/form)进行登记后**亦允许免费商业使用**。\n\nChatGLM3-6B is the latest open-source model in the ChatGLM series. While retaining many excellent features such as smooth dialogue and low deployment threshold from the previous two generations, ChatGLM3-6B introduces the following features:\n\n1. **More Powerful Base Model:** The base model of ChatGLM3-6B, ChatGLM3-6B-Base, employs a more diverse training dataset, more sufficient training steps, and a more reasonable training strategy. Evaluations on datasets such as semantics, mathematics, reasoning, code, knowledge, etc., show that ChatGLM3-6B-Base has the strongest performance among pre-trained models under 10B.\n2. **More Comprehensive Function Support:** ChatGLM3-6B adopts a newly designed [Prompt format](https://github.com/THUDM/ChatGLM3/blob/main/PROMPT_en.md), in addition to the normal multi-turn dialogue. It also natively supports [function call](https://github.com/THUDM/ChatGLM3/blob/main/tool_using/README_en.md), code interpreter, and complex scenarios such as agent tasks.\n3. **More Comprehensive Open-source Series:** In addition to the dialogue model ChatGLM3-6B, the base model ChatGLM-6B-Base and the long-text dialogue model ChatGLM3-6B-32K are also open-sourced. All the weights are **fully open** for academic research, and after completing the [questionnaire](https://open.bigmodel.cn/mla/form) registration, they are also **allowed for free commercial use**.\n\n## 软件依赖 (Dependencies)\n\n```shell\npip install protobuf transformers==4.30.2 cpm_kernels torch>=2.0 gradio mdtex2html sentencepiece accelerate\n```\n\n## 代码调用 (Code Usage)\n\n可以通过如下代码调用 ChatGLM3-6B 模型来生成对话：\n\nYou can generate dialogue by invoking the ChatGLM3-6B model with the following code:\n\n```ipython\n>>> from transformers import AutoTokenizer, AutoModel\n>>> tokenizer = AutoTokenizer.from_pretrained(\"THUDM/chatglm3-6b\", trust_remote_code=True)\n>>> model = AutoModel.from_pretrained(\"THUDM/chatglm3-6b\", trust_remote_code=True).half().cuda()\n>>> model = model.eval()\n>>> response, history = model.chat(tokenizer, \"你好\", history=[])\n>>> print(response)\n你好👋!我是人工智能助手 ChatGLM-6B,很高兴见到你,欢迎问我任何问题。\n>>> response, history = model.chat(tokenizer, \"晚上睡不着应该怎么办\", history=history)\n>>> print(response)\n晚上睡不着可能会让你感到焦虑或不舒服,但以下是一些可以帮助你入睡的方法:\n\n1. 制定规律的睡眠时间表:保持规律的睡眠时间表可以帮助你建立健康的睡眠习惯,使你更容易入睡。尽量在每天的相同时间上床,并在同一时间起床。\n2. 创造一个舒适的睡眠环境:确保睡眠环境舒适,安静,黑暗且温度适宜。可以使用舒适的床上用品,并保持房间通风。\n3. 放松身心:在睡前做些放松的活动,例如泡个热水澡,听些轻柔的音乐,阅读一些有趣的书籍等,有助于缓解紧张和焦虑,使你更容易入睡。\n4. 避免饮用含有咖啡因的饮料:咖啡因是一种刺激性物质,会影响你的睡眠质量。尽量避免在睡前饮用含有咖啡因的饮料,例如咖啡,茶和可乐。\n5. 避免在床上做与睡眠无关的事情:在床上做些与睡眠无关的事情,例如看电影,玩游戏或工作等,可能会干扰你的睡眠。\n6. 尝试呼吸技巧:深呼吸是一种放松技巧,可以帮助你缓解紧张和焦虑,使你更容易入睡。试着慢慢吸气,保持几秒钟,然后缓慢呼气。\n\n如果这些方法无法帮助你入睡,你可以考虑咨询医生或睡眠专家,寻求进一步的建议。\n```\n\n关于更多的使用说明，包括如何运行命令行和网页版本的 DEMO，以及使用模型量化以节省显存，请参考我们的 [Github Repo](https://github.com/THUDM/ChatGLM)。\n\nFor more instructions, including how to run CLI and web demos, and model quantization, please refer to our [Github Repo](https://github.com/THUDM/ChatGLM).\n\n\n## 协议 (License)\n\n本仓库的代码依照 [Apache-2.0](LICENSE) 协议开源，ChatGLM3-6B 模型的权重的使用则需要遵循 [Model License](MODEL_LICENSE)。\n\nThe code in this repository is open-sourced under the [Apache-2.0 license](LICENSE), while the use of the ChatGLM3-6B model weights needs to comply with the [Model License](MODEL_LICENSE).\n\n## 引用 (Citation)\n\n如果你觉得我们的工作有帮助的话，请考虑引用下列论文。\n\nIf you find our work helpful, please consider citing the following paper.\n\n```\n@misc{glm2024chatglm,\n      title={ChatGLM: A Family of Large Language Models from GLM-130B to GLM-4 All Tools}, \n      author={Team GLM and Aohan Zeng and Bin Xu and Bowen Wang and Chenhui Zhang and Da Yin and Diego Rojas and Guanyu Feng and Hanlin Zhao and Hanyu Lai and Hao Yu and Hongning Wang and Jiadai Sun and Jiajie Zhang and Jiale Cheng and Jiayi Gui and Jie Tang and Jing Zhang and Juanzi Li and Lei Zhao and Lindong Wu and Lucen Zhong and Mingdao Liu and Minlie Huang and Peng Zhang and Qinkai Zheng and Rui Lu and Shuaiqi Duan and Shudan Zhang and Shulin Cao and Shuxun Yang and Weng Lam Tam and Wenyi Zhao and Xiao Liu and Xiao Xia and Xiaohan Zhang and Xiaotao Gu and Xin Lv and Xinghan Liu and Xinyi Liu and Xinyue Yang and Xixuan Song and Xunkai Zhang and Yifan An and Yifan Xu and Yilin Niu and Yuantao Yang and Yueyan Li and Yushi Bai and Yuxiao Dong and Zehan Qi and Zhaoyu Wang and Zhen Yang and Zhengxiao Du and Zhenyu Hou and Zihan Wang},\n      year={2024},\n      eprint={2406.12793},\n      archivePrefix={arXiv},\n      primaryClass={id='cs.CL' full_name='Computation and Language' is_active=True alt_name='cmp-lg' in_archive='cs' is_general=False description='Covers natural language processing. Roughly includes material in ACM Subject Class I.2.7. Note that work on artificial languages (programming languages, logics, formal systems) that does not explicitly address natural-language issues broadly construed (natural-language processing, computational linguistics, speech, text retrieval, etc.) is not appropriate for this area.'}\n}\n```\n\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "2103.10360",
+   "2210.02414"
+  ],
+  "RelatedPaper": [],
+  "Revision": "master",
+  "Stars": 841,
+  "StorageSize": 24975604342,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": [
+   "deploy",
+   "train",
+   "evaluation"
+  ],
+  "SupportPaiSdk": 3,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [
+   "glm",
+   "chatglm",
+   "thudm"
+  ],
+  "Tasks": [
+   {
+    "ChineseName": "",
+    "Description": "",
+    "DomainName": "",
+    "Id": 0,
+    "IsExhibition": false,
+    "IsHot": 0,
+    "IsLeaf": false,
+    "IsLoginRequired": false,
+    "IsRetrieval": false,
+    "Level": 0,
+    "Name": "",
+    "ParentId": 0,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "3300c2aa-5cee-4684-a997-a91f7a1e26d4",
+ "Success": true
+}

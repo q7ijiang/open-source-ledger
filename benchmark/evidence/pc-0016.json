@@ -1,0 +1,94 @@
+{
+ "case_id": "pc-0016",
+ "repo": "datawhalechina/easy-vecdb",
+ "repo_url": "https://github.com/datawhalechina/easy-vecdb",
+ "head_sha": "1cd25ce67e15ad4769f1da0f166f6f3a557575c7",
+ "source_file": "src/Cre_milvus/Search/embedding.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 51,
+    "text": "from modelscope import AutoTokenizer, AutoModel",
+    "sha256": "cebbe0ecf737c1bec6b31892ca20e7476a1c898f2bd814d8b649d50229854fa3"
+   }
+  ],
+  "imports_sha256": "cebbe0ecf737c1bec6b31892ca20e7476a1c898f2bd814d8b649d50229854fa3",
+  "kind": "modelscope_source_selected",
+  "role": "primary"
+ },
+ "model_id": "AI-ModelScope/bge-large-zh-v1.5",
+ "model_binding": {
+  "name": "model_name",
+  "line": 19,
+  "text": "def __init__(self, model_name=\"AI-ModelScope/bge-large-zh-v1.5\"):",
+  "sha256": "3b382487592f6ba866daccffad0d9988c0373ade75ec756231ef38ef7546a456"
+ },
+ "model_literals": [
+  {
+   "line": 19,
+   "text": "def __init__(self, model_name=\"AI-ModelScope/bge-large-zh-v1.5\"):",
+   "sha256": "3b382487592f6ba866daccffad0d9988c0373ade75ec756231ef38ef7546a456"
+  }
+ ],
+ "call": {
+  "start": 58,
+  "end": 62,
+  "text": "                self.tokenizer = AutoTokenizer.from_pretrained(\n                    self.model_name,\n                    trust_remote_code=True,\n                    local_files_only=local_model_exists\n                )",
+  "sha256": "abea342248cbd2f65e3de102aded222be1ab23b982a8ebb8d6e04c398beb4e49"
+ },
+ "revision": {
+  "revision": "",
+  "source": "unspecified"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 47,
+   "text": "os.environ.setdefault('HF_HUB_DISABLE_PROGRESS_BARS', '1')"
+  },
+  {
+   "line": 48,
+   "text": ""
+  },
+  {
+   "line": 49,
+   "text": "# 尝试使用ModelScope加载"
+  },
+  {
+   "line": 50,
+   "text": "try:"
+  },
+  {
+   "line": 51,
+   "text": "from modelscope import AutoTokenizer, AutoModel"
+  },
+  {
+   "line": 52,
+   "text": "logger.info(\"使用ModelScope加载模型...\")"
+  },
+  {
+   "line": 53,
+   "text": ""
+  },
+  {
+   "line": 54,
+   "text": "# 检查本地是否已有模型"
+  },
+  {
+   "line": 55,
+   "text": "local_model_exists = os.path.exists(os.path.expanduser(f\"~/.cache/modelscope/hub/models/{self.model_name}\"))"
+  },
+  {
+   "line": 56,
+   "text": ""
+  },
+  {
+   "line": 57,
+   "text": "# 加载分词器和模型"
+  }
+ ]
+}

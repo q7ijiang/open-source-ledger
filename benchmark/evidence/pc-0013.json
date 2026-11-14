@@ -1,0 +1,99 @@
+{
+ "case_id": "pc-0013",
+ "repo": "yeyupiaoling/Whisper-Finetune",
+ "repo_url": "https://github.com/yeyupiaoling/Whisper-Finetune",
+ "head_sha": "cb4b601604dab1ac8aff2f9939eda8aee3082394",
+ "source_file": "aishell.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 28,
+    "text": "from modelscope.pipelines import pipeline",
+    "sha256": "23bca4f238f8ae2abb0c07225a7a7559f9cfff55c627c1f0bdc2da4dc80033f1"
+   },
+   {
+    "line": 29,
+    "text": "from modelscope.utils.constant import Tasks",
+    "sha256": "f89e366822b2602d40623a3b0d0e7026c9d9640482bcb392c7c31184439eee26"
+   },
+   {
+    "line": 30,
+    "text": "from modelscope.utils.logger import get_logger",
+    "sha256": "0a262c52ea71bbf00ff2b04bd51564b88498ccfc869f05b3f79e4f5be4c4aa38"
+   }
+  ],
+  "imports_sha256": "4cd72ea0f40f3ab02ce3ab542273e724ecbe3bea4af0363e085d0da55ec0d7ed",
+  "kind": "modelscope_api",
+  "role": "primary"
+ },
+ "model_id": "iic/punc_ct-transformer_cn-en-common-vocab471067-large",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 34,
+   "text": "model='iic/punc_ct-transformer_cn-en-common-vocab471067-large',",
+   "sha256": "a1ffee44dcef5e459debc3b29f0b94fd4caa964a9a98bf3e180b1fb14eaff929"
+  }
+ ],
+ "call": {
+  "start": 33,
+  "end": 35,
+  "text": "        inference_pipline = pipeline(task=Tasks.punctuation,\n                                     model='iic/punc_ct-transformer_cn-en-common-vocab471067-large',\n                                     model_revision=\"v2.0.4\")",
+  "sha256": "a5bc620635dd4faef06c08496738d8702447280ef77d753f5d7d2311da3a5049"
+ },
+ "revision": {
+  "revision": "v2.0.4",
+  "source": "call_literal"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 22,
+   "text": ""
+  },
+  {
+   "line": 23,
+   "text": ""
+  },
+  {
+   "line": 24,
+   "text": "def create_annotation_text(data_dir, annotation_path):"
+  },
+  {
+   "line": 25,
+   "text": "print('Create Aishell annotation text ...')"
+  },
+  {
+   "line": 26,
+   "text": "if args.add_pun:"
+  },
+  {
+   "line": 27,
+   "text": "import logging"
+  },
+  {
+   "line": 28,
+   "text": "from modelscope.pipelines import pipeline"
+  },
+  {
+   "line": 29,
+   "text": "from modelscope.utils.constant import Tasks"
+  },
+  {
+   "line": 30,
+   "text": "from modelscope.utils.logger import get_logger"
+  },
+  {
+   "line": 31,
+   "text": "logger = get_logger(log_level=logging.CRITICAL)"
+  },
+  {
+   "line": 32,
+   "text": "logger.setLevel(logging.CRITICAL)"
+  }
+ ]
+}

@@ -1,0 +1,380 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "Qwen3ForCausalLM"
+  ],
+  "Avatar": "https://resouces.modelscope.cn/avatar/56d9e1ec-12f1-4d2b-a749-04ade9830aba.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": [
+    "Qwen3ForCausalLM"
+   ],
+   "backend_info": {
+    "deploy_task": [
+     "text",
+     "emb"
+    ],
+    "lmdeploy": {},
+    "lmdeploy_turbomind": {
+     "text": "0.9.1"
+    },
+    "ollama": null,
+    "sglang": {
+     "text": "0.5.2"
+    },
+    "vllm": {
+     "emb": "0.9.2",
+     "text": "0.9.2"
+    }
+   },
+   "model_id": "Qwen/Qwen3-8B"
+  },
+  "BaseModel": [
+   "Qwen/Qwen3-8B-Base"
+  ],
+  "BaseModelRelation": "finetune",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "千问3-8B",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "Cherrytest",
+  "CreatedTime": 1745834265,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "",
+  "Domain": [],
+  "Downloads": 9226858,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 466214,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1753546353,
+  "Libraries": [
+   "transformer",
+   "safetensors",
+   "pytorch"
+  ],
+  "License": "apache-2.0",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "{%- if tools %}\n    {{- '<|im_start|>system\\n' }}\n    {%- if messages[0].role == 'system' %}\n        {{- messages[0].content + '\\n\\n' }}\n    {%- endif %}\n    {{- \"# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- \"\\n</tools>\\n\\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\\n<tool_call>\\n{\\\"name\\\": <function-name>, \\\"arguments\\\": <args-json-object>}\\n</tool_call><|im_end|>\\n\" }}\n{%- else %}\n    {%- if messages[0].role == 'system' %}\n        {{- '<|im_start|>system\\n' + messages[0].content + '<|im_end|>\\n' }}\n    {%- endif %}\n{%- endif %}\n{%- set ns = namespace(multi_step_tool=true, last_query_index=messages|length - 1) %}\n{%- for message in messages[::-1] %}\n    {%- set index = (messages|length - 1) - loop.index0 %}\n    {%- if ns.multi_step_tool and message.role == \"user\" and message.content is string and not(message.content.startswith('<tool_response>') and message.content.endswith('</tool_response>')) %}\n        {%- set ns.multi_step_tool = false %}\n        {%- set ns.last_query_index = index %}\n    {%- endif %}\n{%- endfor %}\n{%- for message in messages %}\n    {%- if message.content is string %}\n        {%- set content = message.content %}\n    {%- else %}\n        {%- set content = '' %}\n    {%- endif %}\n    {%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) %}\n        {{- '<|im_start|>' + message.role + '\\n' + content + '<|im_end|>' + '\\n' }}\n    {%- elif message.role == \"assistant\" %}\n        {%- set reasoning_content = '' %}\n        {%- if message.reasoning_content is string %}\n            {%- set reasoning_content = message.reasoning_content %}\n        {%- else %}\n            {%- if '</think>' in content %}\n                {%- set reasoning_content = content.split('</think>')[0].rstrip('\\n').split('<think>')[-1].lstrip('\\n') %}\n                {%- set content = content.split('</think>')[-1].lstrip('\\n') %}\n            {%- endif %}\n        {%- endif %}\n        {%- if loop.index0 > ns.last_query_index %}\n            {%- if loop.last or (not loop.last and reasoning_content) %}\n                {{- '<|im_start|>' + message.role + '\\n<think>\\n' + reasoning_content.strip('\\n') + '\\n</think>\\n\\n' + content.lstrip('\\n') }}\n            {%- else %}\n                {{- '<|im_start|>' + message.role + '\\n' + content }}\n            {%- endif %}\n        {%- else %}\n            {{- '<|im_start|>' + message.role + '\\n' + content }}\n        {%- endif %}\n        {%- if message.tool_calls %}\n            {%- for tool_call in message.tool_calls %}\n                {%- if (loop.first and content) or (not loop.first) %}\n                    {{- '\\n' }}\n                {%- endif %}\n                {%- if tool_call.function %}\n                    {%- set tool_call = tool_call.function %}\n                {%- endif %}\n                {{- '<tool_call>\\n{\"name\": \"' }}\n                {{- tool_call.name }}\n                {{- '\", \"arguments\": ' }}\n                {%- if tool_call.arguments is string %}\n                    {{- tool_call.arguments }}\n                {%- else %}\n                    {{- tool_call.arguments | tojson }}\n                {%- endif %}\n                {{- '}\\n</tool_call>' }}\n            {%- endfor %}\n        {%- endif %}\n        {{- '<|im_end|>\\n' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if loop.first or (messages[loop.index0 - 1].role != \"tool\") %}\n            {{- '<|im_start|>user' }}\n        {%- endif %}\n        {{- '\\n<tool_response>\\n' }}\n        {{- content }}\n        {{- '\\n</tool_response>' }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}\n            {{- '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|im_start|>assistant\\n' }}\n    {%- if enable_thinking is defined and enable_thinking is false %}\n        {{- '<think>\\n\\n</think>\\n\\n' }}\n    {%- endif %}\n{%- endif %}",
+    "files": [
+     {
+      "name": "model.safetensors.index.json",
+      "sha256": "f9fdbcb91c23971c13ec5d5f2573d2349e8f61f2f049371ec699281748fdb1bc",
+      "size": 32878
+     },
+     {
+      "name": "model-00001-of-00005.safetensors",
+      "sha256": "31d6a825ae35f11fb85b195b4c42c146c051e446433125a215336abdf95cbf5f",
+      "size": 3996250744
+     },
+     {
+      "name": "model-00002-of-00005.safetensors",
+      "sha256": "5991236cea6fe21f3d43cab0f0e84448734fbbe0789816202989f2ddc9d18282",
+      "size": 3993160032
+     },
+     {
+      "name": "model-00003-of-00005.safetensors",
+      "sha256": "c5185c4794be2d8a9784d5753c9922db38df478ce11f9ed0b415b7304d896836",
+      "size": 3959604768
+     },
+     {
+      "name": "model-00004-of-00005.safetensors",
+      "sha256": "b5ee7de71fbf17db3d5704e0c8f2bc7d005ca9e1d7ca2aeb19827b0cfcaa917a",
+      "size": 3187841392
+     },
+     {
+      "name": "model-00005-of-00005.safetensors",
+      "sha256": "20c2d6366ab85c90786ccdd829cd2b9e7d30ef3b2ebbb998280e7e4014b542ff",
+      "size": 1244659840
+     }
+    ],
+    "model_size": 8190735360,
+    "tensor_type": [
+     "BF16"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "qwen3"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "Qwen3-8B",
+  "NewVersion": "",
+  "NickName": "小橙鱼",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 3000,
+   "Recommend": [
+    {
+     "Backend": [
+      "vllm"
+     ],
+     "Channel": "fc",
+     "GpuMemory": "0",
+     "ImageTag": [
+      "ubuntu22.04-cuda12.4.0-py310-torch2.4.0-1.21.0-LLM-vllm085"
+     ],
+     "InstanceType": "fc.gpu.tesla.1",
+     "Memory": "64000",
+     "ModelFamily": "",
+     "Version": "v1.0.0",
+     "deploy_task": [
+      "text"
+     ]
+    },
+    {
+     "Backend": [
+      "vllm"
+     ],
+     "Channel": "eas",
+     "GpuMemory": "0",
+     "ImageTag": [
+      "ubuntu22.04-cuda12.4.0-py310-torch2.4.0-1.21.0-LLM-vllm085"
+     ],
+     "InstanceType": "ecs.gn8ia.4xlarge",
+     "Memory": "64000",
+     "ModelFamily": "",
+     "Version": "v1.0.0",
+     "deploy_task": [
+      "text"
+     ]
+    }
+   ],
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resources.modelscope.cn/avatar/4c40e6ce-1348-43b5-a3bc-6bafec6ac805.jpg",
+   "CreateCompetition": false,
+   "CreatedBy": "Cherrytest",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"欢迎来到 Qwen 👋 !\"]]],[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"这是 Qwen 的组织，来自阿里的大模型家族。在这个组织中，我们不断发布大型语言模型 (LLM)、大型多模态模型 (LMM) 和其他 AGI 相关项目。快来查看并享受吧！\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "千问",
+   "GithubAddress": "https://qwen.ai/",
+   "GmtCreated": "2023-08-02T03:48:45Z",
+   "GmtModified": "2026-11-06T03:01:02Z",
+   "Id": 209,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "Qwen",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 2
+  },
+  "PaiModelGalleryUrl": {
+   "deploy": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/models/Qwen3-8B/intro%3FviewType%3DDeploy%26from%3DModelScope&lang=zh",
+   "evaluation": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/evaluations/create%3FmodelName%3DQwen3-8B%26modelOrigin%3DPAI&lang=zh",
+   "train": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/models/Qwen3-8B/intro%3FviewType%3DTrain%26from%3DModelScope&lang=zh"
+  },
+  "PaiSdkParameter": null,
+  "Path": "Qwen",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n# Qwen3-8B\n<a href=\"https://chat.qwen.ai/\" target=\"_blank\" style=\"margin: 2px;\">\n    <img alt=\"Chat\" src=\"https://img.shields.io/badge/%F0%9F%92%9C%EF%B8%8F%20Qwen%20Chat%20-536af5\" style=\"display: inline-block; vertical-align: middle;\"/>\n</a>\n\n## Qwen3 Highlights\n\nQwen3 is the latest generation of large language models in Qwen series, offering a comprehensive suite of dense and mixture-of-experts (MoE) models. Built upon extensive training, Qwen3 delivers groundbreaking advancements in reasoning, instruction-following, agent capabilities, and multilingual support, with the following key features:\n\n- **Uniquely support of seamless switching between thinking mode** (for complex logical reasoning, math, and coding) and **non-thinking mode** (for efficient, general-purpose dialogue) **within single model**, ensuring optimal performance across various scenarios.\n- **Significantly enhancement in its reasoning capabilities**, surpassing previous QwQ (in thinking mode) and Qwen2.5 instruct models (in non-thinking mode) on mathematics, code generation, and commonsense logical reasoning.\n- **Superior human preference alignment**, excelling in creative writing, role-playing, multi-turn dialogues, and instruction following, to deliver a more natural, engaging, and immersive conversational experience.\n- **Expertise in agent capabilities**, enabling precise integration with external tools in both thinking and unthinking modes and achieving leading performance among open-source models in complex agent-based tasks.\n- **Support of 100+ languages and dialects** with strong capabilities for **multilingual instruction following** and **translation**.\n\n## Model Overview\n\n**Qwen3-8B** has the following features:\n- Type: Causal Language Models\n- Training Stage: Pretraining & Post-training\n- Number of Parameters: 8.2B\n- Number of Paramaters (Non-Embedding): 6.95B\n- Number of Layers: 36\n- Number of Attention Heads (GQA): 32 for Q and 8 for KV\n- Context Length: 32,768 natively and [131,072 tokens with YaRN](#processing-long-texts). \n\nFor more details, including benchmark evaluation, hardware requirements, and inference performance, please refer to our [blog](https://qwenlm.github.io/blog/qwen3/), [GitHub](https://github.com/QwenLM/Qwen3), and [Documentation](https://qwen.readthedocs.io/en/latest/).\n\n## Quickstart\n\nThe code of Qwen3 has been in the latest Hugging Face `transformers` and we advise you to use the latest version of `transformers`.\n\nWith `transformers<4.51.0`, you will encounter the following error:\n```\nKeyError: 'qwen3'\n```\n\nThe following contains a code snippet illustrating how to use the model generate content based on given inputs. \n```python\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\n\nmodel_name = \"Qwen/Qwen3-8B\"\n\n# load the tokenizer and the model\ntokenizer = AutoTokenizer.from_pretrained(model_name)\nmodel = AutoModelForCausalLM.from_pretrained(\n    model_name,\n    torch_dtype=\"auto\",\n    device_map=\"auto\"\n)\n\n# prepare the model input\nprompt = \"Give me a short introduction to large language model.\"\nmessages = [\n    {\"role\": \"user\", \"content\": prompt}\n]\ntext = tokenizer.apply_chat_template(\n    messages,\n    tokenize=False,\n    add_generation_prompt=True,\n    enable_thinking=True # Switches between thinking and non-thinking modes. Default is True.\n)\nmodel_inputs = tokenizer([text], return_tensors=\"pt\").to(model.device)\n\n# conduct text completion\ngenerated_ids = model.generate(\n    **model_inputs,\n    max_new_tokens=32768\n)\noutput_ids = generated_ids[0][len(model_inputs.input_ids[0]):].tolist() \n\n# parsing thinking content\ntry:\n    # rindex finding 151668 (</think>)\n    index = len(output_ids) - output_ids[::-1].index(151668)\nexcept ValueError:\n    index = 0\n\nthinking_content = tokenizer.decode(output_ids[:index], skip_special_tokens=True).strip(\"\\n\")\ncontent = tokenizer.decode(output_ids[index:], skip_special_tokens=True).strip(\"\\n\")\n\nprint(\"thinking content:\", thinking_content)\nprint(\"content:\", content)\n```\n\nFor deployment, you can use `sglang>=0.4.6.post1` or `vllm>=0.8.5` or to create an OpenAI-compatible API endpoint:\n- SGLang:\n    ```shell\n    python -m sglang.launch_server --model-path Qwen/Qwen3-8B --reasoning-parser qwen3\n    ```\n- vLLM:\n    ```shell\n    vllm serve Qwen/Qwen3-8B --enable-reasoning --reasoning-parser deepseek_r1\n    ```\n\nFor local use, applications such as Ollama, LMStudio, MLX-LM, llama.cpp, and KTransformers have also supported Qwen3.\n\n## Switching Between Thinking and Non-Thinking Mode\n\n> [!TIP]\n> The `enable_thinking` switch is also available in APIs created by SGLang and vLLM. \n> Please refer to our documentation for [SGLang](https://qwen.readthedocs.io/en/latest/deployment/sglang.html#thinking-non-thinking-modes) and [vLLM](https://qwen.readthedocs.io/en/latest/deployment/vllm.html#thinking-non-thinking-modes) users.\n\n### `enable_thinking=True`\n\nBy default, Qwen3 has thinking capabilities enabled, similar to QwQ-32B. This means the model will use its reasoning abilities to enhance the quality of generated responses. For example, when explicitly setting `enable_thinking=True` or leaving it as the default value in `tokenizer.apply_chat_template`, the model will engage its thinking mode.\n\n```python\ntext = tokenizer.apply_chat_template(\n    messages,\n    tokenize=False,\n    add_generation_prompt=True,\n    enable_thinking=True  # True is the default value for enable_thinking\n)\n```\n\nIn this mode, the model will generate think content wrapped in a `<think>...</think>` block, followed by the final response.\n\n> [!NOTE]\n> For thinking mode, use `Temperature=0.6`, `TopP=0.95`, `TopK=20`, and `MinP=0` (the default setting in `generation_config.json`). **DO NOT use greedy decoding**, as it can lead to performance degradation and endless repetitions. For more detailed guidance, please refer to the [Best Practices](#best-practices) section.\n\n\n### `enable_thinking=False`\n\nWe provide a hard switch to strictly disable the model's thinking behavior, aligning its functionality with the previous Qwen2.5-Instruct models. This mode is particularly useful in scenarios where disabling thinking is essential for enhancing efficiency.\n\n```python\ntext = tokenizer.apply_chat_template(\n    messages,\n    tokenize=False,\n    add_generation_prompt=True,\n    enable_thinking=False  # Setting enable_thinking=False disables thinking mode\n)\n```\n\nIn this mode, the model will not generate any think content and will not include a `<think>...</think>` block.\n\n> [!NOTE]\n> For non-thinking mode, we suggest using `Temperature=0.7`, `TopP=0.8`, `TopK=20`, and `MinP=0`. For more detailed guidance, please refer to the [Best Practices](#best-practices) section.\n\n### Advanced Usage: Switching Between Thinking and Non-Thinking Modes via User Input\n\nWe provide a soft switch mechanism that allows users to dynamically control the model's behavior when `enable_thinking=True`. Specifically, you can add `/think` and `/no_think` to user prompts or system messages to switch the model's thinking mode from turn to turn. The model will follow the most recent instruction in multi-turn conversations.\n\nHere is an example of a multi-turn conversation:\n\n```python\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\n\nclass QwenChatbot:\n    def __init__(self, model_name=\"Qwen/Qwen3-8B\"):\n        self.tokenizer = AutoTokenizer.from_pretrained(model_name)\n        self.model = AutoModelForCausalLM.from_pretrained(model_name)\n        self.history = []\n\n    def generate_response(self, user_input):\n        messages = self.history + [{\"role\": \"user\", \"content\": user_input}]\n\n        text = self.tokenizer.apply_chat_template(\n            messages,\n            tokenize=False,\n            add_generation_prompt=True\n        )\n\n        inputs = self.tokenizer(text, return_tensors=\"pt\")\n        response_ids = self.model.generate(**inputs, max_new_tokens=32768)[0][len(inputs.input_ids[0]):].tolist()\n        response = self.tokenizer.decode(response_ids, skip_special_tokens=True)\n\n        # Update history\n        self.history.append({\"role\": \"user\", \"content\": user_input})\n        self.history.append({\"role\": \"assistant\", \"content\": response})\n\n        return response\n\n# Example Usage\nif __name__ == \"__main__\":\n    chatbot = QwenChatbot()\n\n    # First input (without /think or /no_think tags, thinking mode is enabled by default)\n    user_input_1 = \"How many r's in strawberries?\"\n    print(f\"User: {user_input_1}\")\n    response_1 = chatbot.generate_response(user_input_1)\n    print(f\"Bot: {response_1}\")\n    print(\"----------------------\")\n\n    # Second input with /no_think\n    user_input_2 = \"Then, how many r's in blueberries? /no_think\"\n    print(f\"User: {user_input_2}\")\n    response_2 = chatbot.generate_response(user_input_2)\n    print(f\"Bot: {response_2}\") \n    print(\"----------------------\")\n\n    # Third input with /think\n    user_input_3 = \"Really? /think\"\n    print(f\"User: {user_input_3}\")\n    response_3 = chatbot.generate_response(user_input_3)\n    print(f\"Bot: {response_3}\")\n```\n\n> [!NOTE]\n> For API compatibility, when `enable_thinking=True`, regardless of whether the user uses `/think` or `/no_think`, the model will always output a block wrapped in `<think>...</think>`. However, the content inside this block may be empty if thinking is disabled.\n> When `enable_thinking=False`, the soft switches are not valid. Regardless of any `/think` or `/no_think` tags input by the user, the model will not generate think content and will not include a `<think>...</think>` block.\n\n## Agentic Use\n\nQwen3 excels in tool calling capabilities. We recommend using [Qwen-Agent](https://github.com/QwenLM/Qwen-Agent) to make the best use of agentic ability of Qwen3. Qwen-Agent encapsulates tool-calling templates and tool-calling parsers internally, greatly reducing coding complexity.\n\nTo define the available tools, you can use the MCP configuration file, use the integrated tool of Qwen-Agent, or integrate other tools by yourself.\n```python\nfrom qwen_agent.agents import Assistant\n\n# Define LLM\nllm_cfg = {\n    'model': 'Qwen3-8B',\n\n    # Use the endpoint provided by Alibaba Model Studio:\n    # 'model_type': 'qwen_dashscope',\n    # 'api_key': os.getenv('DASHSCOPE_API_KEY'),\n\n    # Use a custom endpoint compatible with OpenAI API:\n    'model_server': 'http://localhost:8000/v1',  # api_base\n    'api_key': 'EMPTY',\n\n    # Other parameters:\n    # 'generate_cfg': {\n    #         # Add: When the response content is `<think>this is the thought</think>this is the answer;\n    #         # Do not add: When the response has been separated by reasoning_content and content.\n    #         'thought_in_content': True,\n    #     },\n}\n\n# Define Tools\ntools = [\n    {'mcpServers': {  # You can specify the MCP configuration file\n            'time': {\n                'command': 'uvx',\n                'args': ['mcp-server-time', '--local-timezone=Asia/Shanghai']\n            },\n            \"fetch\": {\n                \"command\": \"uvx\",\n                \"args\": [\"mcp-server-fetch\"]\n            }\n        }\n    },\n  'code_interpreter',  # Built-in tools\n]\n\n# Define Agent\nbot = Assistant(llm=llm_cfg, function_list=tools)\n\n# Streaming generation\nmessages = [{'role': 'user', 'content': 'https://qwenlm.github.io/blog/ Introduce the latest developments of Qwen'}]\nfor responses in bot.run(messages=messages):\n    pass\nprint(responses)\n```\n\n## Processing Long Texts\n\nQwen3 natively supports context lengths of up to 32,768 tokens. For conversations where the total length (including both input and output) significantly exceeds this limit, we recommend using RoPE scaling techniques to handle long texts effectively. We have validated the model's performance on context lengths of up to 131,072 tokens using the [YaRN](https://arxiv.org/abs/2309.00071) method.\n\nYaRN is currently supported by several inference frameworks, e.g., `transformers` and `llama.cpp` for local use, `vllm` and `sglang` for deployment. In general, there are two approaches to enabling YaRN for supported frameworks:\n\n- Modifying the model files:\n  In the `config.json` file, add the `rope_scaling` fields:\n    ```json\n    {\n        ...,\n        \"rope_scaling\": {\n            \"rope_type\": \"yarn\",\n            \"factor\": 4.0,\n            \"original_max_position_embeddings\": 32768\n        }\n    }\n    ```\n  For `llama.cpp`, you need to regenerate the GGUF file after the modification.\n\n- Passing command line arguments:\n\n  For `vllm`, you can use\n    ```shell\n    vllm serve ... --rope-scaling '{\"rope_type\":\"yarn\",\"factor\":4.0,\"original_max_position_embeddings\":32768}' --max-model-len 131072  \n    ```\n\n  For `sglang`, you can use\n    ```shell\n    python -m sglang.launch_server ... --json-model-override-args '{\"rope_scaling\":{\"rope_type\":\"yarn\",\"factor\":4.0,\"original_max_position_embeddings\":32768}}'\n    ```\n\n  For `llama-server` from `llama.cpp`, you can use\n    ```shell\n    llama-server ... --rope-scaling yarn --rope-scale 4 --yarn-orig-ctx 32768\n    ```\n\n> [!IMPORTANT]\n> If you encounter the following warning\n> ```\n> Unrecognized keys in `rope_scaling` for 'rope_type'='yarn': {'original_max_position_embeddings'}\n> ```\n> please upgrade `transformers>=4.51.0`.\n\n> [!NOTE]\n> All the notable open-source frameworks implement static YaRN, which means the scaling factor remains constant regardless of input length, **potentially impacting performance on shorter texts.**\n> We advise adding the `rope_scaling` configuration only when processing long contexts is required. \n> It is also recommended to modify the `factor` as needed. For example, if the typical context length for your application is 65,536 tokens, it would be better to set `factor` as 2.0. \n\n> [!NOTE]\n> The default `max_position_embeddings` in `config.json` is set to 40,960. This allocation includes reserving 32,768 tokens for outputs and 8,192 tokens for typical prompts, which is sufficient for most scenarios involving short text processing. If the average context length does not exceed 32,768 tokens, we do not recommend enabling YaRN in this scenario, as it may potentially degrade model performance.\n\n> [!TIP]\n> The endpoint provided by Alibaba Model Studio supports dynamic YaRN by default and no extra configuration is needed.\n\n## Best Practices\n\nTo achieve optimal performance, we recommend the following settings:\n\n1. **Sampling Parameters**:\n   - For thinking mode (`enable_thinking=True`), use `Temperature=0.6`, `TopP=0.95`, `TopK=20`, and `MinP=0`. **DO NOT use greedy decoding**, as it can lead to performance degradation and endless repetitions.\n   - For non-thinking mode (`enable_thinking=False`), we suggest using `Temperature=0.7`, `TopP=0.8`, `TopK=20`, and `MinP=0`.\n   - For supported frameworks, you can adjust the `presence_penalty` parameter between 0 and 2 to reduce endless repetitions. However, using a higher value may occasionally result in language mixing and a slight decrease in model performance.\n\n2. **Adequate Output Length**: We recommend using an output length of 32,768 tokens for most queries. For benchmarking on highly complex problems, such as those found in math and programming competitions, we suggest setting the max output length to 38,912 tokens. This provides the model with sufficient space to generate detailed and comprehensive responses, thereby enhancing its overall performance.\n\n3. **Standardize Output Format**: We recommend using prompts to standardize model outputs when benchmarking.\n   - **Math Problems**: Include \"Please reason step by step, and put your final answer within \\boxed{}.\" in the prompt.\n   - **Multiple-Choice Questions**: Add the following JSON structure to the prompt to standardize responses: \"Please show your choice in the `answer` field with only the choice letter, e.g., `\"answer\": \"C\"`.\"\n\n4. **No Thinking Content in History**: In multi-turn conversations, the historical model output should only include the final output part and does not need to include the thinking content. It is implemented in the provided chat template in Jinja2. However, for frameworks that do not directly use the Jinja2 chat template, it is up to the developers to ensure that the best practice is followed.\n\n### Citation\n\nIf you find our work helpful, feel free to give us a cite.\n\n```\n@misc{qwen3technicalreport,\n      title={Qwen3 Technical Report}, \n      author={Qwen Team},\n      year={2025},\n      eprint={2505.09388},\n      archivePrefix={arXiv},\n      primaryClass={cs.CL},\n      url={https://arxiv.org/abs/2505.09388}, \n}\n```\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "2309.00071",
+   "2505.09388"
+  ],
+  "RelatedPaper": [
+   35495,
+   145214
+  ],
+  "Revision": "master",
+  "Stars": 458,
+  "StorageSize": 16397461896,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 1,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "txt2txt",
+  "SupportPaiModelGallery": [
+   "deploy",
+   "train",
+   "evaluation"
+  ],
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": true,
+  "SwingDeployInfo": null,
+  "Tags": [],
+  "Tasks": [
+   {
+    "ChineseName": "文本生成",
+    "Description": "",
+    "DomainName": "nlp",
+    "Id": 22,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "text-generation",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"text-generation\", \"inputs\": [{\"type\": \"text\", \"validator\": {\"max_words\": \"1000\"}, \"displayType\": \"OnlyTextArea\"}], \"output\": {\"displayType\": \"ReadonlyText\", \"transformOutputs\": [{\"outputKey\": \"text\"}], \"displayOutputMapping\": \"text\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": [
+   {
+    "enable": true,
+    "enabled": false,
+    "examples": [
+     {
+      "inputs": [
+       {
+        "data": "你好",
+        "name": "text"
+       }
+      ],
+      "name": "",
+      "parameters": null,
+      "title": ""
+     }
+    ],
+    "inferencespec": null,
+    "inputs": null,
+    "parameters": null,
+    "task": "text-generation",
+    "template": {
+     "general": true
+    }
+   }
+  ]
+ },
+ "Message": "success",
+ "RequestId": "0959fff0-9f70-4181-b26e-71d53cda394f",
+ "Success": true
+}

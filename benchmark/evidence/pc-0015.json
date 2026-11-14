@@ -1,0 +1,74 @@
+{
+ "case_id": "pc-0015",
+ "repo": "XGenerationLab/xiyan_mcp_server",
+ "repo_url": "https://github.com/XGenerationLab/xiyan_mcp_server",
+ "head_sha": "7d3ee1caab605c6e27628fe2a2f84ab0a7c222a8",
+ "source_file": "src/xiyan_mcp_server/local_model/local_xiyan_server.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 2,
+    "text": "from modelscope import AutoModelForCausalLM, AutoTokenizer",
+    "sha256": "847e90095b638862a1649a3c2b12c899c6768a197aa67c4d479ba61b8baf7a80"
+   }
+  ],
+  "imports_sha256": "847e90095b638862a1649a3c2b12c899c6768a197aa67c4d479ba61b8baf7a80",
+  "kind": "modelscope_source_selected",
+  "role": "primary"
+ },
+ "model_id": "XGenerationLab/XiYanSQL-QwenCoder-3B-2502",
+ "model_binding": {
+  "name": "model_name",
+  "line": 6,
+  "text": "model_name = 'XGenerationLab/XiYanSQL-QwenCoder-3B-2502'",
+  "sha256": "0e31952532a96617f1081a9ca8dc0393d663b316bc70bf0a3b9cd73a0c841754"
+ },
+ "model_literals": [
+  {
+   "line": 6,
+   "text": "model_name = 'XGenerationLab/XiYanSQL-QwenCoder-3B-2502'",
+   "sha256": "0e31952532a96617f1081a9ca8dc0393d663b316bc70bf0a3b9cd73a0c841754"
+  }
+ ],
+ "call": {
+  "start": 7,
+  "end": 8,
+  "text": "local_model = AutoModelForCausalLM.from_pretrained(model_name, device_map='cpu',\n                                                   torch_dtype=torch.float32)",
+  "sha256": "6d7990ce759ae2b8c88ecde3baf4d09e2155cd4a522e229def2ea6f772f80383"
+ },
+ "revision": {
+  "revision": "",
+  "source": "unspecified"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 1,
+   "text": "from flask import Flask, request, jsonify"
+  },
+  {
+   "line": 2,
+   "text": "from modelscope import AutoModelForCausalLM, AutoTokenizer"
+  },
+  {
+   "line": 3,
+   "text": "import torch # require torch==2.2.2,accelerate>=0.26.0,numpy=2.2.3,modelscope"
+  },
+  {
+   "line": 4,
+   "text": ""
+  },
+  {
+   "line": 5,
+   "text": ""
+  },
+  {
+   "line": 6,
+   "text": "model_name = 'XGenerationLab/XiYanSQL-QwenCoder-3B-2502'"
+  }
+ ]
+}
