@@ -1,0 +1,763 @@
+[
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ",
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct-AWQ@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct-AWQ",
+        "source_field": "Data.License",
+        "retrieved_at": "2026-11-14T12:22:00.885739Z",
+        "status": "ok",
+        "raw_value": "apache-2.0"
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct-AWQ",
+    "lineage_role": "root",
+    "lineage_depth": 0,
+    "lineage_status": "complete",
+    "lineage_complete": true,
+    "lineage_truncation_reason": null,
+    "unresolved_upstream_models": [],
+    "lineage_cycles": [],
+    "max_upstream_depth": null,
+    "max_upstream_nodes": 128,
+    "max_depth_seen": 2,
+    "resolved_upstream_count": 2,
+    "include_downstream": false,
+    "risk_level": 2,
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
+    "license_recognized": true,
+    "risk_note": "license_recognized",
+    "ai_analysis": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "model_profile",
+      "status": "ok",
+      "subject": {
+        "model_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+        "revision": "master",
+        "license_fact": "apache-2.0",
+        "fact_source": "ModelScope",
+        "source_bundle_sha256": "ad9623d1d8a354e2a59f9cc960436265bba40642c7bc501bf20f7b62f35093db"
+      },
+      "provider": {
+        "provider": "openai-compatible",
+        "model": "Qwen/Qwen3.5-27B",
+        "base_url": "https://api-inference.modelscope.cn/v1",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-11-14T12:23:01Z",
+      "summary": "The model Qwen/Qwen2.5-7B-Instruct-AWQ is licensed under the Apache License, Version 2.0 (apache-2.0). This license permits commercial use, modification, and distribution of the Work and Derivative Works, subject to attribution and notice retention conditions.",
+      "claims": [
+        {
+          "claim_id": "claim-49c8addf6ec1",
+          "dimension": "commercial_use",
+          "dimension_zh": "商业使用",
+          "state": "allowed",
+          "state_zh": "允许",
+          "statement": "Commercial use is permitted under the Apache License 2.0 grant of copyright license.",
+          "condition": "Redistribution requires providing a copy of the License, retaining notices, and stating changes in modified files.",
+          "conditions": [
+            {
+              "text": "Redistribution requires providing a copy of the License, retaining notices, and stating changes in modified files.",
+              "source_path": "LICENSE",
+              "quote": "4. Redistribution. You may reproduce and distribute copies of the\n      Work or Derivative Works thereof in any medium, with or without\n      modifications, and in Source or Object form, provided that You\n      meet the following conditions:\n\n      (a) You must give any other recipients of the Work or\n          Derivative Works a copy of this License; and\n\n      (b) You must cause any modified files to carry prominent notices\n          stating that You changed the files; and\n\n      (c) You must retain, in the Source form of any Derivative Works\n          that You distribute, all copyright, patent, trademark, and\n          attribution notices from the Source form of the Work,\n          excluding those notices that do not pertain to any part of\n          the Derivative Works;"
+            }
+          ],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.8,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "cross_document_support": 0.02
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct-AWQ/file/view/master/LICENSE",
+            "quote": "2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.",
+            "quote_sha256": "6c74e2b04a4cb1fe69016bda0f6cd96867a9973a82238d93898e9a33d1e89a39",
+            "file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+            "confidence": 0.78,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct-AWQ/file/view/master/LICENSE",
+              "quote": "2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.",
+              "quote_sha256": "6c74e2b04a4cb1fe69016bda0f6cd96867a9973a82238d93898e9a33d1e89a39",
+              "file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+              "confidence": 0.78,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            },
+            {
+              "source_path": "README.md",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct-AWQ/file/view/master/README.md",
+              "quote": "license: apache-2.0",
+              "quote_sha256": "f3cae36c4cdc3eb2e8a8d88ad4f1462364f750a68b490ba70821491d55f8de9e",
+              "file_sha256": "0d578d3f0fc880ccaea80fcbfd49161b7c9b98e20e235b0a03608b9958c622af",
+              "confidence": 0.71,
+              "confidence_factors": {
+                "base": 0.48,
+                "readme": 0.08,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            }
+          ],
+          "evidence_count": 2,
+          "cross_document_support": true,
+          "conflict": false,
+          "human_review": "pending"
+        },
+        {
+          "claim_id": "claim-39640a4c1660",
+          "dimension": "training_other_models",
+          "dimension_zh": "训练其他模型",
+          "state": "allowed",
+          "state_zh": "允许",
+          "statement": "Creating Derivative Works, which encompasses fine-tuning or training based on the model, is permitted under the copyright license grant.",
+          "condition": "",
+          "conditions": [],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.78,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct-AWQ/file/view/master/LICENSE",
+            "quote": "\"Derivative Works\" shall mean any work, whether in Source or Object\n      form, that is based on (or derived from) the Work and for which the\n      editorial revisions, annotations, elaborations, or other modifications\n      represent, as a whole, an original work of authorship.",
+            "quote_sha256": "6ee5985fc37224187538676205c2e54aee87a2853e8aa05e01676b5846189ddc",
+            "file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+            "confidence": 0.78,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct-AWQ/file/view/master/LICENSE",
+              "quote": "\"Derivative Works\" shall mean any work, whether in Source or Object\n      form, that is based on (or derived from) the Work and for which the\n      editorial revisions, annotations, elaborations, or other modifications\n      represent, as a whole, an original work of authorship.",
+              "quote_sha256": "6ee5985fc37224187538676205c2e54aee87a2853e8aa05e01676b5846189ddc",
+              "file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+              "confidence": 0.78,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            },
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct-AWQ/file/view/master/LICENSE",
+              "quote": "2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.",
+              "quote_sha256": "6c74e2b04a4cb1fe69016bda0f6cd96867a9973a82238d93898e9a33d1e89a39",
+              "file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+              "confidence": 0.78,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            }
+          ],
+          "evidence_count": 2,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        }
+      ],
+      "conflicts": [],
+      "gaps": [
+        {
+          "dimension": "fine_tuned_redistribution",
+          "dimension_zh": "微调版本再分发",
+          "reason": "证据不足"
+        },
+        {
+          "dimension": "commercial_license_request",
+          "dimension_zh": "商用授权申请方式",
+          "reason": "证据不足"
+        }
+      ],
+      "simulation": false,
+      "simulation_note": "",
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      }
+    },
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\smoke_project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "openai-compatible",
+        "model": "Qwen/Qwen3.5-27B",
+        "base_url": "https://api-inference.modelscope.cn/v1",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-11-14T12:24:51Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "The project imports vLLM and instantiates an LLM object with a specific model ID for local execution.",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "from vllm import LLM\n\nCHAT_MODEL = \"Qwen/Qwen2.5-7B-Instruct-AWQ\"\n\n\ndef build_chat_model():\n    return LLM(model=CHAT_MODEL, quantization=\"awq\")",
+            "quote_sha256": "04908c7c11d36bea2aaed4465bb7168456f7a1040b5991af18952e55a9438ec5",
+            "file_sha256": "3e513eb9d2d0f8f7fc09b9e3c504eee928c05cf5b80a0454565c102aff26318e"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      }
+    }
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen2.5-7B-Instruct",
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B-Instruct@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B-Instruct",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-7B-Instruct@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+        "source_field": "Data.License",
+        "retrieved_at": "2026-11-14T12:22:01.756464Z",
+        "status": "ok",
+        "raw_value": "apache-2.0"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "Data.BaseModel",
+        "retrieved_at": "2026-11-14T12:22:03.044490Z",
+        "status": "ok",
+        "raw_value": "Qwen/Qwen2.5-7B-Instruct"
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-11-14T12:22:03.044490Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 0,
+          "LineAgeType": "Finetuned",
+          "LineAgeTypeCh": "微调",
+          "Name": "Qwen/Qwen2.5-7B-Instruct"
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B-Instruct",
+    "lineage_role": "upstream",
+    "lineage_depth": 1,
+    "lineage_status": "resolved",
+    "lineage_type": "Finetuned",
+    "lineage_type_ch": "微调",
+    "risk_level": 2,
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
+    "license_recognized": true,
+    "risk_note": "license_recognized",
+    "ai_analysis": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "model_profile",
+      "status": "ok",
+      "subject": {
+        "model_id": "Qwen/Qwen2.5-7B-Instruct",
+        "revision": "master",
+        "license_fact": "apache-2.0",
+        "fact_source": "ModelScope",
+        "source_bundle_sha256": "35ae2bdb3f3d8c83287ed5b7135150cc4d0666ee74f20153ccb18f4cbbba53ce"
+      },
+      "provider": {
+        "provider": "openai-compatible",
+        "model": "Qwen/Qwen3.5-27B",
+        "base_url": "https://api-inference.modelscope.cn/v1",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-11-14T12:24:07Z",
+      "summary": "该模型采用 Apache License Version 2.0 许可。允许商业使用、修改、分发及创建衍生作品（包括用于训练其他模型），需遵守保留版权声明等条件。",
+      "claims": [
+        {
+          "claim_id": "claim-58022c1b2340",
+          "dimension": "commercial_use",
+          "dimension_zh": "商业使用",
+          "state": "allowed",
+          "state_zh": "允许",
+          "statement": "Apache License 2.0 允许商业使用。",
+          "condition": "分发时必须提供许可证副本。",
+          "conditions": [
+            {
+              "text": "分发时必须提供许可证副本。",
+              "source_path": "LICENSE",
+              "quote": "(a) You must give any other recipients of the Work or\n          Derivative Works a copy of this License;"
+            },
+            {
+              "text": "必须保留版权、专利、商标和归属通知。",
+              "source_path": "LICENSE",
+              "quote": "(c) You must retain, in the Source form of any Derivative Works\n          that You distribute, all copyright, patent, trademark, and\n          attribution notices from the Source form of the Work,"
+            }
+          ],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.8,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02,
+            "cross_document_support": 0.02
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct/file/view/master/LICENSE",
+            "quote": "Apache License\n                           Version 2.0, January 2004",
+            "quote_sha256": "3f17782eef51ae86f18fdd6832f5918e2b40f688b52c9adc07ba6ec1024ef408",
+            "file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+            "confidence": 0.78,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct/file/view/master/LICENSE",
+              "quote": "Apache License\n                           Version 2.0, January 2004",
+              "quote_sha256": "3f17782eef51ae86f18fdd6832f5918e2b40f688b52c9adc07ba6ec1024ef408",
+              "file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+              "confidence": 0.78,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            },
+            {
+              "source_path": "README.md",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct/file/view/master/README.md",
+              "quote": "license: apache-2.0",
+              "quote_sha256": "f3cae36c4cdc3eb2e8a8d88ad4f1462364f750a68b490ba70821491d55f8de9e",
+              "file_sha256": "f366f33bbf6bcadbb7d87f0a21a7b65584a56b8d58b0743c77c88bee625b93a6",
+              "confidence": 0.71,
+              "confidence_factors": {
+                "base": 0.48,
+                "readme": 0.08,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            },
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct/file/view/master/LICENSE",
+              "quote": "2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.",
+              "quote_sha256": "6c74e2b04a4cb1fe69016bda0f6cd96867a9973a82238d93898e9a33d1e89a39",
+              "file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+              "confidence": 0.78,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            }
+          ],
+          "evidence_count": 3,
+          "cross_document_support": true,
+          "conflict": false,
+          "human_review": "pending"
+        },
+        {
+          "claim_id": "claim-c834ab2b5625",
+          "dimension": "training_other_models",
+          "dimension_zh": "训练其他模型",
+          "state": "allowed",
+          "state_zh": "允许",
+          "statement": "许可授予了准备衍生作品的权利，这涵盖了基于本模型进行训练或微调的行为。",
+          "condition": "衍生作品的分发需符合许可证条款。",
+          "conditions": [
+            {
+              "text": "衍生作品的分发需符合许可证条款。",
+              "source_path": "LICENSE",
+              "quote": "\"Derivative Works\" shall mean any work, whether in Source or Object\n      form, that is based on (or derived from) the Work and for which the\n      editorial revisions, annotations, elaborations, or other modifications\n      represent, as a whole, an original work of authorship."
+            }
+          ],
+          "exceptions": [],
+          "evidence_level": "C",
+          "confidence": 0.78,
+          "confidence_factors": {
+            "base": 0.48,
+            "license_file": 0.15,
+            "exact_quote": 0.1,
+            "source_sha256": 0.03,
+            "quote_context": 0.02
+          },
+          "evidence": {
+            "source_path": "LICENSE",
+            "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct/file/view/master/LICENSE",
+            "quote": "2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.",
+            "quote_sha256": "6c74e2b04a4cb1fe69016bda0f6cd96867a9973a82238d93898e9a33d1e89a39",
+            "file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+            "confidence": 0.78,
+            "confidence_factors": {
+              "base": 0.48,
+              "license_file": 0.15,
+              "exact_quote": 0.1,
+              "source_sha256": 0.03,
+              "quote_context": 0.02
+            }
+          },
+          "evidences": [
+            {
+              "source_path": "LICENSE",
+              "source_url": "https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct/file/view/master/LICENSE",
+              "quote": "2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.",
+              "quote_sha256": "6c74e2b04a4cb1fe69016bda0f6cd96867a9973a82238d93898e9a33d1e89a39",
+              "file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+              "confidence": 0.78,
+              "confidence_factors": {
+                "base": 0.48,
+                "license_file": 0.15,
+                "exact_quote": 0.1,
+                "source_sha256": 0.03,
+                "quote_context": 0.02
+              }
+            }
+          ],
+          "evidence_count": 1,
+          "cross_document_support": false,
+          "conflict": false,
+          "human_review": "pending"
+        }
+      ],
+      "conflicts": [],
+      "gaps": [
+        {
+          "dimension": "fine_tuned_redistribution",
+          "dimension_zh": "微调版本再分发",
+          "reason": "证据不足"
+        },
+        {
+          "dimension": "commercial_license_request",
+          "dimension_zh": "商用授权申请方式",
+          "reason": "证据不足"
+        }
+      ],
+      "simulation": false,
+      "simulation_note": "",
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      }
+    },
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\smoke_project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "openai-compatible",
+        "model": "Qwen/Qwen3.5-27B",
+        "base_url": "https://api-inference.modelscope.cn/v1",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-11-14T12:24:51Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "The project imports vLLM and instantiates an LLM object with a specific model ID for local execution.",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "from vllm import LLM\n\nCHAT_MODEL = \"Qwen/Qwen2.5-7B-Instruct-AWQ\"\n\n\ndef build_chat_model():\n    return LLM(model=CHAT_MODEL, quantization=\"awq\")",
+            "quote_sha256": "04908c7c11d36bea2aaed4465bb7168456f7a1040b5991af18952e55a9438ec5",
+            "file_sha256": "3e513eb9d2d0f8f7fc09b9e3c504eee928c05cf5b80a0454565c102aff26318e"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      }
+    }
+  },
+  {
+    "entity_key": "model:modelscope/Qwen/Qwen2.5-7B",
+    "canonical_id": "model:modelscope/Qwen/Qwen2.5-7B@master",
+    "asset_type": "model",
+    "name": "Qwen/Qwen2.5-7B",
+    "version": "master",
+    "purls": [
+      "pkg:modelscope/Qwen/Qwen2.5-7B@master"
+    ],
+    "license": "Apache-2.0",
+    "evidence_chain": [
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+        "source_field": "Data.License",
+        "retrieved_at": "2026-11-14T12:22:02.769447Z",
+        "status": "ok",
+        "raw_value": "apache-2.0"
+      },
+      {
+        "evidence_level": "A",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "Data.BaseModel",
+        "retrieved_at": "2026-11-14T12:22:03.044490Z",
+        "status": "ok",
+        "raw_value": "Qwen/Qwen2.5-7B"
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-11-14T12:22:03.044490Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 0,
+          "LineAgeType": "Base Model",
+          "LineAgeTypeCh": "基模型",
+          "Name": "Qwen/Qwen2.5-7B"
+        }
+      },
+      {
+        "evidence_level": "B",
+        "source_api": "modelscope",
+        "source_url": null,
+        "source_field": "lineage.ParentsModels",
+        "retrieved_at": "2026-11-14T12:22:03.044490Z",
+        "status": "ok",
+        "raw_value": {
+          "Level": 1,
+          "LineAgeType": "Base Model",
+          "LineAgeTypeCh": "基模型",
+          "Name": "Qwen/Qwen2.5-7B"
+        }
+      }
+    ],
+    "snapshot_id": "modelscope-Qwen__Qwen2.5-7B-Instruct-AWQ",
+    "merge_status": "KEPT_SEPARATE",
+    "reason_code": "NO_MERGE_CANDIDATE",
+    "rule_version": "merge-policy-v3",
+    "hashes": [],
+    "source_file": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+    "lineage_role": "upstream",
+    "lineage_depth": 2,
+    "lineage_status": "resolved",
+    "lineage_type": "Base Model",
+    "lineage_type_ch": "基模型",
+    "risk_level": 2,
+    "decision": "SAFE",
+    "decision_zh": "安全（绿）",
+    "license_recognized": true,
+    "risk_note": "license_recognized",
+    "ai_analysis": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "model_profile",
+      "status": "no_evidence",
+      "subject": {
+        "model_id": "Qwen/Qwen2.5-7B",
+        "revision": "master",
+        "license_fact": "apache-2.0",
+        "fact_source": "ModelScope",
+        "source_bundle_sha256": "0bf9ffc6f413d9d871839ae95f8c28c0a91c15c55aa77fdfeb64a279f3df9143"
+      },
+      "provider": {
+        "provider": "openai-compatible",
+        "model": "Qwen/Qwen3.5-27B",
+        "base_url": "https://api-inference.modelscope.cn/v1",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-11-14T12:24:39Z",
+      "summary": "The model Qwen/Qwen2.5-7B is licensed under Apache License, Version 2.0 (apache-2.0). This license permits commercial use, modification, and distribution subject to standard attribution requirements.",
+      "claims": [],
+      "conflicts": [],
+      "gaps": [
+        {
+          "dimension": "training_other_models",
+          "dimension_zh": "训练其他模型",
+          "reason": "证据不足"
+        },
+        {
+          "dimension": "commercial_use",
+          "dimension_zh": "商业使用",
+          "reason": "引文未在指定原文中精确命中"
+        },
+        {
+          "dimension": "modification",
+          "dimension_zh": "修改与衍生",
+          "reason": "引文未在指定原文中精确命中"
+        },
+        {
+          "dimension": "distribution",
+          "dimension_zh": "distribution",
+          "reason": "引文未在指定原文中精确命中"
+        },
+        {
+          "dimension": "fine_tuned_redistribution",
+          "dimension_zh": "微调版本再分发",
+          "reason": "证据不足"
+        },
+        {
+          "dimension": "commercial_license_request",
+          "dimension_zh": "商用授权申请方式",
+          "reason": "证据不足"
+        }
+      ],
+      "simulation": false,
+      "simulation_note": "",
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      }
+    },
+    "ai_project_context": {
+      "schema_version": "ai-analysis/v2",
+      "analysis_type": "project_context",
+      "status": "ok",
+      "subject": {
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\smoke_project",
+        "model_count": 0
+      },
+      "provider": {
+        "provider": "openai-compatible",
+        "model": "Qwen/Qwen3.5-27B",
+        "base_url": "https://api-inference.modelscope.cn/v1",
+        "timeout": 60.0
+      },
+      "prompt_version": "modelscope-license-audit-v2",
+      "generated_at": "2026-11-14T12:24:51Z",
+      "uses": [
+        {
+          "use_type": "local_inference",
+          "use_type_zh": "本地推理",
+          "statement": "The project imports vLLM and instantiates an LLM object with a specific model ID for local execution.",
+          "evidence_level": "C",
+          "confidence": 0.83,
+          "evidence": {
+            "source_path": "app.py",
+            "quote": "from vllm import LLM\n\nCHAT_MODEL = \"Qwen/Qwen2.5-7B-Instruct-AWQ\"\n\n\ndef build_chat_model():\n    return LLM(model=CHAT_MODEL, quantization=\"awq\")",
+            "quote_sha256": "04908c7c11d36bea2aaed4465bb7168456f7a1040b5991af18952e55a9438ec5",
+            "file_sha256": "3e513eb9d2d0f8f7fc09b9e3c504eee928c05cf5b80a0454565c102aff26318e"
+          },
+          "human_review": "pending"
+        }
+      ],
+      "rejected": [],
+      "fact_policy": {
+        "ai_may_change_license": false,
+        "ai_may_change_decision": false,
+        "ai_evidence_level": "C",
+        "human_review_required": true
+      }
+    }
+  }
+]

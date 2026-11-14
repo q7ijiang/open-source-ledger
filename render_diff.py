@@ -20,6 +20,7 @@ from pathlib import Path
 import build_graph
 import delta_engine
 import propagation_engine
+from portable_paths import sanitize_text, sanitize_value
 from render_diff_operational import operational_snapshot
 from render_layout import is_aggregate_node, layout_graph
 from ai_layer.schemas import semantic_diff
@@ -1091,6 +1092,7 @@ def main() -> None:
         "certificates": certs,
         "ai_diff": ai_diff,
     }
+    data = sanitize_value(data)
     title = args.title or (
         "%s → %s 血缘风险传播" % (args.before.stem, args.after.stem)
     )
@@ -1099,7 +1101,7 @@ def main() -> None:
     if args.report is not None:
         if not args.report.exists():
             raise FileNotFoundError(f"report not found: {args.report}")
-        report_markdown = args.report.read_text(encoding="utf-8")
+        report_markdown = sanitize_text(args.report.read_text(encoding="utf-8"))
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     echarts_src = _copy_echarts(args.output.parent)

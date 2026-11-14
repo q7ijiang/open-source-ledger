@@ -74,3 +74,27 @@ def test_runtime_files_do_not_embed_machine_specific_home_paths() -> None:
     assert "C:\\Users\\" not in combined
     assert "/Users/" not in combined
     assert "/home/" not in combined
+
+
+def test_snapshot_cache_prefix_is_stable_across_days() -> None:
+    for path in ACTION_FILES:
+        text = path.read_text(encoding="utf-8")
+        assert "DATE_UTC" not in text, path
+        assert "restore-keys" in text, path
+        assert (
+            "prefix=license-watch-${GITHUB_REPOSITORY_ID:-local}-${SAFE_REF}"
+            in text
+        ), path
+
+
+def test_python_dependencies_are_exactly_pinned() -> None:
+    raw = (REPO_ROOT / "requirements.txt").read_bytes()
+    raw.decode("ascii")  # pip may read requirements.txt with the local ANSI codec.
+    lines = [
+        line.strip()
+        for line in raw.decode("ascii").splitlines()
+        if line.strip() and not line.strip().startswith("#")
+    ]
+
+    assert lines
+    assert all(re.fullmatch(r"[A-Za-z0-9_.-]+==[A-Za-z0-9_.+-]+", line) for line in lines), lines

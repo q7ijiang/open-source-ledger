@@ -496,7 +496,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\qwen_image_license_tightening\\direct\\project",
+        "project_path": "tests\\fixtures\\projects\\qwen_image_license_tightening\\direct\\project",
         "model_count": 0
       },
       "provider": {

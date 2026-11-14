@@ -48,7 +48,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -151,7 +151,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -268,7 +268,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -523,7 +523,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -626,7 +626,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -911,7 +911,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -998,7 +998,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -1101,7 +1101,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -1218,7 +1218,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -1305,7 +1305,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -1408,7 +1408,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -1525,7 +1525,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -1628,7 +1628,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -1715,7 +1715,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -1818,7 +1818,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -1905,7 +1905,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -2008,7 +2008,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {
@@ -2095,7 +2095,7 @@
       "analysis_type": "project_context",
       "status": "ok",
       "subject": {
-        "project_path": "C:\\Users\\Qijiang\\Documents\\GitHub\\open-source-ledger\\tests\\fixtures\\projects\\real_modelscope\\full_project",
+        "project_path": "tests\\fixtures\\projects\\real_modelscope\\full_project",
         "model_count": 0
       },
       "provider": {

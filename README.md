@@ -195,6 +195,12 @@ python -m pytest -q
 - B：工具从 A 级事实推导出的血缘边、稳定标识和 BOM 映射。
 - C：AI 条款抽取、项目使用上下文、语义 Diff、启发式或失败降级结果，必须人工确认。
 
+## 第三方组件与资源
+
+仓库分发 ECharts/zrender，并依赖 Python 包、ModelScope 数据和可选的
+OpenAI-compatible 服务。版本、许可证、来源与模型权重边界见
+[第三方组件与资源声明](THIRD_PARTY_NOTICES.md)。
+
 ## 免责声明
 
 本工具提供基于证据的辅助审计，不构成法律意见。

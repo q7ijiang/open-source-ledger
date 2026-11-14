@@ -1,6 +1,8 @@
-networkx
-matplotlib
-pytest
-python-dotenv
-requests
-streamlit
+# Semifinal evidence freeze: exact versions, Python 3.10 compatible.
+# Keep this file ASCII-only so pip can read it on non-UTF-8 Windows locales.
+networkx==3.4.2
+matplotlib==3.10.9
+pytest==9.1.1
+python-dotenv==1.2.4
+requests==2.34.2
+streamlit==1.54.0

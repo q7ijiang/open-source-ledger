@@ -8,6 +8,7 @@ import json
 import shutil
 from pathlib import Path
 
+from portable_paths import sanitize_text, sanitize_value
 from render_layout import layout_graph
 
 DECISION_COLOR = {
@@ -713,7 +714,7 @@ def main() -> None:
     args = parser.parse_args()
 
     graph = json.loads(args.input.read_text(encoding="utf-8"))
-    data = prepare_graph(graph)
+    data = sanitize_value(prepare_graph(graph))
     nodes = data["nodes"]
     edges = data["edges"]
     layout = data["layout"]
@@ -727,7 +728,7 @@ def main() -> None:
     if args.report is not None:
         if not args.report.exists():
             raise FileNotFoundError(f"report not found: {args.report}")
-        report_markdown = args.report.read_text(encoding="utf-8")
+        report_markdown = sanitize_text(args.report.read_text(encoding="utf-8"))
 
     html = TPL
     replacements = {

@@ -1,0 +1,64 @@
+{
+  "schema_version": "real-ai-evidence-verification/v1",
+  "verified_at": "2026-11-14T12:26:29Z",
+  "provider": {
+    "provider": "openai-compatible",
+    "model": "Qwen/Qwen3.5-27B",
+    "base_url": "https://api-inference.modelscope.cn/v1",
+    "timeout": 60.0
+  },
+  "prompt_version": "modelscope-license-audit-v2",
+  "bundle_generated_at": "2026-11-14T12:24:51Z",
+  "claim_checks": [
+    {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "dimension": "commercial_use",
+      "state": "allowed",
+      "source_path": "LICENSE",
+      "quote_exact": true,
+      "evidence_level": "C",
+      "human_review": "pending"
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "dimension": "training_other_models",
+      "state": "allowed",
+      "source_path": "LICENSE",
+      "quote_exact": true,
+      "evidence_level": "C",
+      "human_review": "pending"
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "dimension": "commercial_use",
+      "state": "allowed",
+      "source_path": "LICENSE",
+      "quote_exact": true,
+      "evidence_level": "C",
+      "human_review": "pending"
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "dimension": "training_other_models",
+      "state": "allowed",
+      "source_path": "LICENSE",
+      "quote_exact": true,
+      "evidence_level": "C",
+      "human_review": "pending"
+    }
+  ],
+  "all_quotes_exact": true,
+  "all_c_level_pending": true,
+  "files": {
+    "ai_analysis.json": "71c0a492ada894232b6068bb9c9f1fae31355ccc226f5f20c15a2bd68072353a",
+    "assets.json": "55d7d946663604d71677adf8be645da7c29b3fdf7dac51bb4cab26816c222a78",
+    "bom.json": "e6e32baafe641102756945499e455f3208f55181e86f41bcc6f32bb99322e54c",
+    "graph.json": "7703f67c3aaf91e3944358de3ad353259ada553f099823a61cfcea9c85945152",
+    "lineage.html": "dfa46ee53f407b916cc35551a6cf4a557343b873fb0104e5a4cdf5d70e9aaf9e",
+    "README.md": "e4ccba1d3694194403369d7daf9aac040ec10bb05023830ce898c88a689d3243",
+    "report.md": "ed485deb5c11d4b977cdcb7d8ec5a9ff27d537cbdefa5386ebb00318ba067300",
+    "source_bundles/Qwen__Qwen2.5-7B-Instruct-AWQ.json": "6555ed3427cf7f529abd6e674f5836eb15d6f4487703dd7e68e0f884a289f719",
+    "source_bundles/Qwen__Qwen2.5-7B-Instruct.json": "fe14964d69feba784524aa703bfa77cfd579168bba58f44043e2829379e2b2a9",
+    "source_bundles/Qwen__Qwen2.5-7B.json": "50cff06ec93db589bf7862c2504702062177d8d7f3348371d85cffd40a3c379e"
+  }
+}

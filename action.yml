@@ -105,8 +105,9 @@ runs:
       shell: bash
       run: |
         SAFE_REF="${GITHUB_REF_NAME//\//-}"
-        DATE_UTC="$(date -u +'%Y-%m-%d')"
-        echo "prefix=license-watch-${GITHUB_REPOSITORY_ID:-local}-${SAFE_REF}-${DATE_UTC}" >> "$GITHUB_OUTPUT"
+        # Keep the restore prefix stable across days; otherwise every run
+        # creates a new date-scoped cache and Diff always skips as "first run".
+        echo "prefix=license-watch-${GITHUB_REPOSITORY_ID:-local}-${SAFE_REF}" >> "$GITHUB_OUTPUT"
 
     - name: Restore previous BOM snapshot
       if: steps.fork-guard.outputs.skip != 'true'
