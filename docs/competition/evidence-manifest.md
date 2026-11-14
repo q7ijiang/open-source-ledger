@@ -40,11 +40,37 @@ python -m pytest -q
 
 ## 3. GitHub Actions 运行
 
-最近一次在 `main` 基线上成功的 ModelScope License Risk Watch：
+### 3.1 缓存修复后的连续验证
+
+| 项目 | Run #33 | Run #34 |
+| --- | --- | --- |
+| 链接 | [#33](https://github.com/q7ijiang/open-source-ledger/actions/runs/43596989191) | [#34](https://github.com/q7ijiang/open-source-ledger/actions/runs/43598183588) |
+| 事件 | `workflow_dispatch` | `workflow_dispatch` |
+| 提交 | `28d438828cfebedf9f288a9d1f934a9a74e15ba1` | 同左 |
+| 结果 | `success` | `success` |
+| 开始 | 2026-11-14T12:53:12Z | 2026-11-14T13:07:38Z |
+| 结束 | 2026-11-14T13:04:20Z | 2026-11-14T13:17:12Z |
+| `Create first-run baseline report` | **skipped** | **skipped** |
+| `Compare previous and latest BOM` | **success** | **success** |
+| Artifact | `license-watch-evidence` | `license-watch-evidence` |
+| Artifact 大小 | 25,035 bytes | 25,093 bytes |
+| Artifact SHA256 | `a2ef12f42665385006d0951dc8a658b69599768fab7791f1492ea5033724d27e` | `ed86ef962725d5a00c7ba68873e4e9a925c2aee4236a87657dfbcca3aa1a88f1` |
+| Artifact 过期时间 | 2026-11-28T13:04:16Z | 2026-11-28T13:17:04Z |
+
+两次运行都完成了：
+
+- 项目扫描与 t1 BOM 生成；
+- 从缓存恢复历史 BOM；
+- `Compare previous and latest BOM` 实际执行；
+- 风险判定、BOM 快照保存和 Artifact 上传。
+
+`Create first-run baseline report` 两次均为 skipped，说明两次都恢复了历史 BOM，而不是
+反复建立基线。这直接验证了缓存键修复和 CI Diff 链路。
+
+### 3.2 修复前的基线运行
 
 | 项目 | 值 |
 | --- | --- |
-| Workflow | ModelScope License Risk Watch |
 | Run | [#26](https://github.com/q7ijiang/open-source-ledger/actions/runs/42590975785) |
 | 事件 | `schedule` |
 | 结果 | `success` |
@@ -56,15 +82,15 @@ python -m pytest -q
 | Artifact SHA256 | `5bf1d1b73b3b5506b8fe3d853d6fc43aa8c5786162872aa360720a868b4e1c43` |
 | Artifact 过期时间 | 2026-11-23T09:16:01Z |
 
-必须如实说明的边界：
+修复前边界：
 
-- 该 Run 成功完成了项目扫描、BOM 生成、基线报告和 Artifact 上传。
+- Run #26 成功完成了项目扫描、BOM 生成、基线报告和 Artifact 上传。
 - `Compare previous and latest BOM` 步骤被 **skipped**，因为缓存中没有恢复历史 BOM。
 - Run #25（2026-11-02）同样跳过了 Diff。
-- 该 Run 未配置真实 AI 服务，因此 Artifact 中的 AI 证据不能表述为真实模型调用。
-- Artifact 尚未下载并固化到本地；公开演示前应下载并记录其内容清单与校验值。
+- Run #26 未配置真实 AI 服务，因此其 Artifact 中的 AI 证据不能表述为真实模型调用。
+- Run #26 的 Artifact 尚未下载并固化到本地。
 
-### 3.1 已定位并修复的 CI 缺陷
+### 3.3 已定位并修复的 CI 缺陷
 
 原缓存键是：
 
@@ -76,16 +102,15 @@ restore-keys: license-watch-<repo>-<ref>-<UTC 日期>-
 日期进入 `prefix` 后，跨天运行无法命中前一天缓存，所以每次都被当作首次运行，
 Diff 永远 skipped。这会让“持续监测”在 Actions 中失效。
 
-工作区已改为稳定前缀：
+已改为稳定前缀：
 
 ```text
 license-watch-<repo>-<ref>
 restore-keys: license-watch-<repo>-<ref>-
 ```
 
-并新增回归测试，禁止日期再次进入缓存前缀。该修复尚未在 GitHub 上运行验证；
-下次 `workflow_dispatch` 必须确认 `Compare previous and latest BOM` 为 success，
-而不是 skipped，才能把 CI Diff 作为比赛证据。
+并新增回归测试，禁止日期再次进入缓存前缀。Run #33 和 Run #34 已验证：
+连续两次运行均恢复历史 BOM 并成功执行 Diff。
 
 
 ## 4. 依赖与第三方资源
@@ -163,8 +188,7 @@ C:/Users/
 ## 7. 待补材料
 
 - [x] 真实 AI 运行与 `ai_analysis.json` 冻结。
-- [ ] 推送缓存键修复后，用 `workflow_dispatch` 验证 `Compare previous and latest BOM`
-      为 success；需要至少两次运行（第一次建基线，第二次执行 Diff）。
+- [x] 缓存键修复后连续运行两次：Run #33/#34 均为 success，Diff 均实际执行。
 - [ ] 半决赛 PPT（匿名检查：无学校、校徽、学院、指导教师、导师项目名称）。
 - [ ] 6 分钟以内、无剪辑、无快进、全员出镜的答辩视频。
 - [ ] 最新一次成功 Actions Run 的 Artifact 下载与内容清单。
