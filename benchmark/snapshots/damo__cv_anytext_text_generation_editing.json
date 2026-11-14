@@ -1,0 +1,262 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": null,
+  "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+  "Backbone": [
+   "diffusion"
+  ],
+  "BackendSupport": {
+   "architectures": null,
+   "backend_info": {
+    "deploy_task": null,
+    "lmdeploy": null,
+    "lmdeploy_turbomind": null,
+    "ollama": null,
+    "sglang": null,
+    "vllm": null
+   },
+   "model_id": ""
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "AnyText多语言视觉文字生成与编辑模型",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "shaoxuan",
+  "CreatedTime": 1703579677,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "",
+  "Domain": [
+   "multi-modal"
+  ],
+  "Downloads": 110915,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 241819,
+  "Integrating": 2,
+  "IntegrationFailureLog": "k [00:00<00:00, 48.7MB/s]\n\nDownloading:   0%|          | 0.00/9.26k [00:00<?, ?B/s]\nDownloading: 100%|██████████| 9.26k/9.26k [00:00<00:00, 65.9MB/s]\n\nDownloading:   0%|          | 0.00/546k [00:00<?, ?B/s]\nDownloading: 100%|██████████| 546k/546k [00:00<00:00, 3.24MB/s]\nDownloading: 100%|██████████| 546k/546k [00:00<00:00, 3.23MB/s]\n\nDownloading:   0%|          | 0.00/60.7k [00:00<?, ?B/s]\nDownloading: 100%|██████████| 60.7k/60.7k [00:00<00:00, 990kB/s]\n\nDownloading:   0%|          | 0.00/389 [00:00<?, ?B/s]\nDownloading: 100%|██████████| 389/389 [00:00<00:00, 3.78MB/s]\n\nDownloading:   0%|          | 0.00/327k [00:00<?, ?B/s]\nDownloading: 100%|██████████| 327k/327k [00:00<00:00, 2.74MB/s]\nDownloading: 100%|██████████| 327k/327k [00:00<00:00, 2.73MB/s]\n\nDownloading:   0%|          | 0.00/2.12M [00:00<?, ?B/s]\nDownloading: 100%|██████████| 2.12M/2.12M [00:00<00:00, 10.2MB/s]\nDownloading: 100%|██████████| 2.12M/2.12M [00:00<00:00, 10.2MB/s]\n\nDownloading:   0%|          | 0.00/905 [00:00<?, ?B/s]\nDownloading: 100%|██████████| 905/905 [00:00<00:00, 10.7MB/s]\n\nDownloading:   0%|          | 0.00/152k [00:00<?, ?B/s]\nDownloading: 100%|██████████| 152k/152k [00:00<00:00, 1.83MB/s]\n\nDownloading:   0%|          | 0.00/138k [00:00<?, ?B/s]\nDownloading: 100%|██████████| 138k/138k [00:00<00:00, 1.38MB/s]\nDownloading: 100%|██████████| 138k/138k [00:00<00:00, 1.38MB/s]\n\nDownloading:   0%|          | 0.00/320k [00:00<?, ?B/s]\nDownloading: 100%|██████████| 320k/320k [00:00<00:00, 2.65MB/s]\nDownloading: 100%|██████████| 320k/320k [00:00<00:00, 2.64MB/s]\n\nDownloading:   0%|          | 0.00/939k [00:00<?, ?B/s]\nDownloading: 100%|██████████| 939k/939k [00:00<00:00, 4.85MB/s]\nDownloading: 100%|██████████| 939k/939k [00:00<00:00, 4.83MB/s]\nTraceback (most recent call last):\n  File \"/mnt/workspace/integration_tests/workspace/test_cv_anytext_text_generation_editing.py\", line 6, in <module>\n    inference = pipeline('my-anytext-task', model='./models')\nNameError: name 'pipeline' is not defined",
+  "IntegrationFailureReason": "1001",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1705048706,
+  "Libraries": [
+   "pytorch"
+  ],
+  "License": "Apache License 2.0",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {},
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "cv_anytext_text_generation_editing",
+  "NewVersion": "",
+  "NickName": "",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/86fc4b9c-4548-463c-8cbb-f37f68b87141.png",
+   "CreateCompetition": false,
+   "CreatedBy": "damoadmin",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"通义实验室(Institute for Intelligent Computing, aka Tongyi Lab) 专注于各领域大模型技术研发与创新应用。实验室研究方向涵盖LLM、多模态理解与生成、视觉AIGC、语音等多个领域。我们并积极推进研究成果的产业化落地。实验室同时积极参与开源社区建设，全方位拥抱开源社区，共同探索AI模型的开源开放。\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "通义实验室",
+   "GithubAddress": "",
+   "GmtCreated": "2022-08-03T17:01:55Z",
+   "GmtModified": "2026-10-20T05:43:50Z",
+   "Id": 1,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "iic",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 2
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "iic",
+  "ProtectedMode": 2,
+  "ReadMeContent": "# AnyText多语言文字生成与编辑\n\n近年来，随着AIGC的爆火，图片生成技术得到飞速发展，当前AI生成的图片已达到真假难辨的高保真度。不过，当合成图片中出现文字内容时，仍能够使AI露出马脚，因为当前主流方法尚无法在图片中生成准确可读的字符。最近半年来已有学者开始研究文本生成的问题，但这些方法大多以英文为主，无法解决中文这种字形繁杂、字符数以万计的文字生成。因此，我们提出了一种新颖的文字生成方法AnyText，通过创新性的算法设计，可以支持中文、英语、日语、韩语等多语言的文字生成，还支持对输入图片中的文字内容进行编辑。本模型所涉及的文字生成技术为电商海报、Logo设计、创意涂鸦、表情包等新型AIGC应用提供了可能性。 \n\n代码链接：https://github.com/tyxsspa/AnyText \n\n论文链接：https://arxiv.org/abs/2311.03054\n\n在线Demo：[创空间](https://modelscope.cn/studios/damo/studio_anytext)(推荐), [HuggingFace](https://huggingface.co/spaces/modelscope/AnyText)\n\n![anytext](description/sample.jpg)\n\n## 模型介绍\n\nAnyText主要基于扩散（Diffusion）模型，包含两个核心模块：隐空间辅助模块（Auxiliary Latent Module）和文本嵌入模块（Text Embedding Module）。其中，隐空间辅助模块对三类辅助信息（字形、文字位置和掩码图像）进行编码并构建隐空间特征图像，用来辅助视觉文字的生成；文本嵌入模块则将描述词中的语义部分与待生成文本的字形部分解耦，使用图像编码模块单独提取字形信息后再与语义信息做融合，既有助于文字的书写精度，也有利于提升文字与背景的一致性。训练阶段，除了使用扩散模型常用的噪声预测损失，我们还增加了文本感知损失，在图像空间对每个生成文本区域进行像素级的监督，以进一步提升文字书写精度。\n![framework](description/framework.jpg)\n\n## 期望模型使用方式以及使用范围\n\n本模型使用范围较广，能基于输入的提示词以及指定的位置生成包含多语言字符的图像，或对输入图像中的文本进行编辑或修复。\n\n### 环境配置\n\n```shell\n# 安装git(如有请跳过)\nconda install -c anaconda git\n# 克隆anytext仓库\ngit clone https://github.com/tyxsspa/AnyText.git\ncd AnyText\n# 准备字库文件(推荐Arial Unicode MS，需自行下载)\nmv your/path/to/arialuni.ttf ./font/Arial_Unicode.ttf\n# 方式一：如果使用modelscope notebook最新镜像(ubuntu22.04-cuda11.8.0-py310-torch2.1.0-tf2.14.0-1.10.0)，直接安装如下包即可\npip install Pillow==9.5.0\npip install gradio==3.50.0\n# 方式二：重新创建一个独立虚拟环境（耗时较长）\nconda env create -f environment.yaml\nconda activate anytext\n```\n\n### 示例代码\n\n参照如下示例代码，使用anytext进行文字生成或文字编辑 \n\n(首次运行时，会下载模型文件至：~/.cache/modelscope/hub中，请耐心等待；如果需要修改下载目录，可以手动指定环境变量：MODELSCOPE_CACHE)\n\n```python\nfrom modelscope.pipelines import pipeline\nfrom util import save_images\npipe = pipeline('my-anytext-task', model='damo/cv_anytext_text_generation_editing', model_revision='v1.1.1', use_fp16=True, use_translator=False)\nimg_save_folder = \"SaveImages\"\nparams = {\n    \"show_debug\": True,\n    \"image_count\": 2,\n    \"ddim_steps\": 20,\n}\n\n# 1. text generation\nmode = 'text-generation'\ninput_data = {\n    \"prompt\": 'photo of caramel macchiato coffee on the table, top-down perspective, with \"Any\" \"Text\" written on it using cream',\n    \"seed\": 66273235,\n    \"draw_pos\": 'example_images/gen9.png'\n}\nresults, rtn_code, rtn_warning, debug_info = pipe(input_data, mode=mode, **params)\nif rtn_code >= 0:\n    save_images(results, img_save_folder)\n# 2. text editing\nmode = 'text-editing'\ninput_data = {\n    \"prompt\": 'A cake with colorful characters that reads \"EVERYDAY\"',\n    \"seed\": 8943410,\n    \"draw_pos\": 'example_images/edit7.png',\n    \"ori_image\": 'example_images/ref7.jpg'\n}\nresults, rtn_code, rtn_warning, debug_info = pipe(input_data, mode=mode, **params)\nif rtn_code >= 0:\n    save_images(results, img_save_folder)\nprint(f'Done, result images are saved in: {img_save_folder}')\n```\n\n### 交互式Demo[推荐]\n使用基于gradio搭建的交互式demo，内含使用说明、操作界面及丰富的示例，可完整体验AnyText，执行如下语句启动：\n\n```bash\nexport CUDA_VISIBLE_DEVICES=0 && python demo.py\n```\n默认情况下使用FP16推理，并预加载一个中译英的模型用于直接输入中文提示词（占用约4G显存）。可通过指令修改默认行为，如执行如下语句将使用FP32推理，且不适用翻译模型：\n```bash\nexport CUDA_VISIBLE_DEVICES=0 && python demo.py --use_fp32 --no_translator\n```\n如果使用FP16推理，不加载翻译模型或使用CPU推理([方法](https://github.com/tyxsspa/AnyText/issues/33))，每次生成1张512x512的图片，显存占用约7.5G。\n此外支持用户使用其他字体文件(可能影响效果):\n```bash\nexport CUDA_VISIBLE_DEVICES=0 && python demo.py --font_path your/path/to/font/file.ttf\n```\n也可以直接访问如下在线Demo： [创空间](https://modelscope.cn/studios/damo/studio_anytext)(推荐), [HuggingFace](https://huggingface.co/spaces/modelscope/AnyText)\n\n### 画廊\n\n![gallary](description/gallary.png)\n\n### 模型局限性以及可能得偏差\n\n* 由于训练数据的原因，当前模型对中文和英文的书写精度要好于其他语种;\n* 有一定概率会产生文本模糊、扭曲、拼写错误等现象；\n* 有一定概率在背景中生成不可读的伪文字或水印；\n* 基于互联网公开数据的训练，生成结果与训练数据分布存在较大关联；\n\n## 训练数据介绍\n\n本模型的训练数据集为AnyWord-3M（即将开源），主要来源于互联网开源数据集，包括LAION-400M, Noah-Wukong以及部分OCR数据集，按照一定规则从中筛选出包含文字的图片，并使用OCR模型和BLIP-2模型进行全自动打标，总计得到300万高质量的图文对，涵盖自然图像、电影海报、书籍封面等各类场景。\n\n## 模型评测指标\n\n我们使用全句准确率（Sen. ACC）和归一化编辑距离（NED）评价生成文字的准确度，使用FID指标评价图像的生成质量。与现有方法相比，AnyText在中英文的文字生成方面均具备显著优势，达到SOTA水平。\n\n![eval](description/eval.jpg)\n\n## 相关论文及引用信息\n\n```BibTex\n@article{tuo2023anytext,\n      title={AnyText: Multilingual Visual Text Generation And Editing}, \n      author={Yuxiang Tuo and Wangmeng Xiang and Jun-Yan He and Yifeng Geng and Xuansong Xie},\n      year={2023},\n      eprint={2311.03054},\n      archivePrefix={arXiv},\n      primaryClass={cs.CV}\n}\n```\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "2311.03054"
+  ],
+  "RelatedPaper": [
+   232480
+  ],
+  "Revision": "master",
+  "Stars": 143,
+  "StorageSize": 15343290143,
+  "Studios": [
+   "damo/studio_anytext"
+  ],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [
+   "text2image generation",
+   "stable diffusion",
+   "text generation",
+   "text editing",
+   "图文融合"
+  ],
+  "Tasks": [
+   {
+    "ChineseName": "",
+    "Description": "",
+    "DomainName": "",
+    "Id": 0,
+    "IsExhibition": false,
+    "IsHot": 0,
+    "IsLeaf": false,
+    "IsLoginRequired": false,
+    "IsRetrieval": false,
+    "Level": 0,
+    "Name": "",
+    "ParentId": 0,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "381723da-6ed6-4d0c-876e-930b6e19cd9f",
+ "Success": true
+}

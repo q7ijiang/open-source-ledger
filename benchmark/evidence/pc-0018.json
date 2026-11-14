@@ -1,0 +1,101 @@
+{
+ "case_id": "pc-0018",
+ "repo": "shehuiwojiege/open-llms-next-web",
+ "repo_url": "https://github.com/shehuiwojiege/open-llms-next-web",
+ "head_sha": "e65d27e456b9e2547436083d961804849a2c6b38",
+ "source_file": "utils.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 30,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   }
+  ],
+  "imports_sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "AI-ModelScope/bge-large-zh-v1.5",
+ "model_binding": {
+  "name": "model_id",
+  "line": 41,
+  "text": "model_id = \"AI-ModelScope/bge-large-zh-v1.5\"",
+  "sha256": "92104caeb9fe844f7aadc84a23e9abfb68e724a3a6b012a3e0b11e635951ca44"
+ },
+ "model_literals": [
+  {
+   "line": 41,
+   "text": "model_id = \"AI-ModelScope/bge-large-zh-v1.5\"",
+   "sha256": "92104caeb9fe844f7aadc84a23e9abfb68e724a3a6b012a3e0b11e635951ca44"
+  }
+ ],
+ "call": {
+  "start": 46,
+  "end": 46,
+  "text": "    out_dir = snapshot_download(model_id, revision=revision, cache_dir=cache_dir)",
+  "sha256": "0564294652bc70d42536b995c7521a1cc3ffd013c788c249d49cfc943b59c4fe"
+ },
+ "revision": {
+  "revision": "",
+  "source": "call_variable_resolved_none",
+  "resolution": {
+   "variable": "revision",
+   "defined_at": 19,
+   "default": "None",
+   "resolved": "unpinned（服务端默认分支）",
+   "evidence": "def auto_download(model_type: str, revision: str = None, size: str = None, repair_name: str = None):"
+  }
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 35,
+   "text": "model_id = f\"baichuan-inc/Baichuan2-{size}-Chat\""
+  },
+  {
+   "line": 36,
+   "text": "elif model_type == \"qwen\":"
+  },
+  {
+   "line": 37,
+   "text": "model_id = f\"qwen/Qwen1.5-{size}-Chat\""
+  },
+  {
+   "line": 38,
+   "text": "elif model_type == \"llama\":"
+  },
+  {
+   "line": 39,
+   "text": "model_id = f\"LLM-Research/Meta-Llama-3-{size}-Instruct\""
+  },
+  {
+   "line": 40,
+   "text": "elif model_type == \"embedding\":"
+  },
+  {
+   "line": 41,
+   "text": "model_id = \"AI-ModelScope/bge-large-zh-v1.5\""
+  },
+  {
+   "line": 42,
+   "text": "elif model_type == \"reranker\":"
+  },
+  {
+   "line": 43,
+   "text": "model_id = \"quietnight/bge-reranker-large\""
+  },
+  {
+   "line": 44,
+   "text": "else:"
+  },
+  {
+   "line": 45,
+   "text": "raise ValueError(f'Unsupported model type {model_type} yet.')"
+  }
+ ]
+}

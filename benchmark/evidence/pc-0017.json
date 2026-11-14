@@ -1,0 +1,89 @@
+{
+ "case_id": "pc-0017",
+ "repo": "gzhuuser/fortune_teller",
+ "repo_url": "https://github.com/gzhuuser/fortune_teller",
+ "head_sha": "291bda64cc4658cd3be21719651a2f69e50514f5",
+ "source_file": "app.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 13,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   }
+  ],
+  "imports_sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "AI-ModelScope/bge-large-zh-v1.5",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 48,
+   "text": "\"AI-ModelScope/bge-large-zh-v1.5\", cache_dir=\"./\", revision=\"master\"",
+   "sha256": "64d7aa029886716945db2fbae7785684d3235db7772b432810cdc898db8bf069"
+  }
+ ],
+ "call": {
+  "start": 47,
+  "end": 49,
+  "text": "    model_dir = snapshot_download(\n        \"AI-ModelScope/bge-large-zh-v1.5\", cache_dir=\"./\", revision=\"master\"\n    )",
+  "sha256": "757d7b42b20652cfc62b7504d67c0170af29550e7d9abbd21ff77c81301c485e"
+ },
+ "revision": {
+  "revision": "master",
+  "source": "call_literal"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 36,
+   "text": "---"
+  },
+  {
+   "line": 37,
+   "text": ""
+  },
+  {
+   "line": 38,
+   "text": "用户的问题是:"
+  },
+  {
+   "line": 39,
+   "text": "---"
+  },
+  {
+   "line": 40,
+   "text": "{user_input}"
+  },
+  {
+   "line": 41,
+   "text": "---"
+  },
+  {
+   "line": 42,
+   "text": "\"\"\""
+  },
+  {
+   "line": 43,
+   "text": ""
+  },
+  {
+   "line": 44,
+   "text": ""
+  },
+  {
+   "line": 45,
+   "text": "def init():"
+  },
+  {
+   "line": 46,
+   "text": "# 下载模型并得到模型在本地存储的路径"
+  }
+ ]
+}

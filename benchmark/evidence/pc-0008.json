@@ -1,0 +1,49 @@
+{
+ "case_id": "pc-0008",
+ "repo": "xxw1995/chatglm3-finetune",
+ "repo_url": "https://github.com/xxw1995/chatglm3-finetune",
+ "head_sha": "be5824f32ebf87bd0074c5959ab04b532eb52ff6",
+ "source_file": "download_model.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 1,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   }
+  ],
+  "imports_sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "ZhipuAI/chatglm3-6b",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 2,
+   "text": "model_dir = snapshot_download('ZhipuAI/chatglm3-6b', cache_dir='./model', revision='v1.0.0', ignore_file_pattern='.safetensors')",
+   "sha256": "f7099ecad38a54cd611071aaf204e64c514343e8412ce9fe57b929b47e2ec300"
+  }
+ ],
+ "call": {
+  "start": 2,
+  "end": 2,
+  "text": "model_dir = snapshot_download('ZhipuAI/chatglm3-6b', cache_dir='./model', revision='v1.0.0', ignore_file_pattern='.safetensors')",
+  "sha256": "f7099ecad38a54cd611071aaf204e64c514343e8412ce9fe57b929b47e2ec300"
+ },
+ "revision": {
+  "revision": "v1.0.0",
+  "source": "call_literal"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 1,
+   "text": "from modelscope import snapshot_download"
+  }
+ ]
+}

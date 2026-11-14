@@ -1,0 +1,260 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": null,
+  "Avatar": "https://resouces.modelscope.cn/avatar/56d9e1ec-12f1-4d2b-a749-04ade9830aba.png",
+  "Backbone": [
+   "diffusion"
+  ],
+  "BackendSupport": {
+   "architectures": null,
+   "backend_info": {
+    "deploy_task": null,
+    "lmdeploy": null,
+    "lmdeploy_turbomind": null,
+    "ollama": null,
+    "sglang": null,
+    "vllm": null
+   },
+   "model_id": ""
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "I2VGen-XL高清图像生成视频大模型",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "Cherrytest",
+  "CreatedTime": 1702449482,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "High-quality image-to-video synthesis via cascaded diffusion models",
+  "Domain": [
+   "multi-modal"
+  ],
+  "Downloads": 16573,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 239433,
+  "Integrating": 2,
+  "IntegrationFailureLog": "```python未找到, 请提供规范代码",
+  "IntegrationFailureReason": "1002",
+  "IsAccessible": 1,
+  "IsCertification": 1,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1706187970,
+  "Libraries": [
+   "pytorch"
+  ],
+  "License": "CC-BY-NC-ND",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {},
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "i2vgen-xl",
+  "NewVersion": "",
+  "NickName": "小橙鱼",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/86fc4b9c-4548-463c-8cbb-f37f68b87141.png",
+   "CreateCompetition": false,
+   "CreatedBy": "damoadmin",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"通义实验室(Institute for Intelligent Computing, aka Tongyi Lab) 专注于各领域大模型技术研发与创新应用。实验室研究方向涵盖LLM、多模态理解与生成、视觉AIGC、语音等多个领域。我们并积极推进研究成果的产业化落地。实验室同时积极参与开源社区建设，全方位拥抱开源社区，共同探索AI模型的开源开放。\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "通义实验室",
+   "GithubAddress": "",
+   "GmtCreated": "2022-08-03T17:01:55Z",
+   "GmtModified": "2026-10-20T05:43:50Z",
+   "Id": 1,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "iic",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 2
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "iic",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n# VGen\n\n\n![figure1](source/VGen.jpg \"figure1\")\n\nVGen is an open-source video synthesis codebase developed by the Tongyi Lab of Alibaba Group, featuring state-of-the-art video generative models. This repository includes implementations of the following methods:\n\n\n- [I2VGen-xl: High-quality image-to-video synthesis via cascaded diffusion models](https://i2vgen-xl.github.io/)\n- [VideoComposer: Compositional Video Synthesis with Motion Controllability](https://videocomposer.github.io/)\n- [Hierarchical Spatio-temporal Decoupling for Text-to-Video Generation](https://higen-t2v.github.io/)\n- [A Recipe for Scaling up Text-to-Video Generation with Text-free Videos]()\n- [InstructVideo: Instructing Video Diffusion Models with Human Feedback]()\n- [DreamVideo: Composing Your Dream Videos with Customized Subject and Motion](https://dreamvideo-t2v.github.io/)\n- [VideoLCM: Video Latent Consistency Model]()\n- [Modelscope text-to-video technical report](https://arxiv.org/abs/2308.06571)\n\n\nVGen can produce high-quality videos from the input text, images, desired motion, desired subjects, and even the feedback signals provided.  It also offers a variety of commonly used video generation tools such as visualization, sampling, training, inference, join training using images and videos, acceleration, and more. \n\n\n<a href='https://i2vgen-xl.github.io/'><img src='https://img.shields.io/badge/Project-Page-Green'></a> <a href='https://arxiv.org/abs/2311.04145'><img src='https://img.shields.io/badge/Paper-Arxiv-red'></a> [![YouTube](https://badges.aleen42.com/src/youtube.svg)](https://youtu.be/XUi0y7dxqEQ) <a href='https://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/441039979087.mp4'><img src='source/logo.png'></a>\n\n\n## 🔥News!!!\n- __[2023.12]__ We release the code and model of I2VGen-XL and the ModelScope T2V\n- __[2023.12]__ We release the T2V method [HiGen](https://higen-t2v.github.io) and customizing T2V method [DreamVideo](https://dreamvideo-t2v.github.io).\n- __[2023.12]__ We write an [introduction docment](doc/introduction.pdf) for VGen and compare I2VGen-XL with SVD.\n- __[2023.11]__ We release a high-quality I2VGen-XL model, please refer to the [Webpage](https://i2vgen-xl.github.io)\n\n\n## TODO\n- [x] Release the technical papers and webpage of [I2VGen-XL](doc/i2vgen-xl.md)\n- [x] Release the code and pretrained models that can generate 1280x720 videos\n- [ ] Release models optimized specifically for the human body and faces\n- [ ] Updated version can fully maintain the ID and capture large and accurate motions simultaneously\n- [ ] Release other methods and the corresponding models\n\n\n## Preparation\n\nThe main features of VGen are as follows:\n- Expandability, allowing for easy management of your own experiments.\n- Completeness, encompassing all common components for video generation.\n- Excellent performance, featuring powerful pre-trained models in multiple tasks.\n\n\n### Installation\n\n```\nconda create -n vgen python=3.8\nconda activate vgen\npip install torch==1.12.0+cu113 torchvision==0.13.0+cu113 torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cu113\npip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple\n```\n\n### Datasets\n\nWe have provided a **demo dataset** that includes images and videos, along with their lists in ``data``. \n\n*Please note that the demo images used here are for testing purposes and were not included in the training.*\n\n\n### Clone codeb\n\n```\ngit clone https://github.com/damo-vilab/i2vgen-xl.git\ncd i2vgen-xl\n```\n\n\n## Getting Started with VGen\n\n### (1) Train your text-to-video model\n\n\nExecuting the following command to enable distributed training is as easy as that.\n```\npython train_net.py --cfg configs/t2v_train.yaml\n```\n\nIn the `t2v_train.yaml` configuration file, you can specify the data, adjust the video-to-image ratio using `frame_lens`, and validate your ideas with different Diffusion settings, and so on.\n\n- Before the training, you can download any of our open-source models for initialization. Our codebase supports custom initialization and `grad_scale` settings, all of which are included in the `Pretrain` item in yaml file.\n- During the training, you can view the saved models and intermediate inference results in the `workspace/experiments/t2v_train`directory.\n\nAfter the training is completed, you can perform inference on the model using the following command.\n```\npython inference.py --cfg configs/t2v_infer.yaml\n```\nThen you can find the videos you generated in the `workspace/experiments/test_img_01` directory. For specific configurations such as data, models, seed, etc., please refer to the `t2v_infer.yaml` file.\n\n<table>\n<center>\n  <tr>\n    <td ><center>\n      <video muted=\"true\" autoplay=\"true\" loop=\"true\" height=\"220\" src=\"https://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/441754174077.mp4\"></video>\t\n    </center></td>\n    <td ><center>\n      <video muted=\"true\" autoplay=\"true\" loop=\"true\" height=\"220\" src=\"https://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/441138824052.mp4\"></video>\t\n    </center></td>\n  </tr>\n</center>\n</table>\n</center>\n\n\n### (2) Run the I2VGen-XL model\n\n(i) Download model and test data:\n```\n!pip install modelscope\nfrom modelscope.hub.snapshot_download import snapshot_download\nmodel_dir = snapshot_download('damo/I2VGen-XL', cache_dir='models/', revision='v1.1.4')\n\n```\n\n(ii) Run the following command:\n```python\n# need A10\nfrom modelscope.pipelines import pipeline\nfrom modelscope import snapshot_download\nmodel_dir = snapshot_download('damo/i2vgen-xl', revision='v1.1.5')\ninference = pipeline('image-to-video', model=model_dir)\nimage = model_dir + '/data/test_images/img_0001.jpg'\noutput = inference(image, caption='A green frog floats on the surface of the water on green lotus leaves, with several pink lotus flowers, in a Chinese painting style.')\nprint(output)\n```\nIn a few minutes, you can retrieve the high-definition video you wish to create from the `workspace/experiments/test_img_01` directory. At present, we find that the current model performs inadequately on **anime images** and **images with a black background** due to the lack of relevant training data. We are consistently working to optimize it.\n\n<center>\n<table>\n<center>\n  <tr>\n    <td ><center>\n      <image muted=\"true\" height=\"220\" src=\"https://img.alicdn.com/imgextra/i1/O1CN01CCEq7K1ZeLpNQqrWu_!!6000000003219-0-tps-1280-720.jpg\"></image>\t\n    </center></td>\n    <td ><center>\n      <image muted=\"true\" height=\"220\" src=\"https://gw.alicdn.com/imgextra/i4/O1CN01ZXY7UN23K8q4oQ3uG_!!6000000007236-2-tps-1280-720.png\"></image>\t\n    </center></td>\n  </tr> \n  <tr>\n    <td ><center>\n      <video muted=\"true\" autoplay=\"true\" loop=\"true\" height=\"220\" src=\"https://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/442125067544.mp4\"></video>\t\n    </center></td>\n    <td ><center>\n      <video muted=\"true\" autoplay=\"true\" loop=\"true\" height=\"220\" src=\"https://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/441385957074.mp4\"></video>\t\n    </center></td>\n  </tr>\n</center>\n</table>\n</center>\n\n### (3) Other methods\n\nIn preparation.\n\n\n## Customize your own approach\n\nOur codebase essentially supports all the commonly used components in video generation. You can manage your experiments flexibly by adding corresponding registration classes, including `ENGINE, MODEL, DATASETS, EMBEDDER, AUTO_ENCODER, DISTRIBUTION, VISUAL, DIFFUSION, PRETRAIN`, and can be compatible with all our open-source algorithms according to your own needs. If you have any questions, feel free to give us your feedback at any time.\n\n\n\n## BibTeX\n\nIf this repo is useful to you, please cite our corresponding technical paper.\n\n\n```bibtex\n@article{2023i2vgenxl,\n  title={I2VGen-XL: High-Quality Image-to-Video Synthesis via Cascaded Diffusion Models},\n  author={Zhang, Shiwei and Wang, Jiayu and Zhang, Yingya and Zhao, Kang and Yuan, Hangjie and Qing, Zhiwu and Wang, Xiang  and Zhao, Deli and Zhou, Jingren},\n  booktitle={arXiv preprint arXiv:2311.04145},\n  year={2023}\n}\n@article{2023videocomposer,\n  title={VideoComposer: Compositional Video Synthesis with Motion Controllability},\n  author={Wang, Xiang and Yuan, Hangjie and Zhang, Shiwei and Chen, Dayou and Wang, Jiuniu, and Zhang, Yingya, and Shen, Yujun, and Zhao, Deli and Zhou, Jingren},\n  booktitle={arXiv preprint arXiv:2306.02018},\n  year={2023}\n}\n@article{wang2023modelscope,\n  title={Modelscope text-to-video technical report},\n  author={Wang, Jiuniu and Yuan, Hangjie and Chen, Dayou and Zhang, Yingya and Wang, Xiang and Zhang, Shiwei},\n  journal={arXiv preprint arXiv:2308.06571},\n  year={2023}\n}\n@article{dreamvideo,\n  title={DreamVideo: Composing Your Dream Videos with Customized Subject and Motion},\n  author={Wei, Yujie and Zhang, Shiwei and Qing, Zhiwu and Yuan, Hangjie and Liu, Zhiheng and Liu, Yu and Zhang, Yingya and Zhou, Jingren and Shan, Hongming},\n  journal={arXiv preprint arXiv:2312.04433},\n  year={2023}\n}\n@article{qing2023higen,\n  title={Hierarchical Spatio-temporal Decoupling for Text-to-Video Generation},\n  author={Qing, Zhiwu and Zhang, Shiwei and Wang, Jiayu and Wang, Xiang and Wei, Yujie and Zhang, Yingya and Gao, Changxin and Sang, Nong },\n  journal={arXiv preprint arXiv:2312.04483},\n  year={2023}\n}\n```\n\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "2308.06571",
+   "2311.04145",
+   "2306.02018",
+   "2312.04433",
+   "2312.04483"
+  ],
+  "RelatedPaper": [
+   207480
+  ],
+  "Revision": "master",
+  "Stars": 154,
+  "StorageSize": 29718373506,
+  "Studios": [
+   "damo/I2VGen-XL"
+  ],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [],
+  "Tasks": [
+   {
+    "ChineseName": "图片生成视频",
+    "Description": "",
+    "DomainName": "multi-modal",
+    "Id": 296,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "image-to-video",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "15e5b938-e082-4529-8766-94b06b670721",
+ "Success": true
+}

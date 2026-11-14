@@ -1,0 +1,158 @@
+{
+ "case_id": "pc-0001",
+ "repo": "jianchang512/ChatTTS-ui",
+ "repo_url": "https://github.com/jianchang512/ChatTTS-ui",
+ "head_sha": "393b75b8bf7d10f11c1c2568fe043706ad43607b",
+ "source_file": "app.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 31,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   },
+   {
+    "line": 64,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   }
+  ],
+  "imports_sha256": "6c59443aad24d73b2202136f27646e2eed35fa60e25d232114406535c208c5df",
+  "kind": "modelscope_download",
+  "role": "conditional_fallback"
+ },
+ "model_id": "pzc163/chatTTS",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 47,
+   "text": "CHATTTS_DIR= MODEL_DIR+'/pzc163/chatTTS'",
+   "sha256": "9e72b88ba2a1166b6094598ce18e33ebc4e449863c7ac173823fee725c6b2fc4"
+  },
+  {
+   "line": 65,
+   "text": "snapshot_download(model_id='pzc163/chatTTS',local_dir=CHATTTS_DIR)",
+   "sha256": "082b04345b31931e70584e2a4e0f3ef22cf743735c967879a1d1bf20e750c5cc"
+  }
+ ],
+ "call": {
+  "start": 65,
+  "end": 65,
+  "text": "        snapshot_download(model_id='pzc163/chatTTS',local_dir=CHATTTS_DIR)",
+  "sha256": "082b04345b31931e70584e2a4e0f3ef22cf743735c967879a1d1bf20e750c5cc"
+ },
+ "revision": {
+  "revision": "",
+  "source": "unspecified"
+ },
+ "branch": {
+  "conditional_fallback": true,
+  "lines": [
+   {
+    "line": 52,
+    "text": "try:"
+   },
+   {
+    "line": 53,
+    "text": "    # 优先使用本地模型，不存在再联网检测下载"
+   },
+   {
+    "line": 54,
+    "text": "    huggingface_hub.snapshot_download("
+   },
+   {
+    "line": 55,
+    "text": "                repo_id=\"2Noise/ChatTTS\","
+   },
+   {
+    "line": 56,
+    "text": "                local_dir=CHATTTS_DIR,"
+   },
+   {
+    "line": 57,
+    "text": "                etag_timeout=5,"
+   },
+   {
+    "line": 58,
+    "text": "                local_files_only=True"
+   },
+   {
+    "line": 59,
+    "text": "            )"
+   },
+   {
+    "line": 60,
+    "text": "except LocalEntryNotFoundError:"
+   },
+   {
+    "line": 61,
+    "text": "    if not is_connect_hf():"
+   },
+   {
+    "line": 62,
+    "text": "        print(f\"当前从阿里魔塔下载模型...\\n\")"
+   },
+   {
+    "line": 63,
+    "text": "        os.environ['HF_ENDPOINT']=\"https://hf-mirror.com\""
+   },
+   {
+    "line": 64,
+    "text": "        from modelscope import snapshot_download"
+   },
+   {
+    "line": 65,
+    "text": "        snapshot_download(model_id='pzc163/chatTTS',local_dir=CHATTTS_DIR)"
+   }
+  ],
+  "note": "先对 HF 缓存做 local_files_only 下载，local 缓存缺失（LocalEntryNotFoundError）且 is_connect_hf() 为假时才回退 ModelScope"
+ },
+ "context": [
+  {
+   "line": 54,
+   "text": "huggingface_hub.snapshot_download("
+  },
+  {
+   "line": 55,
+   "text": "repo_id=\"2Noise/ChatTTS\","
+  },
+  {
+   "line": 56,
+   "text": "local_dir=CHATTTS_DIR,"
+  },
+  {
+   "line": 57,
+   "text": "etag_timeout=5,"
+  },
+  {
+   "line": 58,
+   "text": "local_files_only=True"
+  },
+  {
+   "line": 59,
+   "text": ")"
+  },
+  {
+   "line": 60,
+   "text": "except LocalEntryNotFoundError:"
+  },
+  {
+   "line": 61,
+   "text": "if not is_connect_hf():"
+  },
+  {
+   "line": 62,
+   "text": "print(f\"当前从阿里魔塔下载模型...\\n\")"
+  },
+  {
+   "line": 63,
+   "text": "os.environ['HF_ENDPOINT']=\"https://hf-mirror.com\""
+  },
+  {
+   "line": 64,
+   "text": "from modelscope import snapshot_download"
+  }
+ ]
+}

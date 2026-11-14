@@ -1,0 +1,329 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "BloomForCausalLM"
+  ],
+  "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": [
+    "BloomForCausalLM"
+   ],
+   "backend_info": {
+    "deploy_task": [
+     "text",
+     "emb"
+    ],
+    "lmdeploy": {},
+    "lmdeploy_turbomind": {},
+    "ollama": null,
+    "sglang": {},
+    "vllm": {
+     "emb": "0.9.2",
+     "text": "0.9.2"
+    }
+   },
+   "model_id": "AI-ModelScope/bloom-560m"
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "mushenL",
+  "CreatedTime": 1683603410,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "",
+  "Domain": [],
+  "Downloads": 3950,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 160596,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [
+   "ak",
+   "ar",
+   "as",
+   "bm",
+   "bn",
+   "ca",
+   "code",
+   "en",
+   "es",
+   "eu",
+   "fon",
+   "fr",
+   "gu",
+   "hi",
+   "id",
+   "ig",
+   "ki",
+   "kn",
+   "lg",
+   "ln",
+   "ml",
+   "mr",
+   "ne",
+   "nso",
+   "ny",
+   "or",
+   "pa",
+   "pt",
+   "rn",
+   "rw",
+   "sn",
+   "st",
+   "sw",
+   "ta",
+   "te",
+   "tn",
+   "ts",
+   "tum",
+   "tw",
+   "ur",
+   "vi",
+   "wo",
+   "xh",
+   "yo",
+   "zh",
+   "zhs",
+   "zht",
+   "zu"
+  ],
+  "LastUpdatedTime": 1683714959,
+  "Libraries": [
+   "safetensors",
+   "pytorch"
+  ],
+  "License": "bigscience-bloom-rail-1.0",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "",
+    "files": [
+     {
+      "name": "model.safetensors",
+      "sha256": "a8702498162c95d68d2724e7f333c83d7be08de81cfc091455c38730682116d3",
+      "size": 1118459525
+     }
+    ],
+    "model_size": 559214592,
+    "tensor_type": [
+     "F16"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "bloom"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "bloom-560m",
+  "NewVersion": "",
+  "NickName": "weiyuanhu",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/3469e540-6383-4d34-87c8-3e5406a0b567.png",
+   "CreateCompetition": false,
+   "CreatedBy": "Cherrytest",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"开发者联盟，欢迎加盟。\"]]],[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "为AI成魔",
+   "GithubAddress": "",
+   "GmtCreated": "2023-03-22T13:56:58Z",
+   "GmtModified": "2026-11-05T11:44:07Z",
+   "Id": 66,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "AI-ModelScope",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 1
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "AI-ModelScope",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n<h1 style='text-align: center '>BLOOM LM</h1> \n<h2 style='text-align: center '><em>BigScience Large Open-science Open-access Multilingual Language Model</em> </h2> \n<h3 style='text-align: center '>Model Card</h3>\n\nVersion 1.0 / 26.May.2022\n\n## Table of Contents\n1. [Model Details](#model-details)\n2. [Uses](#uses)\n3. [Training Data](#training-data)\n4. [Risks and Limitations](#risks-and-limitations)\n5. [Evaluation](#evaluation)\n6. [Recommendations](#recommendations)\n7. [Glossary and Calculations](#glossary-and-calculations)\n8. [More Information](#more-information)\n9. [Model Card Authors](#model-card-authors)\n\n## Model Details  \n\n### Basics\n*This section provides information for anyone who wants to know about the model.*\n\n<details>\n<summary>Click to expand</summary> <br/>\n    \n**Developed by:** BigScience ([website](https://bigscience.huggingface.co))\n\n* All collaborators are either volunteers or have an agreement with their employer. *(Further breakdown of participants forthcoming.)*\n    \n**Model Type:** Transformer-based Language Model\n\n**Version:** 1.0.0\n\n**Languages:** Multiple; see [training data](#training-data)\n\n**License:** RAIL License v1.0 ([link](https://huggingface.co/spaces/bigscience/license))\n\n**Release Date Estimate:** Monday, 11.July.2022\n\n**Send Questions to:** bigscience-contact@googlegroups.com\n\n**Cite as:** BigScience, _BigScience Language Open-science Open-access Multilingual (BLOOM) Language Model_. International, May 2021-May 2022\n\n**Funded by:** \n    \n* The French government.\n\n* Hugging Face ([website](https://huggingface.co)).\n\n* Organizations of contributors.  *(Further breakdown of organizations forthcoming.)*\n\n</details>\n\n### Technical Specifications\n*This section provides information for people who work on model development.*\n\n<details>\n<summary>Click to expand</summary><br/>\n\nPlease see [the BLOOM training README](https://github.com/bigscience-workshop/bigscience/tree/master/train/tr11-176B-ml#readme) for full details on replicating training.\n\n**Model Architecture:** Modified from Megatron-LM GPT2 (see [paper](https://arxiv.org/abs/1909.08053), [BLOOM Megatron code](https://github.com/bigscience-workshop/Megatron-DeepSpeed)):\n\n* Decoder-only architecture\n\n* Layer normalization applied to word embeddings layer (`StableEmbedding`; see [code](https://github.com/facebookresearch/bitsandbytes), [paper](https://arxiv.org/pdf/2110.02861.pdf))\n\n* ALiBI positional encodings (see [paper](https://arxiv.org/pdf/2108.12409.pdf)), with GeLU activation functions\n\n* 559,214,592 parameters:\n\n    * 256,901,120 embedding parameters\n\n    * 24 layers, 16 attention heads\n\n    * Hidden layers are 1024-dimensional\n\n    * Sequence length of 2048 tokens (see [BLOOM tokenizer](https://huggingface.co/bigscience/tokenizer), [tokenizer description](#tokenization))\n\n**Objective Function:** Cross Entropy with mean reduction (see [API documentation](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html#torch.nn.CrossEntropyLoss)).\n    \n**Compute infrastructure:** Jean Zay Public Supercomputer, provided by the French government (see [announcement](https://www.enseignementsup-recherche.gouv.fr/fr/signature-du-marche-d-acquisition-de-l-un-des-supercalculateurs-les-plus-puissants-d-europe-46733)).\n\n* Hardware: 384 A100 80GB GPUs (48 nodes):\n    \n    * Additional 32 A100 80GB GPUs (4 nodes) in reserve\n\n    *  8 GPUs per node Using NVLink 4 inter-gpu connects, 4 OmniPath links\n\n    *   CPU: AMD\n\n    *   CPU memory: 512GB per node\n\n    *   GPU memory: 640GB per node\n\n    *   Inter-node connect: Omni-Path Architecture (OPA)\n\n    *   NCCL-communications network: a fully dedicated subnet\n\n    *   Disc IO network: shared network with other types of nodes\n\n* Software:\n  \n    *   Megatron-DeepSpeed ([Github link](https://github.com/bigscience-workshop/Megatron-DeepSpeed))\n\n    *   DeepSpeed ([Github link](https://github.com/microsoft/DeepSpeed))\n\n    *   PyTorch (pytorch-1.11 w/ CUDA-11.5; see [Github link](https://github.com/pytorch/pytorch))\n\n    *   apex ([Github link](https://github.com/NVIDIA/apex))\n\n\n#### **Training**\n\nTraining logs: [Tensorboard link](https://huggingface.co/bigscience/tr11e-350M-logs)\n\n- Training throughput: About 150 TFLOPs per GPU\n\n- Number of epochs: 1 (*current target*)\n\n- Dates:\n    \n    - Started 11th March, 2022 11:42am PST\n\n    - Ended 5th July, 2022\n\n- Estimated cost of training: Equivalent of $2-5M in cloud computing (including preliminary experiments and other model sizes)\n\n- Server training location: Île-de-France, France\n\n#### **Tokenization**\n    \nThe BLOOM tokenizer ([link](https://huggingface.co/bigscience/tokenizer)) is a learned subword tokenizer trained using:\n    \n- A byte-level Byte Pair Encoding (BPE) algorithm \n\n- A simple pre-tokenization rule, no normalization\n\n- A vocabulary size of 250,680\n\nIt was trained on a subset of a preliminary version of the corpus using alpha-weighting per language.    \n    \n</details>\n\n\n### Environmental Impact\n\n<details>\n<summary>Click to expand</summary><br/>\n\nThe training supercomputer, Jean Zay ([website](http://www.idris.fr/eng/jean-zay/jean-zay-presentation-eng.html)), uses mostly nuclear energy. The heat generated by it is reused for heating campus housing.\n    \n**Estimated carbon emissions:**  *(Forthcoming upon completion of training.)*\n    \n**Estimated electricity usage:** *(Forthcoming upon completion of training.)*\n\n\n</details>\n<p>&nbsp;</p>\n\n## Uses\n\n*This section addresses questions around how the model is intended to be used, discusses the foreseeable users of the model (including those affected by the model), and describes uses that are considered out of scope or misuse of the model. \nIt provides information for anyone considering using the model or who is affected by the model.*\n\n\n<details>\n<summary>Click to expand</summary><br/>\n    \n### Intended Use\n\nThis model is being created in order to enable public research on large language models (LLMs). LLMs are intended to be used for language generation or as a pretrained base model that can be further fine-tuned for specific tasks. Use cases below are not exhaustive.\n\n#### **Direct Use**\n\n-   Text generation\n\n-   Exploring characteristics of language generated by a language model\n\n    -   Examples: Cloze tests, counterfactuals, generations with reframings\n\n#### **Downstream Use**\n\n-   Tasks that leverage language models include: Information Extraction, Question Answering, Summarization\n\n### Misuse and Out-of-scope Use\n*This section addresses what users ought not do with the model.*\n\nSee the [BLOOM License](https://huggingface.co/spaces/bigscience/license), Attachment A, for detailed usage restrictions. The below list is non-exhaustive, but lists some easily foreseeable problematic use cases.\n\n#### **Out-of-scope Uses**\n\nUsing the model in [high-stakes](#high-stakes) settings is out of scope for this model.  The model is not designed for [critical decisions](#critical-decisions) nor uses with any material consequences on an individual's livelihood or wellbeing. The model outputs content that appears factual but is not correct.  \n\n##### Out-of-scope Uses Include:\n\n-   Usage in biomedical domains, political and legal domains, or finance domains\n\n-   Usage for evaluating or scoring individuals, such as for employment, education, or credit\n\n-   Applying the model for critical automatic decisions, generating factual content, creating reliable summaries, or generating predictions that must be correct\n\n#### **Misuse**\n\nIntentionally using the model for harm, violating [human rights](#human-rights), or other kinds of malicious activities, is a misuse of this model. This includes:\n\n-   Spam generation\n\n-   Disinformation and influence operations\n\n-   Disparagement and defamation\n\n-   Harassment and abuse\n  \n-   [Deception](#deception)\n\n-   Unconsented impersonation and imitation\n\n-   Unconsented surveillance \n\n-   Generating content without attribution to the model, as specified in the [RAIL License, Use Restrictions](https://huggingface.co/spaces/bigscience/license)\n\n### Intended Users\n\n#### **Direct Users**\n\n-   General Public\n\n-   Researchers\n\n-   Students\n\n-   Educators\n\n-   Engineers/developers\n\n-   Non-commercial entities\n\n-   Community advocates, including human and civil rights groups\n\n#### Indirect Users\n\n-   Users of derivatives created by Direct Users, such as those using software with an [intended use](#intended-use)\n\n-   Users of [Derivatives of the Model, as described in the License](https://huggingface.co/spaces/bigscience/license)\n\n#### Others Affected (Parties Prenantes)\n\n-   People and groups referred to by the LLM\n\n-   People and groups exposed to outputs of, or decisions based on, the LLM\n\n-   People and groups whose original work is included in the LLM\n    \n</details>\n<p>&nbsp;</p>\n\n## Training Data\n*This section provides a high-level overview of the training data. It is relevant for anyone who wants to know the basics of what the model is learning.*\n\n\n<details>\n<summary>Click to expand</summary><br/>\n    \nDetails for each dataset are provided in individual [Data Cards](https://huggingface.co/spaces/bigscience/BigScienceCorpus).\n\nTraining data includes:\n\n-   45 natural languages\n    \n-   12 programming languages\n\n-   In 1.5TB of pre-processed text, converted into 350B unique tokens (see [the tokenizer section](#tokenization) for more.)\n\n\n#### **Languages**\n    \nThe pie chart shows the distribution of languages in training data.\n   \n![pie chart showing the distribution of languages in training data](https://github.com/bigscience-workshop/model_card/blob/main/assets/data/pie_chart.svg?raw=true)\n\n\nThe following table shows the further distribution of Niger-Congo and Indic languages in the training data.\n<details>\n<summary>Click to expand</summary><br/>\n    \n| Niger Congo    | Percentage |         | Indic     | Percentage |\n|----------------|------------ |------  |-----------|------------|\n| Chi Tumbuka    | 0.00002    |         | Assamese  | 0.01       |\n| Kikuyu         | 0.00004    |         | Odia      | 0.04       |\n| Bambara        | 0.00004    |         | Gujarati  | 0.04       |\n| Akan           | 0.00007    |         | Marathi   | 0.05       |\n| Xitsonga       | 0.00007    |         | Punjabi   | 0.05       |\n| Sesotho        | 0.00007    |         | Kannada   | 0.06       |\n| Chi Chewa      | 0.0001     |         | Nepali    | 0.07       |\n| Setswana       | 0.0002     |         | Telugu    | 0.09       |\n| Northern Sotho | 0.0002     |         | Malayalam | 0.10       |\n| Fon            | 0.0002     |         | Urdu      | 0.10       |\n| Kirundi        | 0.0003     |         | Tamil     | 0.20       |\n| Wolof          | 0.0004     |         | Bengali   | 0.50       |\n| Kuganda        | 0.0004     |         | Hindi     | 0.70       |\n| Chi Shona      | 0.001      |\n| Isi Zulu       | 0.001      |\n| Igbo           | 0.001      |\n| Xhosa          | 0.001      |\n| Kinyarwanda    | 0.003      |\n| Yoruba         | 0.006      |\n| Swahili        | 0.02       |\n</details>\n\nThe following table shows the distribution of programming languages.\n<details>\n<summary>Click to expand</summary><br/>\n    \n| Extension      | Language   | Number of files |\n|----------------|------------|-----------------|\n| java           | Java       | 5,407,724       |\n| php            | PHP        | 4,942,186       |\n| cpp            | C++        | 2,503,930       |\n| py             | Python     | 2,435,072       |\n| js             | JavaScript | 1,905,518       |\n| cs             | C#         | 1,577,347       |\n| rb             | Ruby       | 6,78,413        |\n| cc             | C++        | 443,054         |\n| hpp            | C++        | 391,048         |\n| lua            | Lua        | 352,317         |\n| go             | GO         | 227,763         |\n| ts             | TypeScript | 195,254         |\n| C              | C          | 134,537         |\n| scala          | Scala      | 92,052          |\n| hh             | C++        | 67,161          |\n| H              | C++        | 55,899          |\n| tsx            | TypeScript | 33,107          |\n| rs             | Rust       | 29,693          |\n| phpt           | PHP        | 9,702           |\n| c++            | C++        | 1,342           |\n| h++            | C++        | 791             |\n| php3           | PHP        | 540             |\n| phps           | PHP        | 270             |\n| php5           | PHP        | 166             |\n| php4           | PHP        | 29              |\n    \n</details>    \n</details>\n<p>&nbsp;</p>\n\n## Risks and Limitations\n*This section identifies foreseeable harms and misunderstandings.*\n\n<details>\n<summary>Click to expand</summary><br/>\n    \nModel may:\n\n-   Overrepresent some viewpoints and underrepresent others\n\n-   Contain stereotypes\n  \n-   Contain [personal information](#personal-data-and-information)\n\n-   Generate:\n\n    -   Hateful, abusive, or violent language\n\n    -   Discriminatory or prejudicial language\n\n    -   Content that may not be appropriate for all settings, including sexual content\n\n-   Make errors, including producing incorrect information as if it were factual\n\n-   Generate irrelevant or repetitive outputs\n</details>\n<p>&nbsp;</p>\n\n## Evaluation\n*This section describes the evaluation protocols and provides the results.*\n\n<details>\n<summary>Click to expand</summary><br/>\n\n### Metrics \n*This section describes the different ways performance is calculated and why.*\n    \nIncludes:\n\n| Metric             | Why chosen                                                         |\n|--------------------|--------------------------------------------------------------------|\n| [Perplexity](#perplexity)         | Standard metric for quantifying model improvements during training |\n| Cross Entropy [Loss](#loss) | Standard objective for language models.                            |\n\nAnd multiple different metrics for specific tasks. _(More evaluation metrics forthcoming upon completion of evaluation protocol.)_\n\n### Factors \n*This section lists some different aspects of what BLOOM models. Its focus is on those aspects that are likely to give rise to high variance in model behavior.*\n\n- Language, such as English or Yoruba\n\n- Domain, such as newswire or stories\n    \n- Demographic characteristics, such as gender or nationality\n\n###  Results\n*Results are based on the [Factors](#factors) and [Metrics](#metrics).*\n\n**Train-time Evaluation:**\n\nAs of 25.May.2022, 15:00 PST:\n\n- Training Loss: 2.0\n\n- Validation Loss: 2.2\n\n- Perplexity: 8.9\n\n(More evaluation scores forthcoming at the end of model training.)\n\n</details>\n<p>&nbsp;</p>\n\n## Recommendations\n\n*This section provides information on warnings and potential mitigations.*\n\n\n<details>\n<summary>Click to expand</summary><br/>\n\n-   Indirect users should be made aware when the content they're working with is created by the LLM.\n\n-   Users should be aware of [Risks and Limitations](#risks-and-limitations), and include an appropriate age disclaimer or blocking interface as necessary.\n\n-   Models pretrained with the LLM should include an updated Model Card.\n\n-   Users of the model should provide mechanisms for those affected to provide feedback, such as an email address for comments.\n\n</details>\n<p>&nbsp;</p>\n\n## Glossary and Calculations\n\n*This section defines common terms and how metrics are calculated.*\n\n\n\n<details>\n<summary>Click to expand</summary><br/>\n\n-   <a name=\"loss\">**Loss:**</a> A calculation of the difference between what the model has learned and what the data shows (\"groundtruth\"). The lower the loss, the better. The training process aims to minimize the loss. \n\n-   <a name=\"perplexity\">**Perplexity:**</a> This is based on what the model estimates the probability of new data is. The lower the perplexity, the better.  If the model is 100% correct at predicting the next token it will see, then the perplexity is 1. Mathematically this is calculated using entropy. \n\n-   <a name=\"high-stakes\">**High-stakes settings:**</a> Such as those identified as \"high-risk AI systems\" and \"unacceptable risk AI systems\" in the European Union's proposed [Artificial Intelligence (AI) Act](https://artificialintelligenceact.eu/annexes/).\n\n-   <a name=\"critical-decisions\">**Critical decisions:**</a> Such as those defined in [the United States' proposed Algorithmic Accountability Act](https://www.congress.gov/117/bills/s3572/BILLS-117s3572is.pdf).\n\n-   <a name=\"human-rights\">**Human rights:**</a> Includes those rights defined in the [Universal Declaration of Human Rights](https://www.un.org/sites/un2.un.org/files/2021/03/udhr.pdf).\n\n-  <a name=\"personal-data-and-information\">**Personal Data and Personal Information:**</a> Personal data and information is defined in multiple data protection regulations, such as \"[personal data](https://gdpr-info.eu/issues/personal-data/)\" in the [European Union's General Data Protection Regulation](https://gdpr-info.eu); and \"personal information\" in the Republic of South Africa's [Protection of Personal Information Act](https://www.gov.za/sites/default/files/gcis_document/201409/3706726-11act4of2013popi.pdf), The People's Republic of China's [Personal information protection law](http://en.npc.gov.cn.cdurl.cn/2021-12/29/c_694559.htm).\n  \n- <a name=\"sensitive-characteristics\">**Sensitive characteristics:**</a> This includes specifically protected categories in human rights (see [UHDR, Article 2](https://www.un.org/sites/un2.un.org/files/2021/03/udhr.pdf)) and personal information regulation (see GDPR, [Article 9; Protection of Personal Information Act, Chapter 1](https://www.gov.za/sites/default/files/gcis_document/201409/3706726-11act4of2013popi.pdf))\n\n- <a name=\"deception\">**Deception:**</a> Doing something to intentionally mislead individuals to believe something that is false, such as by creating deadbots or chatbots on social media posing as real people, or generating text documents without making consumers aware that the text is machine generated.\n\n</details>\n<p>&nbsp;</p>\n\n## More Information\n\n<details>\n<summary>Click to expand</summary><br/>\n    \n### Dataset Creation\n\nBlog post detailing the design choices during the dataset creation: https://bigscience.huggingface.co/blog/building-a-tb-scale-multilingual-dataset-for-language-modeling\n\n### Technical Specifications\n\nBlog post summarizing how the architecture, size, shape, and pre-training duration where selected: https://bigscience.huggingface.co/blog/what-language-model-to-train-if-you-have-two-million-gpu-hours\n\nMore details on the architecture/optimizer: https://github.com/bigscience-workshop/bigscience/tree/master/train/tr11-176B-ml\n\nBlog post on the hardware/engineering side: https://bigscience.huggingface.co/blog/which-hardware-to-train-a-176b-parameters-model\n\nDetails on the distributed setup used for the training: https://github.com/bigscience-workshop/bigscience/tree/master/train/tr11-176B-ml\n\nTensorboard updated during the training: https://huggingface.co/bigscience/tr11-176B-ml-logs/tensorboard#scalars&tagFilter=loss\n\nInsights on how to approach training, negative results: https://github.com/bigscience-workshop/bigscience/blob/master/train/lessons-learned.md\n\nDetails on the obstacles overcome during the preparation on the engineering side (instabilities, optimization of training throughput, so many technical tricks and questions): https://github.com/bigscience-workshop/bigscience/blob/master/train/tr11-176B-ml/chronicles.md\n\n\n\n### Initial Results\n\nInitial prompting experiments using interim checkpoints: https://huggingface.co/spaces/bigscience/bloom-book\n\n</details>\n<p>&nbsp;</p>\n\n### 示例代码\n```python\nfrom modelscope.pipelines import pipeline\nfrom modelscope.utils.constant import Tasks\n\nif __name__ == '__main__':\n    text_generation_zh = pipeline(task=Tasks.text_generation, model='AI-ModelScope/bloom-560m', model_revision='v1.0.3')\n    result_zh = text_generation_zh(\"从交通物流行业的数据中可看出，我国社会各项运转已恢复正常，流动的中国散发出了旺盛活力，\")\n    print(result_zh)\n```\n\n## Model Card Authors\n*Ordered roughly chronologically and by amount of time spent.*\n\nMargaret Mitchell, Giada Pistilli, Yacine Jernite, Ezinwanne Ozoani, Marissa Gerchick, Nazneen Rajani, Sasha Luccioni, Irene Solaiman, Maraim Masoud, Somaieh Nikpoor, Carlos Muñoz Ferrandis, Stas Bekman, Christopher Akiki, Danish Contractor, David Lansky, Angelina McMillan-Major, Tristan Thrush, Suzana Ilić, Gérard Dupont, Shayne Longpre, Manan Dey, Stella Biderman, Douwe Kiela, Emi Baylor, Teven Le Scao, Aaron Gokaslan, Julien Launay, Niklas Muennighoff\n\n\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "1909.08053",
+   "2110.02861",
+   "2108.12409"
+  ],
+  "RelatedPaper": [
+   232458
+  ],
+  "Revision": "master",
+  "Stars": 1,
+  "StorageSize": 3369974212,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 1,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 2,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [],
+  "Tasks": [
+   {
+    "ChineseName": "文本生成",
+    "Description": "",
+    "DomainName": "nlp",
+    "Id": 22,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "text-generation",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"text-generation\", \"inputs\": [{\"type\": \"text\", \"validator\": {\"max_words\": \"1000\"}, \"displayType\": \"OnlyTextArea\"}], \"output\": {\"displayType\": \"ReadonlyText\", \"transformOutputs\": [{\"outputKey\": \"text\"}], \"displayOutputMapping\": \"text\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "e0d59073-0b13-42f9-9500-e2cffcd67778",
+ "Success": true
+}

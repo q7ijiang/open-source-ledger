@@ -1,0 +1,286 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": null,
+  "Avatar": "https://resouces.modelscope.cn/avatar/28c5f3d9-d1ca-4fd0-a035-944bae59be9a.jpg",
+  "Backbone": [
+   "IR_101"
+  ],
+  "BackendSupport": {
+   "architectures": null,
+   "backend_info": {
+    "deploy_task": null,
+    "lmdeploy": null,
+    "lmdeploy_turbomind": null,
+    "ollama": null,
+    "sglang": null,
+    "vllm": null
+   },
+   "model_id": ""
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "Retinaface+CurricularFace人脸识别模型",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "bubbliiiing",
+  "CreatedTime": 1694711067,
+  "DashSdkParameter": "",
+  "Datasets": {
+   "evaluation": [
+    "LFW"
+   ],
+   "test": [
+    "IJBC"
+   ],
+   "train": [
+    "glint360k"
+   ]
+  },
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "Retinaface+CurricularFace人脸识别模型，解除mmcv依赖。",
+  "Domain": [
+   "cv"
+  ],
+  "Downloads": 6544329,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 215109,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1694745294,
+  "Libraries": [
+   "pytorch"
+  ],
+  "License": "Apache License 2.0",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [
+   "TPR@FAR"
+  ],
+  "ModelDetail": {},
+  "ModelInfos": {},
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "cv_retinafce_recognition",
+  "NewVersion": "",
+  "NickName": "",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "",
+   "CreateCompetition": false,
+   "CreatedBy": "",
+   "Description": "",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "",
+   "GithubAddress": "",
+   "GmtCreated": null,
+   "GmtModified": null,
+   "Id": 0,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 0
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "bubbliiiing",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n# CurricularFace + Retinaface 模型介绍\n\n## 模型描述\nCurricularFace为目前人脸识别的SOTA方法之一，其主要思想是采用课程学习的思想动态关注训练数据中的难例样本。此前的方法在训练中对于错分类的样本，要么未充分挖掘难例导致性能问题，要么在训练初期关注难例导致收敛问题。基于此，CurricularFace提出Adaptive Curriculum Learning Loss, 在训练过程中动态调整easy和hard样本的重要性，使训练初期关注简单样本，训练后期关注难例样本，而对难易样本分配不同重要性是通过设计一个代表收敛进度的指示函数来自适应调整的。论文已发表至CVPR-2020（[论文地址](https://arxiv.org/abs/2004.00288), [代码地址](https://github.com/Tencent/TFace/tree/master/recognition)）。\n\nRetinaFace为当前学术界和工业界精度较高的人脸检测和人脸关键点定位二合一的方法，被CVPR 2020 录取([论文地址](https://arxiv.org/abs/1905.00641), [代码地址](https://github.com/biubug6/Pytorch_Retinaface)))，该方法的主要贡献是:\n- 引入关键点分支，可以在训练阶段引入关键点预测分支进行多任务学习，提供额外的互补特征，inference去掉关键点分支即可，并不会引入额外的计算量。\n\n## 使用方式和范围\n\n使用方式：\n- 推理：输入经过对齐的人脸图片(112x112)，返回人脸特征向量(512维)，为便于体验，集成了人脸检测和关键点模型[Retinaface](https://www.modelscope.cn/models/damo/cv_resnet50_face-detection_retinaface/summary)，输入两张图片，各自进行人脸检测选择最大脸并对齐后提取特征，然后返回相似度比分\n\n目标场景:\n- 人脸识别应用广泛，如考勤，通行，人身核验，智慧安防等场景\n\n#### 代码范例\n```python\nimport cv2\nimport numpy as np\nfrom modelscope.outputs import OutputKeys\nfrom modelscope.pipelines import pipeline\nfrom modelscope.utils.constant import Tasks\n\ninference = pipeline(\"face_recognition\", model='bubbliiiing/cv_retinafce_recognition', model_revision='v1.0.3')\n\nimg1 = 'https://modelscope.oss-cn-beijing.aliyuncs.com/test/images/face_recognition_1.png'\nimg2 = 'https://modelscope.oss-cn-beijing.aliyuncs.com/test/images/face_recognition_2.png'\nemb1 = inference(dict(user=img1))[OutputKeys.IMG_EMBEDDING]\nemb2 = inference(dict(user=img2))[OutputKeys.IMG_EMBEDDING]\nsim = np.dot(emb1[0], emb2[0])\nprint(f'Face cosine similarity={sim:.3f}, img1:{img1}  img2:{img2}')\n```\n\n## 模型性能指标\n暂无\n\n## 来源说明\n本模型及代码来自开源社区([地址](https://github.com/Tencent/TFace/tree/master/recognition))，请遵守相关许可。\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "2004.00288",
+   "1905.00641"
+  ],
+  "RelatedPaper": [],
+  "Revision": "master",
+  "Stars": 72,
+  "StorageSize": 260871471,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [
+   "TFace"
+  ],
+  "Tasks": [
+   {
+    "ChineseName": "人脸识别",
+    "Description": "",
+    "DomainName": "cv",
+    "Id": 81,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 2,
+    "Name": "face-recognition",
+    "ParentId": 177,
+    "ParentTask": {
+     "ChineseName": "人脸人体",
+     "Description": "",
+     "DomainName": "cv",
+     "Id": 177,
+     "IsExhibition": true,
+     "IsHot": 0,
+     "IsLeaf": false,
+     "IsLoginRequired": true,
+     "IsRetrieval": true,
+     "Level": 1,
+     "Name": "human-face-body",
+     "ParentId": -1,
+     "ParentTask": null,
+     "Sorting": 0,
+     "SupportWidgets": false,
+     "TypicalModel": "",
+     "WidgetConfig": "{}",
+     "WidgetValidator": ""
+    },
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "29355166-9024-41cd-8b64-519bfd25127f",
+ "Success": true
+}

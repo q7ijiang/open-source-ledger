@@ -1,0 +1,85 @@
+{
+ "case_id": "pc-0004",
+ "repo": "duma-repo/ai_code_reader",
+ "repo_url": "https://github.com/duma-repo/ai_code_reader",
+ "head_sha": "20dabd632f6c7358ecd73529c62d083441cdc2b0",
+ "source_file": "llms/chatglm.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 1,
+    "text": "from modelscope import snapshot_download, AutoTokenizer, AutoModel",
+    "sha256": "e111a98608091ce65354084553fde90486cfcec73fbd22bbf18a8eb5e962bab8"
+   }
+  ],
+  "imports_sha256": "e111a98608091ce65354084553fde90486cfcec73fbd22bbf18a8eb5e962bab8",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "ZhipuAI/chatglm3-6b",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 11,
+   "text": "model_dir = snapshot_download(\"ZhipuAI/chatglm3-6b\", revision=\"v1.0.0\")",
+   "sha256": "78ba78ea17e37d051af4b60dfb02bf37b6bc336bffbc75963a04e877725f4156"
+  }
+ ],
+ "call": {
+  "start": 11,
+  "end": 11,
+  "text": "        model_dir = snapshot_download(\"ZhipuAI/chatglm3-6b\", revision=\"v1.0.0\")",
+  "sha256": "78ba78ea17e37d051af4b60dfb02bf37b6bc336bffbc75963a04e877725f4156"
+ },
+ "revision": {
+  "revision": "v1.0.0",
+  "source": "call_literal"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 1,
+   "text": "from modelscope import snapshot_download, AutoTokenizer, AutoModel"
+  },
+  {
+   "line": 2,
+   "text": ""
+  },
+  {
+   "line": 3,
+   "text": "from llms.llm import LLM"
+  },
+  {
+   "line": 4,
+   "text": ""
+  },
+  {
+   "line": 5,
+   "text": ""
+  },
+  {
+   "line": 6,
+   "text": "class ChatGLM3(LLM):"
+  },
+  {
+   "line": 7,
+   "text": ""
+  },
+  {
+   "line": 8,
+   "text": "def __init__(self, model_name):"
+  },
+  {
+   "line": 9,
+   "text": "super().__init__(model_name)"
+  },
+  {
+   "line": 10,
+   "text": ""
+  }
+ ]
+}

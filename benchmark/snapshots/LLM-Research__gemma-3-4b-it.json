@@ -1,0 +1,369 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "Gemma3ForConditionalGeneration"
+  ],
+  "Avatar": "https://resouces.modelscope.cn/avatar/56d9e1ec-12f1-4d2b-a749-04ade9830aba.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": [
+    "Gemma3ForConditionalGeneration"
+   ],
+   "backend_info": {
+    "deploy_task": [
+     "vlm",
+     "text",
+     "emb"
+    ],
+    "lmdeploy": {},
+    "lmdeploy_turbomind": {},
+    "ollama": null,
+    "sglang": {
+     "vlm": "0.5.2"
+    },
+    "vllm": {
+     "emb": "0.9.2",
+     "text": "0.9.2",
+     "vlm": "0.9.2"
+    }
+   },
+   "model_id": "LLM-Research/gemma-3-4b-it"
+  },
+  "BaseModel": [
+   "google/gemma-3-4b-pt"
+  ],
+  "BaseModelRelation": "finetune",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "google/gemma-3-4b-it",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "Cherrytest",
+  "CreatedTime": 1741770634,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "",
+  "Domain": [],
+  "Downloads": 955718,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 440936,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1742594688,
+  "Libraries": [
+   "pytorch",
+   "transformer",
+   "safetensors"
+  ],
+  "License": "gemma",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "{{ bos_token }}\n{%- if messages[0]['role'] == 'system' -%}\n    {%- if messages[0]['content'] is string -%}\n        {%- set first_user_prefix = messages[0]['content'] + '\n\n' -%}\n    {%- else -%}\n        {%- set first_user_prefix = messages[0]['content'][0]['text'] + '\n\n' -%}\n    {%- endif -%}\n    {%- set loop_messages = messages[1:] -%}\n{%- else -%}\n    {%- set first_user_prefix = \"\" -%}\n    {%- set loop_messages = messages -%}\n{%- endif -%}\n{%- for message in loop_messages -%}\n    {%- if (message['role'] == 'user') != (loop.index0 % 2 == 0) -%}\n        {{ raise_exception(\"Conversation roles must alternate user/assistant/user/assistant/...\") }}\n    {%- endif -%}\n    {%- if (message['role'] == 'assistant') -%}\n        {%- set role = \"model\" -%}\n    {%- else -%}\n        {%- set role = message['role'] -%}\n    {%- endif -%}\n    {{ '<start_of_turn>' + role + '\n' + (first_user_prefix if loop.first else \"\") }}\n    {%- if message['content'] is string -%}\n        {{ message['content'] | trim }}\n    {%- elif message['content'] is iterable -%}\n        {%- for item in message['content'] -%}\n            {%- if item['type'] == 'image' -%}\n                {{ '<start_of_image>' }}\n            {%- elif item['type'] == 'text' -%}\n                {{ item['text'] | trim }}\n            {%- endif -%}\n        {%- endfor -%}\n    {%- else -%}\n        {{ raise_exception(\"Invalid content type\") }}\n    {%- endif -%}\n    {{ '<end_of_turn>\n' }}\n{%- endfor -%}\n{%- if add_generation_prompt -%}\n    {{'<start_of_turn>model\n'}}\n{%- endif -%}\n",
+    "files": [
+     {
+      "name": "model.safetensors.index.json",
+      "sha256": "77f4b67de084c31c7bcd373b039908108eee6c6181607e6d53da730e5f0bc659",
+      "size": 90558
+     },
+     {
+      "name": "model-00001-of-00002.safetensors",
+      "sha256": "eb5fd5e97ddd07b56778733e9653c07312529cb00980a318fc3e1c4e3b5a8f1f",
+      "size": 4961251752
+     },
+     {
+      "name": "model-00002-of-00002.safetensors",
+      "sha256": "fdde0e5aa5ced0fa203b3d50f4ab78168b7e3a3e08c6349f5cc9326666e1bb13",
+      "size": 3639026128
+     }
+    ],
+    "model_size": 4300079472,
+    "tensor_type": [
+     "BF16"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "gemma3"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "gemma-3-4b-it",
+  "NewVersion": "",
+  "NickName": "小橙鱼",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 999999,
+   "Recommend": [
+    {
+     "Backend": [
+      "vllm"
+     ],
+     "Channel": "fc",
+     "GpuMemory": "0",
+     "ImageTag": [
+      "ubuntu22.04-cuda12.4.0-py311-torch2.6.0-1.27.0-LLM"
+     ],
+     "InstanceType": "fc.gpu.tesla.1",
+     "Memory": "32768",
+     "ModelFamily": "",
+     "Version": "v1.0.0",
+     "deploy_task": [
+      "vlm"
+     ]
+    },
+    {
+     "Backend": [
+      "vllm"
+     ],
+     "Channel": "eas",
+     "GpuMemory": "0",
+     "ImageTag": [
+      "ubuntu22.04-cuda12.4.0-py310-torch2.5.1-1.23.1-LLM"
+     ],
+     "InstanceType": "ecs.gn6i-c40g1.10xlarge",
+     "Memory": "32768",
+     "ModelFamily": "",
+     "Version": "v1.0.0",
+     "deploy_task": [
+      "vlm"
+     ]
+    }
+   ],
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resources.modelscope.cn/avatar/d3bb09d9-d4d3-460d-9b61-6eb17a708f8c.jpeg",
+   "CreateCompetition": false,
+   "CreatedBy": "Cherrytest",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "LLM-Research",
+   "GithubAddress": "",
+   "GmtCreated": "2024-04-18T22:57:01Z",
+   "GmtModified": "2025-11-19T05:19:16Z",
+   "Id": 664,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "LLM-Research",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 1
+  },
+  "PaiModelGalleryUrl": {
+   "deploy": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/models/gemma-3-4b-it/intro%3FviewType%3DDeploy%26from%3DModelScope&lang=zh",
+   "evaluation": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/evaluations/create%3FmodelName%3Dgemma-3-4b-it%26modelOrigin%3DPAI&lang=zh"
+  },
+  "PaiSdkParameter": null,
+  "Path": "LLM-Research",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n# Gemma 3 model card\n\n**Model Page**: [Gemma](https://ai.google.dev/gemma/docs/core)\n\n**Resources and Technical Documentation**:\n\n* [Gemma 3 Technical Report][g3-tech-report]\n* [Responsible Generative AI Toolkit][rai-toolkit]\n* [Gemma on Kaggle][kaggle-gemma]\n* [Gemma on Vertex Model Garden][vertex-mg-gemma3]\n\n**Terms of Use**: [Terms][terms]\n\n**Authors**: Google DeepMind\n\n## Model Information\n\nSummary description and brief definition of inputs and outputs.\n\n### Description\n\nGemma is a family of lightweight, state-of-the-art open models from Google,\nbuilt from the same research and technology used to create the Gemini models.\nGemma 3 models are multimodal, handling text and image input and generating text\noutput, with open weights for both pre-trained variants and instruction-tuned\nvariants. Gemma 3 has a large, 128K context window, multilingual support in over\n140 languages, and is available in more sizes than previous versions. Gemma 3\nmodels are well-suited for a variety of text generation and image understanding\ntasks, including question answering, summarization, and reasoning. Their\nrelatively small size makes it possible to deploy them in environments with\nlimited resources such as laptops, desktops or your own cloud infrastructure,\ndemocratizing access to state of the art AI models and helping foster innovation\nfor everyone.\n\n### Inputs and outputs\n\n-   **Input:**\n    -  Text string, such as a question, a prompt, or a document to be summarized\n    -  Images, normalized to 896 x 896 resolution and encoded to 256 tokens\n       each\n    -  Total input context of 128K tokens for the 4B, 12B, and 27B sizes, and\n       32K tokens for the 1B size\n\n-   **Output:**\n    -   Generated text in response to the input, such as an answer to a\n        question, analysis of image content, or a summary of a document\n    -   Total output context of 8192 tokens\n\n### Usage\n\nBelow, there are some code snippets on how to get quickly started with running the model. First, install the Transformers library. Gemma 3 is supported starting from transformers 4.50.0. \n\n```sh\n$ pip install -U transformers\n```\n\nThen, copy the snippet from the section that is relevant for your use case.\n\n#### Running with the `pipeline` API\n\nYou can initialize the model and processor for inference with `pipeline` as follows.\n\n```python\nfrom transformers import pipeline\nimport torch\n\npipe = pipeline(\n    \"image-text-to-text\",\n    model=\"google/gemma-3-4b-it\",\n    device=\"cuda\",\n    torch_dtype=torch.bfloat16\n)\n```\n\nWith instruction-tuned models, you need to use chat templates to process our inputs first. Then, you can pass it to the pipeline.\n\n```python\nmessages = [\n    {\n        \"role\": \"system\",\n        \"content\": [{\"type\": \"text\", \"text\": \"You are a helpful assistant.\"}]\n    },\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\"type\": \"image\", \"url\": \"https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/p-blog/candy.JPG\"},\n            {\"type\": \"text\", \"text\": \"What animal is on the candy?\"}\n        ]\n    }\n]\n\noutput = pipe(text=messages, max_new_tokens=200)\nprint(output[0][\"generated_text\"][-1][\"content\"])\n# Okay, let's take a look! \n# Based on the image, the animal on the candy is a **turtle**. \n# You can see the shell shape and the head and legs.\n```\n\n#### Running the model on a single/multi GPU\n\n```python\n# pip install accelerate\n\nfrom transformers import AutoProcessor, Gemma3ForConditionalGeneration\nfrom PIL import Image\nimport requests\nimport torch\n\nmodel_id = \"google/gemma-3-4b-it\"\n\nmodel = Gemma3ForConditionalGeneration.from_pretrained(\n    model_id, device_map=\"auto\"\n).eval()\n\nprocessor = AutoProcessor.from_pretrained(model_id)\n\nmessages = [\n    {\n        \"role\": \"system\",\n        \"content\": [{\"type\": \"text\", \"text\": \"You are a helpful assistant.\"}]\n    },\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\"type\": \"image\", \"image\": \"https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/bee.jpg\"},\n            {\"type\": \"text\", \"text\": \"Describe this image in detail.\"}\n        ]\n    }\n]\n\ninputs = processor.apply_chat_template(\n    messages, add_generation_prompt=True, tokenize=True,\n    return_dict=True, return_tensors=\"pt\"\n).to(model.device, dtype=torch.bfloat16)\n\ninput_len = inputs[\"input_ids\"].shape[-1]\n\nwith torch.inference_mode():\n    generation = model.generate(**inputs, max_new_tokens=100, do_sample=False)\n    generation = generation[0][input_len:]\n\ndecoded = processor.decode(generation, skip_special_tokens=True)\nprint(decoded)\n\n# **Overall Impression:** The image is a close-up shot of a vibrant garden scene, \n# focusing on a cluster of pink cosmos flowers and a busy bumblebee. \n# It has a slightly soft, natural feel, likely captured in daylight.\n```\n\n\n### Citation\n\n```none\n@article{gemma_2025,\n    title={Gemma 3},\n    url={https://goo.gle/Gemma3Report},\n    publisher={Kaggle},\n    author={Gemma Team},\n    year={2025}\n}\n```\n\n## Model Data\n\nData used for model training and how the data was processed.\n\n### Training Dataset\n\nThese models were trained on a dataset of text data that includes a wide variety\nof sources. The 27B model was trained with 14 trillion tokens, the 12B model was\ntrained with 12 trillion tokens, 4B model was trained with 4 trillion tokens and\n1B with 2 trillion tokens. Here are the key components:\n\n-   Web Documents: A diverse collection of web text ensures the model is\n    exposed to a broad range of linguistic styles, topics, and vocabulary. The\n    training dataset includes content in over 140 languages.\n-   Code: Exposing the model to code helps it to learn the syntax and\n    patterns of programming languages, which improves its ability to generate\n    code and understand code-related questions.\n-   Mathematics: Training on mathematical text helps the model learn logical\n    reasoning, symbolic representation, and to address mathematical queries.\n-   Images: A wide range of images enables the model to perform image\n    analysis and visual data extraction tasks.\n\nThe combination of these diverse data sources is crucial for training a powerful\nmultimodal model that can handle a wide variety of different tasks and data\nformats.\n\n### Data Preprocessing\n\nHere are the key data cleaning and filtering methods applied to the training\ndata:\n\n-   CSAM Filtering: Rigorous CSAM (Child Sexual Abuse Material) filtering\n    was applied at multiple stages in the data preparation process to ensure\n    the exclusion of harmful and illegal content.\n-   Sensitive Data Filtering: As part of making Gemma pre-trained models\n    safe and reliable, automated techniques were used to filter out certain\n    personal information and other sensitive data from training sets.\n-   Additional methods: Filtering based on content quality and safety in\n    line with [our policies][safety-policies].\n\n## Implementation Information\n\nDetails about the model internals.\n\n### Hardware\n\nGemma was trained using [Tensor Processing Unit (TPU)][tpu] hardware (TPUv4p,\nTPUv5p and TPUv5e). Training vision-language models (VLMS) requires significant\ncomputational power. TPUs, designed specifically for matrix operations common in\nmachine learning, offer several advantages in this domain:\n\n-   Performance: TPUs are specifically designed to handle the massive\n    computations involved in training VLMs. They can speed up training\n    considerably compared to CPUs.\n-   Memory: TPUs often come with large amounts of high-bandwidth memory,\n    allowing for the handling of large models and batch sizes during training.\n    This can lead to better model quality.\n-   Scalability: TPU Pods (large clusters of TPUs) provide a scalable\n    solution for handling the growing complexity of large foundation models.\n    You can distribute training across multiple TPU devices for faster and more\n    efficient processing.\n-   Cost-effectiveness: In many scenarios, TPUs can provide a more\n    cost-effective solution for training large models compared to CPU-based\n    infrastructure, especially when considering the time and resources saved\n    due to faster training.\n-   These advantages are aligned with\n    [Google's commitments to operate sustainably][sustainability].\n\n### Software\n\nTraining was done using [JAX][jax] and [ML Pathways][ml-pathways].\n\nJAX allows researchers to take advantage of the latest generation of hardware,\nincluding TPUs, for faster and more efficient training of large models. ML\nPathways is Google's latest effort to build artificially intelligent systems\ncapable of generalizing across multiple tasks. This is specially suitable for\nfoundation models, including large language models like these ones.\n\nTogether, JAX and ML Pathways are used as described in the\n[paper about the Gemini family of models][gemini-2-paper]; *\"the 'single\ncontroller' programming model of Jax and Pathways allows a single Python\nprocess to orchestrate the entire training run, dramatically simplifying the\ndevelopment workflow.\"*\n\n## Evaluation\n\nModel evaluation metrics and results.\n\n### Benchmark Results\n\nThese models were evaluated against a large collection of different datasets and\nmetrics to cover different aspects of text generation:\n\n#### Reasoning and factuality\n\n| Benchmark                      | Metric         | Gemma 3 PT 1B  | Gemma 3 PT 4B | Gemma 3 PT 12B | Gemma 3 PT 27B |\n| ------------------------------ |----------------|:--------------:|:-------------:|:--------------:|:--------------:|\n| [HellaSwag][hellaswag]         | 10-shot        |      62.3      |      77.2     |      84.2      |      85.6      |\n| [BoolQ][boolq]                 | 0-shot         |      63.2      |      72.3     |      78.8      |      82.4      |\n| [PIQA][piqa]                   | 0-shot         |      73.8      |      79.6     |      81.8      |      83.3      |\n| [SocialIQA][socialiqa]         | 0-shot         |      48.9      |      51.9     |      53.4      |      54.9      |\n| [TriviaQA][triviaqa]           | 5-shot         |      39.8      |      65.8     |      78.2      |      85.5      |\n| [Natural Questions][naturalq]  | 5-shot         |      9.48      |      20.0     |      31.4      |      36.1      |\n| [ARC-c][arc]                   | 25-shot        |      38.4      |      56.2     |      68.9      |      70.6      |\n| [ARC-e][arc]                   | 0-shot         |      73.0      |      82.4     |      88.3      |      89.0      |\n| [WinoGrande][winogrande]       | 5-shot         |      58.2      |      64.7     |      74.3      |      78.8      |\n| [BIG-Bench Hard][bbh]          | few-shot       |      28.4      |      50.9     |      72.6      |      77.7      |\n| [DROP][drop]                   | 1-shot         |      42.4      |      60.1     |      72.2      |      77.2      |\n\n[hellaswag]: https://arxiv.org/abs/1905.07830\n[boolq]: https://arxiv.org/abs/1905.10044\n[piqa]: https://arxiv.org/abs/1911.11641\n[socialiqa]: https://arxiv.org/abs/1904.09728\n[triviaqa]: https://arxiv.org/abs/1705.03551\n[naturalq]: https://github.com/google-research-datasets/natural-questions\n[arc]: https://arxiv.org/abs/1911.01547\n[winogrande]: https://arxiv.org/abs/1907.10641\n[bbh]: https://paperswithcode.com/dataset/bbh\n[drop]: https://arxiv.org/abs/1903.00161\n\n#### STEM and code\n\n| Benchmark                      | Metric         | Gemma 3 PT 4B | Gemma 3 PT 12B | Gemma 3 PT 27B |\n| ------------------------------ |----------------|:-------------:|:--------------:|:--------------:|\n| [MMLU][mmlu]                   | 5-shot         |      59.6     |      74.5      |      78.6      |\n| [MMLU][mmlu] (Pro COT)         | 5-shot         |      29.2     |      45.3      |      52.2      |\n| [AGIEval][agieval]             | 3-5-shot       |      42.1     |      57.4      |      66.2      |\n| [MATH][math]                   | 4-shot         |      24.2     |      43.3      |      50.0      |\n| [GSM8K][gsm8k]                 | 8-shot         |      38.4     |      71.0      |      82.6      |\n| [GPQA][gpqa]                   | 5-shot         |      15.0     |      25.4      |      24.3      |\n| [MBPP][mbpp]                   | 3-shot         |      46.0     |      60.4      |      65.6      |\n| [HumanEval][humaneval]         | 0-shot         |      36.0     |      45.7      |      48.8      |\n\n[mmlu]: https://arxiv.org/abs/2009.03300\n[agieval]: https://arxiv.org/abs/2304.06364\n[math]: https://arxiv.org/abs/2103.03874\n[gsm8k]: https://arxiv.org/abs/2110.14168\n[gpqa]: https://arxiv.org/abs/2311.12022\n[mbpp]: https://arxiv.org/abs/2108.07732\n[humaneval]: https://arxiv.org/abs/2107.03374\n\n#### Multilingual\n\n| Benchmark                            | Gemma 3 PT 1B | Gemma 3 PT 4B | Gemma 3 PT 12B | Gemma 3 PT 27B |\n| ------------------------------------ |:-------------:|:-------------:|:--------------:|:--------------:|\n| [MGSM][mgsm]                         |      2.04     |      34.7     |      64.3     |      74.3     |\n| [Global-MMLU-Lite][global-mmlu-lite] |      24.9     |      57.0     |      69.4     |      75.7     |\n| [WMT24++][wmt24pp] (ChrF)            |      36.7     |      48.4     |      53.9     |      55.7     |\n| [FloRes][flores]                     |      29.5     |      39.2     |      46.0     |      48.8     |\n| [XQuAD][xquad] (all)                 |      43.9     |      68.0     |      74.5     |      76.8     |\n| [ECLeKTic][eclektic]                 |      4.69     |      11.0     |      17.2     |      24.4     |\n| [IndicGenBench][indicgenbench]       |      41.4     |      57.2     |      61.7     |      63.4     |\n\n[mgsm]: https://arxiv.org/abs/2210.03057\n[flores]: https://arxiv.org/abs/2106.03193\n[xquad]: https://arxiv.org/abs/1910.11856v3\n[global-mmlu-lite]: https://huggingface.co/datasets/CohereForAI/Global-MMLU-Lite\n[wmt24pp]: https://arxiv.org/abs/2502.12404v1\n[eclektic]: https://arxiv.org/abs/2502.21228\n[indicgenbench]: https://arxiv.org/abs/2404.16816\n\n#### Multimodal\n\n| Benchmark                      | Gemma 3 PT 4B | Gemma 3 PT 12B | Gemma 3 PT 27B |\n| ------------------------------ |:-------------:|:--------------:|:--------------:|\n| [COCOcap][coco-cap]            |      102      |      111       |      116       |\n| [DocVQA][docvqa] (val)         |      72.8     |      82.3      |      85.6      |\n| [InfoVQA][info-vqa] (val)      |      44.1     |      54.8      |      59.4      |\n| [MMMU][mmmu] (pt)              |      39.2     |      50.3      |      56.1      |\n| [TextVQA][textvqa] (val)       |      58.9     |      66.5      |      68.6      |\n| [RealWorldQA][realworldqa]     |      45.5     |      52.2      |      53.9      |\n| [ReMI][remi]                   |      27.3     |      38.5      |      44.8      |\n| [AI2D][ai2d]                   |      63.2     |      75.2      |      79.0      |\n| [ChartQA][chartqa]             |      63.6     |      74.7      |      76.3      |\n| [VQAv2][vqav2]                 |      63.9     |      71.2      |      72.9      |\n| [BLINK][blinkvqa]              |      38.0     |      35.9      |      39.6      |\n| [OKVQA][okvqa]                 |      51.0     |      58.7      |      60.2      |\n| [TallyQA][tallyqa]             |      42.5     |      51.8      |      54.3      |\n| [SpatialSense VQA][ss-vqa]     |      50.9     |      60.0      |      59.4      |\n| [CountBenchQA][countbenchqa]   |      26.1     |      17.8      |      68.0      |\n\n[coco-cap]: https://cocodataset.org/#home\n[docvqa]: https://www.docvqa.org/\n[info-vqa]: https://arxiv.org/abs/2104.12756\n[mmmu]: https://arxiv.org/abs/2311.16502\n[textvqa]: https://textvqa.org/\n[realworldqa]: https://paperswithcode.com/dataset/realworldqa\n[remi]: https://arxiv.org/html/2406.09175v1\n[ai2d]: https://allenai.org/data/diagrams\n[chartqa]: https://arxiv.org/abs/2203.10244\n[vqav2]: https://visualqa.org/index.html\n[blinkvqa]: https://arxiv.org/abs/2404.12390\n[okvqa]: https://okvqa.allenai.org/\n[tallyqa]: https://arxiv.org/abs/1810.12440\n[ss-vqa]: https://arxiv.org/abs/1908.02660\n[countbenchqa]: https://github.com/google-research/big_vision/blob/main/big_vision/datasets/countbenchqa/\n\n## Ethics and Safety\n\nEthics and safety evaluation approach and results.\n\n### Evaluation Approach\n\nOur evaluation methods include structured evaluations and internal red-teaming\ntesting of relevant content policies. Red-teaming was conducted by a number of\ndifferent teams, each with different goals and human evaluation metrics. These\nmodels were evaluated against a number of different categories relevant to\nethics and safety, including:\n\n-   **Child Safety**: Evaluation of text-to-text and image to text prompts\n    covering child safety policies, including child sexual abuse and\n    exploitation.\n-   **Content Safety:** Evaluation of text-to-text and image to text prompts\n    covering safety policies including, harassment, violence and gore, and hate\n    speech.\n-   **Representational Harms**: Evaluation of text-to-text and image to text\n    prompts covering safety policies including bias, stereotyping, and harmful\n    associations or inaccuracies.\n\nIn addition to development level evaluations, we conduct \"assurance\nevaluations\" which are our 'arms-length' internal evaluations for responsibility\ngovernance decision making. They are conducted separately from the model\ndevelopment team, to inform decision making about release. High level findings\nare fed back to the model team, but prompt sets are held-out to prevent\noverfitting and preserve the results' ability to inform decision making.\nAssurance evaluation results are reported to our Responsibility & Safety Council\nas part of release review.\n\n### Evaluation Results\n\nFor all areas of safety testing, we saw major improvements in the categories of\nchild safety, content safety, and representational harms relative to previous\nGemma models. All testing was conducted without safety filters to evaluate the\nmodel capabilities and behaviors. For both text-to-text and image-to-text, and\nacross all model sizes, the model produced minimal policy violations, and showed\nsignificant improvements over previous Gemma models' performance with respect\nto ungrounded inferences. A limitation of our evaluations was they included only\nEnglish language prompts.\n\n## Usage and Limitations\n\nThese models have certain limitations that users should be aware of.\n\n### Intended Usage\n\nOpen vision-language models (VLMs) models have a wide range of applications\nacross various industries and domains. The following list of potential uses is\nnot comprehensive. The purpose of this list is to provide contextual information\nabout the possible use-cases that the model creators considered as part of model\ntraining and development.\n\n-   Content Creation and Communication\n    -   Text Generation: These models can be used to generate creative text\n        formats such as poems, scripts, code, marketing copy, and email drafts.\n    -   Chatbots and Conversational AI: Power conversational interfaces\n        for customer service, virtual assistants, or interactive applications.\n    -   Text Summarization: Generate concise summaries of a text corpus,\n        research papers, or reports.\n    -   Image Data Extraction: These models can be used to extract,\n        interpret, and summarize visual data for text communications.\n-   Research and Education\n    -   Natural Language Processing (NLP) and VLM Research: These\n        models can serve as a foundation for researchers to experiment with VLM\n        and NLP techniques, develop algorithms, and contribute to the\n        advancement of the field.\n    -   Language Learning Tools: Support interactive language learning\n        experiences, aiding in grammar correction or providing writing practice.\n    -   Knowledge Exploration: Assist researchers in exploring large\n        bodies of text by generating summaries or answering questions about\n        specific topics.\n\n### Limitations\n\n-   Training Data\n    -   The quality and diversity of the training data significantly\n        influence the model's capabilities. Biases or gaps in the training data\n        can lead to limitations in the model's responses.\n    -   The scope of the training dataset determines the subject areas\n        the model can handle effectively.\n-   Context and Task Complexity\n    -   Models are better at tasks that can be framed with clear\n        prompts and instructions. Open-ended or highly complex tasks might be\n        challenging.\n    -   A model's performance can be influenced by the amount of context\n        provided (longer context generally leads to better outputs, up to a\n        certain point).\n-   Language Ambiguity and Nuance\n    -   Natural language is inherently complex. Models might struggle\n        to grasp subtle nuances, sarcasm, or figurative language.\n-   Factual Accuracy\n    -   Models generate responses based on information they learned\n        from their training datasets, but they are not knowledge bases. They\n        may generate incorrect or outdated factual statements.\n-   Common Sense\n    -   Models rely on statistical patterns in language. They might\n        lack the ability to apply common sense reasoning in certain situations.\n\n### Ethical Considerations and Risks\n\nThe development of vision-language models (VLMs) raises several ethical\nconcerns. In creating an open model, we have carefully considered the following:\n\n-   Bias and Fairness\n    -   VLMs trained on large-scale, real-world text and image data can\n        reflect socio-cultural biases embedded in the training material. These\n        models underwent careful scrutiny, input data pre-processing described\n        and posterior evaluations reported in this card.\n-   Misinformation and Misuse\n    -   VLMs can be misused to generate text that is false, misleading,\n        or harmful.\n    -   Guidelines are provided for responsible use with the model, see the\n        [Responsible Generative AI Toolkit][rai-toolkit].\n-   Transparency and Accountability:\n    -   This model card summarizes details on the models' architecture,\n        capabilities, limitations, and evaluation processes.\n    -   A responsibly developed open model offers the opportunity to\n        share innovation by making VLM technology accessible to developers and\n        researchers across the AI ecosystem.\n\nRisks identified and mitigations:\n\n-   **Perpetuation of biases**: It's encouraged to perform continuous\n    monitoring (using evaluation metrics, human review) and the exploration of\n    de-biasing techniques during model training, fine-tuning, and other use\n    cases.\n-   **Generation of harmful content**: Mechanisms and guidelines for content\n    safety are essential. Developers are encouraged to exercise caution and\n    implement appropriate content safety safeguards based on their specific\n    product policies and application use cases.\n-   **Misuse for malicious purposes**: Technical limitations and developer\n    and end-user education can help mitigate against malicious applications of\n    VLMs. Educational resources and reporting mechanisms for users to flag\n    misuse are provided. Prohibited uses of Gemma models are outlined in the\n    [Gemma Prohibited Use Policy][prohibited-use].\n-   **Privacy violations**: Models were trained on data filtered for removal\n    of certain personal information and other sensitive data. Developers are\n    encouraged to adhere to privacy regulations with privacy-preserving\n    techniques.\n\n### Benefits\n\nAt the time of release, this family of models provides high-performance open\nvision-language model implementations designed from the ground up for\nresponsible AI development compared to similarly sized models.\n\nUsing the benchmark evaluation metrics described in this document, these models\nhave shown to provide superior performance to other, comparably-sized open model\nalternatives.\n\n[g3-tech-report]: https://goo.gle/Gemma3Report\n[rai-toolkit]: https://ai.google.dev/responsible\n[kaggle-gemma]: https://www.kaggle.com/models/google/gemma-3\n[vertex-mg-gemma3]: https://console.cloud.google.com/vertex-ai/publishers/google/model-garden/gemma3\n[terms]: https://ai.google.dev/gemma/terms\n[safety-policies]: https://ai.google/static/documents/ai-responsibility-update-published-february-2025.pdf\n[prohibited-use]: https://ai.google.dev/gemma/prohibited_use_policy\n[tpu]: https://cloud.google.com/tpu/docs/intro-to-tpu\n[sustainability]: https://sustainability.google/operating-sustainably/\n[jax]: https://github.com/jax-ml/jax\n[ml-pathways]: https://blog.google/technology/ai/introducing-pathways-next-generation-ai-architecture/\n[sustainability]: https://sustainability.google/operating-sustainably/\n[gemini-2-paper]: https://arxiv.org/abs/2312.11805\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "1905.07830",
+   "1905.10044",
+   "1911.11641",
+   "1904.09728",
+   "1705.03551",
+   "1911.01547",
+   "1907.10641",
+   "1903.00161",
+   "2009.03300",
+   "2304.06364",
+   "2103.03874",
+   "2110.14168",
+   "2311.12022",
+   "2108.07732",
+   "2107.03374",
+   "2210.03057",
+   "2106.03193",
+   "1910.11856",
+   "2502.12404",
+   "2502.21228",
+   "2404.16816",
+   "2104.12756",
+   "2311.16502",
+   "2203.10244",
+   "2404.12390",
+   "1810.12440",
+   "1908.02660",
+   "2312.11805"
+  ],
+  "RelatedPaper": [
+   235499,
+   24928,
+   95742,
+   83649,
+   91676,
+   118001,
+   121585
+  ],
+  "Revision": "master",
+  "Stars": 18,
+  "StorageSize": 8639630561,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": [
+   "deploy",
+   "evaluation"
+  ],
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [],
+  "Tasks": [
+   {
+    "ChineseName": "视觉多模态理解",
+    "Description": "",
+    "DomainName": "multi-modal",
+    "Id": 295,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "image-text-to-text",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "d4a22d9a-dfd4-4569-b1ce-20a15806b211",
+ "Success": true
+}

@@ -1,0 +1,65 @@
+{
+ "case_id": "pc-0009",
+ "repo": "ZJU-OmniAI/Data-Copilot",
+ "repo_url": "https://github.com/ZJU-OmniAI/Data-Copilot",
+ "head_sha": "ee9a7dca78eccf4f24be41e1bb230b8384a52041",
+ "source_file": "lab_llm_local_call.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 3,
+    "text": "from modelscope.hub.snapshot_download import snapshot_download",
+    "sha256": "37e99664f69c0d295bf2aad2897b1965074d3821635534dcc9d39bfc909b42af"
+   }
+  ],
+  "imports_sha256": "37e99664f69c0d295bf2aad2897b1965074d3821635534dcc9d39bfc909b42af",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "Shanghai_AI_Laboratory/internlm-chat-7b",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 6,
+   "text": "model_dir = snapshot_download('Shanghai_AI_Laboratory/internlm-chat-7b', revision='v1.0.2')",
+   "sha256": "ac723fe78a2080626d3749f5cdb7f99ff33cc8915f83d07fa138ac2a84a8bf47"
+  }
+ ],
+ "call": {
+  "start": 6,
+  "end": 6,
+  "text": "    model_dir = snapshot_download('Shanghai_AI_Laboratory/internlm-chat-7b', revision='v1.0.2')",
+  "sha256": "ac723fe78a2080626d3749f5cdb7f99ff33cc8915f83d07fa138ac2a84a8bf47"
+ },
+ "revision": {
+  "revision": "v1.0.2",
+  "source": "call_literal"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 1,
+   "text": "import torch"
+  },
+  {
+   "line": 2,
+   "text": "from transformers import AutoTokenizer, AutoModelForCausalLM"
+  },
+  {
+   "line": 3,
+   "text": "from modelscope.hub.snapshot_download import snapshot_download"
+  },
+  {
+   "line": 4,
+   "text": ""
+  },
+  {
+   "line": 5,
+   "text": "def send_chat_request_internlm_chat(query):"
+  }
+ ]
+}

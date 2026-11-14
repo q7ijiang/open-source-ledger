@@ -1,0 +1,325 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "InternLM2ForCausalLM"
+  ],
+  "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": [
+    "InternLM2ForCausalLM"
+   ],
+   "backend_info": {
+    "deploy_task": [
+     "text",
+     "emb"
+    ],
+    "lmdeploy": {
+     "text": "0.9.1"
+    },
+    "lmdeploy_turbomind": {
+     "text": "0.9.1"
+    },
+    "ollama": null,
+    "sglang": {
+     "text": "0.5.2"
+    },
+    "vllm": {
+     "emb": "0.9.2",
+     "text": "0.9.2"
+    }
+   },
+   "model_id": "Shanghai_AI_Laboratory/internlm2_5-7b-chat"
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "书生·浦语2.5-7B-对话",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "RangiLyu",
+  "CreatedTime": 1719544553,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "",
+  "Domain": [],
+  "Downloads": 82480,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "Pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 296485,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1741849904,
+  "Libraries": [
+   "pytorch",
+   "transformer",
+   "safetensors"
+  ],
+  "License": "other",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "{{ bos_token }}{% for message in messages %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{% if add_generation_prompt %}{{ '<|im_start|>assistant\n' }}{% endif %}",
+    "files": [
+     {
+      "name": "model.safetensors.index.json",
+      "sha256": "1c3947a3578100becf21a781727e193985013754a845ca34591e7a5ff76245d7",
+      "size": 18179
+     },
+     {
+      "name": "model-00001-of-00008.safetensors",
+      "sha256": "e4ca3e18ba179cf02603f3c5e3677c3de953ae3ef828f1ba61e69405b2f29c86",
+      "size": 1949337704
+     },
+     {
+      "name": "model-00002-of-00008.safetensors",
+      "sha256": "6e3d7544d4f0cd1a757c4cdd9f2b80f6195b53c1fefc9c3f87d9512f1f819286",
+      "size": 1946242696
+     },
+     {
+      "name": "model-00003-of-00008.safetensors",
+      "sha256": "140ae757b641dec6daba5ea8779b20e9fcd39ddbc0fd6ace885c1d1113769e81",
+      "size": 1979780440
+     },
+     {
+      "name": "model-00004-of-00008.safetensors",
+      "sha256": "1ec683235b39820024b222f3f05947afcdad7dc84eccc7c2bd5a418685c9f893",
+      "size": 1946242728
+     },
+     {
+      "name": "model-00005-of-00008.safetensors",
+      "sha256": "fc21cfa8573045ade0f2c96d6a1fb941755d5ced9805c57b9ff6c0e415cfac07",
+      "size": 1979780456
+     },
+     {
+      "name": "model-00006-of-00008.safetensors",
+      "sha256": "8c4a36cedf62139bac647b271bb0c31d55c917925c186361884ce4e07bba733c",
+      "size": 1946242728
+     },
+     {
+      "name": "model-00007-of-00008.safetensors",
+      "sha256": "e58c4c62819309d897f195a874ade51ece7f2ef8234763b80a58e304e9f5f4d1",
+      "size": 1979780456
+     },
+     {
+      "name": "model-00008-of-00008.safetensors",
+      "sha256": "62a1dbfc8d58d31058c9e6dd4c85317b110f936c2ab9e8ef3e599a5a262f1fda",
+      "size": 1748035640
+     }
+    ],
+    "model_size": 7737708544,
+    "tensor_type": [
+     "BF16"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "internlm2"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "internlm2_5-7b-chat",
+  "NewVersion": "",
+  "NickName": "",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/8ac4e476-b2d6-4bbd-89d5-bb826c0d3e5f.webp",
+   "CreateCompetition": false,
+   "CreatedBy": "Cherrytest",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"上海人工智能实验室是人工智能领域的新型科研机构，开展战略性、原创性、前瞻性的科学研究与技术攻关，突破人工智能的重要基础理论和关键核心技术，打造“突破型、引领型、平台型”一体化的大型综合性研究基地，支撑人工智能产业实现跨越式发展。\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "上海人工智能实验室",
+   "GithubAddress": "https://www.shlab.org.cn/",
+   "GmtCreated": "2023-08-29T03:51:49Z",
+   "GmtModified": "2026-10-20T07:41:48Z",
+   "Id": 325,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "Shanghai_AI_Laboratory",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 1
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "Shanghai_AI_Laboratory",
+  "ProtectedMode": 2,
+  "ReadMeContent": "# InternLM \n\n<div align=\"center\">\n\n<img src=\"https://github.com/InternLM/InternLM/assets/22529082/b9788105-8892-4398-8b47-b513a292378e\" width=\"200\"/>\n  <div>&nbsp;</div>\n  <div align=\"center\">\n    <b><font size=\"5\">InternLM</font></b>\n    <sup>\n      <a href=\"https://internlm.intern-ai.org.cn/\">\n        <i><font size=\"4\">HOT</font></i>\n      </a>\n    </sup>\n    <div>&nbsp;</div>\n  </div>\n  \n[![evaluation](https://github.com/InternLM/InternLM/assets/22529082/f80a2a58-5ddf-471a-8da4-32ab65c8fd3b)](https://github.com/internLM/OpenCompass/)\n\n[💻Github Repo](https://github.com/InternLM/InternLM) • [🤔Reporting Issues](https://github.com/InternLM/InternLM/issues/new) • [📜Technical Report](https://arxiv.org/abs/2403.17297)\n\n</div>\n\n<p align=\"center\">\n    👋 join us on <a href=\"https://discord.gg/xa29JuW87d\" target=\"_blank\">Discord</a> and <a href=\"https://github.com/InternLM/InternLM/assets/25839884/a6aad896-7232-4220-ac84-9e070c2633ce\" target=\"_blank\">WeChat</a>\n</p>\n\n\n\n## Introduction\n\nInternLM2.5 has open-sourced a 7 billion parameter base model and a chat model tailored for practical scenarios. The model has the following characteristics:\n\n- **Outstanding reasoning capability**: State-of-the-art performance on Math reasoning, surpassing models like Llama3 and Gemma2-9B.\n\n- **1M Context window**: Nearly perfect at finding needles in the haystack with 1M-long context, with leading performance on long-context tasks like LongBench. Try it with [LMDeploy](https://github.com/InternLM/InternLM/blob/main/chat/lmdeploy.md) for 1M-context inference.\n\n- **Stronger tool use**: InternLM2.5 supports gathering information from more than 100 web pages, corresponding implementation has be released in [MindSearch](https://github.com/InternLM/MindSearch). InternLM2.5 has better tool utilization-related capabilities in instruction following, tool selection and reflection. See [examples](https://github.com/InternLM/InternLM/blob/main/agent/lagent.md).\n\n## InternLM2.5-7B-Chat\n\n### Performance Evaluation\n\nWe conducted a comprehensive evaluation of InternLM using the open-source evaluation tool [OpenCompass](https://github.com/internLM/OpenCompass/). The evaluation covered five dimensions of capabilities: disciplinary competence, language competence, knowledge competence, inference competence, and comprehension competence. Here are some of the evaluation results, and you can visit the [OpenCompass leaderboard](https://rank.opencompass.org.cn) for more evaluation results.\n\n| Benchmark          | InternLM2.5-7B-Chat | Llama3-8B-Instruct | Gemma2-9B-IT | Yi-1.5-9B-Chat | GLM-4-9B-Chat | Qwen2-7B-Instruct |\n| ------------------ | ------------------- | ------------------ | ------------ | -------------- | ------------- | ----------------- |\n| MMLU (5-shot)      | **72.8**            | 68.4               | 70.9         | 71.0           | 71.4          | 70.8              |\n| CMMLU (5-shot)     | 78.0                | 53.3               | 60.3         | 74.5           | 74.5          | 80.9              |\n| BBH (3-shot CoT)   | **71.6**            | 54.4               | 68.2\\*       | 69.6           | 69.6          | 65.0              |\n| MATH (0-shot CoT)  | **60.1**            | 27.9               | 46.9         | 51.1           | 51.1          | 48.6              |\n| GSM8K (0-shot CoT) | 86.0                | 72.9               | 88.9         | 80.1           | 85.3          | 82.9              |\n| GPQA (0-shot)      | **38.4**            | 26.1               | 33.8         | 37.9           | 36.9          | 38.4              |\n\n\n- The evaluation results were obtained from [OpenCompass](https://github.com/internLM/OpenCompass/) (some data marked with *, which means come from the original papers), and evaluation configuration can be found in the configuration files provided by [OpenCompass](https://github.com/internLM/OpenCompass/). \n- The evaluation data may have numerical differences due to the version iteration of [OpenCompass](https://github.com/internLM/OpenCompass/), so please refer to the latest evaluation results of [OpenCompass](https://github.com/internLM/OpenCompass/).\n\n\n**Limitations:** Although we have made efforts to ensure the safety of the model during the training process and to encourage the model to generate text that complies with ethical and legal requirements, the model may still produce unexpected outputs due to its size and probabilistic generation paradigm. For example, the generated responses may contain biases, discrimination, or other harmful content. Please do not propagate such content. We are not responsible for any consequences resulting from the dissemination of harmful information.\n\n### Import from Transformers\n\nTo load the InternLM2.5 7B Chat model using Transformers, use the following code:\n\n```python\nimport torch\nfrom transformers import AutoTokenizer, AutoModelForCausalLM\ntokenizer = AutoTokenizer.from_pretrained(\"internlm/internlm2_5-7b-chat\", trust_remote_code=True)\n# Set `torch_dtype=torch.float16` to load model in float16, otherwise it will be loaded as float32 and cause OOM Error.\nmodel = AutoModelForCausalLM.from_pretrained(\"internlm/internlm2_5-7b-chat\", torch_dtype=torch.float16, trust_remote_code=True).cuda()\nmodel = model.eval()\nresponse, history = model.chat(tokenizer, \"hello\", history=[])\nprint(response)\n# Hello! How can I help you today?\nresponse, history = model.chat(tokenizer, \"please provide three suggestions about time management\", history=history)\nprint(response)\n```\n\nThe responses can be streamed using `stream_chat`:\n\n```python\nimport torch\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\n\nmodel_path = \"internlm/internlm2_5-7b-chat\"\nmodel = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16, trust_remote_code=True).cuda()\ntokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)\n\nmodel = model.eval()\nlength = 0\nfor response, history in model.stream_chat(tokenizer, \"Hello\", history=[]):\n    print(response[length:], flush=True, end=\"\")\n    length = len(response)\n```\n\n## Deployment\n\n### llama.cpp\n\n[internlm/internlm2_5-7b-chat-gguf](https://huggingface.co/internlm/internlm2_5-7b-chat-gguf) offers `internlm2_5-7b-chat` models in GGUF format in both half precision and various low-bit quantized versions, including `q5_0`, `q5_k_m`, `q6_k`, and `q8_0`.\n\n### LMDeploy\n\nLMDeploy is a toolkit for compressing, deploying, and serving LLM, developed by the MMRazor and MMDeploy teams.\n\n```bash\npip install lmdeploy\n```\n\nYou can run batch inference locally with the following python code:\n\n```python\nimport lmdeploy\npipe = lmdeploy.pipeline(\"internlm/internlm2_5-7b-chat\")\nresponse = pipe([\"Hi, pls intro yourself\", \"Shanghai is\"])\nprint(response)\n```\n\nOr you can launch an OpenAI compatible server with the following command:\n\n```bash\nlmdeploy serve api_server internlm/internlm2_5-7b-chat --model-name internlm2_5-7b-chat --server-port 23333 \n```\n\nThen you can send a chat request to the server:\n\n```bash\ncurl http://localhost:23333/v1/chat/completions \\\n    -H \"Content-Type: application/json\" \\\n    -d '{\n    \"model\": \"internlm2_5-7b-chat\",\n    \"messages\": [\n    {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},\n    {\"role\": \"user\", \"content\": \"Introduce deep learning to me.\"}\n    ]\n    }'\n```\n\nFind more details in the [LMDeploy documentation](https://lmdeploy.readthedocs.io/en/latest/)\n\n### vLLM\n\nLaunch OpenAI compatible server with `vLLM>=0.3.2`:\n\n```bash\npip install vllm\n```\n\n```bash\npython -m vllm.entrypoints.openai.api_server --model internlm/internlm2_5-7b-chat --served-model-name internlm2_5-7b-chat --trust-remote-code\n```\n\nThen you can send a chat request to the server:\n\n```bash\ncurl http://localhost:8000/v1/chat/completions \\\n    -H \"Content-Type: application/json\" \\\n    -d '{\n    \"model\": \"internlm2_5-7b-chat\",\n    \"messages\": [\n    {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},\n    {\"role\": \"user\", \"content\": \"Introduce deep learning to me.\"}\n    ]\n    }'\n```\n\nFind more details in the [vLLM documentation](https://docs.vllm.ai/en/latest/index.html)\n\n## Open Source License\n\nThe code is licensed under Apache-2.0, while model weights are fully open for academic research and also allow free commercial usage. To apply for a commercial license, please fill in the application form (English)/申请表（中文）. For other questions or collaborations, please contact internlm@pjlab.org.cn.\n\n## Citation\n\n```\n@misc{cai2024internlm2,\n      title={InternLM2 Technical Report},\n      author={Zheng Cai and Maosong Cao and Haojiong Chen and Kai Chen and Keyu Chen and Xin Chen and Xun Chen and Zehui Chen and Zhi Chen and Pei Chu and Xiaoyi Dong and Haodong Duan and Qi Fan and Zhaoye Fei and Yang Gao and Jiaye Ge and Chenya Gu and Yuzhe Gu and Tao Gui and Aijia Guo and Qipeng Guo and Conghui He and Yingfan Hu and Ting Huang and Tao Jiang and Penglong Jiao and Zhenjiang Jin and Zhikai Lei and Jiaxing Li and Jingwen Li and Linyang Li and Shuaibin Li and Wei Li and Yining Li and Hongwei Liu and Jiangning Liu and Jiawei Hong and Kaiwen Liu and Kuikun Liu and Xiaoran Liu and Chengqi Lv and Haijun Lv and Kai Lv and Li Ma and Runyuan Ma and Zerun Ma and Wenchang Ning and Linke Ouyang and Jiantao Qiu and Yuan Qu and Fukai Shang and Yunfan Shao and Demin Song and Zifan Song and Zhihao Sui and Peng Sun and Yu Sun and Huanze Tang and Bin Wang and Guoteng Wang and Jiaqi Wang and Jiayu Wang and Rui Wang and Yudong Wang and Ziyi Wang and Xingjian Wei and Qizhen Weng and Fan Wu and Yingtong Xiong and Chao Xu and Ruiliang Xu and Hang Yan and Yirong Yan and Xiaogui Yang and Haochen Ye and Huaiyuan Ying and Jia Yu and Jing Yu and Yuhang Zang and Chuyu Zhang and Li Zhang and Pan Zhang and Peng Zhang and Ruijie Zhang and Shuo Zhang and Songyang Zhang and Wenjian Zhang and Wenwei Zhang and Xingcheng Zhang and Xinyue Zhang and Hui Zhao and Qian Zhao and Xiaomeng Zhao and Fengzhe Zhou and Zaida Zhou and Jingming Zhuo and Yicheng Zou and Xipeng Qiu and Yu Qiao and Dahua Lin},\n      year={2024},\n      eprint={2403.17297},\n      archivePrefix={arXiv},\n      primaryClass={cs.CL}\n}\n```\n\n## 简介\n\nInternLM2.5 ，即书生·浦语大模型第 2.5 代，开源了面向实用场景的70亿参数基础模型与对话模型 （InternLM2.5-7B-Chat）。模型具有以下特点：\n\n- 卓越的推理性能：在数学推理方面取得了同量级模型最优精度，超越了 Llama3 和 Gemma2-9B。\n- 有效支持百万字超长上下文：模型在 1 百万字长输入中几乎完美地实现长文“大海捞针”，而且在 LongBench 等长文任务中的表现也达到开源模型中的领先水平。 可以通过 [LMDeploy](https://github.com/InternLM/InternLM/blob/main/chat/lmdeploy_zh_cn.md) 尝试百万字超长上下文推理。\n- 工具调用能力整体升级：InternLM2.5 支持从上百个网页搜集有效信息进行分析推理，相关实现已开源到 [MindSearch](https://github.com/InternLM/MindSearch)。InternLM2.5 具有更强和更具有泛化性的指令理解、工具筛选与结果反思等能力，新版模型可以更可靠地支持复杂智能体的搭建，支持对工具进行有效的多轮调用，完成较复杂的任务。可以查看更多[样例](https://github.com/InternLM/InternLM/blob/main/agent/lagent.md)。\n\n## InternLM2.5-7B-Chat\n\n### 性能评测\n\n我们使用开源评测工具 [OpenCompass](https://github.com/internLM/OpenCompass/) 从学科综合能力、语言能力、知识能力、推理能力、理解能力五大能力维度对InternLM开展全面评测，部分评测结果如下表所示，欢迎访问[ OpenCompass 榜单 ](https://rank.opencompass.org.cn)获取更多的评测结果。\n\n| 评测集\\模型         | InternLM2.5-7B-Chat | Llama3-8B-Instruct | Gemma2-9B-IT | Yi-1.5-9B-Chat | GLM-4-9B-Chat | Qwen2-7B-Instruct |\n| ------------------ | ------------------- | ------------------ | ------------ | -------------- | ------------- | ----------------- |\n| MMLU (5-shot)      | **72.8**            | 68.4               | 70.9         | 71.0           | 71.4          | 70.8              |\n| CMMLU (5-shot)     | 78.0                | 53.3               | 60.3         | 74.5           | 74.5          | 80.9              |\n| BBH (3-shot CoT)   | **71.6**            | 54.4               | 68.2\\*       | 69.6           | 69.6          | 65.0              |\n| MATH (0-shot CoT)  | **60.1**            | 27.9               | 46.9         | 51.1           | 51.1          | 48.6              |\n| GSM8K (0-shot CoT) | 86.0                | 72.9               | 88.9         | 80.1           | 85.3          | 82.9              |\n| GPQA (0-shot)      | **38.4**            | 26.1               | 33.8         | 37.9           | 36.9          | 38.4              |\n\n- 以上评测结果基于 [OpenCompass](https://github.com/internLM/OpenCompass/) 获得（部分数据标注`*`代表数据来自原始论文），具体测试细节可参见 [OpenCompass](https://github.com/internLM/OpenCompass/) 中提供的配置文件。\n- 评测数据会因 [OpenCompass](https://github.com/internLM/OpenCompass/) 的版本迭代而存在数值差异，请以 [OpenCompass](https://github.com/internLM/OpenCompass/) 最新版的评测结果为主。\n\n**局限性：** 尽管在训练过程中我们非常注重模型的安全性，尽力促使模型输出符合伦理和法律要求的文本，但受限于模型大小以及概率生成范式，模型可能会产生各种不符合预期的输出，例如回复内容包含偏见、歧视等有害内容，请勿传播这些内容。由于传播不良信息导致的任何后果，本项目不承担责任。\n\n### 通过 Transformers 加载\n\n通过以下的代码加载 InternLM2.5 7B Chat 模型\n\n```python\nimport torch\nfrom transformers import AutoTokenizer, AutoModelForCausalLM\ntokenizer = AutoTokenizer.from_pretrained(\"internlm/internlm2_5-7b-chat\", trust_remote_code=True)\n# `torch_dtype=torch.float16` 可以令模型以 float16 精度加载，否则 transformers 会将模型加载为 float32，导致显存不足\nmodel = AutoModelForCausalLM.from_pretrained(\"internlm/internlm2_5-7b-chat\", torch_dtype=torch.float16, trust_remote_code=True).cuda()\nmodel = model.eval()\nresponse, history = model.chat(tokenizer, \"你好\", history=[])\nprint(response)\n# 你好！有什么我可以帮助你的吗？\nresponse, history = model.chat(tokenizer, \"请提供三个管理时间的建议。\", history=history)\nprint(response)\n```\n\n如果想进行流式生成，则可以使用 `stream_chat` 接口：\n\n```python\nimport torch\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\n\nmodel_path = \"internlm/internlm2_5-7b-chat\"\nmodel = AutoModelForCausalLM.from_pretrained(model_path, torch_dype=torch.float16, trust_remote_code=True).cuda()\ntokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)\n\nmodel = model.eval()\nlength = 0\nfor response, history in model.stream_chat(tokenizer, \"你好\", history=[]):\n    print(response[length:], flush=True, end=\"\")\n    length = len(response)\n```\n\n## 部署\n\n### LMDeploy\n\nLMDeploy 由 MMDeploy 和 MMRazor 团队联合开发，是涵盖了 LLM 任务的全套轻量化、部署和服务解决方案。\n\n```bash\npip install lmdeploy\n```\n\n你可以使用以下 python 代码进行本地批量推理:\n\n```python\nimport lmdeploy\npipe = lmdeploy.pipeline(\"internlm/internlm2_5-7b-chat\")\nresponse = pipe([\"Hi, pls intro yourself\", \"Shanghai is\"])\nprint(response)\n```\n\n或者你可以使用以下命令启动兼容 OpenAI API 的服务:\n\n```bash\nlmdeploy serve api_server internlm/internlm2_5-7b-chat --model-name internlm2_5-7b-chat --server-port 23333\n```\n\n然后你可以向服务端发起一个聊天请求:\n\n```bash\ncurl http://localhost:23333/v1/chat/completions \\\n    -H \"Content-Type: application/json\" \\\n    -d '{\n    \"model\": \"internlm2_5-7b-chat\",\n    \"messages\": [\n    {\"role\": \"system\", \"content\": \"你是个友善的AI助手。\"},\n    {\"role\": \"user\", \"content\": \"介绍一下深度学习。\"}\n    ]\n    }'\n```\n\n更多信息请查看 [LMDeploy 文档](https://lmdeploy.readthedocs.io/en/latest/)\n\n### vLLM\n\n使用`vLLM>=0.3.2`启动兼容 OpenAI API 的服务:\n\n```bash\npip install vllm\n```\n\n```bash\npython -m vllm.entrypoints.openai.api_server --model internlm/internlm2_5-7b-chat --served-model-name internlm2_5-7b-chat --trust-remote-code\n```\n\n然后你可以向服务端发起一个聊天请求:\n\n```bash\ncurl http://localhost:8000/v1/chat/completions \\\n    -H \"Content-Type: application/json\" \\\n    -d '{\n    \"model\": \"internlm2_5-7b-chat\",\n    \"messages\": [\n    {\"role\": \"system\", \"content\": \"你是个友善的AI助手。\"},\n    {\"role\": \"user\", \"content\": \"介绍一下深度学习。\"}\n    ]\n    }'\n```\n\n更多信息请查看 [vLLM 文档](https://docs.vllm.ai/en/latest/index.html)\n\n## 开源许可证\n\n本仓库的代码依照 Apache-2.0 协议开源。模型权重对学术研究完全开放，也可申请免费的商业使用授权（申请表）。其他问题与合作请联系 internlm@pjlab.org.cn。\n\n## 引用\n\n```\n@misc{cai2024internlm2,\n      title={InternLM2 Technical Report},\n      author={Zheng Cai and Maosong Cao and Haojiong Chen and Kai Chen and Keyu Chen and Xin Chen and Xun Chen and Zehui Chen and Zhi Chen and Pei Chu and Xiaoyi Dong and Haodong Duan and Qi Fan and Zhaoye Fei and Yang Gao and Jiaye Ge and Chenya Gu and Yuzhe Gu and Tao Gui and Aijia Guo and Qipeng Guo and Conghui He and Yingfan Hu and Ting Huang and Tao Jiang and Penglong Jiao and Zhenjiang Jin and Zhikai Lei and Jiaxing Li and Jingwen Li and Linyang Li and Shuaibin Li and Wei Li and Yining Li and Hongwei Liu and Jiangning Liu and Jiawei Hong and Kaiwen Liu and Kuikun Liu and Xiaoran Liu and Chengqi Lv and Haijun Lv and Kai Lv and Li Ma and Runyuan Ma and Zerun Ma and Wenchang Ning and Linke Ouyang and Jiantao Qiu and Yuan Qu and Fukai Shang and Yunfan Shao and Demin Song and Zifan Song and Zhihao Sui and Peng Sun and Yu Sun and Huanze Tang and Bin Wang and Guoteng Wang and Jiaqi Wang and Jiayu Wang and Rui Wang and Yudong Wang and Ziyi Wang and Xingjian Wei and Qizhen Weng and Fan Wu and Yingtong Xiong and Chao Xu and Ruiliang Xu and Hang Yan and Yirong Yan and Xiaogui Yang and Haochen Ye and Huaiyuan Ying and Jia Yu and Jing Yu and Yuhang Zang and Chuyu Zhang and Li Zhang and Pan Zhang and Peng Zhang and Ruijie Zhang and Shuo Zhang and Songyang Zhang and Wenjian Zhang and Wenwei Zhang and Xingcheng Zhang and Xinyue Zhang and Hui Zhao and Qian Zhao and Xiaomeng Zhao and Fengzhe Zhou and Zaida Zhou and Jingming Zhuo and Yicheng Zou and Xipeng Qiu and Yu Qiao and Dahua Lin},\n      year={2024},\n      eprint={2403.17297},\n      archivePrefix={arXiv},\n      primaryClass={cs.CL}\n}\n```\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "2403.17297"
+  ],
+  "RelatedPaper": [
+   80724
+  ],
+  "Revision": "master",
+  "Stars": 38,
+  "StorageSize": 15477069914,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [],
+  "Tasks": [
+   {
+    "ChineseName": "文本生成",
+    "Description": "",
+    "DomainName": "nlp",
+    "Id": 22,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "text-generation",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"text-generation\", \"inputs\": [{\"type\": \"text\", \"validator\": {\"max_words\": \"1000\"}, \"displayType\": \"OnlyTextArea\"}], \"output\": {\"displayType\": \"ReadonlyText\", \"transformOutputs\": [{\"outputKey\": \"text\"}], \"displayOutputMapping\": \"text\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "bb6cff81-d5e3-4852-a511-65bf22a6d404",
+ "Success": true
+}

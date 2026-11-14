@@ -1,0 +1,94 @@
+{
+ "case_id": "pc-0006",
+ "repo": "opendatalab/OmniDocBench",
+ "repo_url": "https://github.com/opendatalab/OmniDocBench",
+ "head_sha": "7ddb8df411ad9bd2fff139acafe0ed16aa1694fe",
+ "source_file": "tools/model_infer/OpenDoc_img2md.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 148,
+    "text": "from modelscope.hub.snapshot_download import snapshot_download",
+    "sha256": "37e99664f69c0d295bf2aad2897b1965074d3821635534dcc9d39bfc909b42af"
+   }
+  ],
+  "imports_sha256": "37e99664f69c0d295bf2aad2897b1965074d3821635534dcc9d39bfc909b42af",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "topdktu/unirec-0.1b",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 150,
+   "text": "'topdktu/unirec-0.1b',",
+   "sha256": "5bb2241157f9f69d1a5d07b2bef003cd638cb09e28d6332cf0786fd58ee661fe"
+  },
+  {
+   "line": 174,
+   "text": "'Please download the model from https://huggingface.co/topdu/unirec-0.1b or https://modelscope.cn/models/topdktu/unirec-0.1b and put the model in the directory: ~/.cache/openocr/unirec-0.1b'",
+   "sha256": "9db6aeb25928f9bb8d57aa9666965b3e5801f395c07b445da9b192d9fc1d1a31"
+  }
+ ],
+ "call": {
+  "start": 149,
+  "end": 152,
+  "text": "                    model_dir = snapshot_download(\n                        'topdktu/unirec-0.1b',\n                        local_dir=model_path,\n                    )",
+  "sha256": "b396da5c1a25580d5aa952343c17f16216b48f83e3536a5ca6e710a1ec651d7f"
+ },
+ "revision": {
+  "revision": "",
+  "source": "unspecified"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 138,
+   "text": "unirec_cfg = Config(DEFAULT_CFG_PATH_UNIREC).cfg"
+  },
+  {
+   "line": 139,
+   "text": "if unirec_cfg['Global']["
+  },
+  {
+   "line": 140,
+   "text": "'pretrained_model'] is None or not os.path.exists("
+  },
+  {
+   "line": 141,
+   "text": "unirec_cfg['Global']['pretrained_model']):"
+  },
+  {
+   "line": 142,
+   "text": "cache_dir = Path.home() / '.cache' / 'openocr'"
+  },
+  {
+   "line": 143,
+   "text": "model_path = cache_dir / 'unirec-0.1b'"
+  },
+  {
+   "line": 144,
+   "text": "# modelscope download model"
+  },
+  {
+   "line": 145,
+   "text": "download_flag = False"
+  },
+  {
+   "line": 146,
+   "text": "if not os.path.exists(str(model_path) + '/model.pth'):"
+  },
+  {
+   "line": 147,
+   "text": "try:"
+  },
+  {
+   "line": 148,
+   "text": "from modelscope.hub.snapshot_download import snapshot_download"
+  }
+ ]
+}

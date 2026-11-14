@@ -1,0 +1,31 @@
+{
+ "case_id": "neg-0005",
+ "repo": "langjinyi/Ada-AI-Assistant",
+ "repo_url": "https://github.com/langjinyi/Ada-AI-Assistant",
+ "head_sha": "f24a0208178651347b5b831256598e117e67dcd7",
+ "source_file": "models/downloader.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 5,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   }
+  ],
+  "kind": "commented_out"
+ },
+ "model_id": "AI-ModelScope/bge-large-zh-v1.5",
+ "call": {
+  "start": 22,
+  "end": 22,
+  "text": "# snapshot_download(emb_model_path, cache_dir=emb_cache_path)",
+  "sha256": "f33bec19c9bce756d05df639ba9d0d6651bd7ed8ac9ced7cc1258fce4c3c31a5"
+ },
+ "negative": {
+  "basis": "modelscope_call_commented_out",
+  "scope": "call_site",
+  "note": "bge 的 snapshot_download 被注释（L23 实际下载的是 chatTTS），该模型无 ModelScope 调用"
+ }
+}

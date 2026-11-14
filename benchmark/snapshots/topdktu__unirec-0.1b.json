@@ -1,0 +1,353 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "VLMOCRForConditionalGenerationNew"
+  ],
+  "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": null,
+   "backend_info": {
+    "deploy_task": null,
+    "lmdeploy": null,
+    "lmdeploy_turbomind": null,
+    "ollama": null,
+    "sglang": null,
+    "vllm": null
+   },
+   "model_id": "topdktu/unirec-0.1b"
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "0.1B超轻量模型统一文本和公式识别",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "topdktu",
+  "CreatedTime": 1764591730,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "",
+  "Domain": [],
+  "Downloads": 1059,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "PyTorch"
+  ],
+  "FromSite": "maas",
+  "Id": 610430,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1767842264,
+  "Libraries": [
+   "pytorch"
+  ],
+  "License": "Apache License 2.0",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [
+   "accuracy"
+  ],
+  "ModelDetail": {},
+  "ModelInfos": {},
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "m2m_100"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "unirec-0.1b",
+  "NewVersion": "",
+  "NickName": "",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "",
+   "CreateCompetition": false,
+   "CreatedBy": "",
+   "Description": "",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "",
+   "GithubAddress": "",
+   "GmtCreated": null,
+   "GmtModified": null,
+   "Id": 0,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 0
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "topdktu",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n# UniRec-0.1B: Unified Text and Formula Recognition with 0.1B Parameters\n\n[[Paper](https://arxiv.org/pdf/2512.21095)] [[Code](https://github.com/Topdu/OpenOCR)] [[ModelScope Demo](https://www.modelscope.cn/studios/topdktu/OpenOCR-UniRec-Demo)] [[Hugging Face Demo](https://huggingface.co/spaces/topdu/OpenOCR-UniRec-Demo)] [[Local Demo](#local-demo)] \\[[UniRec40M Dataset](https://huggingface.co/datasets/topdu/UniRec40M)\\]\n\n## Introduction\n\n**UniRec-0.1B** is a unified recognition model with only 0.1B parameters, designed for high-accuracy and efficient recognition of plain text (words, lines, paragraphs), mathematical formulas (single-line, multi-line), and mixed content in both Chinese and English. \n\nIt addresses structural variability and semantic entanglement by using a hierarchical supervision training strategy and a semantic-decoupled tokenizer. Despite its small size, it achieves performance comparable to or better than much larger vision-language models.\n\n\n## Get Started with ONNX\n\n### Install OpenOCR and Dependencies:\n\n```shell\ngit clone https://github.com/Topdu/OpenOCR.git\npip install onnxruntime\ncd OpenOCR\nhuggingface-cli download topdu/unirec_0_1b_onnx --local-dir ./unirec_0_1b_onnx\n```\n\n### Inference\n\n```shell\npython ./tools/depolyment/unirec_onnx/infer_onnx.py --image /path/to/image\n```\n\n## Get Started with Pytorch\n\n### Dependencies:\n\n- [PyTorch](http://pytorch.org/) version >= 1.13.0\n- Python version >= 3.7\n\n```shell\nconda create -n openocr python==3.10\nconda activate openocr\n# install gpu version torch >=1.13.0\nconda install pytorch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 pytorch-cuda=11.8 -c pytorch -c nvidia\n# or cpu version\nconda install pytorch torchvision torchaudio cpuonly -c pytorch\ngit clone https://github.com/Topdu/OpenOCR.git\n```\n\n### Downloding the UniRec Model from ModelScope or Hugging Face\n\n```shell\ncd OpenOCR\npip install -r requirements.txt\n# download model from modelscope\nmodelscope download topdktu/unirec-0.1b --local_dir ./unirec-0.1b\n# or download model from huggingface\nhuggingface-cli download topdu/unirec-0.1b --local-dir ./unirec-0.1b\n```\n\n### Inference\n\n```shell\npython tools/infer_rec.py --c ./configs/rec/unirec/focalsvtr_ardecoder_unirec.yml --o Global.infer_img=/path/img_fold or /path/img_file\n```\n\n### Local Demo\n\n```shell\npip install gradio==4.20.0\npython demo_unirec.py\n```\n\n### Training\n\nAdditional dependencies:\n\n```shell\npip install PyMuPDF\npip install pdf2image\npip install numpy==1.26.4\npip install albumentations==1.4.24\npip install transformers==4.49.0\npip install -U flash-attn --no-build-isolation\n```\n\nIt is recommended to organize your working directory as follows:\n\n```shell\n|-UniRec40M    # Main directory for UniRec40M dataset\n|-OpenOCR      # Directory for OpenOCR-related files\n|-evaluation   # Directory for evaluation dataset\n```\n\nDownload the UniRec40M dataset from Hugging Face\n\n```shell\n# downloading small data for quickly training\nhuggingface-cli download topdu/UniRec40M --include \"hiertext_lmdb/**\" --repo-type dataset --local-dir ./UniRec40M/\nhuggingface-cli download topdu/OpenOCR-Data --include \"evaluation/**\" --repo-type dataset --local-dir ./\n```\n\nRun the following command to train the model quickly:\n\n```shell\nCUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --master_port=23333 --nproc_per_node=8 tools/train_rec.py --c configs/rec/unirec/focalsvtr_ardecoder_unirec.yml\n```\n\n\nDownloading the full dataset requires 3.5 TB of available storage space. Then, you need to merge the split files named `data.mdb.part_*` (located in `HWDB2Train`, `ch_pdf_lmdb`, and `en_pdf_lmdb`) into a single `data.mdb` file. Execute the commands below step by step:\n\n```shell\n# downloading full data\nhuggingface-cli download topdu/UniRec40M --repo-type dataset --local-dir ./UniRec40M/\ncd UniRec40M/HWDB2Train/image_lmdb & cat data.mdb.part_* > data.mdb\ncd UniRec40M/ch_pdf_lmdb & cat data.mdb.part_* > data.mdb\ncd UniRec40M/en_pdf_lmdb & cat data.mdb.part_* > data.mdb\n```\n\nAnd modify the `configs/rec/unirec/focalsvtr_ardecoder_unirec.yml` file as follows:\n\n```yaml\n...\nTrain:\n  dataset:\n    name: NaSizeDataSet\n    divided_factor: &divided_factor [64, 64] # w, h\n    max_side: &max_side [960, 1408] # [64*30, 64*44] # w, h [960, 1408] #\n    root_path: path/to/UniRec40M\n    add_return: True\n    zoom_min_factor: 4\n    use_zoom: True\n    all_data: True\n    test_data: False\n    use_aug: True\n    use_linedata: True\n    transforms:\n      - UniRecLabelEncode: # Class handling label\n          max_text_length: *max_text_length\n          vlmocr: True\n          tokenizer_path: *vlm_ocr_config # path to tokenizer, e.g. 'vocab.json', 'merges.txt'\n      - KeepKeys:\n          keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order\n  sampler:\n    name: NaSizeSampler\n    # divide_factor: to ensure the width and height dimensions can be devided by downsampling multiple\n    min_bs: 1\n    max_bs: 24\n  loader:\n    shuffle: True\n    batch_size_per_card: 64\n    drop_last: True\n    num_workers: 8\n...\n```\n\n## Citation\n\nIf you find our method useful for your research, please cite:\n\n```bibtex\n@article{du2025unirec,\n  title={UniRec-0.1B: Unified Text and Formula Recognition with 0.1B Parameters},\n  author={Yongkun Du and Zhineng Chen and Yazhen Xie and Weikang Bai and Hao Feng and Wei Shi and Yuchen Su and Can Huang and Yu-Gang Jiang},\n  journal={arXiv preprint arXiv:2512.21095},\n  year={2025}\n}\n```\n\nIf you find our method useful for your research, please cite:\n\n```bibtex\n@article{du2025unirec,\n  title={UniRec-0.1B: Unified Text and Formula Recognition with 0.1B Parameters},\n  author={Yongkun Du and Zhineng Chen and Yazhen Xie and Weikang Bai and Hao Feng and Wei Shi and Yuchen Su and Can Huang and Yu-Gang Jiang},\n  journal={arXiv preprint arXiv:2512.21095},\n  year={2025}\n}\n```\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "2512.21095"
+  ],
+  "RelatedPaper": [
+   225920
+  ],
+  "Revision": "master",
+  "Stars": 9,
+  "StorageSize": 557079610,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [],
+  "Tasks": [
+   {
+    "ChineseName": "文字识别",
+    "Description": "",
+    "DomainName": "cv",
+    "Id": 79,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": false,
+    "IsRetrieval": true,
+    "Level": 2,
+    "Name": "ocr-recognition",
+    "ParentId": 176,
+    "ParentTask": {
+     "ChineseName": "光学字符识别",
+     "Description": "",
+     "DomainName": "cv",
+     "Id": 176,
+     "IsExhibition": true,
+     "IsHot": 0,
+     "IsLeaf": false,
+     "IsLoginRequired": false,
+     "IsRetrieval": true,
+     "Level": 1,
+     "Name": "ocr",
+     "ParentId": -1,
+     "ParentTask": null,
+     "Sorting": 0,
+     "SupportWidgets": false,
+     "TypicalModel": "",
+     "WidgetConfig": "{}",
+     "WidgetValidator": ""
+    },
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"ocr-recognition\", \"inputs\": [{\"type\": \"image\", \"validator\": {\"max_size\": \"3M\", \"max_resolution\": \"2000*2000\"}, \"displayType\": \"ImgUpload\"}], \"output\": {\"displayType\": \"ReadonlyText\", \"displayOutputMapping\": \"text\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   },
+   {
+    "ChineseName": "表格结构识别",
+    "Description": "",
+    "DomainName": "cv",
+    "Id": 167,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": false,
+    "IsRetrieval": true,
+    "Level": 2,
+    "Name": "table-recognition",
+    "ParentId": 176,
+    "ParentTask": {
+     "ChineseName": "光学字符识别",
+     "Description": "",
+     "DomainName": "cv",
+     "Id": 176,
+     "IsExhibition": true,
+     "IsHot": 0,
+     "IsLeaf": false,
+     "IsLoginRequired": false,
+     "IsRetrieval": true,
+     "Level": 1,
+     "Name": "ocr",
+     "ParentId": -1,
+     "ParentTask": null,
+     "Sorting": 0,
+     "SupportWidgets": false,
+     "TypicalModel": "",
+     "WidgetConfig": "{}",
+     "WidgetValidator": ""
+    },
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{}",
+    "WidgetValidator": ""
+   },
+   {
+    "ChineseName": "无线表格结构识别",
+    "Description": "",
+    "DomainName": "cv",
+    "Id": 254,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": false,
+    "IsRetrieval": true,
+    "Level": 2,
+    "Name": "lineless-table-recognition",
+    "ParentId": 176,
+    "ParentTask": {
+     "ChineseName": "光学字符识别",
+     "Description": "",
+     "DomainName": "cv",
+     "Id": 176,
+     "IsExhibition": true,
+     "IsHot": 0,
+     "IsLeaf": false,
+     "IsLoginRequired": false,
+     "IsRetrieval": true,
+     "Level": 1,
+     "Name": "ocr",
+     "ParentId": -1,
+     "ParentTask": null,
+     "Sorting": 0,
+     "SupportWidgets": false,
+     "TypicalModel": "",
+     "WidgetConfig": "{}",
+     "WidgetValidator": ""
+    },
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "4bbfa365-e623-4393-a2a3-15bf726c29b1",
+ "Success": true
+}

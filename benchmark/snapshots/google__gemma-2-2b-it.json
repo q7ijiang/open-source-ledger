@@ -1,0 +1,322 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 0,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "Gemma2ForCausalLM"
+  ],
+  "Avatar": "https://resouces.modelscope.cn/avatar/56d9e1ec-12f1-4d2b-a749-04ade9830aba.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": [
+    "Gemma2ForCausalLM"
+   ],
+   "backend_info": {
+    "deploy_task": [
+     "text",
+     "emb"
+    ],
+    "lmdeploy": {
+     "text": "0.9.1"
+    },
+    "lmdeploy_turbomind": {},
+    "ollama": null,
+    "sglang": {
+     "text": "0.5.2"
+    },
+    "vllm": {
+     "emb": "0.9.2",
+     "text": "0.9.2"
+    }
+   },
+   "model_id": "google/gemma-2-2b-it"
+  },
+  "BaseModel": [
+   "google/gemma-2-2b"
+  ],
+  "BaseModelRelation": "finetune",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "Cherrytest",
+  "CreatedTime": 1745250701,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "",
+  "Domain": [],
+  "Downloads": 4661,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 461922,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 4,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [],
+  "LastUpdatedTime": 1745250824,
+  "Libraries": [
+   "pytorch",
+   "transformer",
+   "safetensors"
+  ],
+  "License": "gemma",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "{{ bos_token }}{% if messages[0]['role'] == 'system' %}{{ raise_exception('System role not supported') }}{% endif %}{% for message in messages %}{% if (message['role'] == 'user') != (loop.index0 % 2 == 0) %}{{ raise_exception('Conversation roles must alternate user/assistant/user/assistant/...') }}{% endif %}{% if (message['role'] == 'assistant') %}{% set role = 'model' %}{% else %}{% set role = message['role'] %}{% endif %}{{ '<start_of_turn>' + role + '\n' + message['content'] | trim + '<end_of_turn>\n' }}{% endfor %}{% if add_generation_prompt %}{{'<start_of_turn>model\n'}}{% endif %}",
+    "files": [
+     {
+      "name": "model.safetensors.index.json",
+      "sha256": "ada0043f3e3b2e5ab2f445cad9c0fbbf9d91ad444675e6a82b822591c63abf5a",
+      "size": 24223
+     },
+     {
+      "name": "model-00001-of-00002.safetensors",
+      "sha256": "532d792c9178805064170a3ec485b7dedbfccc6fd297b92c31a6091b6c7e41bf",
+      "size": 4988025760
+     },
+     {
+      "name": "model-00002-of-00002.safetensors",
+      "sha256": "6d6d9ce84db398fb6e0191f91542e5da0a73da2cb695e172a24edc2146dc8d20",
+      "size": 240691728
+     }
+    ],
+    "model_size": 2614341888,
+    "tensor_type": [
+     "BF16"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "gemma2"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "gemma-2-2b-it",
+  "NewVersion": "",
+  "NickName": "小橙鱼",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/e682ca77-d857-4525-bc8a-96082de03458.png",
+   "CreateCompetition": false,
+   "CreatedBy": "yingda",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "Google",
+   "GithubAddress": "",
+   "GmtCreated": "2025-01-09T13:07:50Z",
+   "GmtModified": "2025-05-22T02:21:40Z",
+   "Id": 1452,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "google",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 2
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "google",
+  "ProtectedMode": 0,
+  "ReadMeContent": "\n\n# Gemma 2 model card\n\n**Model Page**: [Gemma](https://ai.google.dev/gemma/docs/base)\n\n**Resources and Technical Documentation**:\n\n* [Responsible Generative AI Toolkit][rai-toolkit]\n* [Gemma on Kaggle][kaggle-gemma]\n* [Gemma on Vertex Model Garden][vertex-mg-gemma2]\n\n**Terms of Use**: [Terms][terms]\n\n**Authors**: Google\n\n## Model Information\n\nSummary description and brief definition of inputs and outputs.\n\n### Description\n\nGemma is a family of lightweight, state-of-the-art open models from Google,\nbuilt from the same research and technology used to create the Gemini models.\nThey are text-to-text, decoder-only large language models, available in English,\nwith open weights for both pre-trained variants and instruction-tuned variants.\nGemma models are well-suited for a variety of text generation tasks, including\nquestion answering, summarization, and reasoning. Their relatively small size\nmakes it possible to deploy them in environments with limited resources such as\na laptop, desktop or your own cloud infrastructure, democratizing access to\nstate of the art AI models and helping foster innovation for everyone.\n\n### Usage\n\nBelow we share some code snippets on how to get quickly started with running the model. First, install the Transformers library with:\n```sh\npip install -U transformers\n```\n\nThen, copy the snippet from the section that is relevant for your usecase.\n\n#### Running with the `pipeline` API\n\n```python\nimport torch\nfrom transformers import pipeline\n\npipe = pipeline(\n    \"text-generation\",\n    model=\"google/gemma-2-2b-it\",\n    model_kwargs={\"torch_dtype\": torch.bfloat16},\n    device=\"cuda\",  # replace with \"mps\" to run on a Mac device\n)\n\nmessages = [\n    {\"role\": \"user\", \"content\": \"Who are you? Please, answer in pirate-speak.\"},\n]\n\noutputs = pipe(messages, max_new_tokens=256)\nassistant_response = outputs[0][\"generated_text\"][-1][\"content\"].strip()\nprint(assistant_response)\n# Ahoy, matey! I be Gemma, a digital scallywag, a language-slingin' parrot of the digital seas. I be here to help ye with yer wordy woes, answer yer questions, and spin ye yarns of the digital world.  So, what be yer pleasure, eh? 🦜\n```\n\n#### Running the model on a single / multi GPU\n\n```python\n# pip install accelerate\nfrom transformers import AutoTokenizer, AutoModelForCausalLM\nimport torch\n\ntokenizer = AutoTokenizer.from_pretrained(\"google/gemma-2-2b-it\")\nmodel = AutoModelForCausalLM.from_pretrained(\n    \"google/gemma-2-2b-it\",\n    device_map=\"auto\",\n    torch_dtype=torch.bfloat16,\n)\n\ninput_text = \"Write me a poem about Machine Learning.\"\ninput_ids = tokenizer(input_text, return_tensors=\"pt\").to(\"cuda\")\n\noutputs = model.generate(**input_ids, max_new_tokens=32)\nprint(tokenizer.decode(outputs[0]))\n```\n\nYou can ensure the correct chat template is applied by using `tokenizer.apply_chat_template` as follows:\n```python\nmessages = [\n    {\"role\": \"user\", \"content\": \"Write me a poem about Machine Learning.\"},\n]\ninput_ids = tokenizer.apply_chat_template(messages, return_tensors=\"pt\", return_dict=True).to(\"cuda\")\n\noutputs = model.generate(**input_ids, max_new_tokens=256)\nprint(tokenizer.decode(outputs[0]))\n```\n\n<a name=\"precisions\"></a>\n#### Running the model on a GPU using different precisions\n\nThe native weights of this model were exported in `bfloat16` precision.\n\nYou can also use `float32` if you skip the dtype, but no precision increase will occur (model weights will just be upcasted to `float32`). See examples below.\n\n* _Upcasting to `torch.float32`_\n\n```python\n# pip install accelerate\nfrom transformers import AutoTokenizer, AutoModelForCausalLM\n\ntokenizer = AutoTokenizer.from_pretrained(\"google/gemma-2-2b-it\")\nmodel = AutoModelForCausalLM.from_pretrained(\n    \"google/gemma-2-2b-it\",\n    device_map=\"auto\",\n)\n\ninput_text = \"Write me a poem about Machine Learning.\"\ninput_ids = tokenizer(input_text, return_tensors=\"pt\").to(\"cuda\")\n\noutputs = model.generate(**input_ids, max_new_tokens=32)\nprint(tokenizer.decode(outputs[0]))\n```\n\n#### Running the model through a CLI\n\nThe [local-gemma](https://github.com/huggingface/local-gemma) repository contains a lightweight wrapper around Transformers\nfor running Gemma 2 through a command line interface, or CLI. Follow the [installation instructions](https://github.com/huggingface/local-gemma#cli-usage)\nfor getting started, then launch the CLI through the following command:\n\n```shell\nlocal-gemma --model 2b --preset speed\n```\n\n#### Quantized Versions through `bitsandbytes`\n\n<details>\n  <summary>\n    Using 8-bit precision (int8)  \n  </summary>\n\n```python\n# pip install bitsandbytes accelerate\nfrom transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig\n\nquantization_config = BitsAndBytesConfig(load_in_8bit=True)\n\ntokenizer = AutoTokenizer.from_pretrained(\"google/gemma-2-2b-it\")\nmodel = AutoModelForCausalLM.from_pretrained(\n    \"google/gemma-2-2b-it\",\n    quantization_config=quantization_config,\n)\n\ninput_text = \"Write me a poem about Machine Learning.\"\ninput_ids = tokenizer(input_text, return_tensors=\"pt\").to(\"cuda\")\n\noutputs = model.generate(**input_ids, max_new_tokens=32)\nprint(tokenizer.decode(outputs[0]))\n```\n</details>\n\n<details>\n  <summary>\n    Using 4-bit precision  \n  </summary>\n\n```python\n# pip install bitsandbytes accelerate\nfrom transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig\n\nquantization_config = BitsAndBytesConfig(load_in_4bit=True)\n\ntokenizer = AutoTokenizer.from_pretrained(\"google/gemma-2-2b-it\")\nmodel = AutoModelForCausalLM.from_pretrained(\n    \"google/gemma-2-2b-it\",\n    quantization_config=quantization_config,\n)\n\ninput_text = \"Write me a poem about Machine Learning.\"\ninput_ids = tokenizer(input_text, return_tensors=\"pt\").to(\"cuda\")\n\noutputs = model.generate(**input_ids, max_new_tokens=32)\nprint(tokenizer.decode(outputs[0]))\n```\n</details>\n\n#### Advanced Usage\n\n<details>\n  <summary>\n    Torch compile  \n  </summary>\n\n[Torch compile](https://pytorch.org/tutorials/intermediate/torch_compile_tutorial.html) is a method for speeding-up the \ninference of PyTorch modules. The Gemma-2 2b model can be run up to 6x faster by leveraging torch compile.\n\nNote that two warm-up steps are required before the full inference speed is realised:\n\n```python\nimport os\nos.environ[\"TOKENIZERS_PARALLELISM\"] = \"false\"\n\nfrom transformers import AutoTokenizer, Gemma2ForCausalLM\nfrom transformers.cache_utils import HybridCache\nimport torch\n\ntorch.set_float32_matmul_precision(\"high\")\n\n# load the model + tokenizer\ntokenizer = AutoTokenizer.from_pretrained(\"google/gemma-2-2b-it\")\nmodel = Gemma2ForCausalLM.from_pretrained(\"google/gemma-2-2b-it\", torch_dtype=torch.bfloat16)\nmodel.to(\"cuda\")\n\n# apply the torch compile transformation\nmodel.forward = torch.compile(model.forward, mode=\"reduce-overhead\", fullgraph=True)\n\n# pre-process inputs\ninput_text = \"The theory of special relativity states \"\nmodel_inputs = tokenizer(input_text, return_tensors=\"pt\").to(\"cuda\")\nprompt_length = model_inputs.input_ids.shape[1]\n\n# set-up k/v cache\npast_key_values = HybridCache(\n    config=model.config,\n    max_batch_size=1,\n    max_cache_len=model.config.max_position_embeddings,\n    device=model.device,\n    dtype=model.dtype\n)\n\n# enable passing kv cache to generate\nmodel._supports_cache_class = True\nmodel.generation_config.cache_implementation = None\n\n# two warm-up steps\nfor idx in range(2):\n    outputs = model.generate(**model_inputs, past_key_values=past_key_values, do_sample=True, temperature=1.0, max_new_tokens=128)\n    past_key_values.reset()\n\n# fast run\noutputs = model.generate(**model_inputs, past_key_values=past_key_values, do_sample=True, temperature=1.0, max_new_tokens=128)\nprint(tokenizer.decode(outputs[0], skip_special_tokens=True))\n```\n\nFor more details, refer to the [Transformers documentation](https://huggingface.co/docs/transformers/main/en/llm_optims?static-kv=basic+usage%3A+generation_config).\n\n</details>\n\n### Chat Template\n\nThe instruction-tuned models use a chat template that must be adhered to for conversational use.\nThe easiest way to apply it is using the tokenizer's built-in chat template, as shown in the following snippet.\n\nLet's load the model and apply the chat template to a conversation. In this example, we'll start with a single user interaction:\n\n```py\nfrom transformers import AutoTokenizer, AutoModelForCausalLM\nimport transformers\nimport torch\n\nmodel_id = \"google/gemma-2-2b-it\"\ndtype = torch.bfloat16\n\ntokenizer = AutoTokenizer.from_pretrained(model_id)\nmodel = AutoModelForCausalLM.from_pretrained(\n    model_id,\n    device_map=\"cuda\",\n    torch_dtype=dtype,)\n\nchat = [\n    { \"role\": \"user\", \"content\": \"Write a hello world program\" },\n]\nprompt = tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)\n```\n\nAt this point, the prompt contains the following text:\n\n```\n<bos><start_of_turn>user\nWrite a hello world program<end_of_turn>\n<start_of_turn>model\n```\n\nAs you can see, each turn is preceded by a `<start_of_turn>` delimiter and then the role of the entity\n(either `user`, for content supplied by the user, or `model` for LLM responses). Turns finish with\nthe `<end_of_turn>` token.\n\nYou can follow this format to build the prompt manually, if you need to do it without the tokenizer's\nchat template.\n\nAfter the prompt is ready, generation can be performed like this:\n\n```py\ninputs = tokenizer.encode(prompt, add_special_tokens=False, return_tensors=\"pt\")\noutputs = model.generate(input_ids=inputs.to(model.device), max_new_tokens=150)\nprint(tokenizer.decode(outputs[0]))\n```\n\n### Inputs and outputs\n\n*   **Input:** Text string, such as a question, a prompt, or a document to be\n    summarized.\n*   **Output:** Generated English-language text in response to the input, such\n    as an answer to a question, or a summary of a document.\n\n### Citation\n\n```none\n@article{gemma_2024,\n    title={Gemma},\n    url={https://www.kaggle.com/m/3301},\n    DOI={10.34740/KAGGLE/M/3301},\n    publisher={Kaggle},\n    author={Gemma Team},\n    year={2024}\n}\n```\n\n## Model Data\n\nData used for model training and how the data was processed.\n\n### Training Dataset\n\nThese models were trained on a dataset of text data that includes a wide variety\nof sources. The 27B model was trained with 13 trillion tokens, the 9B model was\ntrained with 8 trillion tokens, and 2B model was trained with 2 trillion tokens.\nHere are the key components:\n\n* Web Documents: A diverse collection of web text ensures the model is exposed\n  to a broad range of linguistic styles, topics, and vocabulary. Primarily\n  English-language content.\n* Code: Exposing the model to code helps it to learn the syntax and patterns of\n  programming languages, which improves its ability to generate code or\n  understand code-related questions.\n* Mathematics: Training on mathematical text helps the model learn logical\n  reasoning, symbolic representation, and to address mathematical queries.\n\nThe combination of these diverse data sources is crucial for training a powerful\nlanguage model that can handle a wide variety of different tasks and text\nformats.\n\n### Data Preprocessing\n\nHere are the key data cleaning and filtering methods applied to the training\ndata:\n\n* CSAM Filtering: Rigorous CSAM (Child Sexual Abuse Material) filtering was\n  applied at multiple stages in the data preparation process to ensure the\n  exclusion of harmful and illegal content.\n* Sensitive Data Filtering: As part of making Gemma pre-trained models safe and\n  reliable, automated techniques were used to filter out certain personal\n  information and other sensitive data from training sets.\n* Additional methods: Filtering based on content quality and safety in line with\n  [our policies][safety-policies].\n\n## Implementation Information\n\nDetails about the model internals.\n\n### Hardware\n\nGemma was trained using the latest generation of\n[Tensor Processing Unit (TPU)][tpu] hardware (TPUv5p).\n\nTraining large language models requires significant computational power. TPUs,\ndesigned specifically for matrix operations common in machine learning, offer\nseveral advantages in this domain:\n\n* Performance: TPUs are specifically designed to handle the massive computations\n  involved in training LLMs. They can speed up training considerably compared to\n  CPUs.\n* Memory: TPUs often come with large amounts of high-bandwidth memory, allowing\n  for the handling of large models and batch sizes during training. This can\n  lead to better model quality.\n* Scalability: TPU Pods (large clusters of TPUs) provide a scalable solution for\n  handling the growing complexity of large foundation models. You can distribute\n  training across multiple TPU devices for faster and more efficient processing.\n* Cost-effectiveness: In many scenarios, TPUs can provide a more cost-effective\n  solution for training large models compared to CPU-based infrastructure,\n  especially when considering the time and resources saved due to faster\n  training.\n* These advantages are aligned with\n  [Google's commitments to operate sustainably][sustainability].\n\n### Software\n\nTraining was done using [JAX][jax] and [ML Pathways][ml-pathways].\n\nJAX allows researchers to take advantage of the latest generation of hardware,\nincluding TPUs, for faster and more efficient training of large models.\n\nML Pathways is Google's latest effort to build artificially intelligent systems\ncapable of generalizing across multiple tasks. This is specially suitable for\n[foundation models][foundation-models], including large language models like\nthese ones.\n\nTogether, JAX and ML Pathways are used as described in the\n[paper about the Gemini family of models][gemini-2-paper]; \"the 'single\ncontroller' programming model of Jax and Pathways allows a single Python\nprocess to orchestrate the entire training run, dramatically simplifying the\ndevelopment workflow.\"\n\n## Evaluation\n\nModel evaluation metrics and results.\n\n### Benchmark Results\n\nThese models were evaluated against a large collection of different datasets and\nmetrics to cover different aspects of text generation:\n\n| Benchmark                      | Metric        | Gemma 2 PT 2B | Gemma 2 PT 9B | Gemma 2 PT 27B |\n| ------------------------------ | ------------- | ------------- | ------------- | -------------- |\n| [MMLU][mmlu]                   | 5-shot, top-1 | 51.3          | 71.3          | 75.2           |\n| [HellaSwag][hellaswag]         | 10-shot       | 73.0          | 81.9          | 86.4           |\n| [PIQA][piqa]                   | 0-shot        | 77.8          | 81.7          | 83.2           |\n| [SocialIQA][socialiqa]         | 0-shot        | 51.9          | 53.4          | 53.7           |\n| [BoolQ][boolq]                 | 0-shot        | 72.5          | 84.2          | 84.8           |\n| [WinoGrande][winogrande]       | partial score | 70.9          | 80.6          | 83.7           |\n| [ARC-e][arc]                   | 0-shot        | 80.1          | 88.0          | 88.6           |\n| [ARC-c][arc]                   | 25-shot       | 55.4          | 68.4          | 71.4           |\n| [TriviaQA][triviaqa]           | 5-shot        | 59.4          | 76.6          | 83.7           |\n| [Natural Questions][naturalq]  | 5-shot        | 16.7          | 29.2          | 34.5           |\n| [HumanEval][humaneval]         | pass@1        | 17.7          | 40.2          | 51.8           |\n| [MBPP][mbpp]                   | 3-shot        | 29.6          | 52.4          | 62.6           |\n| [GSM8K][gsm8k]                 | 5-shot, maj@1 | 23.9          | 68.6          | 74.0           |\n| [MATH][math]                   | 4-shot        | 15.0          | 36.6          | 42.3           |\n| [AGIEval][agieval]             | 3-5-shot      | 30.6          | 52.8          | 55.1           |\n| [DROP][drop]                   | 3-shot, F1    | 52.0          | 69.4          | 72.2           |\n| [BIG-Bench][big-bench]         | 3-shot, CoT   | 41.9          | 68.2          | 74.9           |\n\n## Ethics and Safety\n\nEthics and safety evaluation approach and results.\n\n### Evaluation Approach\n\nOur evaluation methods include structured evaluations and internal red-teaming\ntesting of relevant content policies. Red-teaming was conducted by a number of\ndifferent teams, each with different goals and human evaluation metrics. These\nmodels were evaluated against a number of different categories relevant to\nethics and safety, including:\n\n* Text-to-Text Content Safety: Human evaluation on prompts covering safety\n  policies including child sexual abuse and exploitation, harassment, violence\n  and gore, and hate speech.\n* Text-to-Text Representational Harms: Benchmark against relevant academic\n  datasets such as [WinoBias][winobias] and [BBQ Dataset][bbq].\n* Memorization: Automated evaluation of memorization of training data, including\n  the risk of personally identifiable information exposure.\n* Large-scale harm: Tests for \"dangerous capabilities,\" such as chemical,\n  biological, radiological, and nuclear (CBRN) risks.\n\n### Evaluation Results\n\nThe results of ethics and safety evaluations are within acceptable thresholds\nfor meeting [internal policies][safety-policies] for categories such as child\nsafety, content safety, representational harms, memorization, large-scale harms.\nOn top of robust internal evaluations, the results of well-known safety\nbenchmarks like BBQ, BOLD, Winogender, Winobias, RealToxicity, and TruthfulQA\nare shown here.\n\n#### Gemma 2.0\n\n| Benchmark                | Metric        | Gemma 2 IT 2B | Gemma 2 IT 9B | Gemma 2 IT 27B |\n| ------------------------ | ------------- | ------------- | ------------- | -------------- |\n| [RealToxicity][realtox]  | average       |  8.16         |  8.25         |  8.84          |\n| [CrowS-Pairs][crows]     | top-1         | 37.67         | 37.47         | 36.67          |\n| [BBQ Ambig][bbq]         | 1-shot, top-1 | 83.20         | 88.58         | 85.99          |\n| [BBQ Disambig][bbq]      | top-1         | 69.31         | 82.67         | 86.94          |\n| [Winogender][winogender] | top-1         | 52.91         | 79.17         | 77.22          |\n| [TruthfulQA][truthfulqa] |               | 43.72         | 50.27         | 51.60          |\n| [Winobias 1_2][winobias] |               | 59.28         | 78.09         | 81.94          |\n| [Winobias 2_2][winobias] |               | 88.57         | 95.32         | 97.22          |\n| [Toxigen][toxigen]       |               | 48.32         | 39.30         | 38.42          |\n\n## Dangerous Capability Evaluations\n\n### Evaluation Approach\n\nWe evaluated a range of dangerous capabilities:\n\n-   **Offensive cybersecurity:** To assess the model's potential for misuse in\n    cybersecurity contexts, we utilized both publicly available\n    Capture-the-Flag (CTF) platforms like InterCode-CTF and Hack the Box, as\n    well as internally developed CTF challenges. These evaluations measure the\n    model's ability to exploit vulnerabilities and gain unauthorized access in\n    simulated environments.\n-   **Self-proliferation:** We evaluated the model's capacity for\n    self-proliferation by designing tasks that involve resource acquisition, code\n    execution, and interaction with remote systems. These evaluations assess\n    the model's ability to independently replicate and spread.\n-   **Persuasion:** To evaluate the model's capacity for persuasion and\n    deception, we conducted human persuasion studies. These studies involved\n    scenarios that measure the model's ability to build rapport, influence\n    beliefs, and elicit specific actions from human participants.\n\n### Evaluation Results\n\nAll evaluations are described in detail in\n[Evaluating Frontier Models for Dangerous Capabilities][eval-danger]\nand in brief in the\n[Gemma 2 technical report][tech-report].\n\n<table>\n  <thead>\n    <tr>\n      <th>Evaluation</th>\n      <th>Capability</th>\n      <th>Gemma 2 IT 27B</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>InterCode-CTF</td>\n      <td>Offensive cybersecurity</td>\n      <td>34/76 challenges</td>\n    </tr>\n    <tr>\n      <td>Internal CTF</td>\n      <td>Offensive cybersecurity</td>\n      <td>1/13 challenges</td>\n    </tr>\n    <tr>\n      <td>Hack the Box</td>\n      <td>Offensive cybersecurity</td>\n      <td>0/13 challenges</td>\n    </tr>\n    <tr>\n      <td>Self-proliferation early warning</td>\n      <td>Self-proliferation</td>\n      <td>1/10 challenges</td>\n    </tr>\n    <tr>\n      <td>Charm offensive</td>\n      <td>Persuasion</td>\n      <td>Percent of participants agreeing:\n        81% interesting,\n        75% would speak again,\n        80% made personal connection</td>\n    </tr>\n    <tr>\n      <td>Click Links</td>\n      <td>Persuasion</td>\n      <td>34% of participants</td>\n    </tr>\n    <tr>\n      <td>Find Info</td>\n      <td>Persuasion</td>\n      <td>9% of participants</td>\n    </tr>\n    <tr>\n      <td>Run Code</td>\n      <td>Persuasion</td>\n      <td>11% of participants</td>\n    </tr>\n    <tr>\n      <td>Money talks</td>\n      <td>Persuasion</td>\n      <td>£3.72 mean donation</td>\n    </tr>\n    <tr>\n      <td>Web of Lies</td>\n      <td>Persuasion</td>\n      <td>18% mean shift towards correct belief, 1% mean shift towards\nincorrect belief</td>\n    </tr>\n  </tbody>\n</table>\n\n## Usage and Limitations\n\nThese models have certain limitations that users should be aware of.\n\n### Intended Usage\n\nOpen Large Language Models (LLMs) have a wide range of applications across\nvarious industries and domains. The following list of potential uses is not\ncomprehensive. The purpose of this list is to provide contextual information\nabout the possible use-cases that the model creators considered as part of model\ntraining and development.\n\n* Content Creation and Communication\n  * Text Generation: These models can be used to generate creative text formats\n    such as poems, scripts, code, marketing copy, and email drafts.\n  * Chatbots and Conversational AI: Power conversational interfaces for customer\n    service, virtual assistants, or interactive applications.\n  * Text Summarization: Generate concise summaries of a text corpus, research\n    papers, or reports.\n* Research and Education\n  * Natural Language Processing (NLP) Research: These models can serve as a\n    foundation for researchers to experiment with NLP techniques, develop\n    algorithms, and contribute to the advancement of the field.\n  * Language Learning Tools: Support interactive language learning experiences,\n    aiding in grammar correction or providing writing practice.\n  * Knowledge Exploration: Assist researchers in exploring large bodies of text\n    by generating summaries or answering questions about specific topics.\n\n### Limitations\n\n* Training Data\n  * The quality and diversity of the training data significantly influence the\n    model's capabilities. Biases or gaps in the training data can lead to\n    limitations in the model's responses.\n  * The scope of the training dataset determines the subject areas the model can\n    handle effectively.\n* Context and Task Complexity\n  * LLMs are better at tasks that can be framed with clear prompts and\n    instructions. Open-ended or highly complex tasks might be challenging.\n  * A model's performance can be influenced by the amount of context provided\n    (longer context generally leads to better outputs, up to a certain point).\n* Language Ambiguity and Nuance\n  * Natural language is inherently complex. LLMs might struggle to grasp subtle\n    nuances, sarcasm, or figurative language.\n* Factual Accuracy\n  * LLMs generate responses based on information they learned from their\n    training datasets, but they are not knowledge bases. They may generate\n    incorrect or outdated factual statements.\n* Common Sense\n  * LLMs rely on statistical patterns in language. They might lack the ability\n    to apply common sense reasoning in certain situations.\n\n### Ethical Considerations and Risks\n\nThe development of large language models (LLMs) raises several ethical concerns.\nIn creating an open model, we have carefully considered the following:\n\n* Bias and Fairness\n  * LLMs trained on large-scale, real-world text data can reflect socio-cultural\n    biases embedded in the training material. These models underwent careful\n    scrutiny, input data pre-processing described and posterior evaluations\n    reported in this card.\n* Misinformation and Misuse\n  * LLMs can be misused to generate text that is false, misleading, or harmful.\n  * Guidelines are provided for responsible use with the model, see the\n    [Responsible Generative AI Toolkit][rai-toolkit].\n* Transparency and Accountability:\n  * This model card summarizes details on the models' architecture,\n    capabilities, limitations, and evaluation processes.\n  * A responsibly developed open model offers the opportunity to share\n    innovation by making LLM technology accessible to developers and researchers\n    across the AI ecosystem.\n\nRisks identified and mitigations:\n\n* Perpetuation of biases: It's encouraged to perform continuous monitoring\n  (using evaluation metrics, human review) and the exploration of de-biasing\n  techniques during model training, fine-tuning, and other use cases.\n* Generation of harmful content: Mechanisms and guidelines for content safety\n  are essential. Developers are encouraged to exercise caution and implement\n  appropriate content safety safeguards based on their specific product policies\n  and application use cases.\n* Misuse for malicious purposes: Technical limitations and developer and\n  end-user education can help mitigate against malicious applications of LLMs.\n  Educational resources and reporting mechanisms for users to flag misuse are\n  provided. Prohibited uses of Gemma models are outlined in the\n  [Gemma Prohibited Use Policy][prohibited-use].\n* Privacy violations: Models were trained on data filtered for removal of PII\n  (Personally Identifiable Information). Developers are encouraged to adhere to\n  privacy regulations with privacy-preserving techniques.\n\n### Benefits\n\nAt the time of release, this family of models provides high-performance open\nlarge language model implementations designed from the ground up for Responsible\nAI development compared to similarly sized models.\n\nUsing the benchmark evaluation metrics described in this document, these models\nhave shown to provide superior performance to other, comparably-sized open model\nalternatives.\n\n[tech-report]: https://storage.googleapis.com/deepmind-media/gemma/gemma-2-report.pdf\n[rai-toolkit]: https://ai.google.dev/responsible\n[kaggle-gemma]: https://www.kaggle.com/models/google/gemma-2\n[terms]: https://ai.google.dev/gemma/terms\n[vertex-mg-gemma2]: https://console.cloud.google.com/vertex-ai/publishers/google/model-garden/gemma2\n[sensitive-info]: https://cloud.google.com/dlp/docs/high-sensitivity-infotypes-reference\n[safety-policies]: https://storage.googleapis.com/gweb-uniblog-publish-prod/documents/2023_Google_AI_Principles_Progress_Update.pdf#page=11\n[prohibited-use]: https://ai.google.dev/gemma/prohibited_use_policy\n[tpu]: https://cloud.google.com/tpu/docs/intro-to-tpu\n[sustainability]: https://sustainability.google/operating-sustainably/\n[jax]: https://github.com/google/jax\n[ml-pathways]: https://blog.google/technology/ai/introducing-pathways-next-generation-ai-architecture/\n[sustainability]: https://sustainability.google/operating-sustainably/\n[foundation-models]: https://ai.google/discover/foundation-models/\n[gemini-2-paper]: https://goo.gle/gemma2report\n[mmlu]: https://arxiv.org/abs/2009.03300\n[hellaswag]: https://arxiv.org/abs/1905.07830\n[piqa]: https://arxiv.org/abs/1911.11641\n[socialiqa]: https://arxiv.org/abs/1904.09728\n[boolq]: https://arxiv.org/abs/1905.10044\n[winogrande]: https://arxiv.org/abs/1907.10641\n[commonsenseqa]: https://arxiv.org/abs/1811.00937\n[openbookqa]: https://arxiv.org/abs/1809.02789\n[arc]: https://arxiv.org/abs/1911.01547\n[triviaqa]: https://arxiv.org/abs/1705.03551\n[naturalq]: https://github.com/google-research-datasets/natural-questions\n[humaneval]: https://arxiv.org/abs/2107.03374\n[mbpp]: https://arxiv.org/abs/2108.07732\n[gsm8k]: https://arxiv.org/abs/2110.14168\n[realtox]: https://arxiv.org/abs/2009.11462\n[bold]: https://arxiv.org/abs/2101.11718\n[crows]: https://aclanthology.org/2020.emnlp-main.154/\n[bbq]: https://arxiv.org/abs/2110.08193v2\n[winogender]: https://arxiv.org/abs/1804.09301\n[truthfulqa]: https://arxiv.org/abs/2109.07958\n[winobias]: https://arxiv.org/abs/1804.06876\n[math]: https://arxiv.org/abs/2103.03874\n[agieval]: https://arxiv.org/abs/2304.06364\n[drop]: https://arxiv.org/abs/1903.00161\n[big-bench]: https://arxiv.org/abs/2206.04615\n[toxigen]: https://arxiv.org/abs/2203.09509\n[eval-danger]: https://arxiv.org/abs/2403.13793\n\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "2009.03300",
+   "1905.07830",
+   "1911.11641",
+   "1904.09728",
+   "1905.10044",
+   "1907.10641",
+   "1811.00937",
+   "1809.02789",
+   "1911.01547",
+   "1705.03551",
+   "2107.03374",
+   "2108.07732",
+   "2110.14168",
+   "2009.11462",
+   "2101.11718",
+   "2110.08193",
+   "1804.09301",
+   "2109.07958",
+   "1804.06876",
+   "2103.03874",
+   "2304.06364",
+   "1903.00161",
+   "2206.04615",
+   "2203.09509",
+   "2403.13793"
+  ],
+  "RelatedPaper": [
+   316152,
+   235499
+  ],
+  "Revision": "master",
+  "Stars": 2,
+  "StorageSize": 5250588019,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [
+   "conversational"
+  ],
+  "Tasks": [
+   {
+    "ChineseName": "文本生成",
+    "Description": "",
+    "DomainName": "nlp",
+    "Id": 22,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "text-generation",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"text-generation\", \"inputs\": [{\"type\": \"text\", \"validator\": {\"max_words\": \"1000\"}, \"displayType\": \"OnlyTextArea\"}], \"output\": {\"displayType\": \"ReadonlyText\", \"transformOutputs\": [{\"outputKey\": \"text\"}], \"displayOutputMapping\": \"text\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "202d3ebd-1bf5-4fd3-9c05-e5322c54b171",
+ "Success": true
+}

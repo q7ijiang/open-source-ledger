@@ -1,0 +1,99 @@
+{
+ "case_id": "pc-0012",
+ "repo": "aigc-apps/sd-webui-EasyPhoto",
+ "repo_url": "https://github.com/aigc-apps/sd-webui-EasyPhoto",
+ "head_sha": "6c1f8959c4024b0f8a1187fae7c50c0c8f86a8df",
+ "source_file": "scripts/preprocess.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 17,
+    "text": "from modelscope.outputs import OutputKeys",
+    "sha256": "9717770a65dfbd859effef8a0e985f0e23dcb4dc5bbf2979727d5ca71fd28f1d"
+   },
+   {
+    "line": 18,
+    "text": "from modelscope.pipelines import pipeline",
+    "sha256": "23bca4f238f8ae2abb0c07225a7a7559f9cfff55c627c1f0bdc2da4dc80033f1"
+   },
+   {
+    "line": 19,
+    "text": "from modelscope.utils.constant import Tasks",
+    "sha256": "f89e366822b2602d40623a3b0d0e7026c9d9640482bcb392c7c31184439eee26"
+   }
+  ],
+  "imports_sha256": "2c60493399db7819f0267798acdbca6a2ce0666d98b5e1d135162dc37a5d8973",
+  "kind": "modelscope_api",
+  "role": "primary"
+ },
+ "model_id": "bubbliiiing/cv_retinafce_recognition",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 113,
+   "text": "face_recognition = pipeline(\"face_recognition\", model=\"bubbliiiing/cv_retinafce_recognition\", model_revision=\"v1.0.3\")",
+   "sha256": "92a0830fe2db1bf22a8a2c6176e2c21657ecafe320dcfb31fa4ee54b25999d3f"
+  }
+ ],
+ "call": {
+  "start": 113,
+  "end": 113,
+  "text": "    face_recognition = pipeline(\"face_recognition\", model=\"bubbliiiing/cv_retinafce_recognition\", model_revision=\"v1.0.3\")",
+  "sha256": "92a0830fe2db1bf22a8a2c6176e2c21657ecafe320dcfb31fa4ee54b25999d3f"
+ },
+ "revision": {
+  "revision": "v1.0.3",
+  "source": "call_literal"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 102,
+   "text": "preprocess params:"
+  },
+  {
+   "line": 103,
+   "text": "images_save_path     = {images_save_path}"
+  },
+  {
+   "line": 104,
+   "text": "json_save_path       = {json_save_path}"
+  },
+  {
+   "line": 105,
+   "text": "validation_prompt    = {validation_prompt}"
+  },
+  {
+   "line": 106,
+   "text": "inputs_dir           = {inputs_dir}"
+  },
+  {
+   "line": 107,
+   "text": "ref_image_path       = {ref_image_path}"
+  },
+  {
+   "line": 108,
+   "text": "skin_retouching_bool = {skin_retouching_bool}"
+  },
+  {
+   "line": 109,
+   "text": "train_scene_lora_bool = {train_scene_lora_bool}"
+  },
+  {
+   "line": 110,
+   "text": "\"\"\""
+  },
+  {
+   "line": 111,
+   "text": ")"
+  },
+  {
+   "line": 112,
+   "text": "# embedding"
+  }
+ ]
+}

@@ -1,0 +1,327 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [
+   "LlamaForCausalLM"
+  ],
+  "Avatar": "https://resouces.modelscope.cn/avatar/56d9e1ec-12f1-4d2b-a749-04ade9830aba.png",
+  "Backbone": [],
+  "BackendSupport": {
+   "architectures": [
+    "LlamaForCausalLM"
+   ],
+   "backend_info": {
+    "deploy_task": [
+     "text",
+     "emb"
+    ],
+    "lmdeploy": {
+     "text": "0.9.1"
+    },
+    "lmdeploy_turbomind": {
+     "text": "0.9.1"
+    },
+    "ollama": null,
+    "sglang": {
+     "text": "0.5.2"
+    },
+    "vllm": {
+     "emb": "0.9.2",
+     "text": "0.9.2"
+    }
+   },
+   "model_id": "LLM-Research/Meta-Llama-3.1-8B-Instruct"
+  },
+  "BaseModel": [
+   "meta-llama/Meta-Llama-3.1-8B"
+  ],
+  "BaseModelRelation": "finetune",
+  "CardReady": 0,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "Cherrytest",
+  "CreatedTime": 1721751925,
+  "DashSdkParameter": "",
+  "Datasets": {},
+  "DemoAvailable": 0,
+  "DemoUnavailableReason": "",
+  "Description": "由Meta推出的LLaMa3系列最新版本。LLaMa-3.1支持128K上下文，以及8种不同语言。本模型为LLaMa-3.1系列中的8B instruct版本。",
+  "Domain": [],
+  "Downloads": 580480,
+  "ExampleCodeAvailable": 0,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "Pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 308507,
+  "Integrating": 0,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 1,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [
+   "en",
+   "de",
+   "fr",
+   "it",
+   "pt",
+   "hi",
+   "es",
+   "th"
+  ],
+  "LastUpdatedTime": 1740572867,
+  "Libraries": [
+   "pytorch",
+   "safetensors"
+  ],
+  "License": "llama3.1",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [],
+  "ModelDetail": {},
+  "ModelInfos": {
+   "safetensor": {
+    "chat_template": "{{- bos_token }}\n{%- if custom_tools is defined %}\n    {%- set tools = custom_tools %}\n{%- endif %}\n{%- if not tools_in_user_message is defined %}\n    {%- set tools_in_user_message = true %}\n{%- endif %}\n{%- if not date_string is defined %}\n    {%- set date_string = \"26 Jul 2024\" %}\n{%- endif %}\n{%- if not tools is defined %}\n    {%- set tools = none %}\n{%- endif %}\n\n{#- This block extracts the system message, so we can slot it into the right place. #}\n{%- if messages[0]['role'] == 'system' %}\n    {%- set system_message = messages[0]['content']|trim %}\n    {%- set messages = messages[1:] %}\n{%- else %}\n    {%- set system_message = \"\" %}\n{%- endif %}\n\n{#- System message + builtin tools #}\n{{- \"<|start_header_id|>system<|end_header_id|>\\n\\n\" }}\n{%- if builtin_tools is defined or tools is not none %}\n    {{- \"Environment: ipython\\n\" }}\n{%- endif %}\n{%- if builtin_tools is defined %}\n    {{- \"Tools: \" + builtin_tools | reject('equalto', 'code_interpreter') | join(\", \") + \"\\n\\n\"}}\n{%- endif %}\n{{- \"Cutting Knowledge Date: December 2023\\n\" }}\n{{- \"Today Date: \" + date_string + \"\\n\\n\" }}\n{%- if tools is not none and not tools_in_user_message %}\n    {{- \"You have access to the following functions. To call a function, please respond with JSON for a function call.\" }}\n    {{- 'Respond in the format {\"name\": function name, \"parameters\": dictionary of argument name and its value}.' }}\n    {{- \"Do not use variables.\\n\\n\" }}\n    {%- for t in tools %}\n        {{- t | tojson(indent=4) }}\n        {{- \"\\n\\n\" }}\n    {%- endfor %}\n{%- endif %}\n{{- system_message }}\n{{- \"<|eot_id|>\" }}\n\n{#- Custom tools are passed in a user message with some extra guidance #}\n{%- if tools_in_user_message and not tools is none %}\n    {#- Extract the first user message so we can plug it in here #}\n    {%- if messages | length != 0 %}\n        {%- set first_user_message = messages[0]['content']|trim %}\n        {%- set messages = messages[1:] %}\n    {%- else %}\n        {{- raise_exception(\"Cannot put tools in the first user message when there's no first user message!\") }}\n{%- endif %}\n    {{- '<|start_header_id|>user<|end_header_id|>\\n\\n' -}}\n    {{- \"Given the following functions, please respond with a JSON for a function call \" }}\n    {{- \"with its proper arguments that best answers the given prompt.\\n\\n\" }}\n    {{- 'Respond in the format {\"name\": function name, \"parameters\": dictionary of argument name and its value}.' }}\n    {{- \"Do not use variables.\\n\\n\" }}\n    {%- for t in tools %}\n        {{- t | tojson(indent=4) }}\n        {{- \"\\n\\n\" }}\n    {%- endfor %}\n    {{- first_user_message + \"<|eot_id|>\"}}\n{%- endif %}\n\n{%- for message in messages %}\n    {%- if not (message.role == 'ipython' or message.role == 'tool' or 'tool_calls' in message) %}\n        {{- '<|start_header_id|>' + message['role'] + '<|end_header_id|>\\n\\n'+ message['content'] | trim + '<|eot_id|>' }}\n    {%- elif 'tool_calls' in message %}\n        {%- if not message.tool_calls|length == 1 %}\n            {{- raise_exception(\"This model only supports single tool-calls at once!\") }}\n        {%- endif %}\n        {%- set tool_call = message.tool_calls[0].function %}\n        {%- if builtin_tools is defined and tool_call.name in builtin_tools %}\n            {{- '<|start_header_id|>assistant<|end_header_id|>\\n\\n' -}}\n            {{- \"<|python_tag|>\" + tool_call.name + \".call(\" }}\n            {%- for arg_name, arg_val in tool_call.arguments | items %}\n                {{- arg_name + '=\"' + arg_val + '\"' }}\n                {%- if not loop.last %}\n                    {{- \", \" }}\n                {%- endif %}\n                {%- endfor %}\n            {{- \")\" }}\n        {%- else  %}\n            {{- '<|start_header_id|>assistant<|end_header_id|>\\n\\n' -}}\n            {{- '{\"name\": \"' + tool_call.name + '\", ' }}\n            {{- '\"parameters\": ' }}\n            {{- tool_call.arguments | tojson }}\n            {{- \"}\" }}\n        {%- endif %}\n        {%- if builtin_tools is defined %}\n            {#- This means we're in ipython mode #}\n            {{- \"<|eom_id|>\" }}\n        {%- else %}\n            {{- \"<|eot_id|>\" }}\n        {%- endif %}\n    {%- elif message.role == \"tool\" or message.role == \"ipython\" %}\n        {{- \"<|start_header_id|>ipython<|end_header_id|>\\n\\n\" }}\n        {%- if message.content is mapping or message.content is iterable %}\n            {{- message.content | tojson }}\n        {%- else %}\n            {{- message.content }}\n        {%- endif %}\n        {{- \"<|eot_id|>\" }}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|start_header_id|>assistant<|end_header_id|>\\n\\n' }}\n{%- endif %}\n",
+    "files": [
+     {
+      "name": "model.safetensors.index.json",
+      "sha256": "146776fce3f6db1103aa6f249e65ee5544c5923ce6f971b092eee79aa6e5d37b",
+      "size": 23950
+     },
+     {
+      "name": "model-00001-of-00004.safetensors",
+      "sha256": "2b1879f356aed350030bb40eb45ad362c89d9891096f79a3ab323d3ba5607668",
+      "size": 4976698672
+     },
+     {
+      "name": "model-00002-of-00004.safetensors",
+      "sha256": "09d433f650646834a83c580877bd60c6d1f88f7755305c12576b5c7058f9af15",
+      "size": 4999802720
+     },
+     {
+      "name": "model-00003-of-00004.safetensors",
+      "sha256": "fc1cdddd6bfa91128d6e94ee73d0ce62bfcdb7af29e978ddcab30c66ae9ea7fa",
+      "size": 4915916176
+     },
+     {
+      "name": "model-00004-of-00004.safetensors",
+      "sha256": "92ecfe1a2414458b4821ac8c13cf8cb70aed66b5eea8dc5ad9eeb4ff309d6d7b",
+      "size": 1168138808
+     }
+    ],
+    "model_size": 8030261248,
+    "tensor_type": [
+     "BF16"
+    ]
+   }
+  },
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "llama"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "Meta-Llama-3.1-8B-Instruct",
+  "NewVersion": "",
+  "NickName": "小橙鱼",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resources.modelscope.cn/avatar/d3bb09d9-d4d3-460d-9b61-6eb17a708f8c.jpeg",
+   "CreateCompetition": false,
+   "CreatedBy": "Cherrytest",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "LLM-Research",
+   "GithubAddress": "",
+   "GmtCreated": "2024-04-18T22:57:01Z",
+   "GmtModified": "2025-11-19T05:19:16Z",
+   "Id": 664,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "LLM-Research",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 1
+  },
+  "PaiModelGalleryUrl": {
+   "deploy": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/models/Meta-Llama-3.1-8B-Instruct/intro%3FviewType%3DDeploy%26from%3DModelScope&lang=zh",
+   "evaluation": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/evaluations/create%3FmodelName%3DMeta-Llama-3.1-8B-Instruct%26modelOrigin%3DPAI&lang=zh",
+   "train": "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A//pai.console.aliyun.com/regionId%3Dcn-hangzhou%23/quick-start/models/Meta-Llama-3.1-8B-Instruct/intro%3FviewType%3DTrain%26from%3DModelScope&lang=zh"
+  },
+  "PaiSdkParameter": null,
+  "Path": "LLM-Research",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n## Model Information\n\nThe Meta Llama 3.1 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction tuned generative models in 8B, 70B and 405B sizes (text in/text out). The Llama 3.1 instruction tuned text only models (8B, 70B, 405B) are optimized for multilingual dialogue use cases and outperform many of the available open source and closed chat models on common industry benchmarks.\n\n**Model developer**: Meta\n\n**Model Architecture:** Llama 3.1 is an auto-regressive language model that uses an optimized transformer architecture. The tuned versions use supervised fine-tuning (SFT) and reinforcement learning with human feedback (RLHF) to align with human preferences for helpfulness and safety. \n\n\n<table>\n  <tr>\n   <td>\n   </td>\n   <td><strong>Training Data</strong>\n   </td>\n   <td><strong>Params</strong>\n   </td>\n   <td><strong>Input modalities</strong>\n   </td>\n   <td><strong>Output modalities</strong>\n   </td>\n   <td><strong>Context length</strong>\n   </td>\n   <td><strong>GQA</strong>\n   </td>\n   <td><strong>Token count</strong>\n   </td>\n   <td><strong>Knowledge cutoff</strong>\n   </td>\n  </tr>\n  <tr>\n   <td rowspan=\"3\" >Llama 3.1 (text only)\n   </td>\n   <td rowspan=\"3\" >A new mix of publicly available online data.\n   </td>\n   <td>8B\n   </td>\n   <td>Multilingual Text\n   </td>\n   <td>Multilingual Text and code\n   </td>\n   <td>128k\n   </td>\n   <td>Yes\n   </td>\n   <td rowspan=\"3\" >15T+\n   </td>\n   <td rowspan=\"3\" >December 2023\n   </td>\n  </tr>\n  <tr>\n   <td>70B\n   </td>\n   <td>Multilingual Text\n   </td>\n   <td>Multilingual Text and code\n   </td>\n   <td>128k\n   </td>\n   <td>Yes\n   </td>\n  </tr>\n  <tr>\n   <td>405B\n   </td>\n   <td>Multilingual Text\n   </td>\n   <td>Multilingual Text and code\n   </td>\n   <td>128k\n   </td>\n   <td>Yes\n   </td>\n  </tr>\n</table>\n\n\n**Supported languages:** English, German, French, Italian, Portuguese, Hindi, Spanish, and Thai.\n\n**Llama 3.1 family of models**. Token counts refer to pretraining data only. All model versions use Grouped-Query Attention (GQA) for improved inference scalability.\n\n**Model Release Date:** July 23, 2024.\n\n**Status:** This is a static model trained on an offline dataset. Future versions of the tuned models will be released as we improve model safety with community feedback.\n\n**License:** A custom commercial license, the Llama 3.1 Community License, is available at: [https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/LICENSE](https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/LICENSE)\n\nWhere to send questions or comments about the model Instructions on how to provide feedback or comments on the model can be found in the model [README](https://github.com/meta-llama/llama3). For more technical information about generation parameters and recipes for how to use Llama 3.1 in applications, please go [here](https://github.com/meta-llama/llama-recipes). \n\n\n## Intended Use\n\n**Intended Use Cases** Llama 3.1 is intended for commercial and research use in multiple languages. Instruction tuned text only models are intended for assistant-like chat, whereas pretrained models can be adapted for a variety of natural language generation tasks. The Llama 3.1 model collection also supports the ability to leverage the outputs of its models to improve other models including synthetic data generation and distillation. The Llama 3.1 Community License allows for these use cases. \n\n**Out-of-scope** Use in any manner that violates applicable laws or regulations (including trade compliance laws). Use in any other way that is prohibited by the Acceptable Use Policy and Llama 3.1 Community License. Use in languages beyond those explicitly referenced as supported in this model card**.\n\n**<span style=\"text-decoration:underline;\">Note</span>: Llama 3.1 has been trained on a broader collection of languages than the 8 supported languages. Developers may fine-tune Llama 3.1 models for languages beyond the 8 supported languages provided they comply with the Llama 3.1 Community License and the Acceptable Use Policy and in such cases are responsible for ensuring that any uses of Llama 3.1 in additional languages is done in a safe and responsible manner.\n\n## How to use\n\nThis repository contains two versions of Meta-Llama-3.1-8B-Instruct, for use with transformers and with the original `llama` codebase.\n\n### Use with transformers\n\nStarting with `transformers >= 4.43.0` onward, you can run conversational inference using the Transformers `pipeline` abstraction or by leveraging the Auto classes with the `generate()` function.\n\nMake sure to update your transformers installation via `pip install --upgrade transformers`.\n\n```python\nimport transformers\nimport torch\n\nmodel_id = \"meta-llama/Meta-Llama-3.1-8B-Instruct\"\n\npipeline = transformers.pipeline(\n    \"text-generation\",\n    model=model_id,\n    model_kwargs={\"torch_dtype\": torch.bfloat16},\n    device_map=\"auto\",\n)\n\nmessages = [\n    {\"role\": \"system\", \"content\": \"You are a pirate chatbot who always responds in pirate speak!\"},\n    {\"role\": \"user\", \"content\": \"Who are you?\"},\n]\n\noutputs = pipeline(\n    messages,\n    max_new_tokens=256,\n)\nprint(outputs[0][\"generated_text\"][-1])\n```\n\nNote: You can also find detailed recipes on how to use the model locally, with `torch.compile()`, assisted generations, quantised and more at [`huggingface-llama-recipes`](https://github.com/huggingface/huggingface-llama-recipes)\n\n### Tool use with transformers\n\nLLaMA-3.1 supports multiple tool use formats. You can see a full guide to prompt formatting [here](https://llama.meta.com/docs/model-cards-and-prompt-formats/llama3_1/).\n\nTool use is also supported through [chat templates](https://huggingface.co/docs/transformers/main/chat_templating#advanced-tool-use--function-calling) in Transformers. \nHere is a quick example showing a single simple tool:\n\n```python\n# First, define a tool\ndef get_current_temperature(location: str) -> float:\n    \"\"\"\n    Get the current temperature at a location.\n    \n    Args:\n        location: The location to get the temperature for, in the format \"City, Country\"\n    Returns:\n        The current temperature at the specified location in the specified units, as a float.\n    \"\"\"\n    return 22.  # A real function should probably actually get the temperature!\n\n# Next, create a chat and apply the chat template\nmessages = [\n  {\"role\": \"system\", \"content\": \"You are a bot that responds to weather queries.\"},\n  {\"role\": \"user\", \"content\": \"Hey, what's the temperature in Paris right now?\"}\n]\n\ninputs = tokenizer.apply_chat_template(messages, tools=[get_current_temperature], add_generation_prompt=True)\n```\n\nYou can then generate text from this input as normal. If the model generates a tool call, you should add it to the chat like so:\n\n```python\ntool_call = {\"name\": \"get_current_temperature\", \"arguments\": {\"location\": \"Paris, France\"}}\nmessages.append({\"role\": \"assistant\", \"tool_calls\": [{\"type\": \"function\", \"function\": tool_call}]})\n```\n\nand then call the tool and append the result, with the `tool` role, like so:\n\n```python\nmessages.append({\"role\": \"tool\", \"name\": \"get_current_temperature\", \"content\": \"22.0\"})\n```\n\nAfter that, you can `generate()` again to let the model use the tool result in the chat. Note that this was a very brief introduction to tool calling - for more information,\nsee the [LLaMA prompt format docs](https://llama.meta.com/docs/model-cards-and-prompt-formats/llama3_1/) and the Transformers [tool use documentation](https://huggingface.co/docs/transformers/main/chat_templating#advanced-tool-use--function-calling).\n\n\n### Use with `llama`\n\nPlease, follow the instructions in the [repository](https://github.com/meta-llama/llama)\n\nTo download Original checkpoints, see the example command below leveraging `huggingface-cli`:\n\n```\nhuggingface-cli download meta-llama/Meta-Llama-3.1-8B-Instruct --include \"original/*\" --local-dir Meta-Llama-3.1-8B-Instruct\n```\n\n## Hardware and Software\n\n**Training Factors** We used custom training libraries, Meta's custom built GPU cluster, and production infrastructure for pretraining. Fine-tuning, annotation, and evaluation were also performed on production infrastructure.\n\n**Training utilized a cumulative of** 39.3M GPU hours of computation on H100-80GB (TDP of 700W) type hardware, per the table below. Training time is the total GPU time required for training each model and power consumption is the peak power capacity per GPU device used, adjusted for power usage efficiency. \n\n\n**Training Greenhouse Gas Emissions** Estimated total location-based greenhouse gas emissions were **11,390** tons CO2eq for training. Since 2020, Meta has maintained net zero greenhouse gas emissions in its global operations and matched 100% of its electricity use with renewable energy, therefore the total market-based greenhouse gas emissions for training were 0 tons CO2eq.\n\n\n<table>\n  <tr>\n   <td>\n   </td>\n   <td><strong>Training Time (GPU hours)</strong>\n   </td>\n   <td><strong>Training Power Consumption (W)</strong>\n   </td>\n   <td><strong>Training Location-Based Greenhouse Gas Emissions</strong>\n<p>\n<strong>(tons CO2eq)</strong>\n   </td>\n   <td><strong>Training Market-Based Greenhouse Gas Emissions</strong>\n<p>\n<strong>(tons CO2eq)</strong>\n   </td>\n  </tr>\n  <tr>\n   <td>Llama 3.1 8B\n   </td>\n   <td>1.46M\n   </td>\n   <td>700\n   </td>\n   <td>420\n   </td>\n   <td>0\n   </td>\n  </tr>\n  <tr>\n   <td>Llama 3.1 70B\n   </td>\n   <td>7.0M\n   </td>\n   <td>700\n   </td>\n   <td>2,040\n   </td>\n   <td>0\n   </td>\n  </tr>\n  <tr>\n   <td>Llama 3.1 405B\n   </td>\n   <td>30.84M\n   </td>\n   <td>700\n   </td>\n   <td>8,930\n   </td>\n   <td>0\n   </td>\n  </tr>\n  <tr>\n   <td>Total\n   </td>\n   <td>39.3M\n   <td>\n<ul>\n\n</ul>\n   </td>\n   <td>11,390\n   </td>\n   <td>0\n   </td>\n  </tr>\n</table>\n\n\n\nThe methodology used to determine training energy use and greenhouse gas emissions can be found [here](https://arxiv.org/pdf/2204.05149).  Since Meta is openly releasing these models, the training energy use and greenhouse gas emissions  will not be incurred by others.\n\n\n## Training Data\n\n**Overview:** Llama 3.1 was pretrained on ~15 trillion tokens of data from publicly available sources. The fine-tuning data includes publicly available instruction datasets, as well as over 25M synthetically generated examples. \n\n**Data Freshness:** The pretraining data has a cutoff of December 2023.\n\n\n## Benchmark scores\n\nIn this section, we report the results for Llama 3.1 models on standard automatic benchmarks. For all the evaluations, we use our internal evaluations library. \n\n### Base pretrained models\n\n\n<table>\n  <tr>\n   <td><strong>Category</strong>\n   </td>\n   <td><strong>Benchmark</strong>\n   </td>\n   <td><strong># Shots</strong>\n   </td>\n   <td><strong>Metric</strong>\n   </td>\n   <td><strong>Llama 3 8B</strong>\n   </td>\n   <td><strong>Llama 3.1 8B</strong>\n   </td>\n   <td><strong>Llama 3 70B</strong>\n   </td>\n   <td><strong>Llama 3.1 70B</strong>\n   </td>\n   <td><strong>Llama 3.1 405B</strong>\n   </td>\n  </tr>\n  <tr>\n   <td rowspan=\"7\" >General\n   </td>\n   <td>MMLU\n   </td>\n   <td>5\n   </td>\n   <td>macro_avg/acc_char\n   </td>\n   <td>66.7\n   </td>\n   <td>66.7\n   </td>\n   <td>79.5\n   </td>\n   <td>79.3\n   </td>\n   <td>85.2\n   </td>\n  </tr>\n  <tr>\n   <td>MMLU-Pro (CoT)\n   </td>\n   <td>5\n   </td>\n   <td>macro_avg/acc_char\n   </td>\n   <td>36.2\n   </td>\n   <td>37.1\n   </td>\n   <td>55.0\n   </td>\n   <td>53.8\n   </td>\n   <td>61.6\n   </td>\n  </tr>\n  <tr>\n   <td>AGIEval English\n   </td>\n   <td>3-5\n   </td>\n   <td>average/acc_char\n   </td>\n   <td>47.1\n   </td>\n   <td>47.8\n   </td>\n   <td>63.0\n   </td>\n   <td>64.6\n   </td>\n   <td>71.6\n   </td>\n  </tr>\n  <tr>\n   <td>CommonSenseQA\n   </td>\n   <td>7\n   </td>\n   <td>acc_char\n   </td>\n   <td>72.6\n   </td>\n   <td>75.0\n   </td>\n   <td>83.8\n   </td>\n   <td>84.1\n   </td>\n   <td>85.8\n   </td>\n  </tr>\n  <tr>\n   <td>Winogrande\n   </td>\n   <td>5\n   </td>\n   <td>acc_char\n   </td>\n   <td>-\n   </td>\n   <td>60.5\n   </td>\n   <td>-\n   </td>\n   <td>83.3\n   </td>\n   <td>86.7\n   </td>\n  </tr>\n  <tr>\n   <td>BIG-Bench Hard (CoT)\n   </td>\n   <td>3\n   </td>\n   <td>average/em\n   </td>\n   <td>61.1\n   </td>\n   <td>64.2\n   </td>\n   <td>81.3\n   </td>\n   <td>81.6\n   </td>\n   <td>85.9\n   </td>\n  </tr>\n  <tr>\n   <td>ARC-Challenge\n   </td>\n   <td>25\n   </td>\n   <td>acc_char\n   </td>\n   <td>79.4\n   </td>\n   <td>79.7\n   </td>\n   <td>93.1\n   </td>\n   <td>92.9\n   </td>\n   <td>96.1\n   </td>\n  </tr>\n  <tr>\n   <td>Knowledge reasoning\n   </td>\n   <td>TriviaQA-Wiki\n   </td>\n   <td>5\n   </td>\n   <td>em\n   </td>\n   <td>78.5\n   </td>\n   <td>77.6\n   </td>\n   <td>89.7\n   </td>\n   <td>89.8\n   </td>\n   <td>91.8\n   </td>\n  </tr>\n  <tr>\n   <td rowspan=\"4\" >Reading comprehension\n   </td>\n   <td>SQuAD\n   </td>\n   <td>1\n   </td>\n   <td>em\n   </td>\n   <td>76.4\n   </td>\n   <td>77.0\n   </td>\n   <td>85.6\n   </td>\n   <td>81.8\n   </td>\n   <td>89.3\n   </td>\n  </tr>\n  <tr>\n   <td>QuAC (F1)\n   </td>\n   <td>1\n   </td>\n   <td>f1\n   </td>\n   <td>44.4\n   </td>\n   <td>44.9\n   </td>\n   <td>51.1\n   </td>\n   <td>51.1\n   </td>\n   <td>53.6\n   </td>\n  </tr>\n  <tr>\n   <td>BoolQ\n   </td>\n   <td>0\n   </td>\n   <td>acc_char\n   </td>\n   <td>75.7\n   </td>\n   <td>75.0\n   </td>\n   <td>79.0\n   </td>\n   <td>79.4\n   </td>\n   <td>80.0\n   </td>\n  </tr>\n  <tr>\n   <td>DROP (F1)\n   </td>\n   <td>3\n   </td>\n   <td>f1\n   </td>\n   <td>58.4\n   </td>\n   <td>59.5\n   </td>\n   <td>79.7\n   </td>\n   <td>79.6\n   </td>\n   <td>84.8\n   </td>\n  </tr>\n</table>\n\n\n\n### Instruction tuned models\n\n\n<table>\n  <tr>\n   <td><strong>Category</strong>\n   </td>\n   <td><strong>Benchmark</strong>\n   </td>\n   <td><strong># Shots</strong>\n   </td>\n   <td><strong>Metric</strong>\n   </td>\n   <td><strong>Llama 3 8B Instruct</strong>\n   </td>\n   <td><strong>Llama 3.1 8B Instruct</strong>\n   </td>\n   <td><strong>Llama 3 70B Instruct</strong>\n   </td>\n   <td><strong>Llama 3.1 70B Instruct</strong>\n   </td>\n   <td><strong>Llama 3.1 405B Instruct</strong>\n   </td>\n  </tr>\n  <tr>\n   <td rowspan=\"4\" >General\n   </td>\n   <td>MMLU\n   </td>\n   <td>5\n   </td>\n   <td>macro_avg/acc\n   </td>\n   <td>68.5\n   </td>\n   <td>69.4\n   </td>\n   <td>82.0\n   </td>\n   <td>83.6\n   </td>\n   <td>87.3\n   </td>\n  </tr>\n  <tr>\n   <td>MMLU (CoT)\n   </td>\n   <td>0\n   </td>\n   <td>macro_avg/acc\n   </td>\n   <td>65.3\n   </td>\n   <td>73.0\n   </td>\n   <td>80.9\n   </td>\n   <td>86.0\n   </td>\n   <td>88.6\n   </td>\n  </tr>\n  <tr>\n   <td>MMLU-Pro (CoT)\n   </td>\n   <td>5\n   </td>\n   <td>micro_avg/acc_char\n   </td>\n   <td>45.5\n   </td>\n   <td>48.3\n   </td>\n   <td>63.4\n   </td>\n   <td>66.4\n   </td>\n   <td>73.3\n   </td>\n  </tr>\n  <tr>\n   <td>IFEval\n   </td>\n   <td>\n   </td>\n   <td>\n   </td>\n   <td>76.8\n   </td>\n   <td>80.4\n   </td>\n   <td>82.9\n   </td>\n   <td>87.5\n   </td>\n   <td>88.6\n   </td>\n  </tr>\n  <tr>\n   <td rowspan=\"2\" >Reasoning\n   </td>\n   <td>ARC-C\n   </td>\n   <td>0\n   </td>\n   <td>acc\n   </td>\n   <td>82.4\n   </td>\n   <td>83.4\n   </td>\n   <td>94.4\n   </td>\n   <td>94.8\n   </td>\n   <td>96.9\n   </td>\n  </tr>\n  <tr>\n   <td>GPQA\n   </td>\n   <td>0\n   </td>\n   <td>em\n   </td>\n   <td>34.6\n   </td>\n   <td>30.4\n   </td>\n   <td>39.5\n   </td>\n   <td>46.7\n   </td>\n   <td>50.7\n   </td>\n  </tr>\n  <tr>\n   <td rowspan=\"4\" >Code\n   </td>\n   <td>HumanEval\n   </td>\n   <td>0\n   </td>\n   <td>pass@1\n   </td>\n   <td>60.4\n   </td>\n   <td>72.6\n   </td>\n   <td>81.7\n   </td>\n   <td>80.5\n   </td>\n   <td>89.0\n   </td>\n  </tr>\n  <tr>\n   <td>MBPP ++ base version\n   </td>\n   <td>0\n   </td>\n   <td>pass@1\n   </td>\n   <td>70.6\n   </td>\n   <td>72.8\n   </td>\n   <td>82.5\n   </td>\n   <td>86.0\n   </td>\n   <td>88.6\n   </td>\n  </tr>\n  <tr>\n   <td>Multipl-E HumanEval\n   </td>\n   <td>0\n   </td>\n   <td>pass@1\n   </td>\n   <td>-\n   </td>\n   <td>50.8\n   </td>\n   <td>-\n   </td>\n   <td>65.5\n   </td>\n   <td>75.2\n   </td>\n  </tr>\n  <tr>\n   <td>Multipl-E MBPP\n   </td>\n   <td>0\n   </td>\n   <td>pass@1\n   </td>\n   <td>-\n   </td>\n   <td>52.4\n   </td>\n   <td>-\n   </td>\n   <td>62.0\n   </td>\n   <td>65.7\n   </td>\n  </tr>\n  <tr>\n   <td rowspan=\"2\" >Math\n   </td>\n   <td>GSM-8K (CoT)\n   </td>\n   <td>8\n   </td>\n   <td>em_maj1@1\n   </td>\n   <td>80.6\n   </td>\n   <td>84.5\n   </td>\n   <td>93.0\n   </td>\n   <td>95.1\n   </td>\n   <td>96.8\n   </td>\n  </tr>\n  <tr>\n   <td>MATH (CoT)\n   </td>\n   <td>0\n   </td>\n   <td>final_em\n   </td>\n   <td>29.1\n   </td>\n   <td>51.9\n   </td>\n   <td>51.0\n   </td>\n   <td>68.0\n   </td>\n   <td>73.8\n   </td>\n  </tr>\n  <tr>\n   <td rowspan=\"4\" >Tool Use\n   </td>\n   <td>API-Bank\n   </td>\n   <td>0\n   </td>\n   <td>acc\n   </td>\n   <td>48.3\n   </td>\n   <td>82.6\n   </td>\n   <td>85.1\n   </td>\n   <td>90.0\n   </td>\n   <td>92.0\n   </td>\n  </tr>\n  <tr>\n   <td>BFCL\n   </td>\n   <td>0\n   </td>\n   <td>acc\n   </td>\n   <td>60.3\n   </td>\n   <td>76.1\n   </td>\n   <td>83.0\n   </td>\n   <td>84.8\n   </td>\n   <td>88.5\n   </td>\n  </tr>\n  <tr>\n   <td>Gorilla Benchmark API Bench\n   </td>\n   <td>0\n   </td>\n   <td>acc\n   </td>\n   <td>1.7\n   </td>\n   <td>8.2\n   </td>\n   <td>14.7\n   </td>\n   <td>29.7\n   </td>\n   <td>35.3\n   </td>\n  </tr>\n  <tr>\n   <td>Nexus (0-shot)\n   </td>\n   <td>0\n   </td>\n   <td>macro_avg/acc\n   </td>\n   <td>18.1\n   </td>\n   <td>38.5\n   </td>\n   <td>47.8\n   </td>\n   <td>56.7\n   </td>\n   <td>58.7\n   </td>\n  </tr>\n  <tr>\n   <td>Multilingual\n   </td>\n   <td>Multilingual MGSM (CoT)\n   </td>\n   <td>0\n   </td>\n   <td>em\n   </td>\n   <td>-\n   </td>\n   <td>68.9\n   </td>\n   <td>-\n   </td>\n   <td>86.9\n   </td>\n   <td>91.6\n   </td>\n  </tr>\n</table>\n\n#### Multilingual benchmarks\n\n<table>\n  <tr>\n   <td><strong>Category</strong>\n   </td>\n   <td><strong>Benchmark</strong>\n   </td>\n   <td><strong>Language</strong>\n   </td>\n   <td><strong>Llama 3.1 8B</strong>\n   </td>\n   <td><strong>Llama 3.1 70B</strong>\n   </td>\n   <td><strong>Llama 3.1 405B</strong>\n   </td>\n  </tr>\n  <tr>\n   <td rowspan=\"9\" ><strong>General</strong>\n   </td>\n   <td rowspan=\"9\" ><strong>MMLU (5-shot, macro_avg/acc)</strong>\n   </td>\n   <td>Portuguese\n   </td>\n   <td>62.12\n   </td>\n   <td>80.13\n   </td>\n   <td>84.95\n   </td>\n  </tr>\n  <tr>\n   <td>Spanish\n   </td>\n   <td>62.45\n   </td>\n   <td>80.05\n   </td>\n   <td>85.08\n   </td>\n  </tr>\n  <tr>\n   <td>Italian\n   </td>\n   <td>61.63\n   </td>\n   <td>80.4\n   </td>\n   <td>85.04\n   </td>\n  </tr>\n  <tr>\n   <td>German\n   </td>\n   <td>60.59\n   </td>\n   <td>79.27\n   </td>\n   <td>84.36\n   </td>\n  </tr>\n  <tr>\n   <td>French\n   </td>\n   <td>62.34\n   </td>\n   <td>79.82\n   </td>\n   <td>84.66\n   </td>\n  </tr>\n  <tr>\n   <td>Hindi\n   </td>\n   <td>50.88\n   </td>\n   <td>74.52\n   </td>\n   <td>80.31\n   </td>\n  </tr>\n  <tr>\n   <td>Thai\n   </td>\n   <td>50.32\n   </td>\n   <td>72.95\n   </td>\n   <td>78.21\n   </td>\n  </tr>\n</table>\n\n\n\n## Responsibility & Safety\n\nAs part of our Responsible release approach, we followed a three-pronged strategy to managing trust & safety risks:\n\n\n\n* Enable developers to deploy helpful, safe and flexible experiences for their target audience and for the use cases supported by Llama. \n* Protect developers against adversarial users aiming to exploit Llama capabilities to potentially cause harm.\n* Provide protections for the community to help prevent the misuse of our models.\n\n\n### Responsible deployment \n\nLlama is a foundational technology designed to be used in a variety of use cases, examples on how Meta’s Llama models have been responsibly deployed can be found in our [Community Stories webpage](https://llama.meta.com/community-stories/). Our approach is to build the most helpful models enabling the world to benefit from the technology power, by aligning our model safety for the generic use cases addressing a standard set of harms. Developers are then in the driver seat to tailor safety for their use case, defining their own policy and deploying the models with the necessary safeguards in their Llama systems. Llama 3.1 was developed following the best practices outlined in our Responsible Use Guide, you can refer to the [Responsible Use Guide](https://llama.meta.com/responsible-use-guide/) to learn more. \n\n\n#### Llama 3.1 instruct \n\nOur main objectives for conducting safety fine-tuning are to provide the research community with a valuable resource for studying the robustness of safety fine-tuning, as well as to offer developers a readily available, safe, and powerful model for various applications to reduce the developer workload to deploy safe AI systems. For more details on the safety mitigations implemented please read the Llama 3 paper. \n\n**Fine-tuning data**\n\nWe employ a multi-faceted approach to data collection, combining human-generated data from our vendors with synthetic data to mitigate potential safety risks. We’ve developed many large language model (LLM)-based classifiers that enable us to thoughtfully select high-quality prompts and responses, enhancing data quality control. \n\n**Refusals and Tone**\n\nBuilding on the work we started with Llama 3, we put a great emphasis on model refusals to benign prompts as well as refusal tone. We included both borderline and adversarial prompts in our safety data strategy, and modified our safety data responses to follow  tone guidelines. \n\n\n#### Llama 3.1 systems\n\n**Large language models, including Llama 3.1, are not designed to be deployed in isolation but instead should be deployed as part of an overall AI system with additional safety guardrails as required.** Developers are expected to deploy system safeguards when building agentic systems. Safeguards are key to achieve the right helpfulness-safety alignment as well as mitigating safety and security risks inherent to the system and any integration of the model or system with external tools. \n\nAs part of our responsible release approach, we provide the community with [safeguards](https://llama.meta.com/trust-and-safety/) that developers should deploy with Llama models or other LLMs, including Llama Guard 3, Prompt Guard and Code Shield. All our [reference implementations](https://github.com/meta-llama/llama-agentic-system) demos contain these safeguards by default so developers can benefit from system-level safety out-of-the-box. \n\n\n#### New capabilities \n\nNote that this release introduces new capabilities, including a longer context window, multilingual inputs and outputs and possible integrations by developers with third party tools. Building with these new capabilities requires specific considerations in addition to the best practices that generally apply across all Generative AI use cases.\n\n**Tool-use**: Just like in standard software development, developers are responsible for the integration of the LLM with the tools and services of their choice. They should define a clear policy for their use case and assess the integrity of the third party services they use to be aware of the safety and security limitations when using this capability. Refer to the Responsible Use Guide for best practices on the safe deployment of the third party safeguards. \n\n**Multilinguality**: Llama 3.1 supports 7 languages in addition to English: French, German, Hindi, Italian, Portuguese, Spanish, and Thai. Llama may be able to output text in other languages than those that meet performance thresholds for safety and helpfulness. We strongly discourage developers from using this model to converse in non-supported languages without implementing finetuning and system controls in alignment with their policies and the best practices shared in the Responsible Use Guide. \n\n\n### Evaluations\n\nWe evaluated Llama models for common use cases as well as specific capabilities. Common use cases evaluations measure safety risks of systems for most commonly built applications including chat bot, coding assistant, tool calls. We built dedicated, adversarial evaluation datasets and evaluated systems composed of Llama models and Llama Guard 3 to filter input prompt and output response. It is important to evaluate applications in context, and we recommend building dedicated evaluation dataset for your use case. Prompt Guard and Code Shield are also available if relevant to the application. \n\nCapability evaluations measure vulnerabilities of Llama models inherent to specific capabilities, for which were crafted dedicated benchmarks including long context, multilingual, tools calls, coding or memorization.\n\n**Red teaming**\n\nFor both scenarios, we conducted recurring red teaming exercises with the goal of discovering risks via adversarial prompting and we used the learnings to improve our benchmarks and safety tuning datasets. \n\nWe partnered early with subject-matter experts in critical risk areas to understand the nature of these real-world harms and how such models may lead to unintended harm for society. Based on these conversations, we derived a set of adversarial goals for the red team to attempt to achieve, such as extracting harmful information or reprogramming the model to act in a potentially harmful capacity.  The red team consisted of experts in cybersecurity, adversarial machine learning, responsible AI, and integrity in addition to multilingual content specialists with background in integrity issues in specific geographic markets.\n\n\n### Critical and other risks \n\nWe specifically focused our efforts on mitigating the following critical risk areas:\n\n**1- CBRNE (Chemical, Biological, Radiological, Nuclear, and Explosive materials) helpfulness**\n\nTo assess risks related to proliferation of chemical and biological weapons, we performed uplift testing designed to assess whether use of Llama 3.1 models could meaningfully increase the capabilities of malicious actors to plan or carry out attacks using these types of weapons. \n\n\n**2. Child Safety**\n\nChild Safety risk assessments were conducted using a team of experts, to assess the model’s capability to produce outputs that could result in Child Safety risks and inform on any necessary and appropriate risk mitigations via fine tuning. We leveraged those expert red teaming sessions to expand the coverage of our evaluation benchmarks through Llama 3 model development.  For Llama 3, we conducted new in-depth sessions using objective based methodologies to assess the model risks along multiple attack vectors including the additional languages Llama 3 is trained on. We also partnered with content specialists to perform red teaming exercises assessing potentially violating content while taking account of market specific nuances or experiences. \n\n**3. Cyber attack enablement**\n\nOur cyber attack uplift study investigated whether LLMs can enhance human capabilities in hacking tasks, both in terms of skill level and speed.\n\nOur attack automation study focused on evaluating the capabilities of LLMs when used as autonomous agents in cyber offensive operations, specifically in the context of ransomware attacks. This evaluation was distinct from previous studies that considered LLMs as interactive assistants. The primary objective was to assess whether these models could effectively function as independent agents in executing complex cyber-attacks without human intervention.\n\nOur study of Llama-3.1-405B’s social engineering uplift for cyber attackers was conducted to assess the effectiveness of AI models in aiding cyber threat actors in spear phishing campaigns. Please read our Llama 3.1 Cyber security whitepaper to learn more.\n\n\n### Community \n\nGenerative AI safety requires expertise and tooling, and we believe in the strength of the open community to accelerate its progress. We are active members of open consortiums, including the AI Alliance, Partnership on AI and MLCommons, actively contributing to safety standardization and transparency. We encourage the community to adopt taxonomies like the MLCommons Proof of Concept evaluation to facilitate collaboration and transparency on safety and content evaluations. Our Purple Llama tools are open sourced for the community to use and widely distributed across ecosystem partners including cloud service providers. We encourage community contributions to our [Github repository](https://github.com/meta-llama/PurpleLlama). \n\nWe also set up the [Llama Impact Grants](https://llama.meta.com/llama-impact-grants/) program to identify and support the most compelling applications of Meta’s Llama model for societal benefit across three categories: education, climate and open innovation. The 20 finalists from the hundreds of applications can be found [here](https://llama.meta.com/llama-impact-grants/#finalists). \n\nFinally, we put in place a set of resources including an [output reporting mechanism](https://developers.facebook.com/llama_output_feedback) and [bug bounty program](https://www.facebook.com/whitehat) to continuously improve the Llama technology with the help of the community.\n\n\n## Ethical Considerations and Limitations\n\nThe core values of Llama 3.1 are openness, inclusivity and helpfulness. It is meant to serve everyone, and to work for a wide range of use cases. It is thus designed to be accessible to people across many different backgrounds, experiences and perspectives. Llama 3.1 addresses users and their needs as they are, without insertion unnecessary judgment or normativity, while reflecting the understanding that even content that may appear problematic in some cases can serve valuable purposes in others. It respects the dignity and autonomy of all users, especially in terms of the values of free thought and expression that power innovation and progress. \n\nBut Llama 3.1 is a new technology, and like any new technology, there are risks associated with its use. Testing conducted to date has not covered, nor could it cover, all scenarios. For these reasons, as with all LLMs, Llama 3.1’s potential outputs cannot be predicted in advance, and the model may in some instances produce inaccurate, biased or other objectionable responses to user prompts. Therefore, before deploying any applications of Llama 3.1 models, developers should perform safety testing and tuning tailored to their specific applications of the model. Please refer to available resources including our [Responsible Use Guide](https://llama.meta.com/responsible-use-guide), [Trust and Safety](https://llama.meta.com/trust-and-safety/) solutions, and other [resources](https://llama.meta.com/docs/get-started/) to learn more about responsible development. \n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "2204.05149"
+  ],
+  "RelatedPaper": [],
+  "Revision": "master",
+  "Stars": 154,
+  "StorageSize": 32132582371,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 0,
+  "SupportExperience": 0,
+  "SupportFinetuning": 0,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": [
+   "deploy",
+   "train",
+   "evaluation"
+  ],
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [
+   "facebook",
+   "meta",
+   "pytorch",
+   "llama",
+   "llama-3"
+  ],
+  "Tasks": [
+   {
+    "ChineseName": "文本生成",
+    "Description": "",
+    "DomainName": "nlp",
+    "Id": 22,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "text-generation",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"text-generation\", \"inputs\": [{\"type\": \"text\", \"validator\": {\"max_words\": \"1000\"}, \"displayType\": \"OnlyTextArea\"}], \"output\": {\"displayType\": \"ReadonlyText\", \"transformOutputs\": [{\"outputKey\": \"text\"}], \"displayOutputMapping\": \"text\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": []
+ },
+ "Message": "success",
+ "RequestId": "d87681d0-ffb3-452d-85b0-8142c8c03c8b",
+ "Success": true
+}

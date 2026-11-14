@@ -1,0 +1,51 @@
+{
+ "case_id": "neg-0002",
+ "repo": "john-rocky/coreai-model-zoo",
+ "repo_url": "https://github.com/john-rocky/coreai-model-zoo",
+ "head_sha": "1d029a0aebfb2298645f562963046c1a210a5ad6",
+ "source_file": "conversion/qwenimage21/perturb_ref.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 5,
+    "text": "import argparse, json, sys, time",
+    "sha256": "fea3a3592401785b4ba66f905f2136f10a379e52a6330f6f557ca922b4348d61"
+   },
+   {
+    "line": 6,
+    "text": "from pathlib import Path",
+    "sha256": "6d69f2ac09017b8a49d050ab336e953b8fa02ae08c24396916ea7ea42418e627"
+   },
+   {
+    "line": 7,
+    "text": "import numpy as np, torch",
+    "sha256": "37ca93107bbd520df8dfc7d4b940459c7beeef2c7e4726056072d51915e695f9"
+   },
+   {
+    "line": 8,
+    "text": "from PIL import Image",
+    "sha256": "e66b379369fd5a6f31cb4d78e8c2435bcf73781984d2a8e78e7d44cc67f35d3b"
+   },
+   {
+    "line": 19,
+    "text": "from diffusers import QwenImage21Pipeline",
+    "sha256": "3a8a60a64f5c48ca7f7d063c031f6b021a7655df72fd4fd4d77bdc1452f87068"
+   }
+  ],
+  "kind": "huggingface_import"
+ },
+ "model_id": "Qwen/Qwen-Image-2.1",
+ "call": {
+  "start": 18,
+  "end": 18,
+  "text": "snap = hf_snapshot(\"Qwen/Qwen-Image-2.1\", revision=meta[\"snapshot\"])",
+  "sha256": "0b36fe6219be08688c820868d13cb2611bfd3bbe3576923d84cc0e4a8eb60ade"
+ },
+ "negative": {
+  "basis": "other_platform_explicit",
+  "scope": "repo_platform",
+  "note": "hf_snapshot() 实为读取 HF_HUB_CACHE 的 models--<repo>/snapshots（conversion/_paths.py L134-150）"
+ }
+}

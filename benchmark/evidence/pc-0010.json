@@ -1,0 +1,82 @@
+{
+ "case_id": "pc-0010",
+ "repo": "ali-vilab/VGen",
+ "repo_url": "https://github.com/ali-vilab/VGen",
+ "head_sha": "4014d1fae4ac4a35e8e8442123611e913001399e",
+ "source_file": "gradio_app.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 6,
+    "text": "from modelscope.pipelines import pipeline",
+    "sha256": "23bca4f238f8ae2abb0c07225a7a7559f9cfff55c627c1f0bdc2da4dc80033f1"
+   },
+   {
+    "line": 7,
+    "text": "from modelscope.outputs import OutputKeys",
+    "sha256": "9717770a65dfbd859effef8a0e985f0e23dcb4dc5bbf2979727d5ca71fd28f1d"
+   }
+  ],
+  "imports_sha256": "349f7640f24f541545ce60cce1110785e11a491e9f565067ea5c720768b0415a",
+  "kind": "modelscope_api",
+  "role": "primary"
+ },
+ "model_id": "damo/i2vgen-xl",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 9,
+   "text": "image_to_video_pipe = pipeline(task=\"image-to-video\", model='damo/i2vgen-xl', model_revision='v1.1.3', device='cuda:0')",
+   "sha256": "97aad3b99ee26a4229caa75c5b0da18aa0bcf968decd94b1aa4ad9f45006eaa7"
+  }
+ ],
+ "call": {
+  "start": 9,
+  "end": 9,
+  "text": "image_to_video_pipe = pipeline(task=\"image-to-video\", model='damo/i2vgen-xl', model_revision='v1.1.3', device='cuda:0')",
+  "sha256": "97aad3b99ee26a4229caa75c5b0da18aa0bcf968decd94b1aa4ad9f45006eaa7"
+ },
+ "revision": {
+  "revision": "v1.1.3",
+  "source": "call_literal"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 1,
+   "text": "import os"
+  },
+  {
+   "line": 2,
+   "text": "os.system('pip install \"modelscope\" --upgrade -f https://pypi.org/project/modelscope/')"
+  },
+  {
+   "line": 3,
+   "text": "os.system('pip install \"gradio==3.39.0\"')"
+  },
+  {
+   "line": 4,
+   "text": ""
+  },
+  {
+   "line": 5,
+   "text": "import gradio as gr"
+  },
+  {
+   "line": 6,
+   "text": "from modelscope.pipelines import pipeline"
+  },
+  {
+   "line": 7,
+   "text": "from modelscope.outputs import OutputKeys"
+  },
+  {
+   "line": 8,
+   "text": ""
+  }
+ ]
+}

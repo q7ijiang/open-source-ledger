@@ -1,0 +1,393 @@
+{
+ "Code": 200,
+ "Data": {
+  "AigcAttributes": "{}",
+  "AigcIsTop": 0,
+  "AigcType": "",
+  "AlreadyStar": false,
+  "ApplyMeta": "{}",
+  "ApprovalMode": 1,
+  "ApprovalNotifyEmail": "",
+  "Architectures": [],
+  "Avatar": "https://img.alicdn.com/imgextra/i1/O1CN01yhHrHg1Pdl3UKPhGc_!!6000000001864-2-tps-88-88.png",
+  "Backbone": [
+   "transformer"
+  ],
+  "BackendSupport": {
+   "architectures": null,
+   "backend_info": {
+    "deploy_task": null,
+    "lmdeploy": null,
+    "lmdeploy_turbomind": null,
+    "ollama": null,
+    "sglang": null,
+    "vllm": null
+   },
+   "model_id": "iic/mplug_visual-question-answering_coco_large_en"
+  },
+  "BaseModel": [],
+  "BaseModelRelation": "",
+  "CardReady": 1,
+  "CardUnreadyReason": "",
+  "CertificationCreateBy": "",
+  "CertificationCreatedTime": -62135596800,
+  "ChineseName": "mPLUG视觉问答模型-英文-large",
+  "CoverHeight": 0,
+  "CoverImages": [],
+  "CoverWidth": 0,
+  "CreatedBy": "lcl193798",
+  "CreatedTime": 1659560085,
+  "DashSdkParameter": "",
+  "Datasets": {
+   "test": [
+    "VQA test set",
+    "modelscope/vqa_trial"
+   ],
+   "train": [
+    "14M image-text pairs(google cc, mscoco, vg, sbu)",
+    "VQA"
+   ]
+  },
+  "DemoAvailable": 1,
+  "DemoUnavailableReason": "",
+  "Description": "本任务是mPLUG，在英文VQA数据集进行finetune的视觉问答下游任务。给定一个问题和图片，通过图片信息来给出答案。",
+  "Domain": [
+   "multi-modal"
+  ],
+  "Downloads": 533888,
+  "ExampleCodeAvailable": 1,
+  "ExampleCodeUnavailableReason": "",
+  "ForbiddenVisibilityUpdate": false,
+  "Frameworks": [
+   "pytorch"
+  ],
+  "FromSite": "maas",
+  "Id": 29,
+  "Integrating": 2,
+  "IntegrationFailureLog": "",
+  "IntegrationFailureReason": "",
+  "IsAccessible": 1,
+  "IsCertification": 1,
+  "IsHot": 0,
+  "IsNewModel": false,
+  "IsOnline": 1,
+  "IsPreTrain": 0,
+  "IsPublished": 1,
+  "IsTop": 0,
+  "Language": [
+   "en"
+  ],
+  "LastUpdatedTime": 1765175567,
+  "Libraries": [
+   "pytorch"
+  ],
+  "License": "Apache License 2.0",
+  "LicenseLink": "",
+  "LicenseName": "",
+  "Meta": "",
+  "Metrics": [
+   "accuracy"
+  ],
+  "ModelDetail": {},
+  "ModelInfos": {},
+  "ModelRevisions": null,
+  "ModelSource": "USER_UPLOAD",
+  "ModelTools": "",
+  "ModelType": [
+   "mplug"
+  ],
+  "MuseInfo": null,
+  "NEXA": {
+   "Catalogues": null,
+   "ModelCover": "",
+   "ScientificField": "",
+   "Source": "",
+   "SubScientificField": null
+  },
+  "Name": "mplug_visual-question-answering_coco_large_en",
+  "NewVersion": "",
+  "NickName": "lcl193798",
+  "OfficialTags": null,
+  "OpenAiSwingDeployInfo": {
+   "Order": 0,
+   "Recommend": null,
+   "lmdeploy": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "ollama": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "pipeline": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   },
+   "vllm": {
+    "eas": {
+     "Script": "",
+     "requirements": ""
+    },
+    "ens": {
+     "Script": "",
+     "requirements": ""
+    },
+    "fc": {
+     "Script": "",
+     "requirements": ""
+    },
+    "image_tag": ""
+   }
+  },
+  "Organization": {
+   "ApplyFailureReason": "",
+   "ApplyReason": "",
+   "Avatar": "https://resouces.modelscope.cn/avatar/86fc4b9c-4548-463c-8cbb-f37f68b87141.png",
+   "CreateCompetition": false,
+   "CreatedBy": "damoadmin",
+   "Description": "[\"root\",{},[\"p\",{},[\"span\",{\"data-type\":\"text\"},[\"span\",{\"data-type\":\"leaf\"},\"通义实验室(Institute for Intelligent Computing, aka Tongyi Lab) 专注于各领域大模型技术研发与创新应用。实验室研究方向涵盖LLM、多模态理解与生成、视觉AIGC、语音等多个领域。我们并积极推进研究成果的产业化落地。实验室同时积极参与开源社区建设，全方位拥抱开源社区，共同探索AI模型的开源开放。\"]]]]",
+   "DisplayUrl": "",
+   "Email": "",
+   "EmailDomain": "",
+   "FollowerCnt": 0,
+   "FromSite": "",
+   "FullName": "通义实验室",
+   "GithubAddress": "",
+   "GmtCreated": "2022-08-03T17:01:55Z",
+   "GmtModified": "2026-10-20T05:43:50Z",
+   "Id": 1,
+   "InitAdminMembers": "",
+   "IsApply": false,
+   "IsCertification": "",
+   "MemberCnt": 0,
+   "Mobile": "",
+   "Name": "iic",
+   "Path": "",
+   "Roles": null,
+   "SocialLinks": null,
+   "StarCnt": 0,
+   "Status": 0,
+   "SubscribeVo": null,
+   "Type": 2
+  },
+  "PaiModelGalleryUrl": null,
+  "PaiSdkParameter": null,
+  "Path": "iic",
+  "ProtectedMode": 2,
+  "ReadMeContent": "\n# 视觉问答介绍\n视觉问答：给定一个问题和图片，通过图片信息来给出答案。需要模型具备多模态理解的能力，目前主流的方法大多是基于多模态预训练，最为知名的视觉问答数据集包括：VQA，GQA等。\n\n## 模型描述\n\n本任务是mPLUG，在英文VQA数据集进行finetune的视觉问答下游任务。mPLUG模型是统一理解和生成的多模态基础模型，该模型提出了基于skip-connections的高效跨模态融合框架。其中，mPLUG在VQA上支持开放阈生成，达到开放阈生成的SOTA，详见：[mPLUG: Effective and Efficient Vision-Language Learning by Cross-modal Skip-connections](https://arxiv.org/abs/2205.12005)\n\n![mplug](./resources/model.png)\n\n模型生成结果如下图所示：\n\n![vqa_case](./resources/case.png)\n\n\n## 期望模型使用方式以及适用范围\n本模型主要用于给问题和对应图片生成答案。用户可以自行尝试各种输入文档。具体调用方式请参考代码示例。\n\n### 如何使用\n在安装完成MaaS-lib之后即可使用visual-question-answering的能力 （注意：模型运行约需占用 9G 内存）\n\n#### 推理代码范例\n```python\nfrom modelscope.pipelines import pipeline\nfrom modelscope.utils.constant import Tasks\n\nmodel_id = 'damo/mplug_visual-question-answering_coco_large_en'\ninput_vqa = {\n    'image': 'http://modelscope.oss-cn-beijing.aliyuncs.com/test/images/image_mplug_vqa.jpg',\n    'question': 'What is the woman doing?',\n}\n\npipeline_vqa = pipeline(Tasks.visual_question_answering, model=model_id)\nprint(pipeline_vqa(input_vqa))\n\n```\n\n### 模型局限性以及可能的偏差\n模型在数据集上训练，有可能产生一些偏差，请用户自行评测后决定如何使用。\n\n## 训练数据介绍\n本模型训练数据集是VQA，数据集包含83k图片， 具体数据可以[下载](https://visualqa.org/)\n\n## 模型训练流程\n\n### 微调代码范例\n\n```python\nimport tempfile\n\nfrom modelscope.msdatasets import MsDataset\nfrom modelscope.metainfo import Trainers\nfrom modelscope.trainers import build_trainer\n\ndatadict = MsDataset.load('coco_captions_small_slice')\n\ntrain_dataset = MsDataset(\n    datadict['train'].remap_columns({\n        'image:FILE': 'image',\n        'answer:Value': 'answer'\n    }).map(lambda _: {'question': 'what the picture describes?'}))\ntest_dataset = MsDataset(\n    datadict['test'].remap_columns({\n        'image:FILE': 'image',\n        'answer:Value': 'answer'\n    }).map(lambda _: {'question': 'what the picture describes?'}))\n\n# 可以在代码修改 configuration 的配置\ndef cfg_modify_fn(cfg):\n    cfg.train.hooks = [{\n        'type': 'CheckpointHook',\n        'interval': 2\n    }, {\n        'type': 'TextLoggerHook',\n        'interval': 1\n    }, {\n        'type': 'IterTimerHook'\n    }]\n    return cfg\n\nkwargs = dict(\n    model='damo/mplug_visual-question-answering_coco_large_en',\n    train_dataset=train_dataset,\n    eval_dataset=test_dataset,\n    max_epochs=2,\n    cfg_modify_fn=cfg_modify_fn,\n    work_dir=tempfile.TemporaryDirectory().name)\n\ntrainer = build_trainer(\n    name=Trainers.nlp_base_trainer, default_args=kwargs)\ntrainer.train()\n```\n\n## 数据评估及结果\nmPLUG在VQA数据集，同等规模和预训练数据的模型中取得SOTA，VQA榜单上排名前列\n\n![mplug_vqa_score](./resources/vqa_exp.png)\n\n![vqa_leaderboard](./resources/vqa.png)\n### 相关论文以及引用信息\n如果我们的模型对您有帮助，请您引入我们的文章：\n```BibTeX\n@inproceedings{li2022mplug,\n      title={mPLUG: Effective and Efficient Vision-Language Learning by Cross-modal Skip-connections}, \n      author={Li, Chenliang and Xu, Haiyang and Tian, Junfeng and Wang, Wei and Yan, Ming and Bi, Bin and Ye, Jiabo and Chen, Hehong and Xu, Guohai and Cao, Zheng and Zhang, Ji and Huang, Songfang and Huang, Fei and Zhou, Jingren and Luo Si},\n      year={2022},\n      journal={arXiv}\n}\n```\n\n\n\n\n",
+  "ReadMeTips": null,
+  "RelatedArxivId": [
+   "2205.12005"
+  ],
+  "RelatedPaper": [],
+  "Revision": "master",
+  "Stars": 37,
+  "StorageSize": 2993354006,
+  "Studios": [],
+  "SubVisionFoundation": "",
+  "SupportApiInference": false,
+  "SupportDashDeployment": 0,
+  "SupportDashInference": 0,
+  "SupportDashTraining": 0,
+  "SupportDeployment": 1,
+  "SupportExperience": 1,
+  "SupportFinetuning": 1,
+  "SupportFlexTrain": 0,
+  "SupportInference": "",
+  "SupportPaiModelGallery": null,
+  "SupportPaiSdk": 0,
+  "SupportPivotEval": false,
+  "SwingDeployInfo": null,
+  "Tags": [
+   "transformer",
+   "AliceMind",
+   "Alibaba",
+   "volume:abs/2205.12005"
+  ],
+  "Tasks": [
+   {
+    "ChineseName": "视觉问答",
+    "Description": "",
+    "DomainName": "multi-modal",
+    "Id": 77,
+    "IsExhibition": true,
+    "IsHot": 0,
+    "IsLeaf": true,
+    "IsLoginRequired": true,
+    "IsRetrieval": true,
+    "Level": 1,
+    "Name": "visual-question-answering",
+    "ParentId": -1,
+    "ParentTask": null,
+    "Sorting": 0,
+    "SupportWidgets": false,
+    "TypicalModel": "",
+    "WidgetConfig": "{\"task\": \"visual-question-answering\", \"inputs\": [{\"type\": \"image\", \"validator\": {\"max_size\": \"3M\", \"max_resolution\": \"2000*2000\"}, \"displayType\": \"ImgUpload\", \"displayProps\": {\"label\": {\"text\": \"图片\", \"style\": {\"color\": \"#fff\", \"background\": \"rgba(93,191,119,0.8)\"}}}}, {\"type\": \"text\", \"displayType\": \"OnlyTextArea\"}], \"output\": {\"displayType\": \"ReadonlyText\", \"displayOutputMapping\": \"text\"}, \"examples\": []}",
+    "WidgetValidator": ""
+   }
+  ],
+  "Tools": [],
+  "TriggerWords": null,
+  "Visibility": 5,
+  "VisionFoundation": "",
+  "_": null,
+  "widgets": [
+   {
+    "enabled": true,
+    "examples": [
+     {
+      "inputs": [
+       {
+        "data": "https://alice-open.oss-cn-zhangjiakou.aliyuncs.com/mPLUG/image_mplug_vqa_5.jpg",
+        "name": "image"
+       },
+       {
+        "data": "what name is this guy?",
+        "name": "question"
+       }
+      ],
+      "name": "1",
+      "parameters": null,
+      "title": "示例1"
+     },
+     {
+      "inputs": [
+       {
+        "data": "https://alice-open.oss-cn-zhangjiakou.aliyuncs.com/mPLUG/image_mplug_vqa_4.jpg",
+        "name": "image"
+       },
+       {
+        "data": "what is the name of the planet?",
+        "name": "question"
+       }
+      ],
+      "name": "2",
+      "parameters": null,
+      "title": "示例2"
+     },
+     {
+      "inputs": [
+       {
+        "data": "https://alice-open.oss-cn-zhangjiakou.aliyuncs.com/mPLUG/image_mplug_vqa_1.jpg",
+        "name": "image"
+       },
+       {
+        "data": "what airline owns this plane?",
+        "name": "question"
+       }
+      ],
+      "name": "3",
+      "parameters": null,
+      "title": "示例3"
+     },
+     {
+      "inputs": [
+       {
+        "data": "http://xingchen-data.oss-cn-zhangjiakou.aliyuncs.com/maas/visual-question-answering/visual_question_answering.png",
+        "name": "image"
+       },
+       {
+        "data": "what is grown on the plant?",
+        "name": "question"
+       }
+      ],
+      "name": "4",
+      "parameters": null,
+      "title": "示例4"
+     },
+     {
+      "inputs": [
+       {
+        "data": "https://alice-open.oss-cn-zhangjiakou.aliyuncs.com/mPLUG/image_mplug_vqa_3.jpg",
+        "name": "image"
+       },
+       {
+        "data": "What do you call the devices on top of the pole?",
+        "name": "question"
+       }
+      ],
+      "name": "5",
+      "parameters": null,
+      "title": "示例5"
+     },
+     {
+      "inputs": [
+       {
+        "data": "https://alice-open.oss-cn-zhangjiakou.aliyuncs.com/mPLUG/image_mplug_vqa_2.jpg",
+        "name": "image"
+       },
+       {
+        "data": "what does this machine do?",
+        "name": "question"
+       }
+      ],
+      "name": "6",
+      "parameters": null,
+      "title": "示例6"
+     }
+    ],
+    "inferencespec": {
+     "cpu": 4,
+     "gpu": 1,
+     "gpu_memory": 16000,
+     "memory": 12000
+    },
+    "inputs": [
+     {
+      "name": "image",
+      "title": "图片",
+      "type": "image",
+      "validator": {
+       "max_resolution": "5000*5000",
+       "max_size": "10M"
+      }
+     },
+     {
+      "name": "question",
+      "title": "问题",
+      "type": "text",
+      "validator": null
+     }
+    ],
+    "parameters": null,
+    "task": "visual-question-answering"
+   }
+  ]
+ },
+ "Message": "success",
+ "RequestId": "d88b55c4-2f77-46af-9eb3-2446554f572a",
+ "Success": true
+}

@@ -1,0 +1,61 @@
+{
+ "case_id": "pc-0007",
+ "repo": "Kedreamix/Linly-Dubbing",
+ "repo_url": "https://github.com/Kedreamix/Linly-Dubbing",
+ "head_sha": "5677191ee544afae8250cee8e801c03839bcba24",
+ "source_file": "scripts/modelscope_download.py",
+ "source_kind": "code",
+ "collected_at": "2026-11-14",
+ "platform": {
+  "imports": [
+   {
+    "line": 2,
+    "text": "from modelscope import snapshot_download",
+    "sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5"
+   }
+  ],
+  "imports_sha256": "4177231fbd7563a82a897967ce3b96675469a00affbf0b4254dcbe084effd8a5",
+  "kind": "modelscope_download",
+  "role": "primary"
+ },
+ "model_id": "AI-ModelScope/XTTS-v2",
+ "model_binding": null,
+ "model_literals": [
+  {
+   "line": 5,
+   "text": "snapshot_download('AI-ModelScope/XTTS-v2', local_dir='models/TTS/XTTS-v2')",
+   "sha256": "4506c5b57e4370aaff76a126756af296b8ad5d672206f8f6f514b1e9fa42dea2"
+  }
+ ],
+ "call": {
+  "start": 5,
+  "end": 5,
+  "text": "snapshot_download('AI-ModelScope/XTTS-v2', local_dir='models/TTS/XTTS-v2')",
+  "sha256": "4506c5b57e4370aaff76a126756af296b8ad5d672206f8f6f514b1e9fa42dea2"
+ },
+ "revision": {
+  "revision": "",
+  "source": "unspecified"
+ },
+ "branch": {
+  "conditional_fallback": false
+ },
+ "context": [
+  {
+   "line": 1,
+   "text": "# pip install modelscope"
+  },
+  {
+   "line": 2,
+   "text": "from modelscope import snapshot_download"
+  },
+  {
+   "line": 3,
+   "text": ""
+  },
+  {
+   "line": 4,
+   "text": "# https://modelscope.cn/models/AI-ModelScope/XTTS-v2"
+  }
+ ]
+}
