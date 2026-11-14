@@ -17,6 +17,11 @@ on:
     # GitHub Actions cron 使用 UTC；02:00 UTC = 北京时间 10:00。
     - cron: '0 2 * * 1'
   workflow_dispatch:
+    inputs:
+      project_path:
+        description: '要扫描的项目路径（相对仓库根目录），默认受控演示项目'
+        required: false
+        default: 'example/qwen_image_controlled_project'
   pull_request:
 
 permissions:
@@ -37,6 +42,11 @@ jobs:
     name: Scan project model supply chain
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    env:
+      # 本仓库的示例 Workflow 默认扫描独立演示项目，避免把 tests/fixtures、
+      # docs 和 action.yml 里的模型示例误认为目标项目代码。外部仓库应将
+      # LEDGER_PROJECT_PATH 改为自己的项目目录（例如 .）。
+      WATCH_PROJECT_PATH: ${{ github.event.inputs.project_path || vars.LEDGER_PROJECT_PATH || 'example/qwen_image_controlled_project' }}
 
     steps:
       - name: Check out target repository
@@ -159,9 +169,19 @@ jobs:
           AI_ENABLED_NORMALIZED="$(printf '%s' "${AI_ENABLED_INPUT:-false}" | tr '[:upper:]' '[:lower:]')"
           mkdir -p "${LEDGER_ARTIFACTS_DIR}/project"
 
+          PROJECT_PATH="${WATCH_PROJECT_PATH:-example/qwen_image_controlled_project}"
+          if [[ "$PROJECT_PATH" != /* ]]; then
+            PROJECT_PATH="${GITHUB_WORKSPACE}/${PROJECT_PATH}"
+          fi
+          if [ ! -d "$PROJECT_PATH" ]; then
+            echo "::error::project_path 不是有效目录：$PROJECT_PATH"
+            exit 1
+          fi
+          PROJECT_PATH="$(cd "$PROJECT_PATH" && pwd)"
+
           ARGS=(
             "$TOOL_DIR/main.py"
-            --project "$GITHUB_WORKSPACE"
+            --project "$PROJECT_PATH"
             --output "$WATCH_REPORT"
             --artifacts-dir "$LEDGER_ARTIFACTS_DIR"
             --cache-dir "$LEDGER_CACHE_DIR"

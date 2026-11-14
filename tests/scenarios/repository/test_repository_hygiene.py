@@ -76,6 +76,21 @@ def test_runtime_files_do_not_embed_machine_specific_home_paths() -> None:
     assert "/home/" not in combined
 
 
+def test_workflow_scans_dedicated_demo_project() -> None:
+    workflow = (REPO_ROOT / ".github" / "workflows" / "license-watch.yml").read_text(
+        encoding="utf-8"
+    )
+
+    assert "WATCH_PROJECT_PATH" in workflow
+    assert "example/qwen_image_controlled_project" in workflow
+    assert '--project "$PROJECT_PATH"' in workflow
+    assert '--project "$GITHUB_WORKSPACE"' not in workflow
+
+    demo = REPO_ROOT / "example" / "qwen_image_controlled_project"
+    assert (demo / "app.py").is_file()
+    assert (demo / "config.json").is_file()
+
+
 def test_snapshot_cache_prefix_is_stable_across_days() -> None:
     for path in ACTION_FILES:
         text = path.read_text(encoding="utf-8")

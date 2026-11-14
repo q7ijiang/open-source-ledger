@@ -153,6 +153,9 @@ python main.py --diff --before <t0-bom.json> --after <t1-bom.json> --output <dif
 Action 的特征：
 
 - 运行、缓存、报告和图产物均从 `${RUNNER_TEMP}` 派生；
+- 本仓库的示例 Workflow 默认扫描 `example/qwen_image_controlled_project`，避免把
+  `tests/fixtures`、`docs` 和 `action.yml` 中的模型示例误认为目标项目代码；复用到
+  其他仓库时，通过 `LEDGER_PROJECT_PATH` 或 `project_path` 指向真实项目目录；
 - 扫描时显式传入 artifacts、cache、BOM、graph 和 report 路径；
 - 规则判定为 `RISK_CONFIRMED` 时仍阻断流水线；
 - 完整上传报告、BOM、source bundle、AI JSON、graph、assets 和 edges；
