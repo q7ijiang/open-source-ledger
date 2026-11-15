@@ -46,8 +46,15 @@ class OpenAICompatibleProvider:
                 json=payload,
                 timeout=config.timeout,
             )
+            if not response.ok:
+                detail = response.text.strip().replace("\n", " ")[:500]
+                raise AIProviderError(
+                    f"AI 服务请求失败：HTTP {response.status_code}：{detail}"
+                )
             response.raise_for_status()
             data = response.json()
+        except AIProviderError:
+            raise
         except requests.RequestException as exc:
             raise AIProviderError(f"AI 服务请求失败：{exc}") from exc
         except ValueError as exc:

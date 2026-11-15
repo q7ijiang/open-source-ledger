@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +19,27 @@ from .schemas import (
     unavailable_analysis,
     utc_now,
 )
+
+_AI_DOCUMENT_SUFFIXES = {".md", ".txt", ".rst"}
+_AI_DOCUMENT_PREFIXES = ("LICENSE", "COPYING", "NOTICE", "README")
+_SPECIAL_TOKEN_RE = re.compile(r"<\|[^|\r\n]{1,64}\|>")
+
+
+def is_ai_document(path: str) -> bool:
+    """只把许可证/说明类文本送给 AI，避免 tokenizer 特殊词触发 400。"""
+
+    normalized = str(path or "").replace("\\", "/")
+    name = normalized.rsplit("/", 1)[-1]
+    upper = name.upper()
+    if upper.startswith(_AI_DOCUMENT_PREFIXES):
+        return True
+    return Path(name).suffix.lower() in _AI_DOCUMENT_SUFFIXES
+
+
+def has_special_token(text: str) -> bool:
+    """检测 `<|image_pad|>` 等聊天接口不允许的特殊词。"""
+
+    return bool(_SPECIAL_TOKEN_RE.search(text))
 
 MODEL_SYSTEM_PROMPT = """你是开源 AI 模型的许可证证据抽取器。
 只依据用户提供的 ModelScope 官方文档作结论。每个结论必须给出 source_path 和逐字 quote。
@@ -79,7 +101,13 @@ class AIService:
         for item in source_bundle.get("documents", []) or []:
             if not isinstance(item, dict) or remaining <= 0:
                 continue
-            content = str(item.get("content") or "")[:remaining]
+            path = str(item.get("path") or "")
+            if not is_ai_document(path):
+                continue
+            content = str(item.get("content") or "")
+            if not content or has_special_token(content):
+                continue
+            content = content[:remaining]
             documents.append(
                 {
                     "path": item.get("path"),
@@ -88,6 +116,13 @@ class AIService:
                 }
             )
             remaining -= len(content)
+        if not documents:
+            return unavailable_analysis(
+                "model_profile",
+                subject,
+                "没有可发送给 AI 的 LICENSE/README 文本",
+                self.config.public_dict(),
+            )
         user_payload = {
             "model_id": source_bundle.get("model_id"),
             "revision": source_bundle.get("revision"),

@@ -49,6 +49,9 @@ jobs:
       # 手动触发使用 project_path；定时任务和 PR 使用仓库变量。
       # 两者都没有时，扫描步骤会明确失败，不会猜测或扫描仓库根目录。
       WATCH_PROJECT_PATH: ${{ github.event.inputs.project_path || vars.LEDGER_PROJECT_PATH }}
+      AI_TIMEOUT: ${{ vars.AI_TIMEOUT || '180' }}
+      AI_MAX_MODELS: ${{ vars.AI_MAX_MODELS || '6' }}
+      AI_MAX_CONTEXT_CHARS: ${{ vars.AI_MAX_CONTEXT_CHARS || '24000' }}
 
     steps:
       - name: Check out target repository
@@ -201,6 +204,7 @@ jobs:
             --bom-output "$BOM_PATH"
             --graph-output "$GRAPH_PATH"
             --max-upstream-nodes 128
+            --ai-max-models "$AI_MAX_MODELS"
           )
           if [ "${{ steps.ai-status.outputs.ready }}" = "true" ]; then
             ARGS+=(--ai)

@@ -26,6 +26,18 @@ inputs:
     description: AI 服务密钥；建议从 GitHub Secrets 传入
     required: false
     default: ''
+  ai_timeout:
+    description: AI 请求超时秒数
+    required: false
+    default: '180'
+  ai_max_models:
+    description: 最多分析多少个模型（直接模型优先，按上游距离排序）
+    required: false
+    default: '6'
+  ai_max_context_chars:
+    description: 发送给 AI 的最大上下文字符数
+    required: false
+    default: '24000'
   max_upstream_depth:
     description: 可选的最大上游递归深度；留空表示遍历完整上游闭包
     required: false
@@ -150,6 +162,8 @@ runs:
         AI_MODEL: ${{ inputs.ai_model }}
         AI_BASE_URL: ${{ inputs.ai_base_url }}
         AI_API_KEY: ${{ inputs.ai_api_key }}
+        AI_TIMEOUT: ${{ inputs.ai_timeout }}
+        AI_MAX_CONTEXT_CHARS: ${{ inputs.ai_max_context_chars }}
         PYTHONUTF8: '1'
         PYTHONIOENCODING: utf-8
       shell: bash
@@ -181,6 +195,7 @@ runs:
           --bom-output "$BOM_PATH"
           --graph-output "$GRAPH_PATH"
           --max-upstream-nodes "${{ inputs.max_upstream_nodes }}"
+          --ai-max-models "${{ inputs.ai_max_models }}"
         )
         if [ -n "${{ inputs.max_upstream_depth }}" ]; then
           ARGS+=(--max-upstream-depth "${{ inputs.max_upstream_depth }}")

@@ -113,6 +113,14 @@ def test_promote_accepted_baseline_workflow() -> None:
     assert "github.ref == 'refs/heads/main'" in workflow
 
 
+def test_action_and_workflow_have_ai_load_controls() -> None:
+    for path in ACTION_FILES:
+        text = path.read_text(encoding="utf-8")
+        assert "ai-max-models" in text, path
+        assert "AI_TIMEOUT" in text or "ai_timeout" in text, path
+        assert "AI_MAX_CONTEXT_CHARS" in text or "ai_max_context_chars" in text, path
+
+
 def test_action_and_workflow_have_ai_status_fallback() -> None:
     for path in ACTION_FILES:
         text = path.read_text(encoding="utf-8")

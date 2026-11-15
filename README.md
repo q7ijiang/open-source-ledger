@@ -163,6 +163,8 @@ Action 的特征：
 - AI 是常驻辅助证据位：每次运行写 `reports/ai_status.json`；`AI_BASE_URL`、
   `AI_MODEL`、`AI_API_KEY` 齐全时自动调用，缺失时降级为 `unavailable` 并继续
   规则审计；`AI_ENABLED=false` 可显式关闭；
+- AI 默认最多分析 6 个模型、超时 180 秒；可通过 `AI_MAX_MODELS`、`AI_TIMEOUT`、
+  `AI_MAX_CONTEXT_CHARS` 调整，避免对所有上游模型串行调用导致超时；
 - AI 可用时 Project 和 Diff 都会带上 `--ai`，报告中出现 C 级 AI 语义段；
 - API Key 仅从 Secrets 读取，不写入审计产物。
 

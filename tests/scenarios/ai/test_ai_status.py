@@ -2,7 +2,61 @@ from __future__ import annotations
 
 import json
 
+from ai_layer.config import AIConfig
+from ai_layer.provider import MockAIProvider
+from ai_layer.service import AIService, has_special_token, is_ai_document
 from ai_layer.status import resolve_ai_status, write_ai_status
+
+
+def test_ai_input_only_includes_license_and_readme_documents() -> None:
+    assert is_ai_document("LICENSE")
+    assert is_ai_document("README.md")
+    assert is_ai_document("docs/USE_POLICY.md")
+    assert not is_ai_document("tokenizer_config.json")
+    assert not is_ai_document("model_index.json")
+    assert not is_ai_document("processor/preprocessor_config.json")
+
+    assert has_special_token("token: <|image_pad|>")
+    assert not has_special_token("Apache License Version 2.0")
+
+
+def test_ai_service_filters_special_token_documents() -> None:
+    provider = MockAIProvider(
+        {
+            "summary": "",
+            "claims": [],
+            "gaps": [{"dimension": "commercial_use", "reason": "证据不足"}],
+        }
+    )
+    service = AIService(
+        AIConfig(
+            enabled=True,
+            base_url="https://example.invalid/v1",
+            model="test-model",
+            api_key="test-key",
+        ),
+        provider=provider,
+    )
+    bundle = {
+        "model_id": "acme/demo",
+        "revision": "master",
+        "facts": {"license": {"value": "apache-2.0"}},
+        "documents": [
+            {"path": "LICENSE", "content": "Apache License Version 2.0"},
+            {
+                "path": "tokenizer_config.json",
+                "content": '{"token": "<|image_pad|>"}',
+            },
+            {"path": "README.md", "content": "license: apache-2.0"},
+        ],
+    }
+
+    service.analyze_model_source(bundle)
+
+    user_prompt = provider.calls[0]["user"]
+    assert "Apache License Version 2.0" in user_prompt
+    assert "tokenizer_config" not in user_prompt
+    assert "<|image_pad|>" not in user_prompt
 
 
 def test_ai_status_ready_when_all_config_present() -> None:
