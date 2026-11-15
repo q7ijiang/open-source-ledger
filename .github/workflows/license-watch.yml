@@ -82,22 +82,11 @@ jobs:
       - name: Check optional credentials
         env:
           MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
-          AI_ENABLED_INPUT: ${{ vars.AI_ENABLED }}
-          AI_BASE_URL_INPUT: ${{ vars.AI_BASE_URL }}
-          AI_MODEL_INPUT: ${{ vars.AI_MODEL }}
         shell: bash
         run: |
           if [ -z "${MODELSCOPE_API_KEY:-}" ]; then
             echo "::warning::未配置 MODELSCOPE_API_KEY，将尝试匿名访问公开模型。"
           fi
-          AI_ENABLED_NORMALIZED="$(printf '%s' "${AI_ENABLED_INPUT:-false}" | tr '[:upper:]' '[:lower:]')"
-          case "$AI_ENABLED_NORMALIZED" in
-            true|1|yes|on)
-              if [ -z "${AI_BASE_URL_INPUT:-}" ] || [ -z "${AI_MODEL_INPUT:-}" ]; then
-                echo "::warning::AI_ENABLED 已开启，但 AI_BASE_URL 或 AI_MODEL 缺失；本次仅运行规则审计。"
-              fi
-              ;;
-          esac
 
       - name: Install Python dependencies
         shell: bash
@@ -119,6 +108,23 @@ jobs:
             echo "LEDGER_ARTIFACTS_DIR=$ARTIFACTS_DIR"
             echo "LEDGER_CACHE_DIR=$CACHE_DIR"
           } >> "$GITHUB_ENV"
+
+      - name: Resolve AI status
+        id: ai-status
+        env:
+          AI_ENABLED: ${{ vars.AI_ENABLED }}
+          AI_BASE_URL: ${{ vars.AI_BASE_URL }}
+          AI_MODEL: ${{ vars.AI_MODEL }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          READY="$(python "${{ runner.temp }}/open-source-ledger-tool/ai_layer/status.py" --output "${LEDGER_REPORTS_DIR}/ai_status.json")"
+          echo "ready=$READY" >> "$GITHUB_OUTPUT"
+          cat "${LEDGER_REPORTS_DIR}/ai_status.json"
+          if [ "$READY" != "true" ]; then
+            echo "::warning::AI 不可用，本次仅运行规则审计；原因见 reports/ai_status.json。"
+          fi
 
       - name: Prepare snapshot cache key
         id: snapshot-key
@@ -158,8 +164,7 @@ jobs:
       - name: Scan project and create t1 BOM
         env:
           MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
-          AI_ENABLED_INPUT: ${{ vars.AI_ENABLED }}
-          AI_MODEL: ${{ vars.AI_MODEL || 'Qwen/Qwen3-4B-Instruct-2507' }}
+          AI_MODEL: ${{ vars.AI_MODEL }}
           AI_BASE_URL: ${{ vars.AI_BASE_URL }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           PYTHONUTF8: '1'
@@ -171,7 +176,6 @@ jobs:
           BOM_PATH="${LEDGER_REPORTS_DIR}/current_bom.json"
           GRAPH_PATH="${LEDGER_ARTIFACTS_DIR}/project/graph.json"
           WATCH_REPORT="${LEDGER_REPORTS_DIR}/watch_report.md"
-          AI_ENABLED_NORMALIZED="$(printf '%s' "${AI_ENABLED_INPUT:-false}" | tr '[:upper:]' '[:lower:]')"
           mkdir -p "${LEDGER_ARTIFACTS_DIR}/project"
 
           PROJECT_PATH="${WATCH_PROJECT_PATH:-}"
@@ -198,13 +202,9 @@ jobs:
             --graph-output "$GRAPH_PATH"
             --max-upstream-nodes 128
           )
-          case "$AI_ENABLED_NORMALIZED" in
-            true|1|yes|on)
-              if [ -n "${AI_BASE_URL:-}" ] && [ -n "${AI_MODEL:-}" ]; then
-                ARGS+=(--ai)
-              fi
-              ;;
-          esac
+          if [ "${{ steps.ai-status.outputs.ready }}" = "true" ]; then
+            ARGS+=(--ai)
+          fi
 
           python "${ARGS[@]}"
 
@@ -269,8 +269,7 @@ jobs:
       - name: Compare previous and latest BOM
         if: steps.previous-snapshot.outputs.found == 'true'
         env:
-          AI_ENABLED_INPUT: ${{ vars.AI_ENABLED }}
-          AI_MODEL: ${{ vars.AI_MODEL || 'Qwen/Qwen3-4B-Instruct-2507' }}
+          AI_MODEL: ${{ vars.AI_MODEL }}
           AI_BASE_URL: ${{ vars.AI_BASE_URL }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           PYTHONUTF8: '1'
@@ -278,7 +277,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AI_ENABLED_NORMALIZED="$(printf '%s' "${AI_ENABLED_INPUT:-false}" | tr '[:upper:]' '[:lower:]')"
           DIFF_ARGS=(
             "${{ runner.temp }}/open-source-ledger-tool/main.py"
             --diff
@@ -286,13 +284,9 @@ jobs:
             --after "${LEDGER_REPORTS_DIR}/current_bom.json"
             --output "${LEDGER_REPORTS_DIR}/diff_report.md"
           )
-          case "$AI_ENABLED_NORMALIZED" in
-            true|1|yes|on)
-              if [ -n "${AI_BASE_URL:-}" ] && [ -n "${AI_MODEL:-}" ]; then
-                DIFF_ARGS+=(--ai)
-              fi
-              ;;
-          esac
+          if [ "${{ steps.ai-status.outputs.ready }}" = "true" ]; then
+            DIFF_ARGS+=(--ai)
+          fi
           python "${DIFF_ARGS[@]}"
           grep -q '^> 对比区间：' "${LEDGER_REPORTS_DIR}/diff_report.md"
 

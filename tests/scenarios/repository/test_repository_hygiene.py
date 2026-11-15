@@ -94,6 +94,14 @@ def test_workflow_requires_explicit_project_path() -> None:
     assert (demo / "config.json").is_file()
 
 
+def test_action_and_workflow_have_ai_status_fallback() -> None:
+    for path in ACTION_FILES:
+        text = path.read_text(encoding="utf-8")
+        assert "ai_layer/status.py" in text, path
+        assert "ai_status.json" in text, path
+        assert "steps.ai-status.outputs.ready" in text, path
+
+
 def test_action_and_workflow_render_html_and_wire_ai_diff() -> None:
     for path in ACTION_FILES:
         text = path.read_text(encoding="utf-8")

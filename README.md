@@ -160,8 +160,10 @@ Action 的特征：
 - 生成 `artifacts/project/lineage.html` 和 `artifacts/diff/diff_lineage.html`，随
   Artifact 一起上传；
 - 完整上传报告、BOM、source bundle、AI JSON、graph、assets 和 edges；
-- AI 只在 `ai_enabled=true` 且地址、模型均配置时启用；启用后 Project 和 Diff
-  都会带上 `--ai`，报告中出现 C 级 AI 语义段；
+- AI 是常驻辅助证据位：每次运行写 `reports/ai_status.json`；`AI_BASE_URL`、
+  `AI_MODEL`、`AI_API_KEY` 齐全时自动调用，缺失时降级为 `unavailable` 并继续
+  规则审计；`AI_ENABLED=false` 可显式关闭；
+- AI 可用时 Project 和 Diff 都会带上 `--ai`，报告中出现 C 级 AI 语义段；
 - API Key 仅从 Secrets 读取，不写入审计产物。
 
 示例配置：
@@ -171,7 +173,6 @@ Action 的特征：
   with:
     project_path: .
     api_key: ${{ secrets.MODELSCOPE_API_KEY }}
-    ai_enabled: 'true'
     ai_base_url: ${{ vars.AI_BASE_URL }}
     ai_model: ${{ vars.AI_MODEL }}
     ai_api_key: ${{ secrets.AI_API_KEY }}
