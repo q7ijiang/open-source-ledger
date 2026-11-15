@@ -40,6 +40,68 @@ DEFAULT_GAP_DIMENSIONS = (
     "commercial_license_request",
 )
 
+GAP_DETAILS = {
+    "commercial_use": {
+        "question": "是否允许商业使用，内部使用与对外商业服务是否有区别，是否需要单独商用授权",
+        "missing": "未找到明确允许或禁止商业使用、区分内部使用/对外服务或要求单独商用授权的条款",
+    },
+    "redistribution": {
+        "question": "是否允许再分发，以及是否需要保留 Notice、署名和修改声明",
+        "missing": "未找到再分发条件、Notice/署名义务或修改声明要求的原文",
+    },
+    "modification": {
+        "question": "是否允许修改和发布衍生作品，以及修改文件是否需要显著变更声明",
+        "missing": "未找到修改许可、衍生作品发布条件或变更声明要求的原文",
+    },
+    "fine_tuned_redistribution": {
+        "question": "微调、量化或衍生版本能否再分发，是否需要单独授权或额外 Notice",
+        "missing": "未找到微调/量化版本再分发、衍生模型发布或额外声明义务的原文",
+    },
+    "training_other_models": {
+        "question": "是否允许用模型或输出训练、微调、改进其他模型，发布时是否需要标注 Built with Qwen / Improved using Qwen",
+        "missing": "未找到训练其他模型、使用输出改进模型或相关展示义务的原文",
+    },
+    "notice": {
+        "question": "再分发或衍生发布时必须保留哪些版权、许可证和归属声明",
+        "missing": "未找到必须保留的版权/许可证声明或 Notice 文本",
+    },
+    "commercial_license_request": {
+        "question": "商业使用是否需要单独申请授权，申请渠道、适用条件和例外是什么",
+        "missing": "未找到单独商用授权的申请方式、适用条件或例外条款",
+    },
+    "patent": {
+        "question": "是否包含专利授权、专利诉讼终止或专利报复条款",
+        "missing": "未找到专利授权范围、终止条件或专利诉讼相关条款",
+    },
+    "liability": {
+        "question": "责任限制、免责声明和担保范围如何约定",
+        "missing": "未找到责任限制、免责声明或担保条款的原文",
+    },
+    "trademark_use": {
+        "question": "是否允许使用模型名称、商标、Logo 或进行来源背书",
+        "missing": "未找到商标、名称、Logo 使用限制或背书声明的原文",
+    },
+}
+_GENERIC_GAP_REASONS = {"", "证据不足", "未找到明确条款", "未找到相关条款"}
+
+
+def _gap_entry(
+    dimension: str,
+    reason: str,
+    document_paths: Iterable[str],
+) -> dict[str, Any]:
+    detail = GAP_DETAILS.get(dimension, {})
+    normalized_reason = _safe_text(reason)
+    missing = detail.get("missing") or normalized_reason or "未找到可引用的条款"
+    return {
+        "dimension": dimension,
+        "dimension_zh": DIMENSION_ZH.get(dimension, dimension),
+        "reason": normalized_reason or "证据不足",
+        "question": detail.get("question", ""),
+        "missing": missing,
+        "searched_sources": sorted(str(path) for path in document_paths if path),
+    }
+
 PROJECT_USE_TYPES = {
     "remote_api": "远程 API 调用",
     "local_inference": "本地推理",
@@ -138,6 +200,7 @@ def _normalize_model_analysis_v1(
     config_public: dict[str, Any],
 ) -> dict[str, Any]:
     documents = _documents(source_bundle)
+    searched_paths = source_bundle.get("ai_document_paths") or list(documents)
     facts = source_bundle.get("facts") if isinstance(source_bundle.get("facts"), dict) else {}
     license_fact = None
     if isinstance(facts.get("license"), dict):
@@ -189,7 +252,7 @@ def _normalize_model_analysis_v1(
         )
         seen_dimensions.add(dimension)
 
-    gaps: list[dict[str, str]] = []
+    gaps: list[dict[str, Any]] = []
     seen_gaps: set[str] = set()
     for source_gaps in (raw.get("gaps", []), rejected):
         if not isinstance(source_gaps, list):
@@ -201,22 +264,12 @@ def _normalize_model_analysis_v1(
             if not dimension or dimension in seen_dimensions or dimension in seen_gaps:
                 continue
             gaps.append(
-                {
-                    "dimension": dimension,
-                    "dimension_zh": DIMENSION_ZH.get(dimension, dimension),
-                    "reason": _safe_text(item.get("reason")) or "证据不足",
-                }
+                _gap_entry(dimension, _safe_text(item.get("reason")), searched_paths)
             )
             seen_gaps.add(dimension)
     for dimension in DEFAULT_GAP_DIMENSIONS:
         if dimension not in seen_dimensions and dimension not in seen_gaps:
-            gaps.append(
-                {
-                    "dimension": dimension,
-                    "dimension_zh": DIMENSION_ZH[dimension],
-                    "reason": "证据不足",
-                }
-            )
+            gaps.append(_gap_entry(dimension, "", searched_paths))
 
     return {
         "schema_version": SCHEMA_VERSION,
@@ -330,6 +383,7 @@ def normalize_model_analysis(
 ) -> dict[str, Any]:
     """归一化多证据条款输出；同一维度允许保留多条逐字依据。"""
     documents = _documents(source_bundle)
+    searched_paths = source_bundle.get("ai_document_paths") or list(documents)
     facts = source_bundle.get("facts") if isinstance(source_bundle.get("facts"), dict) else {}
     license_fact = None
     if isinstance(facts.get("license"), dict):
@@ -424,7 +478,7 @@ def normalize_model_analysis(
         )
 
     seen_dimensions = set(grouped)
-    gaps: list[dict[str, str]] = []
+    gaps: list[dict[str, Any]] = []
     seen_gaps: set[str] = set()
     source_gaps = raw.get("gaps") if isinstance(raw.get("gaps"), list) else []
     for item in [*source_gaps, *rejected]:
@@ -434,22 +488,12 @@ def normalize_model_analysis(
         if not dimension or dimension in seen_dimensions or dimension in seen_gaps:
             continue
         gaps.append(
-            {
-                "dimension": dimension,
-                "dimension_zh": DIMENSION_ZH.get(dimension, dimension),
-                "reason": _safe_text(item.get("reason")) or "证据不足",
-            }
+            _gap_entry(dimension, _safe_text(item.get("reason")), searched_paths)
         )
         seen_gaps.add(dimension)
     for dimension in DEFAULT_GAP_DIMENSIONS:
         if dimension not in seen_dimensions and dimension not in seen_gaps:
-            gaps.append(
-                {
-                    "dimension": dimension,
-                    "dimension_zh": DIMENSION_ZH[dimension],
-                    "reason": "证据不足",
-                }
-            )
+            gaps.append(_gap_entry(dimension, "", searched_paths))
 
     if conflicts:
         status = "conflict" if claims else "no_evidence"

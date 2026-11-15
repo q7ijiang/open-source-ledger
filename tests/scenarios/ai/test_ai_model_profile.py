@@ -39,6 +39,12 @@ def test_model_profile_preserves_exact_quotes_and_confidence() -> None:
         "fine_tuned_redistribution",
         "commercial_license_request",
     }
+    training_gap = next(
+        gap for gap in analysis["gaps"] if gap["dimension"] == "training_other_models"
+    )
+    assert training_gap["question"]
+    assert "训练" in training_gap["missing"]
+    assert training_gap["searched_sources"]
     assert analysis["fact_policy"]["ai_may_change_license"] is False
     assert analysis["fact_policy"]["ai_may_change_decision"] is False
 
@@ -55,6 +61,9 @@ def test_model_profile_rejects_non_exact_quote() -> None:
     assert all(claim["dimension"] != "commercial_use" for claim in analysis["claims"])
     commercial_gap = next(gap for gap in analysis["gaps"] if gap["dimension"] == "commercial_use")
     assert "精确命中" in commercial_gap["reason"]
+    assert commercial_gap["question"]
+    assert commercial_gap["missing"]
+    assert commercial_gap["searched_sources"]
 
 
 def test_missing_ai_endpoint_degrades_without_network_or_exception() -> None:

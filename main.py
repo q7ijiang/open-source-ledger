@@ -496,7 +496,21 @@ def _render_ai_sections(bundle: dict[str, Any] | None) -> list[str]:
         gaps = analysis.get("gaps") or []
         if gaps:
             lines.extend(["", "**未识别维度与证据缺口**", ""])
-            lines.extend(_table(["维度", "原因"], [[g.get("dimension_zh") or g.get("dimension"), g.get("reason")] for g in gaps]))
+            lines.extend(
+                _table(
+                    ["维度", "要确认的问题", "具体缺失", "已检索来源", "校验说明"],
+                    [
+                        [
+                            g.get("dimension_zh") or g.get("dimension"),
+                            g.get("question") or "—",
+                            g.get("missing") or g.get("reason") or "—",
+                            "<br>".join(g.get("searched_sources") or []) or "—",
+                            g.get("reason") or "—",
+                        ]
+                        for g in gaps
+                    ],
+                )
+            )
         lines.append("")
 
     project_context = bundle.get("project_context")

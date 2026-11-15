@@ -138,7 +138,13 @@ class AIService:
                     self.config,
                 )
             )
-            return normalize_model_analysis(raw, source_bundle, self.config.public_dict())
+            analysis_bundle = dict(source_bundle)
+            analysis_bundle["ai_document_paths"] = [
+                str(document.get("path") or "") for document in documents
+            ]
+            return normalize_model_analysis(
+                raw, analysis_bundle, self.config.public_dict()
+            )
         except Exception as exc:  # noqa: BLE001
             return unavailable_analysis(
                 "model_profile",
