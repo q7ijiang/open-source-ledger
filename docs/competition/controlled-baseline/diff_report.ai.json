@@ -1,7 +1,7 @@
 {
   "schema_version": "ai-analysis-bundle/v1",
   "prompt_version": "modelscope-license-audit-v2",
-  "generated_at": "2026-11-15T14:41:56Z",
+  "generated_at": "2026-11-15T15:28:59Z",
   "provider": {
     "provider": "openai-compatible",
     "model": "Qwen/Qwen3.5-27B",
@@ -18,7 +18,7 @@
     "before_profile_count": 6,
     "after_profile_count": 6,
     "simulation": true,
-    "generated_at": "2026-11-15T14:41:56Z",
+    "generated_at": "2026-11-15T15:28:59Z",
     "changes": [
       {
         "model_id": "Qwen/Qwen-Image-2.1",
@@ -92,90 +92,6 @@
         "after_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE",
         "after_quote_sha256": "913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6",
         "after_file_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d"
-      },
-      {
-        "model_id": "Qwen/Qwen-Image-2.1",
-        "dimension": "distribution",
-        "dimension_zh": "distribution",
-        "before_state": "allowed",
-        "before_state_zh": "允许",
-        "after_state": "not_found",
-        "after_state_zh": "未找到明确条款",
-        "change_type": "evidence_removed",
-        "change_type_zh": "证据丢失",
-        "review_priority": "high",
-        "reason": "t1 未再形成可验证的distribution条款证据，需复核是否丢失上下文",
-        "before_quote": "2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.",
-        "after_quote": "",
-        "before_confidence": 0.78,
-        "before_confidence_factors": {
-          "base": 0.48,
-          "license_file": 0.15,
-          "exact_quote": 0.1,
-          "source_sha256": 0.03,
-          "quote_context": 0.02
-        },
-        "before_evidence_level": "C",
-        "before_source_path": "LICENSE",
-        "before_source_url": "https://www.apache.org/licenses/LICENSE-2.0",
-        "before_quote_sha256": "6c74e2b04a4cb1fe69016bda0f6cd96867a9973a82238d93898e9a33d1e89a39",
-        "before_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
-      },
-      {
-        "model_id": "Qwen/Qwen-Image-2.1",
-        "dimension": "modification",
-        "dimension_zh": "修改与衍生",
-        "before_state": "allowed",
-        "before_state_zh": "允许",
-        "after_state": "not_found",
-        "after_state_zh": "未找到明确条款",
-        "change_type": "evidence_removed",
-        "change_type_zh": "证据丢失",
-        "review_priority": "high",
-        "reason": "t1 未再形成可验证的modification条款证据，需复核是否丢失上下文",
-        "before_quote": "4. Redistribution. You may reproduce and distribute copies of the\n      Work or Derivative Works thereof in any medium, with or without\n      modifications, and in Source or Object form, provided that You\n      meet the following conditions:",
-        "after_quote": "",
-        "before_confidence": 0.78,
-        "before_confidence_factors": {
-          "base": 0.48,
-          "license_file": 0.15,
-          "exact_quote": 0.1,
-          "source_sha256": 0.03,
-          "quote_context": 0.02
-        },
-        "before_evidence_level": "C",
-        "before_source_path": "LICENSE",
-        "before_source_url": "https://www.apache.org/licenses/LICENSE-2.0",
-        "before_quote_sha256": "fae682505bd25ee86500f39a84a0ba79d31454c82ad90b3087dcad02ef147212",
-        "before_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
-      },
-      {
-        "model_id": "Qwen/Qwen-Image-2.1",
-        "dimension": "patent_license",
-        "dimension_zh": "patent_license",
-        "before_state": "allowed",
-        "before_state_zh": "允许",
-        "after_state": "not_found",
-        "after_state_zh": "未找到明确条款",
-        "change_type": "evidence_removed",
-        "change_type_zh": "证据丢失",
-        "review_priority": "high",
-        "reason": "t1 未再形成可验证的patent_license条款证据，需复核是否丢失上下文",
-        "before_quote": "3. Grant of Patent License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      (except as stated in this section) patent license to make, have made,\n      use, offer to sell, sell, import, and otherwise transfer the Work,",
-        "after_quote": "",
-        "before_confidence": 0.78,
-        "before_confidence_factors": {
-          "base": 0.48,
-          "license_file": 0.15,
-          "exact_quote": 0.1,
-          "source_sha256": 0.03,
-          "quote_context": 0.02
-        },
-        "before_evidence_level": "C",
-        "before_source_path": "LICENSE",
-        "before_source_url": "https://www.apache.org/licenses/LICENSE-2.0",
-        "before_quote_sha256": "281386b793e105633e89e28aaae4b8d8b11a8f214f5ef96fd8edd42247fad5a9",
-        "before_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
       },
       {
         "model_id": "Qwen/Qwen-Image-2.1",

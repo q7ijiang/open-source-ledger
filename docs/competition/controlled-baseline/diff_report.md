@@ -1,8 +1,8 @@
 # AI 模型血缘风险传播报告
 
-> 生成时间：2026-11-15 22:41
-> 对比区间：2026-11-15 → 2026-11-15
-> 间隔天数：0 天
+> 生成时间：2026-11-15 23:28
+> 对比区间：2026-10-27 → 2026-11-15
+> 间隔天数：19 天
 > 快照：t0 `docs\competition\controlled-baseline\t0_bom.json` → t1 `docs\competition\controlled-baseline\t1_observed_bom.json`
 > 生成工具：开源账本（深度层）· report_enhanced.py（接口约定 v0.3）
 
@@ -90,9 +90,6 @@ unsloth/Qwen-Image-2.1-Turbo-FP8@master —[derived_from / B]→ Qwen/Qwen-Image
 |---|---|---|---|---|---|---|---|
 | Qwen/Qwen-Image-2.1 | 商业使用 | 允许 → 受限 | 条款收紧 | high | 0.8 → 0.86 | 2. Grant of Copyright License. Subject to the terms and conditions of<br>      this License, each Contributor hereby grants to You a perpetual,<br>      worldwide, non-exclusive, no-charge, royalty-free, irrevocable<br>      copyright license to reproduce, prepare Derivative Works of,<br>      publicly display, publicly perform, sublicense, and distribute the<br>      Work and such Derivative Works in Source or Object form. | a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY. |
 | Qwen/Qwen-Image-2.1 | derivative_works | 未找到明确条款 → 有条件允许 | 证据新增 | low | — → 0.74 | — | a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY. |
-| Qwen/Qwen-Image-2.1 | distribution | 允许 → 未找到明确条款 | 证据丢失 | high | 0.78 → — | 2. Grant of Copyright License. Subject to the terms and conditions of<br>      this License, each Contributor hereby grants to You a perpetual,<br>      worldwide, non-exclusive, no-charge, royalty-free, irrevocable<br>      copyright license to reproduce, prepare Derivative Works of,<br>      publicly display, publicly perform, sublicense, and distribute the<br>      Work and such Derivative Works in Source or Object form. | — |
-| Qwen/Qwen-Image-2.1 | 修改与衍生 | 允许 → 未找到明确条款 | 证据丢失 | high | 0.78 → — | 4. Redistribution. You may reproduce and distribute copies of the<br>      Work or Derivative Works thereof in any medium, with or without<br>      modifications, and in Source or Object form, provided that You<br>      meet the following conditions: | — |
-| Qwen/Qwen-Image-2.1 | patent_license | 允许 → 未找到明确条款 | 证据丢失 | high | 0.78 → — | 3. Grant of Patent License. Subject to the terms and conditions of<br>      this License, each Contributor hereby grants to You a perpetual,<br>      worldwide, non-exclusive, no-charge, royalty-free, irrevocable<br>      (except as stated in this section) patent license to make, have made,<br>      use, offer to sell, sell, import, and otherwise transfer the Work, | — |
 | Qwen/Qwen-Image-2.1 | 再分发 | 未找到明确条款 → 有条件允许 | 证据新增 | low | — → 0.66 | — | 3. Redistribution<br>Subject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions: |
 
 > “证据新增/证据丢失”表示 t0/t1 一侧没有形成可验证条款，不等于许可证条款本身收紧或放宽；具体缺口见项目报告。
@@ -103,9 +100,6 @@ unsloth/Qwen-Image-2.1-Turbo-FP8@master —[derived_from / B]→ Qwen/Qwen-Image
 |---|---|---|---|---|
 | Qwen/Qwen-Image-2.1 | 商业使用 | base +0.48 + license_file +0.15 + exact_quote +0.10 + source_sha256 +0.03 + quote_context +0.02 + cross_document_support +0.02 | base +0.48 + exact_quote +0.10 + license_file +0.15 + quote_context +0.02 + restriction_wording +0.08 + source_sha256 +0.03 | 913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6 |
 | Qwen/Qwen-Image-2.1 | derivative_works | — | base +0.48 + exact_quote +0.10 + license_file +0.15 + quote_context +0.02 + restriction_wording +0.08 + source_sha256 +0.03 + uncertain_state -0.12 | 913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6 |
-| Qwen/Qwen-Image-2.1 | distribution | base +0.48 + license_file +0.15 + exact_quote +0.10 + source_sha256 +0.03 + quote_context +0.02 | — | — |
-| Qwen/Qwen-Image-2.1 | 修改与衍生 | base +0.48 + license_file +0.15 + exact_quote +0.10 + source_sha256 +0.03 + quote_context +0.02 | — | — |
-| Qwen/Qwen-Image-2.1 | patent_license | base +0.48 + license_file +0.15 + exact_quote +0.10 + source_sha256 +0.03 + quote_context +0.02 | — | — |
 | Qwen/Qwen-Image-2.1 | 再分发 | — | base +0.48 + exact_quote +0.10 + license_file +0.15 + quote_context +0.02 + source_sha256 +0.03 + uncertain_state -0.12 | 29cc0ff288e05368fafe0ad0ceb0c0042ccca68e82f4f292c805598b5abc7ab5 |
 
 ## 八、证据等级与判定说明

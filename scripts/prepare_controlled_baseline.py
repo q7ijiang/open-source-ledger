@@ -162,6 +162,7 @@ def build_controlled_t0(
     )
 
     metadata = controlled.setdefault("metadata", {})
+    metadata["timestamp"] = historical_bundle.get("retrieved_at") or "2026-10-27T11:09:25Z"
     metadata["controlled_baseline"] = True
     metadata["simulation"] = True
     metadata["not_a_real_license_change"] = True

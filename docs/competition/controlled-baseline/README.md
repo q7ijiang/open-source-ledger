@@ -87,6 +87,21 @@ python scripts/prepare_controlled_baseline.py `
 | `diff_report.md` | 与真实 t1 的 Diff 结果 |
 | `diff_report.ai.json` | AI 语义差异 JSON |
 
+`manifest.json` 中的 SHA256 按 LF 归一化后的字节计算，对应 GitHub checkout 的内容：
+
+```text
+t0_bom.json            ae8749010b8076f2a87d43ea4f4373f6345c2b517b124af2ae864b8b3d775118
+t1_observed_bom.json   b010b7d2cb74878cecfd1e527ff84d82b1b4a4c2eff336d77db157c056d57b09
+diff_report.md         f695de5d5c11199dfddf0b80bd6882a5051e6633a7c11d407bb161609bd22766
+```
+
+t0 的 `metadata.timestamp` 固定为历史证据时间 `2026-10-27T11:09:25Z`，因此 Diff 报告显示：
+
+```text
+对比区间：2026-10-27 → 2026-11-15
+间隔天数：19 天
+```
+
 `diff_report.md` 中：
 
 - 规则层检测到 3 个许可证变更事件、2 张路径证书；

@@ -161,6 +161,7 @@ def test_controlled_baseline_has_real_ai_and_flags() -> None:
     analysis = json.loads(properties["open-source-ledger:ai_analysis_json"])
 
     assert baseline["metadata"]["controlled_baseline"] is True
+    assert baseline["metadata"]["timestamp"].startswith("2026-10-27")
     assert target["licenses"][0]["license"]["id"] == "Apache-2.0"
     assert properties["open-source-ledger:simulation"] == "True"
     assert properties["open-source-ledger:controlled_source"] == "True"
