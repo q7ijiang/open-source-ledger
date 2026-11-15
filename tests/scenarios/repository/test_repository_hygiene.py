@@ -94,6 +94,16 @@ def test_workflow_requires_explicit_project_path() -> None:
     assert (demo / "config.json").is_file()
 
 
+def test_action_and_workflow_render_html_and_wire_ai_diff() -> None:
+    for path in ACTION_FILES:
+        text = path.read_text(encoding="utf-8")
+        assert "render_graph.py" in text, path
+        assert "lineage.html" in text, path
+        assert "render_diff.py" in text, path
+        assert "diff_lineage.html" in text, path
+        assert "DIFF_ARGS+=(--ai)" in text, path
+
+
 def test_controlled_baseline_seed_workflow() -> None:
     workflow = (
         REPO_ROOT / ".github" / "workflows" / "seed-controlled-baseline.yml"

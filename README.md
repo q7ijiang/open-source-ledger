@@ -157,8 +157,11 @@ Action 的特征：
   `LEDGER_PROJECT_PATH`；未配置时明确失败，不会猜测或自扫描仓库根目录；
 - 扫描时显式传入 artifacts、cache、BOM、graph 和 report 路径；
 - 规则判定为 `RISK_CONFIRMED` 时仍阻断流水线；
+- 生成 `artifacts/project/lineage.html` 和 `artifacts/diff/diff_lineage.html`，随
+  Artifact 一起上传；
 - 完整上传报告、BOM、source bundle、AI JSON、graph、assets 和 edges；
-- AI 只在 `ai_enabled=true` 且地址、模型均配置时启用；
+- AI 只在 `ai_enabled=true` 且地址、模型均配置时启用；启用后 Project 和 Diff
+  都会带上 `--ai`，报告中出现 C 级 AI 语义段；
 - API Key 仅从 Secrets 读取，不写入审计产物。
 
 示例配置：
@@ -188,6 +191,10 @@ Action 的特征：
 `controlled_baseline=true`、`simulation=true`。t1 是真实 ModelScope 扫描结果；
 t0 是受控反事实，不是对现实许可证变更的声明。Seed 与 scan 之间不要插入其他
 会保存缓存的成功运行，否则可能恢复较新的真实基线。
+
+如果启用 AI，受控 t0 也必须包含同一 provider / prompt 的真实 AI 画像，否则
+Diff 会把「fixture AI」和「真实 t1 AI」混在一起比较。当前 Qwen 受控 t0 的 AI
+仍是冻结夹具，建议该演示关闭 AI；真实 AI 证据见 `docs/competition/real-ai/`。
 
 ## 离线验收
 

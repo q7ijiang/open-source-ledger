@@ -243,6 +243,16 @@ jobs:
           PY
           cp "${LEDGER_CACHE_DIR}/baseline_metadata.json" "${LEDGER_REPORTS_DIR}/current_baseline_metadata.json"
 
+      - name: Render project lineage HTML
+        shell: bash
+        run: |
+          set -euo pipefail
+          python "${{ runner.temp }}/open-source-ledger-tool/render_graph.py" \
+            --input "${LEDGER_ARTIFACTS_DIR}/project/graph.json" \
+            --output "${LEDGER_ARTIFACTS_DIR}/project/lineage.html" \
+            --report "${LEDGER_REPORTS_DIR}/watch_report.md" \
+            --title "ModelScope Project Lineage"
+
       - name: Create first-run baseline report
         if: steps.previous-snapshot.outputs.found != 'true'
         shell: bash
@@ -259,16 +269,31 @@ jobs:
       - name: Compare previous and latest BOM
         if: steps.previous-snapshot.outputs.found == 'true'
         env:
+          AI_ENABLED_INPUT: ${{ vars.AI_ENABLED }}
+          AI_MODEL: ${{ vars.AI_MODEL || 'Qwen/Qwen3-4B-Instruct-2507' }}
+          AI_BASE_URL: ${{ vars.AI_BASE_URL }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
           PYTHONUTF8: '1'
           PYTHONIOENCODING: utf-8
         shell: bash
         run: |
           set -euo pipefail
-          python "${{ runner.temp }}/open-source-ledger-tool/main.py" \
-            --diff \
-            --before "${LEDGER_REPORTS_DIR}/previous_bom.json" \
-            --after "${LEDGER_REPORTS_DIR}/current_bom.json" \
+          AI_ENABLED_NORMALIZED="$(printf '%s' "${AI_ENABLED_INPUT:-false}" | tr '[:upper:]' '[:lower:]')"
+          DIFF_ARGS=(
+            "${{ runner.temp }}/open-source-ledger-tool/main.py"
+            --diff
+            --before "${LEDGER_REPORTS_DIR}/previous_bom.json"
+            --after "${LEDGER_REPORTS_DIR}/current_bom.json"
             --output "${LEDGER_REPORTS_DIR}/diff_report.md"
+          )
+          case "$AI_ENABLED_NORMALIZED" in
+            true|1|yes|on)
+              if [ -n "${AI_BASE_URL:-}" ] && [ -n "${AI_MODEL:-}" ]; then
+                DIFF_ARGS+=(--ai)
+              fi
+              ;;
+          esac
+          python "${DIFF_ARGS[@]}"
           grep -q '^> 对比区间：' "${LEDGER_REPORTS_DIR}/diff_report.md"
 
       - name: Annotate controlled baseline
@@ -285,6 +310,19 @@ jobs:
             } > "${REPORT}.controlled"
             mv "${REPORT}.controlled" "$REPORT"
           fi
+
+      - name: Render diff HTML
+        if: steps.previous-snapshot.outputs.found == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${LEDGER_ARTIFACTS_DIR}/diff"
+          python "${{ runner.temp }}/open-source-ledger-tool/render_diff.py" \
+            --before "${LEDGER_REPORTS_DIR}/previous_bom.json" \
+            --after "${LEDGER_REPORTS_DIR}/current_bom.json" \
+            --output "${LEDGER_ARTIFACTS_DIR}/diff/diff_lineage.html" \
+            --report "${LEDGER_REPORTS_DIR}/diff_report.md" \
+            --title "ModelScope License Diff"
 
       - name: Detect confirmed license risk
         shell: bash
