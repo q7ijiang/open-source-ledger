@@ -434,20 +434,26 @@ def render_report(events: list, certs: list, bom_t0: str | None, bom_t1: str | N
         L.append("")
         ai_changes = ai_diff.get("changes") or []
         if ai_changes:
-            L.append("| 模型 | 维度 | 语义变化 | 复核优先级 | AI 置信度（t0 → t1） | 旧原文 | 新原文 |")
-            L.append("|---|---|---|---|---|---|---|")
+            L.append("| 模型 | 维度 | 语义变化 | 变化类型 | 复核优先级 | AI 置信度（t0 → t1） | 旧原文 | 新原文 |")
+            L.append("|---|---|---|---|---|---|---|---|")
             for change in ai_changes:
                 L.append(
                     f"| {_md_cell(change.get('model_id'))} |"
                     f" {_md_cell(change.get('dimension_zh') or change.get('dimension'))} |"
                     f" {_md_cell(change.get('before_state_zh') or change.get('before_state'))} →"
                     f" {_md_cell(change.get('after_state_zh') or change.get('after_state'))} |"
+                    f" {_md_cell(change.get('change_type_zh') or change.get('change_type'))} |"
                     f" {_md_cell(change.get('review_priority'))} |"
                     f" {_md_cell(change.get('before_confidence'))} →"
                     f" {_md_cell(change.get('after_confidence'))} |"
                     f" {_md_cell(change.get('before_quote'))} |"
                     f" {_md_cell(change.get('after_quote'))} |"
                 )
+            L.append("")
+            L.append(
+                "> “证据新增/证据丢失”表示 t0/t1 一侧没有形成可验证条款，"
+                "不等于许可证条款本身收紧或放宽；具体缺口见项目报告。"
+            )
             L.append("")
             L.append("### AI 置信度构成")
             L.append("")

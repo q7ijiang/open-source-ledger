@@ -33,6 +33,15 @@ STATE_ZH = {
     "not_found": "未找到明确条款",
 }
 
+CHANGE_TYPE_ZH = {
+    "evidence_added": "证据新增",
+    "evidence_removed": "证据丢失",
+    "tightened": "条款收紧",
+    "loosened": "条款放宽",
+    "state_changed": "状态变化",
+    "evidence_changed": "原文变化",
+}
+
 ALLOWED_STATES = set(STATE_ZH)
 DEFAULT_GAP_DIMENSIONS = (
     "training_other_models",
@@ -722,6 +731,7 @@ def semantic_diff(before: Iterable[dict[str, Any]], after: Iterable[dict[str, An
                             "after_state": after_state,
                             "after_state_zh": STATE_ZH.get(after_state, after_state),
                             "change_type": "evidence_changed",
+                            "change_type_zh": CHANGE_TYPE_ZH["evidence_changed"],
                             "review_priority": "medium",
                             "reason": f"{dimension}状态未变，但原文依据发生变化",
                             "before_quote": before_quote,
@@ -756,6 +766,7 @@ def semantic_diff(before: Iterable[dict[str, Any]], after: Iterable[dict[str, An
                     "after_state": after_state,
                     "after_state_zh": STATE_ZH.get(after_state, after_state),
                     "change_type": change_type,
+                    "change_type_zh": CHANGE_TYPE_ZH.get(change_type, change_type),
                     "review_priority": priority,
                     "reason": reason,
                     "before_quote": before_quote,

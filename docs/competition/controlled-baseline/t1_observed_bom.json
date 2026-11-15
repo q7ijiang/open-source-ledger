@@ -1,0 +1,918 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-15T22:39:21.832231+08:00"
+  },
+  "components": [
+    {
+      "bom-ref": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master",
+      "type": "machine-learning-model",
+      "name": "unsloth/Qwen-Image-2.1-Turbo-FP8",
+      "version": "master",
+      "purl": "pkg:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master",
+      "licenses": [
+        {
+          "license": {
+            "name": "qwen-research"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/unsloth/Qwen-Image-2.1-Turbo-FP8",
+              "source_field": "Data.LicenseName",
+              "retrieved_at": "2026-11-15T14:33:11.123373Z",
+              "status": "ok",
+              "raw_value": "qwen-research"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-unsloth__Qwen-Image-2.1-Turbo-FP8"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_POTENTIAL"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "潜在风险（黄）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/unsloth/Qwen-Image-2.1-Turbo-FP8"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "root"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "complete"
+        },
+        {
+          "name": "open-source-ledger:lineage_complete",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:max_upstream_nodes",
+          "value": "128"
+        },
+        {
+          "name": "open-source-ledger:resolved_upstream_count",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:max_depth_seen",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:unresolved_upstream_models_json",
+          "value": "[]"
+        },
+        {
+          "name": "open-source-ledger:lineage_cycles_json",
+          "value": "[]"
+        },
+        {
+          "name": "open-source-ledger:ai_status",
+          "value": "ok"
+        },
+        {
+          "name": "open-source-ledger:ai_evidence_level",
+          "value": "C"
+        },
+        {
+          "name": "open-source-ledger:ai_analysis_json",
+          "value": "{\"analysis_type\": \"model_profile\", \"claims\": [{\"claim_id\": \"claim-7b21a63bd685\", \"condition\": \"You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us.\", \"conditions\": [{\"quote\": \"You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us.\", \"source_path\": \"LICENSE\", \"text\": \"You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us.\"}], \"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"commercial_use\", \"dimension_zh\": \"商业使用\", \"evidence\": {\"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.\", \"quote_sha256\": \"262f5379e73c050715554b0b44d613aad8c43d2de6d7cdef240d3af6769c854a\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/unsloth/Qwen-Image-2.1-Turbo-FP8/file/view/master/LICENSE\"}, \"evidence_count\": 2, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.\", \"quote_sha256\": \"262f5379e73c050715554b0b44d613aad8c43d2de6d7cdef240d3af6769c854a\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/unsloth/Qwen-Image-2.1-Turbo-FP8/file/view/master/LICENSE\"}, {\"confidence\": 0.78, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com.\", \"quote_sha256\": \"318d39498fee24d084b48899e79483bc6deacb6927676d33d0cb15754bfdc9b7\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/unsloth/Qwen-Image-2.1-Turbo-FP8/file/view/master/LICENSE\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"restricted\", \"state_zh\": \"受限\", \"statement\": \"Commercial use is prohibited without obtaining a separate commercial license.\"}, {\"claim_id\": \"claim-c6ff20923031\", \"condition\": \"You shall not use \\\"Qwen\\\" as the primary name or identifier of any derivative works or products; reasonable descriptive use (e.g., \\\"fine-tuned from Qwen Image\\\") is permitted.\", \"conditions\": [{\"quote\": \"You shall not use \\\"Qwen\\\" as the primary name or identifier of any derivative works or products; reasonable descriptive use (e.g., \\\"fine-tuned from Qwen Image\\\") is permitted.\", \"source_path\": \"LICENSE\", \"text\": \"You shall not use \\\"Qwen\\\" as the primary name or identifier of any derivative works or products; reasonable descriptive use (e.g., \\\"fine-tuned from Qwen Image\\\") is permitted.\"}], \"confidence\": 0.74, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"derivative_works\", \"dimension_zh\": \"derivative_works\", \"evidence\": {\"confidence\": 0.74, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.\", \"quote_sha256\": \"262f5379e73c050715554b0b44d613aad8c43d2de6d7cdef240d3af6769c854a\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/unsloth/Qwen-Image-2.1-Turbo-FP8/file/view/master/LICENSE\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.74, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.\", \"quote_sha256\": \"262f5379e73c050715554b0b44d613aad8c43d2de6d7cdef240d3af6769c854a\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/unsloth/Qwen-Image-2.1-Turbo-FP8/file/view/master/LICENSE\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"conditional\", \"state_zh\": \"有条件允许\", \"statement\": \"Creating derivative works is permitted under the non-commercial grant, but users cannot use \\\"Qwen\\\" as the primary name or identifier of derivative works.\"}, {\"claim_id\": \"claim-35c3cce89bb4\", \"condition\": \"You shall give any other recipients of the Materials or derivative works a copy of this Agreement;\", \"conditions\": [{\"quote\": \"You shall give any other recipients of the Materials or derivative works a copy of this Agreement;\", \"source_path\": \"LICENSE\", \"text\": \"You shall give any other recipients of the Materials or derivative works a copy of this Agreement;\"}, {\"quote\": \"You shall cause any modified files to carry prominent notices stating that you changed the files;\", \"source_path\": \"LICENSE\", \"text\": \"You shall cause any modified files to carry prominent notices stating that you changed the files;\"}, {\"quote\": \"You shall retain in all copies of the Materials that you distribute the following attribution notices within a \\\"Notice\\\" text file distributed as a part of such copies: \\\"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\\\"; and\", \"source_path\": \"LICENSE\", \"text\": \"You shall retain in all copies of the Materials that you distribute the following attribution notices within a \\\"Notice\\\" text file distributed as a part of such copies: \\\"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\\\"; and\"}], \"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"redistribution\", \"dimension_zh\": \"再分发\", \"evidence\": {\"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"Subject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:\", \"quote_sha256\": \"392e11e45e37ac421840f4c69e2bc023e0f0540dc909a603948e9552620a6558\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/unsloth/Qwen-Image-2.1-Turbo-FP8/file/view/master/LICENSE\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"Subject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:\", \"quote_sha256\": \"392e11e45e37ac421840f4c69e2bc023e0f0540dc909a603948e9552620a6558\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/unsloth/Qwen-Image-2.1-Turbo-FP8/file/view/master/LICENSE\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"conditional\", \"state_zh\": \"有条件允许\", \"statement\": \"Redistribution is allowed subject to meeting specific conditions including providing a copy of the Agreement, carrying notices on modified files, and retaining attribution notices.\"}, {\"claim_id\": \"claim-8ec91b203602\", \"condition\": \"If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.\", \"conditions\": [{\"quote\": \"If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.\", \"source_path\": \"LICENSE\", \"text\": \"If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.\"}], \"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"training_other_models\", \"dimension_zh\": \"训练其他模型\", \"evidence\": {\"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.\", \"quote_sha256\": \"d361719952c3382edbf4486a478f93935091e8d5554eef068ca868936c623cfc\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/unsloth/Qwen-Image-2.1-Turbo-FP8/file/view/master/LICENSE\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"If you use the Materials or any outputs or results therefrom to create, train, fine-tune, or improve an AI model that is distributed or made available, you shall prominently display “Built with Qwen” or “Improved using Qwen” in the related product documentation.\", \"quote_sha256\": \"d361719952c3382edbf4486a478f93935091e8d5554eef068ca868936c623cfc\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/unsloth/Qwen-Image-2.1-Turbo-FP8/file/view/master/LICENSE\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"conditional\", \"state_zh\": \"有条件允许\", \"statement\": \"Using the Materials to create, train, fine-tune, or improve an AI model that is distributed or made available requires prominently displaying attribution.\"}], \"conflicts\": [], \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"gaps\": [{\"dimension\": \"fine_tuned_redistribution\", \"dimension_zh\": \"微调版本再分发\", \"missing\": \"未找到微调/量化版本再分发、衍生模型发布或额外声明义务的原文\", \"question\": \"微调、量化或衍生版本能否再分发，是否需要单独授权或额外 Notice\", \"reason\": \"证据不足\", \"searched_sources\": [\"LICENSE\", \"README.md\"]}, {\"dimension\": \"commercial_license_request\", \"dimension_zh\": \"商用授权申请方式\", \"missing\": \"未找到单独商用授权的申请方式、适用条件或例外条款\", \"question\": \"商业使用是否需要单独申请授权，申请渠道、适用条件和例外是什么\", \"reason\": \"证据不足\", \"searched_sources\": [\"LICENSE\", \"README.md\"]}], \"generated_at\": \"2026-11-15T14:35:09Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"schema_version\": \"ai-analysis/v2\", \"simulation\": false, \"simulation_note\": \"\", \"status\": \"ok\", \"subject\": {\"fact_source\": \"ModelScope\", \"license_fact\": \"qwen-research\", \"model_id\": \"unsloth/Qwen-Image-2.1-Turbo-FP8\", \"revision\": \"master\", \"source_bundle_sha256\": \"5c7bc8c5e0a5382b1e17a255e494217182a48e4ab93b637cfc7f3b2db0ee3afa\"}, \"summary\": \"The model is licensed under the Qwen RESEARCH LICENSE AGREEMENT, which restricts use to non-commercial purposes only. Commercial use requires a separate license. Redistribution and derivative works are permitted under specific conditions, including attribution and notice requirements. Training other models using the Materials requires prominent display of 'Built with Qwen' or 'Improved using Qwen'.\"}"
+        },
+        {
+          "name": "open-source-ledger:ai_project_context_json",
+          "value": "{\"analysis_type\": \"project_context\", \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"generated_at\": \"2026-11-15T14:39:21Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"rejected\": [], \"schema_version\": \"ai-analysis/v2\", \"status\": \"ok\", \"subject\": {\"model_count\": 0, \"project_path\": \"example\\\\qwen_image_controlled_project\"}, \"uses\": [{\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc\", \"quote\": \"# The production service loads the FP8 model locally.\\n    return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)\\n\\n\\ndef load_document_model():\\n    from transformers import AutoModelForVision2Seq\\n\\n    return AutoModelForVision2Seq.from_pretrained(DOCUMENT_MODEL_ID)\", \"quote_sha256\": \"1ea6fdc943abc2249543d04d140afa971c3f95373ea246c975a3454e79d5d574\", \"source_path\": \"app.py\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The application loads image generation and document understanding models locally using from_pretrained methods.\", \"use_type\": \"local_inference\", \"use_type_zh\": \"本地推理\"}, {\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"16ddc849a7fa245732cd8f50a2227a1b8fb4a7f1ebf77507a5cb374f3a641873\", \"quote\": \"这是“开源账本”的半决赛受控演示项目，不是生产仓库，也不是真实用户项目。\", \"quote_sha256\": \"67da5b66ca0f749585b72572d9e5d0a75212cd051b0c8aed6a39bb6e2868aea5\", \"source_path\": \"README.md\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The project documentation states it is a controlled demonstration for license audit simulation, not a production repository.\", \"use_type\": \"evaluation_only\", \"use_type_zh\": \"仅评测\"}]}"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master",
+            "purl": "pkg:modelscope/Qwen/Qwen-Image-2.1-Turbo@master",
+            "evidence_level": "A",
+            "source_field": "Data.BaseModel"
+          },
+          {
+            "ref": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+            "purl": "pkg:modelscope/Qwen/Qwen-Image-2.1@master",
+            "evidence_level": "B",
+            "source_field": "lineage.ParentsModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen-Image-2.1-Turbo",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen-Image-2.1-Turbo@master",
+      "licenses": [
+        {
+          "license": {
+            "name": "qwen-research"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1-Turbo",
+              "source_field": "Data.LicenseName",
+              "retrieved_at": "2026-11-15T14:33:11.967344Z",
+              "status": "ok",
+              "raw_value": "qwen-research"
+            },
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "Data.BaseModel",
+              "retrieved_at": "2026-11-15T14:33:13.111689Z",
+              "status": "ok",
+              "raw_value": "Qwen/Qwen-Image-2.1-Turbo"
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-11-15T14:33:13.111689Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 0,
+                "LineAgeType": "Finetuned",
+                "LineAgeTypeCh": "微调",
+                "Name": "Qwen/Qwen-Image-2.1-Turbo"
+              }
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-unsloth__Qwen-Image-2.1-Turbo-FP8"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_POTENTIAL"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "潜在风险（黄）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1-Turbo"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "upstream"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "1"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "resolved"
+        },
+        {
+          "name": "open-source-ledger:ai_status",
+          "value": "partial"
+        },
+        {
+          "name": "open-source-ledger:ai_evidence_level",
+          "value": "C"
+        },
+        {
+          "name": "open-source-ledger:ai_analysis_json",
+          "value": "{\"analysis_type\": \"model_profile\", \"claims\": [{\"claim_id\": \"claim-7fbfa1849e11\", \"condition\": \"You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us.\", \"conditions\": [{\"quote\": \"b. You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us. If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com.\", \"source_path\": \"LICENSE\", \"text\": \"You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us.\"}], \"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"commercial_use\", \"dimension_zh\": \"商业使用\", \"evidence\": {\"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.\", \"quote_sha256\": \"913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1-Turbo/file/view/master/LICENSE\"}, \"evidence_count\": 2, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.\", \"quote_sha256\": \"913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1-Turbo/file/view/master/LICENSE\"}, {\"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"i. \\\"Non-Commercial\\\" shall mean for research or evaluation purposes only.\", \"quote_sha256\": \"f54ad805bb3287eeb3a63561f6048ed0a9f88dfd9b4b7893b59517715af2d6ab\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1-Turbo/file/view/master/LICENSE\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"restricted\", \"state_zh\": \"受限\", \"statement\": \"Commercial use is prohibited without obtaining a separate commercial license.\"}, {\"claim_id\": \"claim-0ae3f34b665f\", \"condition\": \"You shall not use \\\"Qwen\\\" as the primary name or identifier of any derivative works or products; reasonable descriptive use (e.g., \\\"fine-tuned from Qwen Image\\\") is permitted.\", \"conditions\": [{\"quote\": \"c. You shall not use \\\"Qwen\\\" as the primary name or identifier of any derivative works or products; reasonable descriptive use (e.g., \\\"fine-tuned from Qwen Image\\\") is permitted.\", \"source_path\": \"LICENSE\", \"text\": \"You shall not use \\\"Qwen\\\" as the primary name or identifier of any derivative works or products; reasonable descriptive use (e.g., \\\"fine-tuned from Qwen Image\\\") is permitted.\"}], \"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"derivative_works\", \"dimension_zh\": \"derivative_works\", \"evidence\": {\"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"5. Intellectual Property\\n    a. We retain ownership of all intellectual property rights in and to the Materials and derivatives made by or for us. Conditioned upon compliance with the terms and conditions of this Agreement, with respect to any derivative works and modifications of the Materials that are made by you, you are and will be the owner of such derivative works and modifications.\", \"quote_sha256\": \"3c4551c2940a4aab10a8345080fa88b6033d017383d9fbaf647c12f7714c620c\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1-Turbo/file/view/master/LICENSE\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"5. Intellectual Property\\n    a. We retain ownership of all intellectual property rights in and to the Materials and derivatives made by or for us. Conditioned upon compliance with the terms and conditions of this Agreement, with respect to any derivative works and modifications of the Materials that are made by you, you are and will be the owner of such derivative works and modifications.\", \"quote_sha256\": \"3c4551c2940a4aab10a8345080fa88b6033d017383d9fbaf647c12f7714c620c\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1-Turbo/file/view/master/LICENSE\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"conditional\", \"state_zh\": \"有条件允许\", \"statement\": \"Creating derivative works is permitted under the non-commercial grant, but ownership remains with the user conditioned upon compliance, and trademark restrictions apply.\"}, {\"claim_id\": \"claim-6e26156f834f\", \"condition\": \"You shall give any other recipients of the Materials or derivative works a copy of this Agreement;\", \"conditions\": [{\"quote\": \"a. You shall give any other recipients of the Materials or derivative works a copy of this Agreement;\", \"source_path\": \"LICENSE\", \"text\": \"You shall give any other recipients of the Materials or derivative works a copy of this Agreement;\"}, {\"quote\": \"b. You shall cause any modified files to carry prominent notices stating that you changed the files;\", \"source_path\": \"LICENSE\", \"text\": \"You shall cause any modified files to carry prominent notices stating that you changed the files;\"}, {\"quote\": \"c. You shall retain in all copies of the Materials that you distribute the following attribution notices within a \\\"Notice\\\" text file distributed as a part of such copies: \\\"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\\\"; and\", \"source_path\": \"LICENSE\", \"text\": \"You shall retain in all copies of the Materials that you distribute the following attribution notices within a \\\"Notice\\\" text file distributed as a part of such copies: \\\"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\\\";\"}], \"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"redistribution\", \"dimension_zh\": \"再分发\", \"evidence\": {\"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"3. Redistribution\\nSubject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:\", \"quote_sha256\": \"29cc0ff288e05368fafe0ad0ceb0c0042ccca68e82f4f292c805598b5abc7ab5\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1-Turbo/file/view/master/LICENSE\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"3. Redistribution\\nSubject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:\", \"quote_sha256\": \"29cc0ff288e05368fafe0ad0ceb0c0042ccca68e82f4f292c805598b5abc7ab5\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1-Turbo/file/view/master/LICENSE\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"conditional\", \"state_zh\": \"有条件允许\", \"statement\": \"Redistribution is allowed subject to meeting specific conditions including providing a copy of the Agreement, carrying notices on modified files, and retaining attribution notices.\"}], \"conflicts\": [], \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"gaps\": [{\"dimension\": \"training_other_models\", \"dimension_zh\": \"训练其他模型\", \"missing\": \"未找到训练其他模型、使用输出改进模型或相关展示义务的原文\", \"question\": \"是否允许用模型或输出训练、微调、改进其他模型，发布时是否需要标注 Built with Qwen / Improved using Qwen\", \"reason\": \"引文未在指定原文中精确命中\", \"searched_sources\": [\"LICENSE\", \"README.md\"]}, {\"dimension\": \"fine_tuned_redistribution\", \"dimension_zh\": \"微调版本再分发\", \"missing\": \"未找到微调/量化版本再分发、衍生模型发布或额外声明义务的原文\", \"question\": \"微调、量化或衍生版本能否再分发，是否需要单独授权或额外 Notice\", \"reason\": \"证据不足\", \"searched_sources\": [\"LICENSE\", \"README.md\"]}, {\"dimension\": \"commercial_license_request\", \"dimension_zh\": \"商用授权申请方式\", \"missing\": \"未找到单独商用授权的申请方式、适用条件或例外条款\", \"question\": \"商业使用是否需要单独申请授权，申请渠道、适用条件和例外是什么\", \"reason\": \"证据不足\", \"searched_sources\": [\"LICENSE\", \"README.md\"]}], \"generated_at\": \"2026-11-15T14:36:51Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"schema_version\": \"ai-analysis/v2\", \"simulation\": false, \"simulation_note\": \"\", \"status\": \"partial\", \"subject\": {\"fact_source\": \"ModelScope\", \"license_fact\": \"qwen-research\", \"model_id\": \"Qwen/Qwen-Image-2.1-Turbo\", \"revision\": \"master\", \"source_bundle_sha256\": \"9e0774e87ec4f0d97d5297c5115218cf6c18beb1ce5d109d02244afc8639a754\"}, \"summary\": \"The model Qwen/Qwen-Image-2.1-Turbo is licensed under the Qwen RESEARCH LICENSE AGREEMENT, which restricts use to non-commercial purposes only (research or evaluation). Commercial use requires a separate license. Redistribution and derivative works are permitted under specific conditions including attribution and notice requirements. Training other models using the Materials requires prominent display of 'Built with Qwen' or 'Improved using Qwen'.\"}"
+        },
+        {
+          "name": "open-source-ledger:ai_project_context_json",
+          "value": "{\"analysis_type\": \"project_context\", \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"generated_at\": \"2026-11-15T14:39:21Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"rejected\": [], \"schema_version\": \"ai-analysis/v2\", \"status\": \"ok\", \"subject\": {\"model_count\": 0, \"project_path\": \"example\\\\qwen_image_controlled_project\"}, \"uses\": [{\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc\", \"quote\": \"# The production service loads the FP8 model locally.\\n    return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)\\n\\n\\ndef load_document_model():\\n    from transformers import AutoModelForVision2Seq\\n\\n    return AutoModelForVision2Seq.from_pretrained(DOCUMENT_MODEL_ID)\", \"quote_sha256\": \"1ea6fdc943abc2249543d04d140afa971c3f95373ea246c975a3454e79d5d574\", \"source_path\": \"app.py\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The application loads image generation and document understanding models locally using from_pretrained methods.\", \"use_type\": \"local_inference\", \"use_type_zh\": \"本地推理\"}, {\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"16ddc849a7fa245732cd8f50a2227a1b8fb4a7f1ebf77507a5cb374f3a641873\", \"quote\": \"这是“开源账本”的半决赛受控演示项目，不是生产仓库，也不是真实用户项目。\", \"quote_sha256\": \"67da5b66ca0f749585b72572d9e5d0a75212cd051b0c8aed6a39bb6e2868aea5\", \"source_path\": \"README.md\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The project documentation states it is a controlled demonstration for license audit simulation, not a production repository.\", \"use_type\": \"evaluation_only\", \"use_type_zh\": \"仅评测\"}]}"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+            "purl": "pkg:modelscope/Qwen/Qwen-Image-2.1@master",
+            "evidence_level": "A",
+            "source_field": "Data.BaseModel"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen-Image-2.1",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen-Image-2.1@master",
+      "licenses": [
+        {
+          "license": {
+            "name": "qwen-research"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1",
+              "source_field": "Data.LicenseName",
+              "retrieved_at": "2026-11-15T14:33:12.750636Z",
+              "status": "ok",
+              "raw_value": "qwen-research"
+            },
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "Data.BaseModel",
+              "retrieved_at": "2026-11-15T14:33:13.111689Z",
+              "status": "ok",
+              "raw_value": "Qwen/Qwen-Image-2.1"
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-11-15T14:33:13.111689Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 0,
+                "LineAgeType": "Base Model",
+                "LineAgeTypeCh": "基模型",
+                "Name": "Qwen/Qwen-Image-2.1"
+              }
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-11-15T14:33:13.111689Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 1,
+                "LineAgeType": "Base Model",
+                "LineAgeTypeCh": "基模型",
+                "Name": "Qwen/Qwen-Image-2.1"
+              }
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-unsloth__Qwen-Image-2.1-Turbo-FP8"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "RISK_POTENTIAL"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "潜在风险（黄）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen-Image-2.1"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "upstream"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "resolved"
+        },
+        {
+          "name": "open-source-ledger:ai_status",
+          "value": "partial"
+        },
+        {
+          "name": "open-source-ledger:ai_evidence_level",
+          "value": "C"
+        },
+        {
+          "name": "open-source-ledger:ai_analysis_json",
+          "value": "{\"analysis_type\": \"model_profile\", \"claims\": [{\"claim_id\": \"claim-7fbfa1849e11\", \"condition\": \"You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us.\", \"conditions\": [{\"quote\": \"b. You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us. If you wish to use the Materials commercially, you shall request a license from us at model-business@notice.qwencloud.com.\", \"source_path\": \"LICENSE\", \"text\": \"You shall not use the Materials for any commercial purpose without obtaining a separate commercial license from us.\"}], \"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"commercial_use\", \"dimension_zh\": \"商业使用\", \"evidence\": {\"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.\", \"quote_sha256\": \"913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE\"}, \"evidence_count\": 2, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.\", \"quote_sha256\": \"913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE\"}, {\"confidence\": 0.86, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"i. \\\"Non-Commercial\\\" shall mean for research or evaluation purposes only.\", \"quote_sha256\": \"f54ad805bb3287eeb3a63561f6048ed0a9f88dfd9b4b7893b59517715af2d6ab\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"restricted\", \"state_zh\": \"受限\", \"statement\": \"Commercial use is prohibited without obtaining a separate commercial license.\"}, {\"claim_id\": \"claim-d677f1d1b6d2\", \"condition\": \"You shall not use \\\"Qwen\\\" as the primary name or identifier of any derivative works or products; reasonable descriptive use (e.g., \\\"fine-tuned from Qwen Image\\\") is permitted.\", \"conditions\": [{\"quote\": \"c. You shall not use \\\"Qwen\\\" as the primary name or identifier of any derivative works or products; reasonable descriptive use (e.g., \\\"fine-tuned from Qwen Image\\\") is permitted.\", \"source_path\": \"LICENSE\", \"text\": \"You shall not use \\\"Qwen\\\" as the primary name or identifier of any derivative works or products; reasonable descriptive use (e.g., \\\"fine-tuned from Qwen Image\\\") is permitted.\"}], \"confidence\": 0.74, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"derivative_works\", \"dimension_zh\": \"derivative_works\", \"evidence\": {\"confidence\": 0.74, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.\", \"quote_sha256\": \"913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.74, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"restriction_wording\": 0.08, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"a. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under our intellectual property or other rights owned by us embodied in the Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Materials FOR NON-COMMERCIAL PURPOSES ONLY.\", \"quote_sha256\": \"913180202374ef31b67fe7db7520b81dbce6d066a652e4bb21dec11f0e24d7a6\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"conditional\", \"state_zh\": \"有条件允许\", \"statement\": \"Creating derivative works is allowed but subject to restrictions on naming and trademark usage.\"}, {\"claim_id\": \"claim-6e26156f834f\", \"condition\": \"You shall give any other recipients of the Materials or derivative works a copy of this Agreement;\", \"conditions\": [{\"quote\": \"a. You shall give any other recipients of the Materials or derivative works a copy of this Agreement;\", \"source_path\": \"LICENSE\", \"text\": \"You shall give any other recipients of the Materials or derivative works a copy of this Agreement;\"}, {\"quote\": \"b. You shall cause any modified files to carry prominent notices stating that you changed the files;\", \"source_path\": \"LICENSE\", \"text\": \"You shall cause any modified files to carry prominent notices stating that you changed the files;\"}, {\"quote\": \"c. You shall retain in all copies of the Materials that you distribute the following attribution notices within a \\\"Notice\\\" text file distributed as a part of such copies: \\\"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\\\"; and\", \"source_path\": \"LICENSE\", \"text\": \"You shall retain in all copies of the Materials that you distribute the following attribution notices within a \\\"Notice\\\" text file distributed as a part of such copies: \\\"Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) 2026 Hangzhou Tongyi Laboratory Technology Co., Ltd. All Rights Reserved.\\\"; and\"}], \"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"redistribution\", \"dimension_zh\": \"再分发\", \"evidence\": {\"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"3. Redistribution\\nSubject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:\", \"quote_sha256\": \"29cc0ff288e05368fafe0ad0ceb0c0042ccca68e82f4f292c805598b5abc7ab5\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.66, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"license_file\": 0.15, \"quote_context\": 0.02, \"source_sha256\": 0.03, \"uncertain_state\": -0.12}, \"file_sha256\": \"8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d\", \"quote\": \"3. Redistribution\\nSubject to Section 2 (Grant of Rights), you may distribute copies or make the Materials, or derivative works thereof, available as part of a product or service that contains any of them, with or without modifications, and in Source or Object form, provided that you meet the following conditions:\", \"quote_sha256\": \"29cc0ff288e05368fafe0ad0ceb0c0042ccca68e82f4f292c805598b5abc7ab5\", \"source_path\": \"LICENSE\", \"source_url\": \"https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/master/LICENSE\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"conditional\", \"state_zh\": \"有条件允许\", \"statement\": \"Redistribution is allowed subject to meeting specific conditions including providing a copy of the Agreement, carrying prominent notices for modified files, and retaining attribution notices.\"}], \"conflicts\": [], \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"gaps\": [{\"dimension\": \"training_other_models\", \"dimension_zh\": \"训练其他模型\", \"missing\": \"未找到训练其他模型、使用输出改进模型或相关展示义务的原文\", \"question\": \"是否允许用模型或输出训练、微调、改进其他模型，发布时是否需要标注 Built with Qwen / Improved using Qwen\", \"reason\": \"引文未在指定原文中精确命中\", \"searched_sources\": [\"LICENSE\", \"README.md\"]}, {\"dimension\": \"fine_tuned_redistribution\", \"dimension_zh\": \"微调版本再分发\", \"missing\": \"未找到微调/量化版本再分发、衍生模型发布或额外声明义务的原文\", \"question\": \"微调、量化或衍生版本能否再分发，是否需要单独授权或额外 Notice\", \"reason\": \"证据不足\", \"searched_sources\": [\"LICENSE\", \"README.md\"]}, {\"dimension\": \"commercial_license_request\", \"dimension_zh\": \"商用授权申请方式\", \"missing\": \"未找到单独商用授权的申请方式、适用条件或例外条款\", \"question\": \"商业使用是否需要单独申请授权，申请渠道、适用条件和例外是什么\", \"reason\": \"证据不足\", \"searched_sources\": [\"LICENSE\", \"README.md\"]}], \"generated_at\": \"2026-11-15T14:38:37Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"schema_version\": \"ai-analysis/v2\", \"simulation\": false, \"simulation_note\": \"\", \"status\": \"partial\", \"subject\": {\"fact_source\": \"ModelScope\", \"license_fact\": \"qwen-research\", \"model_id\": \"Qwen/Qwen-Image-2.1\", \"revision\": \"master\", \"source_bundle_sha256\": \"caac090667a0e1211a8abc635132ae6f7841fbb85181e744bce5f7c1d77ee8cd\"}, \"summary\": \"The model Qwen/Qwen-Image-2.1 is licensed under the Qwen RESEARCH LICENSE AGREEMENT, which restricts use to non-commercial purposes only (research or evaluation). Commercial use requires a separate license. Redistribution and derivative works are allowed under specific conditions including attribution and notice requirements. Training other models using the Materials requires displaying 'Built with Qwen' or 'Improved using Qwen'.\"}"
+        },
+        {
+          "name": "open-source-ledger:ai_project_context_json",
+          "value": "{\"analysis_type\": \"project_context\", \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"generated_at\": \"2026-11-15T14:39:21Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"rejected\": [], \"schema_version\": \"ai-analysis/v2\", \"status\": \"ok\", \"subject\": {\"model_count\": 0, \"project_path\": \"example\\\\qwen_image_controlled_project\"}, \"uses\": [{\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc\", \"quote\": \"# The production service loads the FP8 model locally.\\n    return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)\\n\\n\\ndef load_document_model():\\n    from transformers import AutoModelForVision2Seq\\n\\n    return AutoModelForVision2Seq.from_pretrained(DOCUMENT_MODEL_ID)\", \"quote_sha256\": \"1ea6fdc943abc2249543d04d140afa971c3f95373ea246c975a3454e79d5d574\", \"source_path\": \"app.py\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The application loads image generation and document understanding models locally using from_pretrained methods.\", \"use_type\": \"local_inference\", \"use_type_zh\": \"本地推理\"}, {\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"16ddc849a7fa245732cd8f50a2227a1b8fb4a7f1ebf77507a5cb374f3a641873\", \"quote\": \"这是“开源账本”的半决赛受控演示项目，不是生产仓库，也不是真实用户项目。\", \"quote_sha256\": \"67da5b66ca0f749585b72572d9e5d0a75212cd051b0c8aed6a39bb6e2868aea5\", \"source_path\": \"README.md\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The project documentation states it is a controlled demonstration for license audit simulation, not a production repository.\", \"use_type\": \"evaluation_only\", \"use_type_zh\": \"仅评测\"}]}"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+      "type": "machine-learning-model",
+      "name": "OpenGVLab/InternVL3-8B-Instruct",
+      "version": "master",
+      "purl": "pkg:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Instruct",
+              "source_field": "Data.License",
+              "retrieved_at": "2026-11-15T14:33:13.609930Z",
+              "status": "ok",
+              "raw_value": "apache-2.0"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "SAFE"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "安全（绿）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "root"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "0"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "complete"
+        },
+        {
+          "name": "open-source-ledger:lineage_complete",
+          "value": "True"
+        },
+        {
+          "name": "open-source-ledger:max_upstream_nodes",
+          "value": "128"
+        },
+        {
+          "name": "open-source-ledger:resolved_upstream_count",
+          "value": "4"
+        },
+        {
+          "name": "open-source-ledger:max_depth_seen",
+          "value": "3"
+        },
+        {
+          "name": "open-source-ledger:unresolved_upstream_models_json",
+          "value": "[]"
+        },
+        {
+          "name": "open-source-ledger:lineage_cycles_json",
+          "value": "[]"
+        },
+        {
+          "name": "open-source-ledger:ai_status",
+          "value": "ok"
+        },
+        {
+          "name": "open-source-ledger:ai_evidence_level",
+          "value": "C"
+        },
+        {
+          "name": "open-source-ledger:ai_analysis_json",
+          "value": "{\"analysis_type\": \"model_profile\", \"claims\": [{\"claim_id\": \"claim-8b00256487e8\", \"condition\": \"\", \"conditions\": [], \"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"commercial_use\", \"dimension_zh\": \"商业使用\", \"evidence\": {\"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"ed8289f9005b0a7026b0c2c2491fd48856e2f1670ceda63f2c316ba98eb838b8\", \"quote\": \"license: apache-2.0\", \"quote_sha256\": \"f3cae36c4cdc3eb2e8a8d88ad4f1462364f750a68b490ba70821491d55f8de9e\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/OpenGVLab/InternVL3-8B-Instruct/file/view/master/README.md\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"ed8289f9005b0a7026b0c2c2491fd48856e2f1670ceda63f2c316ba98eb838b8\", \"quote\": \"license: apache-2.0\", \"quote_sha256\": \"f3cae36c4cdc3eb2e8a8d88ad4f1462364f750a68b490ba70821491d55f8de9e\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/OpenGVLab/InternVL3-8B-Instruct/file/view/master/README.md\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"allowed\", \"state_zh\": \"允许\", \"statement\": \"Commercial use is permitted based on the declared Apache-2.0 license identifier.\"}], \"conflicts\": [], \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"gaps\": [{\"dimension\": \"training_other_models\", \"dimension_zh\": \"训练其他模型\", \"missing\": \"未找到训练其他模型、使用输出改进模型或相关展示义务的原文\", \"question\": \"是否允许用模型或输出训练、微调、改进其他模型，发布时是否需要标注 Built with Qwen / Improved using Qwen\", \"reason\": \"Evidence insufficient: The provided document only specifies the license name ('apache-2.0') without explicit text clauses regarding training other models.\", \"searched_sources\": [\"README.md\"]}, {\"dimension\": \"attribution_requirements\", \"dimension_zh\": \"attribution_requirements\", \"missing\": \"Evidence insufficient: The provided document does not contain the full license text specifying attribution requirements, only the license identifier.\", \"question\": \"\", \"reason\": \"Evidence insufficient: The provided document does not contain the full license text specifying attribution requirements, only the license identifier.\", \"searched_sources\": [\"README.md\"]}, {\"dimension\": \"fine_tuned_redistribution\", \"dimension_zh\": \"微调版本再分发\", \"missing\": \"未找到微调/量化版本再分发、衍生模型发布或额外声明义务的原文\", \"question\": \"微调、量化或衍生版本能否再分发，是否需要单独授权或额外 Notice\", \"reason\": \"证据不足\", \"searched_sources\": [\"README.md\"]}, {\"dimension\": \"commercial_license_request\", \"dimension_zh\": \"商用授权申请方式\", \"missing\": \"未找到单独商用授权的申请方式、适用条件或例外条款\", \"question\": \"商业使用是否需要单独申请授权，申请渠道、适用条件和例外是什么\", \"reason\": \"证据不足\", \"searched_sources\": [\"README.md\"]}], \"generated_at\": \"2026-11-15T14:34:27Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"schema_version\": \"ai-analysis/v2\", \"simulation\": false, \"simulation_note\": \"\", \"status\": \"ok\", \"subject\": {\"fact_source\": \"ModelScope\", \"license_fact\": \"apache-2.0\", \"model_id\": \"OpenGVLab/InternVL3-8B-Instruct\", \"revision\": \"master\", \"source_bundle_sha256\": \"1b498d487cb9dd836fb886d3321d4b45264e622f97605799ea3fa55d6d187e63\"}, \"summary\": \"The README.md frontmatter explicitly declares the license as 'apache-2.0'. However, it also contains a conflicting field 'license_name: qwen' and links to a Qwen license file. No separate LICENSE file content is provided in the documents.\"}"
+        },
+        {
+          "name": "open-source-ledger:ai_project_context_json",
+          "value": "{\"analysis_type\": \"project_context\", \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"generated_at\": \"2026-11-15T14:39:21Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"rejected\": [], \"schema_version\": \"ai-analysis/v2\", \"status\": \"ok\", \"subject\": {\"model_count\": 0, \"project_path\": \"example\\\\qwen_image_controlled_project\"}, \"uses\": [{\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc\", \"quote\": \"# The production service loads the FP8 model locally.\\n    return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)\\n\\n\\ndef load_document_model():\\n    from transformers import AutoModelForVision2Seq\\n\\n    return AutoModelForVision2Seq.from_pretrained(DOCUMENT_MODEL_ID)\", \"quote_sha256\": \"1ea6fdc943abc2249543d04d140afa971c3f95373ea246c975a3454e79d5d574\", \"source_path\": \"app.py\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The application loads image generation and document understanding models locally using from_pretrained methods.\", \"use_type\": \"local_inference\", \"use_type_zh\": \"本地推理\"}, {\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"16ddc849a7fa245732cd8f50a2227a1b8fb4a7f1ebf77507a5cb374f3a641873\", \"quote\": \"这是“开源账本”的半决赛受控演示项目，不是生产仓库，也不是真实用户项目。\", \"quote_sha256\": \"67da5b66ca0f749585b72572d9e5d0a75212cd051b0c8aed6a39bb6e2868aea5\", \"source_path\": \"README.md\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The project documentation states it is a controlled demonstration for license audit simulation, not a production repository.\", \"use_type\": \"evaluation_only\", \"use_type_zh\": \"仅评测\"}]}"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+            "purl": "pkg:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+            "evidence_level": "A",
+            "source_field": "Data.BaseModel"
+          },
+          {
+            "ref": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+            "purl": "pkg:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+            "evidence_level": "B",
+            "source_field": "lineage.ParentsModels"
+          },
+          {
+            "ref": "model:modelscope/Qwen/Qwen2.5-7B@master",
+            "purl": "pkg:modelscope/Qwen/Qwen2.5-7B@master",
+            "evidence_level": "B",
+            "source_field": "lineage.ParentsModels"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+      "type": "machine-learning-model",
+      "name": "OpenGVLab/InternVL3-8B-Pretrained",
+      "version": "master",
+      "purl": "pkg:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Pretrained",
+              "source_field": "Data.License",
+              "retrieved_at": "2026-11-15T14:33:14.408822Z",
+              "status": "ok",
+              "raw_value": "apache-2.0"
+            },
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "Data.BaseModel",
+              "retrieved_at": "2026-11-15T14:33:17.289989Z",
+              "status": "ok",
+              "raw_value": "OpenGVLab/InternVL3-8B-Pretrained"
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-11-15T14:33:17.289989Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 0,
+                "LineAgeType": "Merge Model",
+                "LineAgeTypeCh": "合并",
+                "Name": "OpenGVLab/InternVL3-8B-Pretrained"
+              }
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "SAFE"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "安全（绿）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternVL3-8B-Pretrained"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "upstream"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "1"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "resolved"
+        },
+        {
+          "name": "open-source-ledger:ai_status",
+          "value": "ok"
+        },
+        {
+          "name": "open-source-ledger:ai_evidence_level",
+          "value": "C"
+        },
+        {
+          "name": "open-source-ledger:ai_analysis_json",
+          "value": "{\"analysis_type\": \"model_profile\", \"claims\": [{\"claim_id\": \"claim-8b00256487e8\", \"condition\": \"\", \"conditions\": [], \"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"commercial_use\", \"dimension_zh\": \"商业使用\", \"evidence\": {\"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"dffca9e698034dab0fce35696b24c8561b12e0aa38cbcac0d718e72eb5d05e62\", \"quote\": \"license: apache-2.0\", \"quote_sha256\": \"f3cae36c4cdc3eb2e8a8d88ad4f1462364f750a68b490ba70821491d55f8de9e\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/OpenGVLab/InternVL3-8B-Pretrained/file/view/master/README.md\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"dffca9e698034dab0fce35696b24c8561b12e0aa38cbcac0d718e72eb5d05e62\", \"quote\": \"license: apache-2.0\", \"quote_sha256\": \"f3cae36c4cdc3eb2e8a8d88ad4f1462364f750a68b490ba70821491d55f8de9e\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/OpenGVLab/InternVL3-8B-Pretrained/file/view/master/README.md\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"allowed\", \"state_zh\": \"允许\", \"statement\": \"Commercial use is permitted based on the declared Apache-2.0 license in the README metadata.\"}, {\"claim_id\": \"claim-ecd723700737\", \"condition\": \"\", \"conditions\": [], \"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"training_other_models\", \"dimension_zh\": \"训练其他模型\", \"evidence\": {\"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"dffca9e698034dab0fce35696b24c8561b12e0aa38cbcac0d718e72eb5d05e62\", \"quote\": \"license: apache-2.0\", \"quote_sha256\": \"f3cae36c4cdc3eb2e8a8d88ad4f1462364f750a68b490ba70821491d55f8de9e\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/OpenGVLab/InternVL3-8B-Pretrained/file/view/master/README.md\"}, \"evidence_count\": 1, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"dffca9e698034dab0fce35696b24c8561b12e0aa38cbcac0d718e72eb5d05e62\", \"quote\": \"license: apache-2.0\", \"quote_sha256\": \"f3cae36c4cdc3eb2e8a8d88ad4f1462364f750a68b490ba70821491d55f8de9e\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/OpenGVLab/InternVL3-8B-Pretrained/file/view/master/README.md\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"allowed\", \"state_zh\": \"允许\", \"statement\": \"Training other models is permitted based on the declared Apache-2.0 license in the README metadata.\"}], \"conflicts\": [], \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"gaps\": [{\"dimension\": \"license_verification\", \"dimension_zh\": \"license_verification\", \"missing\": \"Actual LICENSE file content is not provided; README contains conflicting information with 'license_name: qwen' and a link to a Qwen license.\", \"question\": \"\", \"reason\": \"Actual LICENSE file content is not provided; README contains conflicting information with 'license_name: qwen' and a link to a Qwen license.\", \"searched_sources\": [\"README.md\"]}, {\"dimension\": \"fine_tuned_redistribution\", \"dimension_zh\": \"微调版本再分发\", \"missing\": \"未找到微调/量化版本再分发、衍生模型发布或额外声明义务的原文\", \"question\": \"微调、量化或衍生版本能否再分发，是否需要单独授权或额外 Notice\", \"reason\": \"证据不足\", \"searched_sources\": [\"README.md\"]}, {\"dimension\": \"commercial_license_request\", \"dimension_zh\": \"商用授权申请方式\", \"missing\": \"未找到单独商用授权的申请方式、适用条件或例外条款\", \"question\": \"商业使用是否需要单独申请授权，申请渠道、适用条件和例外是什么\", \"reason\": \"证据不足\", \"searched_sources\": [\"README.md\"]}], \"generated_at\": \"2026-11-15T14:35:55Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"schema_version\": \"ai-analysis/v2\", \"simulation\": false, \"simulation_note\": \"\", \"status\": \"ok\", \"subject\": {\"fact_source\": \"ModelScope\", \"license_fact\": \"apache-2.0\", \"model_id\": \"OpenGVLab/InternVL3-8B-Pretrained\", \"revision\": \"master\", \"source_bundle_sha256\": \"e33eddbb2f552fcc45a1e959ebb2cc31ca178e5640188208bcef383c1e16c234\"}, \"summary\": \"The README.md metadata declares the license as 'apache-2.0', but also lists 'qwen' as the license_name and provides a link to a Qwen model's LICENSE file, creating a potential conflict. No explicit LICENSE file content is provided in the documents.\"}"
+        },
+        {
+          "name": "open-source-ledger:ai_project_context_json",
+          "value": "{\"analysis_type\": \"project_context\", \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"generated_at\": \"2026-11-15T14:39:21Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"rejected\": [], \"schema_version\": \"ai-analysis/v2\", \"status\": \"ok\", \"subject\": {\"model_count\": 0, \"project_path\": \"example\\\\qwen_image_controlled_project\"}, \"uses\": [{\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc\", \"quote\": \"# The production service loads the FP8 model locally.\\n    return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)\\n\\n\\ndef load_document_model():\\n    from transformers import AutoModelForVision2Seq\\n\\n    return AutoModelForVision2Seq.from_pretrained(DOCUMENT_MODEL_ID)\", \"quote_sha256\": \"1ea6fdc943abc2249543d04d140afa971c3f95373ea246c975a3454e79d5d574\", \"source_path\": \"app.py\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The application loads image generation and document understanding models locally using from_pretrained methods.\", \"use_type\": \"local_inference\", \"use_type_zh\": \"本地推理\"}, {\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"16ddc849a7fa245732cd8f50a2227a1b8fb4a7f1ebf77507a5cb374f3a641873\", \"quote\": \"这是“开源账本”的半决赛受控演示项目，不是生产仓库，也不是真实用户项目。\", \"quote_sha256\": \"67da5b66ca0f749585b72572d9e5d0a75212cd051b0c8aed6a39bb6e2868aea5\", \"source_path\": \"README.md\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The project documentation states it is a controlled demonstration for license audit simulation, not a production repository.\", \"use_type\": \"evaluation_only\", \"use_type_zh\": \"仅评测\"}]}"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+            "purl": "pkg:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+            "evidence_level": "A",
+            "source_field": "Data.BaseModel"
+          },
+          {
+            "ref": "model:modelscope/Qwen/Qwen2.5-7B@master",
+            "purl": "pkg:modelscope/Qwen/Qwen2.5-7B@master",
+            "evidence_level": "A",
+            "source_field": "Data.BaseModel"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+      "type": "machine-learning-model",
+      "name": "OpenGVLab/InternViT-300M-448px-V2_5",
+      "version": "master",
+      "purl": "pkg:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px-V2_5",
+              "source_field": "Data.License",
+              "retrieved_at": "2026-11-15T14:33:15.167987Z",
+              "status": "ok",
+              "raw_value": "mit"
+            },
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "Data.BaseModel",
+              "retrieved_at": "2026-11-15T14:33:16.321367Z",
+              "status": "ok",
+              "raw_value": "OpenGVLab/InternViT-300M-448px-V2_5"
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-11-15T14:33:16.321367Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 0,
+                "LineAgeType": "Finetuned",
+                "LineAgeTypeCh": "微调",
+                "Name": "OpenGVLab/InternViT-300M-448px-V2_5"
+              }
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-11-15T14:33:17.289989Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 1,
+                "LineAgeType": "Finetuned",
+                "LineAgeTypeCh": "微调",
+                "Name": "OpenGVLab/InternViT-300M-448px-V2_5"
+              }
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "1"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "SAFE"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "安全（绿）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px-V2_5"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "upstream"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "resolved"
+        },
+        {
+          "name": "open-source-ledger:ai_status",
+          "value": "ok"
+        },
+        {
+          "name": "open-source-ledger:ai_evidence_level",
+          "value": "C"
+        },
+        {
+          "name": "open-source-ledger:ai_analysis_json",
+          "value": "{\"analysis_type\": \"model_profile\", \"claims\": [{\"claim_id\": \"claim-4c0fb935fff2\", \"condition\": \"\", \"conditions\": [], \"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"conflict\": false, \"cross_document_support\": false, \"dimension\": \"commercial_use\", \"dimension_zh\": \"商业使用\", \"evidence\": {\"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"00072b4bbbd1179c523b3b247ba11dcec11140fe8cce4937a7273b320ae9ebeb\", \"quote\": \"license: mit\", \"quote_sha256\": \"204d0bce1ef327f348bccd1f6efe3397d28f54009edcb813a141198a262bd528\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/OpenGVLab/InternViT-300M-448px-V2_5/file/view/master/README.md\"}, \"evidence_count\": 2, \"evidence_level\": \"C\", \"evidences\": [{\"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"00072b4bbbd1179c523b3b247ba11dcec11140fe8cce4937a7273b320ae9ebeb\", \"quote\": \"license: mit\", \"quote_sha256\": \"204d0bce1ef327f348bccd1f6efe3397d28f54009edcb813a141198a262bd528\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/OpenGVLab/InternViT-300M-448px-V2_5/file/view/master/README.md\"}, {\"confidence\": 0.71, \"confidence_factors\": {\"base\": 0.48, \"exact_quote\": 0.1, \"quote_context\": 0.02, \"readme\": 0.08, \"source_sha256\": 0.03}, \"file_sha256\": \"00072b4bbbd1179c523b3b247ba11dcec11140fe8cce4937a7273b320ae9ebeb\", \"quote\": \"This project is released under the MIT License.\", \"quote_sha256\": \"2d06dfef7712ec67fa0f8a2e43a781a8b0378d8dd8f06ea8c48b2be16045600c\", \"source_path\": \"README.md\", \"source_url\": \"https://www.modelscope.cn/models/OpenGVLab/InternViT-300M-448px-V2_5/file/view/master/README.md\"}], \"exceptions\": [], \"human_review\": \"pending\", \"state\": \"allowed\", \"state_zh\": \"允许\", \"statement\": \"Commercial use is permitted as the project is explicitly stated to be released under the MIT License.\"}], \"conflicts\": [], \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"gaps\": [{\"dimension\": \"training_other_models\", \"dimension_zh\": \"训练其他模型\", \"missing\": \"未找到训练其他模型、使用输出改进模型或相关展示义务的原文\", \"question\": \"是否允许用模型或输出训练、微调、改进其他模型，发布时是否需要标注 Built with Qwen / Improved using Qwen\", \"reason\": \"No explicit clause regarding training other models found in the provided README.md document.\", \"searched_sources\": [\"README.md\"]}, {\"dimension\": \"attribution\", \"dimension_zh\": \"attribution\", \"missing\": \"No explicit attribution requirements detailed in the provided README.md document beyond citation suggestions.\", \"question\": \"\", \"reason\": \"No explicit attribution requirements detailed in the provided README.md document beyond citation suggestions.\", \"searched_sources\": [\"README.md\"]}, {\"dimension\": \"redistribution\", \"dimension_zh\": \"再分发\", \"missing\": \"未找到再分发条件、Notice/署名义务或修改声明要求的原文\", \"question\": \"是否允许再分发，以及是否需要保留 Notice、署名和修改声明\", \"reason\": \"No explicit redistribution terms found in the provided README.md document; full license text not available.\", \"searched_sources\": [\"README.md\"]}, {\"dimension\": \"fine_tuned_redistribution\", \"dimension_zh\": \"微调版本再分发\", \"missing\": \"未找到微调/量化版本再分发、衍生模型发布或额外声明义务的原文\", \"question\": \"微调、量化或衍生版本能否再分发，是否需要单独授权或额外 Notice\", \"reason\": \"证据不足\", \"searched_sources\": [\"README.md\"]}, {\"dimension\": \"commercial_license_request\", \"dimension_zh\": \"商用授权申请方式\", \"missing\": \"未找到单独商用授权的申请方式、适用条件或例外条款\", \"question\": \"商业使用是否需要单独申请授权，申请渠道、适用条件和例外是什么\", \"reason\": \"证据不足\", \"searched_sources\": [\"README.md\"]}], \"generated_at\": \"2026-11-15T14:37:36Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"schema_version\": \"ai-analysis/v2\", \"simulation\": false, \"simulation_note\": \"\", \"status\": \"ok\", \"subject\": {\"fact_source\": \"ModelScope\", \"license_fact\": \"mit\", \"model_id\": \"OpenGVLab/InternViT-300M-448px-V2_5\", \"revision\": \"master\", \"source_bundle_sha256\": \"551a1515cc94898c56c182b5666a7f37fccc4a9de4a4b823f5df14eea1592004\"}, \"summary\": \"The model is released under the MIT License according to the README.md file. No separate LICENSE file content was provided in the documents.\"}"
+        },
+        {
+          "name": "open-source-ledger:ai_project_context_json",
+          "value": "{\"analysis_type\": \"project_context\", \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"generated_at\": \"2026-11-15T14:39:21Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"rejected\": [], \"schema_version\": \"ai-analysis/v2\", \"status\": \"ok\", \"subject\": {\"model_count\": 0, \"project_path\": \"example\\\\qwen_image_controlled_project\"}, \"uses\": [{\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc\", \"quote\": \"# The production service loads the FP8 model locally.\\n    return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)\\n\\n\\ndef load_document_model():\\n    from transformers import AutoModelForVision2Seq\\n\\n    return AutoModelForVision2Seq.from_pretrained(DOCUMENT_MODEL_ID)\", \"quote_sha256\": \"1ea6fdc943abc2249543d04d140afa971c3f95373ea246c975a3454e79d5d574\", \"source_path\": \"app.py\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The application loads image generation and document understanding models locally using from_pretrained methods.\", \"use_type\": \"local_inference\", \"use_type_zh\": \"本地推理\"}, {\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"16ddc849a7fa245732cd8f50a2227a1b8fb4a7f1ebf77507a5cb374f3a641873\", \"quote\": \"这是“开源账本”的半决赛受控演示项目，不是生产仓库，也不是真实用户项目。\", \"quote_sha256\": \"67da5b66ca0f749585b72572d9e5d0a75212cd051b0c8aed6a39bb6e2868aea5\", \"source_path\": \"README.md\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The project documentation states it is a controlled demonstration for license audit simulation, not a production repository.\", \"use_type\": \"evaluation_only\", \"use_type_zh\": \"仅评测\"}]}"
+        }
+      ],
+      "pedigree": {
+        "ancestors": [
+          {
+            "ref": "model:modelscope/OpenGVLab/InternViT-300M-448px@master",
+            "purl": "pkg:modelscope/OpenGVLab/InternViT-300M-448px@master",
+            "evidence_level": "A",
+            "source_field": "Data.BaseModel"
+          }
+        ]
+      }
+    },
+    {
+      "bom-ref": "model:modelscope/OpenGVLab/InternViT-300M-448px@master",
+      "type": "machine-learning-model",
+      "name": "OpenGVLab/InternViT-300M-448px",
+      "version": "master",
+      "purl": "pkg:modelscope/OpenGVLab/InternViT-300M-448px@master",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px",
+              "source_field": "Data.License",
+              "retrieved_at": "2026-11-15T14:33:16.057131Z",
+              "status": "ok",
+              "raw_value": "mit"
+            },
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "Data.BaseModel",
+              "retrieved_at": "2026-11-15T14:33:16.321367Z",
+              "status": "ok",
+              "raw_value": "OpenGVLab/InternViT-300M-448px"
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-11-15T14:33:16.321367Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 0,
+                "LineAgeType": "Base Model",
+                "LineAgeTypeCh": "基模型",
+                "Name": "OpenGVLab/InternViT-300M-448px"
+              }
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "1"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "SAFE"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "安全（绿）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/OpenGVLab/InternViT-300M-448px"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "upstream"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "3"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "resolved"
+        },
+        {
+          "name": "open-source-ledger:ai_project_context_json",
+          "value": "{\"analysis_type\": \"project_context\", \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"generated_at\": \"2026-11-15T14:39:21Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"rejected\": [], \"schema_version\": \"ai-analysis/v2\", \"status\": \"ok\", \"subject\": {\"model_count\": 0, \"project_path\": \"example\\\\qwen_image_controlled_project\"}, \"uses\": [{\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc\", \"quote\": \"# The production service loads the FP8 model locally.\\n    return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)\\n\\n\\ndef load_document_model():\\n    from transformers import AutoModelForVision2Seq\\n\\n    return AutoModelForVision2Seq.from_pretrained(DOCUMENT_MODEL_ID)\", \"quote_sha256\": \"1ea6fdc943abc2249543d04d140afa971c3f95373ea246c975a3454e79d5d574\", \"source_path\": \"app.py\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The application loads image generation and document understanding models locally using from_pretrained methods.\", \"use_type\": \"local_inference\", \"use_type_zh\": \"本地推理\"}, {\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"16ddc849a7fa245732cd8f50a2227a1b8fb4a7f1ebf77507a5cb374f3a641873\", \"quote\": \"这是“开源账本”的半决赛受控演示项目，不是生产仓库，也不是真实用户项目。\", \"quote_sha256\": \"67da5b66ca0f749585b72572d9e5d0a75212cd051b0c8aed6a39bb6e2868aea5\", \"source_path\": \"README.md\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The project documentation states it is a controlled demonstration for license audit simulation, not a production repository.\", \"use_type\": \"evaluation_only\", \"use_type_zh\": \"仅评测\"}]}"
+        }
+      ]
+    },
+    {
+      "bom-ref": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "type": "machine-learning-model",
+      "name": "Qwen/Qwen2.5-7B",
+      "version": "master",
+      "purl": "pkg:modelscope/Qwen/Qwen2.5-7B@master",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          },
+          "evidence_level": "A",
+          "evidence_chain": [
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B",
+              "source_field": "Data.License",
+              "retrieved_at": "2026-11-15T14:33:17.018934Z",
+              "status": "ok",
+              "raw_value": "apache-2.0"
+            },
+            {
+              "evidence_level": "A",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "Data.BaseModel",
+              "retrieved_at": "2026-11-15T14:33:17.289989Z",
+              "status": "ok",
+              "raw_value": "Qwen/Qwen2.5-7B"
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-11-15T14:33:17.289989Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 0,
+                "LineAgeType": "",
+                "LineAgeTypeCh": "",
+                "Name": "Qwen/Qwen2.5-7B"
+              }
+            },
+            {
+              "evidence_level": "B",
+              "source_api": "modelscope",
+              "source_url": null,
+              "source_field": "lineage.ParentsModels",
+              "retrieved_at": "2026-11-15T14:33:17.289989Z",
+              "status": "ok",
+              "raw_value": {
+                "Level": 1,
+                "LineAgeType": "",
+                "LineAgeTypeCh": "",
+                "Name": "Qwen/Qwen2.5-7B"
+              }
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "open-source-ledger:snapshot_id",
+          "value": "modelscope-OpenGVLab__InternVL3-8B-Instruct"
+        },
+        {
+          "name": "open-source-ledger:risk_level",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:decision",
+          "value": "SAFE"
+        },
+        {
+          "name": "open-source-ledger:decision_zh",
+          "value": "安全（绿）"
+        },
+        {
+          "name": "open-source-ledger:source_file",
+          "value": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen2.5-7B"
+        },
+        {
+          "name": "open-source-ledger:lineage_role",
+          "value": "upstream"
+        },
+        {
+          "name": "open-source-ledger:lineage_depth",
+          "value": "2"
+        },
+        {
+          "name": "open-source-ledger:lineage_status",
+          "value": "resolved"
+        },
+        {
+          "name": "open-source-ledger:ai_project_context_json",
+          "value": "{\"analysis_type\": \"project_context\", \"fact_policy\": {\"ai_evidence_level\": \"C\", \"ai_may_change_decision\": false, \"ai_may_change_license\": false, \"human_review_required\": true}, \"generated_at\": \"2026-11-15T14:39:21Z\", \"prompt_version\": \"modelscope-license-audit-v2\", \"provider\": {\"base_url\": \"https://api-inference.modelscope.cn/v1\", \"model\": \"Qwen/Qwen3.5-27B\", \"provider\": \"openai-compatible\", \"timeout\": 180.0}, \"rejected\": [], \"schema_version\": \"ai-analysis/v2\", \"status\": \"ok\", \"subject\": {\"model_count\": 0, \"project_path\": \"example\\\\qwen_image_controlled_project\"}, \"uses\": [{\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"a0b299caa93a61662f79f60ce97f32e5469e017c3272e1443663e263ea31a6cc\", \"quote\": \"# The production service loads the FP8 model locally.\\n    return AutoPipelineForImage2Image.from_pretrained(IMAGE_MODEL_ID)\\n\\n\\ndef load_document_model():\\n    from transformers import AutoModelForVision2Seq\\n\\n    return AutoModelForVision2Seq.from_pretrained(DOCUMENT_MODEL_ID)\", \"quote_sha256\": \"1ea6fdc943abc2249543d04d140afa971c3f95373ea246c975a3454e79d5d574\", \"source_path\": \"app.py\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The application loads image generation and document understanding models locally using from_pretrained methods.\", \"use_type\": \"local_inference\", \"use_type_zh\": \"本地推理\"}, {\"confidence\": 0.83, \"evidence\": {\"file_sha256\": \"16ddc849a7fa245732cd8f50a2227a1b8fb4a7f1ebf77507a5cb374f3a641873\", \"quote\": \"这是“开源账本”的半决赛受控演示项目，不是生产仓库，也不是真实用户项目。\", \"quote_sha256\": \"67da5b66ca0f749585b72572d9e5d0a75212cd051b0c8aed6a39bb6e2868aea5\", \"source_path\": \"README.md\"}, \"evidence_level\": \"C\", \"human_review\": \"pending\", \"statement\": \"The project documentation states it is a controlled demonstration for license audit simulation, not a production repository.\", \"use_type\": \"evaluation_only\", \"use_type_zh\": \"仅评测\"}]}"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "model:modelscope/unsloth/Qwen-Image-2.1-Turbo-FP8@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen-Image-2.1-Turbo@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen-Image-2.1@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/OpenGVLab/InternVL3-8B-Instruct@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/OpenGVLab/InternVL3-8B-Pretrained@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/OpenGVLab/InternViT-300M-448px-V2_5@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/OpenGVLab/InternViT-300M-448px@master",
+      "dependsOn": []
+    },
+    {
+      "ref": "model:modelscope/Qwen/Qwen2.5-7B@master",
+      "dependsOn": []
+    }
+  ]
+}

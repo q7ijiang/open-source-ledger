@@ -185,7 +185,7 @@ Action 的特征：
 当现实中还没有发生许可证变更时，可以手动把一份冻结的受控 t0 写入 Actions Cache：
 
 1. 运行 `Seed Controlled Baseline`，默认使用
-   `tests/fixtures/projects/qwen_image_license_tightening/upstream/t0_bom.json`；
+   `docs/competition/controlled-baseline/t0_bom.json`；
 2. 立即运行 `ModelScope License Risk Watch`，`project_path` 填
    `example/qwen_image_controlled_project`；
 3. 第二次运行会恢复受控 t0，扫描真实 t1，并生成许可证变更、传播路径和路径证书。
@@ -195,9 +195,11 @@ Action 的特征：
 t0 是受控反事实，不是对现实许可证变更的声明。Seed 与 scan 之间不要插入其他
 会保存缓存的成功运行，否则可能恢复较新的真实基线。
 
-如果启用 AI，受控 t0 也必须包含同一 provider / prompt 的真实 AI 画像，否则
-Diff 会把「fixture AI」和「真实 t1 AI」混在一起比较。当前 Qwen 受控 t0 的 AI
-仍是冻结夹具，建议该演示关闭 AI；真实 AI 证据见 `docs/competition/real-ai/`。
+受控 t0 已用同一真实 AI（`Qwen/Qwen3.5-27B`）生成 C 级画像；t0 与 t1 使用同一
+provider / prompt，因此 AI 语义 Diff 可比较。t0 的 Apache 文本是标准 Apache-2.0
+全文的受控替代文本，不是历史原文件；BOM 和 Artifact 中均保留
+`controlled_source`、`synthetic_document`、`not_historical_original` 标记。
+未形成逐字引文的维度会保留具体 gap（缺什么、查了哪些文件），不会被推断为安全。
 
 ### 人工接受已确认风险
 

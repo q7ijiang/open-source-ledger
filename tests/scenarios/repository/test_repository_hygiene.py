@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
@@ -137,6 +138,38 @@ def test_action_and_workflow_render_html_and_wire_ai_diff() -> None:
         assert "render_diff.py" in text, path
         assert "diff_lineage.html" in text, path
         assert "DIFF_ARGS+=(--ai)" in text, path
+
+
+def test_controlled_baseline_has_real_ai_and_flags() -> None:
+    baseline = json.loads(
+        (
+            REPO_ROOT
+            / "docs"
+            / "competition"
+            / "controlled-baseline"
+            / "t0_bom.json"
+        ).read_text(encoding="utf-8")
+    )
+    target = next(
+        component
+        for component in baseline["components"]
+        if component["name"] == "Qwen/Qwen-Image-2.1"
+    )
+    properties = {
+        item["name"]: item["value"] for item in target.get("properties", [])
+    }
+    analysis = json.loads(properties["open-source-ledger:ai_analysis_json"])
+
+    assert baseline["metadata"]["controlled_baseline"] is True
+    assert target["licenses"][0]["license"]["id"] == "Apache-2.0"
+    assert properties["open-source-ledger:simulation"] == "True"
+    assert properties["open-source-ledger:controlled_source"] == "True"
+    assert properties["open-source-ledger:synthetic_document"] == "True"
+    assert properties["open-source-ledger:not_historical_original"] == "True"
+    assert analysis["provider"]["model"] == "Qwen/Qwen3.5-27B"
+    assert analysis["status"] == "ok"
+    assert any(gap.get("missing") for gap in analysis.get("gaps", []))
+    assert any(gap.get("searched_sources") for gap in analysis.get("gaps", []))
 
 
 def test_controlled_baseline_seed_workflow() -> None:

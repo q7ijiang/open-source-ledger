@@ -1,0 +1,75 @@
+{
+  "schema_version": "controlled-baseline/v1",
+  "generated_at": "2026-11-15T14:41:03Z",
+  "target_model": "Qwen/Qwen-Image-2.1",
+  "apache_source": "standard Apache License 2.0 full text from repository LICENSE",
+  "apache_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+  "historical_commit": "72900d004951bd845d7a4a77d566562eadd37c3f",
+  "historical_source_url": "https://www.modelscope.cn/models/Qwen/Qwen-Image-2.1/file/view/72900d004951bd845d7a4a77d566562eadd37c3f/README.md",
+  "observed_bom_sha256": "c5ca18c254f6b54b3998a7b015fe071e721aaf590b49660dfa851465e0735f90",
+  "t0_bom_sha256": "f6b8fd394551acf04a56cb962693d2c7d3fdf04972fce51957b64bbc217f234a",
+  "ai_provider": {
+    "provider": "openai-compatible",
+    "model": "Qwen/Qwen3.5-27B",
+    "base_url": "https://api-inference.modelscope.cn/v1",
+    "timeout": 180.0
+  },
+  "ai_status": "ok",
+  "claims": [
+    {
+      "dimension": "commercial_use",
+      "state": "allowed",
+      "confidence": 0.8
+    },
+    {
+      "dimension": "distribution",
+      "state": "allowed",
+      "confidence": 0.78
+    },
+    {
+      "dimension": "modification",
+      "state": "allowed",
+      "confidence": 0.78
+    },
+    {
+      "dimension": "patent_license",
+      "state": "allowed",
+      "confidence": 0.78
+    }
+  ],
+  "gaps": [
+    {
+      "dimension": "training_other_models",
+      "missing": "未找到训练其他模型、使用输出改进模型或相关展示义务的原文",
+      "searched_sources": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "dimension": "fine_tuned_redistribution",
+      "missing": "未找到微调/量化版本再分发、衍生模型发布或额外声明义务的原文",
+      "searched_sources": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "dimension": "commercial_license_request",
+      "missing": "未找到单独商用授权的申请方式、适用条件或例外条款",
+      "searched_sources": [
+        "LICENSE",
+        "README.md"
+      ]
+    }
+  ],
+  "flags": {
+    "controlled_baseline": true,
+    "simulation": true,
+    "synthetic_document": true,
+    "not_historical_original": true
+  },
+  "boundary": "Apache text is controlled reconstruction, not the historical ModelScope LICENSE file.",
+  "t1_observed_bom_sha256": "c5ca18c254f6b54b3998a7b015fe071e721aaf590b49660dfa851465e0735f90",
+  "diff_report_sha256": "70fa8746a1d373157d1a1848dd5f1c6bb2c1d0b8a3d280ed21eeedb60515a725"
+}

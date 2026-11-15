@@ -64,9 +64,11 @@ def test_semantic_diff_reports_new_and_removed_claim_evidence() -> None:
     removed = service.compare_models([before], [])
 
     assert {change["change_type"] for change in added["changes"]} == {"evidence_added"}
+    assert added["changes"][0]["change_type_zh"] == "证据新增"
     assert added["changes"][0]["before_state"] == "not_found"
     assert added["changes"][0]["after_state"] == "prohibited"
     assert {change["change_type"] for change in removed["changes"]} == {"evidence_removed"}
+    assert removed["changes"][0]["change_type_zh"] == "证据丢失"
     assert removed["changes"][0]["review_priority"] == "high"
     assert removed["changes"][0]["after_state"] == "not_found"
 

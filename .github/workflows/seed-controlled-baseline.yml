@@ -12,7 +12,7 @@ on:
       baseline_bom:
         description: '受控 t0 BOM 路径（相对仓库根目录或绝对路径）'
         required: true
-        default: 'tests/fixtures/projects/qwen_image_license_tightening/upstream/t0_bom.json'
+        default: 'docs/competition/controlled-baseline/t0_bom.json'
 
 permissions:
   contents: read
