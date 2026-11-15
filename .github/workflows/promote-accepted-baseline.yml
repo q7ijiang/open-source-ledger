@@ -1,0 +1,146 @@
+# 人工接受一次已知风险，并把该次 Run 的 t1 提升为下一次 t0。
+#
+# 只在 main 上手动运行。原失败 Run 不会因此变绿；下一次 license-watch
+# 才使用这份已接受基线继续监测新增变化。
+
+name: Promote Accepted Baseline
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: '发生风险的 license-watch Run ID'
+        required: true
+      reason:
+        description: '人工接受该风险的理由（必填）'
+        required: true
+      confirm:
+        description: '确认接受风险并提升基线'
+        required: true
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  promote:
+    name: Promote accepted t1 baseline
+    if: inputs.confirm == 'true' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate promotion request
+        env:
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          PROMOTION_REASON: ${{ inputs.reason }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$SOURCE_RUN_ID" in
+            ''|*[!0-9]*)
+              echo "::error::source_run_id 必须是数字 Run ID。"
+              exit 1
+              ;;
+          esac
+          if [ -z "${PROMOTION_REASON//[[:space:]]/}" ]; then
+            echo "::error::reason 不能为空；必须记录人工接受风险的理由。"
+            exit 1
+          fi
+
+      - name: Download source run evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: license-watch-evidence
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/promoted-run
+
+      - name: Prepare promoted baseline
+        id: prepare
+        env:
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          PROMOTION_REASON: ${{ inputs.reason }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_BOM="${RUNNER_TEMP}/promoted-run/reports/current_bom.json"
+          if [ ! -s "$SOURCE_BOM" ]; then
+            echo "::error::源 Run Artifact 中没有 reports/current_bom.json。"
+            exit 1
+          fi
+
+          CACHE_DIR="${RUNNER_TEMP}/license-watch/cache"
+          mkdir -p "$CACHE_DIR"
+          cp "$SOURCE_BOM" "${CACHE_DIR}/latest_bom.json"
+
+          python - "$SOURCE_BOM" "$CACHE_DIR/baseline_metadata.json" <<'PY'
+          import datetime
+          import hashlib
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          source = Path(sys.argv[1])
+          target = Path(sys.argv[2])
+          metadata = {
+              "schema_version": "license-watch-baseline/v1",
+              "controlled_baseline": False,
+              "simulation": False,
+              "not_a_real_license_change": False,
+              "promoted": True,
+              "risk_accepted": True,
+              "promoted_by": os.environ.get("GITHUB_ACTOR", ""),
+              "promoted_at": datetime.datetime.now(datetime.timezone.utc).isoformat(
+                  timespec="seconds"
+              ).replace("+00:00", "Z"),
+              "promotion_reason": os.environ.get("PROMOTION_REASON", ""),
+              "source_run_id": os.environ.get("SOURCE_RUN_ID", ""),
+              "source_bom_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+              "source_run_url": (
+                  f"https://github.com/{os.environ.get('GITHUB_REPOSITORY', '')}"
+                  f"/actions/runs/{os.environ.get('SOURCE_RUN_ID', '')}"
+              ),
+          }
+          target.write_text(
+              json.dumps(metadata, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+          SAFE_REF="${GITHUB_REF_NAME//\//-}"
+          echo "prefix=license-watch-${GITHUB_REPOSITORY_ID:-local}-${SAFE_REF}" >> "$GITHUB_OUTPUT"
+          echo "source_bom_sha256=$(sha256sum "$SOURCE_BOM" | awk '{print $1}')" >> "$GITHUB_OUTPUT"
+
+      - name: Save promoted baseline to Actions Cache
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/license-watch/cache
+          key: ${{ steps.prepare.outputs.prefix }}-promoted-${{ github.run_id }}
+
+      - name: Upload promotion record
+        uses: actions/upload-artifact@v4
+        with:
+          name: promoted-baseline-${{ inputs.source_run_id }}
+          path: ${{ runner.temp }}/license-watch/cache
+          retention-days: 30
+
+      - name: Summarize promotion
+        shell: bash
+        run: |
+          {
+            echo "### 已接受基线"
+            echo ""
+            echo "- 源 Run：${{ inputs.source_run_id }}"
+            echo "- 操作人：${{ github.actor }}"
+            echo "- 理由：${{ inputs.reason }}"
+            echo "- 原 Run 保持失败；下一次 license-watch 使用这份 t1 作为 t0。"
+          } >> "$GITHUB_STEP_SUMMARY"

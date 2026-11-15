@@ -197,6 +197,31 @@ t0 是受控反事实，不是对现实许可证变更的声明。Seed 与 scan 
 Diff 会把「fixture AI」和「真实 t1 AI」混在一起比较。当前 Qwen 受控 t0 的 AI
 仍是冻结夹具，建议该演示关闭 AI；真实 AI 证据见 `docs/competition/real-ai/`。
 
+### 人工接受已确认风险
+
+如果 `license-watch` 因 `RISK_CONFIRMED` 失败，而团队已经人工评估并决定接受
+该风险，可以手动运行：
+
+```text
+Promote Accepted Baseline
+```
+
+需要填写：
+
+- `source_run_id`：发生风险的 `license-watch` Run ID；
+- `reason`：接受该风险的理由；
+- `confirm=true`：明确确认。
+
+该 Workflow 会下载源 Run 的 `current_bom.json`，写入 `risk_accepted=true`、
+`promoted_by`、`promotion_reason` 和 `source_bom_sha256`，再保存为下一次的 t0。
+
+边界：
+
+- 原失败 Run 不会变绿；
+- 下一次 `license-watch` 才使用这份已接受基线；
+- 这不是“风险已修复”，而是“风险已知并接受”；
+- 受控演示如果还要重复，需要重新运行 `Seed Controlled Baseline`。
+
 ## 离线验收
 
 ```powershell

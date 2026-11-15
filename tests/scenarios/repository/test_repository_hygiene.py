@@ -94,6 +94,25 @@ def test_workflow_requires_explicit_project_path() -> None:
     assert (demo / "config.json").is_file()
 
 
+def test_promote_accepted_baseline_workflow() -> None:
+    workflow = (
+        REPO_ROOT / ".github" / "workflows" / "promote-accepted-baseline.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "workflow_dispatch" in workflow
+    assert "\n  schedule:" not in workflow
+    assert "source_run_id:" in workflow
+    assert "reason:" in workflow
+    assert "confirm:" in workflow
+    assert "actions/download-artifact@v4" in workflow
+    assert "run-id: ${{ inputs.source_run_id }}" in workflow
+    assert "current_bom.json" in workflow
+    assert "risk_accepted" in workflow
+    assert "id: prepare" in workflow
+    assert "steps.prepare.outputs.prefix" in workflow
+    assert "github.ref == 'refs/heads/main'" in workflow
+
+
 def test_action_and_workflow_have_ai_status_fallback() -> None:
     for path in ACTION_FILES:
         text = path.read_text(encoding="utf-8")
