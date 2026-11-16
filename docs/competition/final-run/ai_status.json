@@ -1,0 +1,12 @@
+{
+  "schema_version": "ai-status/v1",
+  "status": "ready",
+  "ready": true,
+  "provider": "openai-compatible",
+  "model": "Qwen/Qwen3.5-27B",
+  "base_url": "https://api-inference.modelscope.cn/v1",
+  "api_key_present": true,
+  "reasons": [],
+  "evaluated_at": "2026-11-15T15:45:54Z",
+  "commit_sha": "639249b92929dfe178cf610492d8afc527fe39b4"
+}

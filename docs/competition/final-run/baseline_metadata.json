@@ -1,0 +1,11 @@
+{
+  "schema_version": "license-watch-baseline/v1",
+  "controlled_baseline": true,
+  "simulation": true,
+  "not_a_real_license_change": true,
+  "source_path": "docs/competition/controlled-baseline/t0_bom.json",
+  "source_sha256": "ae8749010b8076f2a87d43ea4f4373f6345c2b517b124af2ae864b8b3d775118",
+  "commit_sha": "639249b92929dfe178cf610492d8afc527fe39b4",
+  "created_at": "2026-11-15T15:45:01Z",
+  "note": "Controlled t0 for license-watch demo; not a real historical license change."
+}

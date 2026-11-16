@@ -1,0 +1,24 @@
+{
+  "schema_version": "license-watch-final-run/v1",
+  "run_number": 40,
+  "run_id": 43731631020,
+  "run_url": "https://github.com/q7ijiang/open-source-ledger/actions/runs/43731631020",
+  "event": "workflow_dispatch",
+  "conclusion": "failure",
+  "conclusion_reason": "RISK_CONFIRMED 阻断，预期结果",
+  "head_sha": "639249b92929dfe178cf610492d8afc527fe39b4",
+  "started_at": "2026-11-15T15:45:18Z",
+  "completed_at": "2026-11-15T15:53:26Z",
+  "artifact_name": "license-watch-evidence",
+  "artifact_id": 14169196904,
+  "artifact_size_bytes": 910998,
+  "artifact_sha256": "89a1c4b645bbdafcec8fa454e6b028bbec2d1e26aa60945c635119f179436b0b",
+  "artifact_expires_at": "2026-11-29T15:53:21Z",
+  "files": {
+    "ai_status.json": "2ccfbdcf819bcef3643ad4cc3c37db712fefdb9ad0d82e42088dd2921a8fc492",
+    "baseline_metadata.json": "6f969ee68cba42b8a827c68d74def7e944b522f82ca07049c1d01da8be77cb9f",
+    "current_baseline_metadata.json": "23d2db38cc66fe5f6d24a4c006747a1f5dd609c0a177b375ae0932b87a8f3b28",
+    "diff_report.ai.json": "d5e634bbf24c043aee1ceb360b3d6dce66cb079064e494cfbae1c0497ffffd87",
+    "diff_report.md": "009b993282661f5582c388cfef9662a2d68035ddbb8a441b87537928fb7dfffb"
+  }
+}

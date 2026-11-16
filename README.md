@@ -171,7 +171,7 @@ Action 的特征：
 示例配置：
 
 ```yaml
-- uses: q7ijiang/open-source-ledger@main
+- uses: q7ijiang/open-source-ledger@v1.1.0-semifinal
   with:
     project_path: .
     api_key: ${{ secrets.MODELSCOPE_API_KEY }}

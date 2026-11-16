@@ -221,3 +221,34 @@ def test_python_dependencies_are_exactly_pinned() -> None:
 
     assert lines
     assert all(re.fullmatch(r"[A-Za-z0-9_.-]+==[A-Za-z0-9_.+-]+", line) for line in lines), lines
+
+
+def test_final_run_evidence_is_frozen() -> None:
+    root = REPO_ROOT / "docs" / "competition" / "final-run"
+    run = json.loads((root / "run.json").read_text(encoding="utf-8"))
+    ai_status = json.loads((root / "ai_status.json").read_text(encoding="utf-8"))
+    report = (root / "diff_report.md").read_text(encoding="utf-8")
+
+    assert run["run_number"] == 40
+    assert run["run_id"] == 43731631020
+    assert run["head_sha"].startswith("639249b")
+    assert run["artifact_sha256"].startswith("89a1c4b6")
+    assert ai_status["status"] == "ready"
+    assert ai_status["commit_sha"].startswith("639249b")
+    assert "间隔天数：19 天" in report
+    assert "**3** 个变更事件" in report
+    assert "**2** 张路径证书" in report
+    assert "条款收紧" in report
+
+
+def test_action_guide_matches_current_workflow_paths() -> None:
+    guide = (REPO_ROOT / "docs" / "github-action-guide.md").read_text(encoding="utf-8")
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+
+    assert ".license-watch-tool" not in guide
+    assert "outputs/diff_report.md" not in guide
+    assert "RUNNER_TEMP" in guide
+    assert "license-watch-evidence" in guide
+    assert "v1.1.0-semifinal" in guide
+    assert "q7ijiang/open-source-ledger@v1.1.0-semifinal" in readme
+    assert "q7ijiang/open-source-ledger@main" not in readme

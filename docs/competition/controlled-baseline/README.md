@@ -9,6 +9,9 @@ controlled t0（Apache 回放）
   -> 许可证变更、传播路径、路径证书
 ```
 
+最终 Run #40 的 Artifact 和报告见
+[`../final-run/README.md`](../final-run/README.md)。
+
 ## 1. 构造方式
 
 1. 对 `example/qwen_image_controlled_project` 做真实 Project 扫描，得到 observed_current；

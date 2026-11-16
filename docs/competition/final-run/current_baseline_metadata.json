@@ -1,0 +1,10 @@
+{
+  "schema_version": "license-watch-baseline/v1",
+  "controlled_baseline": false,
+  "simulation": false,
+  "not_a_real_license_change": false,
+  "source_path": "current_bom.json",
+  "source_sha256": "1d48a65def0dcc40d9c058c0f8a7c28f515f65d15fc6f9583c9922ae312180ba",
+  "commit_sha": "639249b92929dfe178cf610492d8afc527fe39b4",
+  "created_at": "2026-11-15T15:52:31Z"
+}
